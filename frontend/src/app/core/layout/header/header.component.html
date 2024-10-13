@@ -1,0 +1,44 @@
+<header class="shadow-sm flex items-center justify-between h-16">
+  <div class="flex items-center h-full px-4 py-2">
+    <a routerLink="/" class="h-full flex items-center">
+      <img src="logo.png" alt="ManageIt Logo" class="h-2/3" />
+    </a>
+  </div>
+  <nav class="h-full hidden sm:flex">
+    <ul class="flex items-center space-x-4 text-zinc-300 h-full text-sm">
+      <li>
+        <a
+          routerLink="/auth/login"
+          class="font-bold hover:text-sky-500 transition-all"
+          >Log in</a
+        >
+      </li>
+      <li class="bg-slate-900 h-full flex items-center px-4">
+        <a
+          routerLink="/auth/signup"
+          class="font-bold hover:text-sky-500 transition-all"
+          >Sign up for free</a
+        >
+      </li>
+    </ul>
+  </nav>
+  <div class="block sm:hidden px-2">
+    <button
+      class="block sm:hidden"
+      [matMenuTriggerFor]="menu"
+      aria-label="Menu button"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" class="bg-blue-600">
+      <button mat-menu-item routerLink="/auth/login">
+        <mat-icon>login</mat-icon>
+        <span>Log in</span>
+      </button>
+      <button mat-menu-item routerLink="/auth/signup">
+        <mat-icon>person_add_alt</mat-icon>
+        <span>Sign up</span>
+      </button>
+    </mat-menu>
+  </div>
+</header>
