@@ -3,17 +3,22 @@ import {
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import {
+  BrowserAnimationsModule,
+  provideAnimations,
+} from '@angular/platform-browser/animations';
 import {
   provideRouter,
   withComponentInputBinding,
   withRouterConfig,
 } from '@angular/router';
-
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    Title,
     importProvidersFrom(BrowserAnimationsModule),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
@@ -23,5 +28,7 @@ export const appConfig: ApplicationConfig = {
         paramsInheritanceStrategy: 'always',
       })
     ),
+    provideAnimations(),
+    provideToastr(),
   ],
 };

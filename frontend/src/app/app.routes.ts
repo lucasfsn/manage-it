@@ -8,21 +8,25 @@ export const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
-    title: 'Manage Your Projects | ManageIt',
+    data: {
+      title: 'Manage Your Projects',
+    },
   },
   {
     path: 'auth/login',
     component: LoginPageComponent,
-    title: 'Login | ManageIt',
+    data: {
+      title: 'Login',
+    },
   },
   {
     path: 'auth/signup',
     component: SignupPageComponent,
-    title: 'Sign Up | ManageIt',
+    data: { title: 'Sign Up' },
   },
   {
     path: '**',
     component: NotFoundPageComponent,
-    title: 'Page Not Found | ManageIt',
+    data: { title: 'Page Not Found' },
   },
 ];

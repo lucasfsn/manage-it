@@ -1,0 +1,14 @@
+@if (link) {
+<button
+  [routerLink]="link"
+  class="bg-sky-600 mx-auto px-4 py-3 text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full"
+>
+  <ng-content></ng-content>
+</button>
+} @else {
+<button
+  class="bg-sky-600 mx-auto px-4 py-3 text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full"
+>
+  <ng-content />
+</button>
+}

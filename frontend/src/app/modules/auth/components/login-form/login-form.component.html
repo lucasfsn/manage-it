@@ -1,0 +1,47 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col gap-4 mx-auto p-9 rounded-lg shadow-sm bg-slate-100 w-1/2"
+  style="background-color: #1e293b"
+>
+  <div class="flex flex-col gap-5">
+    <div class="flex flex-col gap-3 border-b pb-5 border-slate-500">
+      <div class="flex flex-col gap-2">
+        <input
+          id="email"
+          type="email"
+          [formControl]="form.controls.email"
+          placeholder="Enter your email"
+          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+        />
+        @if (emailIsInvalid) {
+        <p class="text-red-500 text-sm">Please enter a valid email address.</p>
+        }
+      </div>
+      <div class="flex flex-col gap-2">
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+        />
+        @if (passwordIsInvalid) {
+        <p class="text-red-500 text-sm">
+          {{ passwordErrors }}
+        </p>
+        }
+      </div>
+      <div class="flex justify-center">
+        <button
+          class="bg-sky-600 mx-auto px-4 py-3 text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full"
+        >
+          Log in
+        </button>
+      </div>
+    </div>
+    <a routerLink="/auth/signup" class="text-xs text-sky-400 text-center"
+      >Create an account</a
+    >
+  </div>
+</form>
