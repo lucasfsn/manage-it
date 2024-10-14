@@ -5,7 +5,20 @@
     </a>
   </div>
   <nav class="h-full hidden sm:flex">
-    <ul class="flex items-center space-x-4 text-zinc-300 h-full text-sm">
+    @if (loggedIn()) {
+    <ul class="flex items-center space-x-4 text-zinc-300 h-full text-base px-4">
+      <li>
+        <a
+          routerLink="/"
+          class="font-bold hover:text-sky-500 transition-all flex flex-row items-center gap-1.5"
+        >
+          <mat-icon>logout</mat-icon>
+          <p>Log out</p>
+        </a>
+      </li>
+    </ul>
+    } @else {
+    <ul class="flex items-center space-x-4 text-zinc-300 h-full text-base">
       <li>
         <a
           routerLink="/auth/login"
@@ -23,6 +36,7 @@
         >
       </li>
     </ul>
+    }
   </nav>
   <div class="block sm:hidden px-2">
     <button
@@ -33,6 +47,12 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" class="bg-blue-600">
+      @if (loggedIn()) {
+      <button mat-menu-item routerLink="/">
+        <mat-icon>logout</mat-icon>
+        <span>Log out</span>
+      </button>
+      } @else {
       <button mat-menu-item routerLink="/auth/login">
         <mat-icon>login</mat-icon>
         <span>Log in</span>
@@ -41,6 +61,7 @@
         <mat-icon>person_add_alt</mat-icon>
         <span>Sign up</span>
       </button>
+      }
     </mat-menu>
   </div>
 </header>

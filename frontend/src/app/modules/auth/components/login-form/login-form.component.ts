@@ -9,7 +9,6 @@ import {
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
-import { ButtonComponent } from '../../../../shared/button/button.component';
 
 function passwordValidator(control: AbstractControl) {
   const passwordRegex =
@@ -32,7 +31,7 @@ if (savedLoginForm) {
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, ButtonComponent],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
 })

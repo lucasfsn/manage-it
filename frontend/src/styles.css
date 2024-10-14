@@ -22,13 +22,39 @@ button {
   cursor: pointer;
 }
 
-.blurred-backdrop {
-  backdrop-filter: blur(10px);
+.mat-dialog-backdrop {
+  backdrop-filter: blur(20px); /* Zwiększona wartość rozmycia */
 }
 
-.custom-dialog-container {
-  border-radius: 8px;
-  padding: 16px;
-  background-color: #1e293b;
-  color: white;
+.search-dialog mat-dialog-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.search-dialog mat-form-field {
+  width: 100%;
+}
+
+.search-dialog mat-form-field .mat-mdc-text-field-wrapper {
+  background-color: transparent;
+}
+
+.search-dialog mat-form-field * {
+  background-color: transparent;
+  font-size: 0.875rem;
+}
+
+.search-dialog mat-form-field .mdc-line-ripple {
+  display: none;
+}
+
+.search-dialog mat-form-field .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.search-dialog .mat-mdc-dialog-surface {
+  border-radius: 0.75rem;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
