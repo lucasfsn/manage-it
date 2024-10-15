@@ -1,0 +1,49 @@
+import { Project } from './core/models/project.model';
+
+export const dummyProjects: Project[] = [
+  {
+    id: '1',
+    name: 'Project Alpha',
+    description: 'Description for Project Alpha',
+    startDate: '2024-01-01',
+    endDate: '2024-10-22',
+    completedTasks: 5,
+    totalTasks: 10,
+  },
+  {
+    id: '2',
+    name: 'Project Beta',
+    description: 'Description for Project Beta',
+    startDate: '2024-02-01',
+    endDate: '2024-10-18',
+    completedTasks: 3,
+    totalTasks: 8,
+  },
+  {
+    id: '3',
+    name: 'Project Gamma',
+    description: 'Description for Project Gamma',
+    startDate: '2024-03-01',
+    endDate: '2024-08-01',
+    completedTasks: 7,
+    totalTasks: 15,
+  },
+  {
+    id: '4',
+    name: 'Project Delta',
+    description: 'Description for Project Delta',
+    startDate: '2024-04-01',
+    endDate: '2025-01-01',
+    completedTasks: 2,
+    totalTasks: 5,
+  },
+  {
+    id: '5',
+    name: 'Project Epsilon',
+    description: 'Description for Project Epsilon',
+    startDate: '2024-05-01',
+    endDate: '2024-12-15',
+    completedTasks: 6,
+    totalTasks: 12,
+  },
+];
