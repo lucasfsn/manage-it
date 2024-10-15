@@ -1,3 +1,10 @@
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +21,23 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
     RouterLink,
     RouterLinkActive,
     SearchComponent,
+  ],
+  animations: [
+    trigger('toggleMenu', [
+      state(
+        'collapsed',
+        style({
+          minWidth: '60px',
+        })
+      ),
+      state(
+        'expanded',
+        style({
+          width: '175px',
+        })
+      ),
+      transition('collapsed <=> expanded', [animate('300ms ease-in-out')]),
+    ]),
   ],
   templateUrl: './side-bar.component.html',
   styleUrl: './side-bar.component.css',

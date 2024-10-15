@@ -5,16 +5,16 @@
     </a>
   </div>
   <nav class="h-full hidden sm:flex">
-    @if (loggedIn()) {
+    @if (isLoggedIn) {
     <ul class="flex items-center space-x-4 text-zinc-300 h-full text-base px-4">
       <li>
-        <a
-          routerLink="/"
+        <button
           class="font-bold hover:text-sky-500 transition-all flex flex-row items-center gap-1.5"
+          (click)="logout()"
         >
           <mat-icon>logout</mat-icon>
           <p>Log out</p>
-        </a>
+        </button>
       </li>
     </ul>
     } @else {
@@ -47,8 +47,8 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" class="bg-blue-600">
-      @if (loggedIn()) {
-      <button mat-menu-item routerLink="/">
+      @if (isLoggedIn) {
+      <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Log out</span>
       </button>

@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
+import { guestGuard } from './core/guards/guest.guard';
 import { DashboardLayoutComponent } from './core/layout/dashboard-layout/dashboard-layout.component';
 import { LoginPageComponent } from './modules/auth/pages/login-page/login-page.component';
 import { SignupPageComponent } from './modules/auth/pages/signup-page/signup-page.component';
@@ -10,6 +12,7 @@ export const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
+    canActivate: [guestGuard],
     data: {
       title: 'Manage Your Projects',
     },
@@ -18,10 +21,12 @@ export const routes: Routes = [
     path: 'home',
     redirectTo: '',
     pathMatch: 'full',
+    canActivate: [guestGuard],
   },
   {
     path: 'auth/login',
     component: LoginPageComponent,
+    canActivate: [guestGuard],
     data: {
       title: 'Login',
     },
@@ -29,6 +34,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -42,6 +48,7 @@ export const routes: Routes = [
   {
     path: 'auth/signup',
     component: SignupPageComponent,
+    canActivate: [guestGuard],
     data: { title: 'Sign Up' },
   },
   {

@@ -9,6 +9,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
+import { AuthService } from '../../../../core/services/auth.service';
 
 function passwordValidator(control: AbstractControl) {
   const passwordRegex =
@@ -37,7 +38,10 @@ if (savedLoginForm) {
 })
 export class LoginFormComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
-  constructor(private toastr: ToastrService) {}
+  constructor(
+    private toastr: ToastrService,
+    private authService: AuthService
+  ) {}
 
   form = new FormGroup({
     email: new FormControl(initialValue, {
@@ -86,15 +90,11 @@ export class LoginFormComponent implements OnInit {
       return;
     }
 
-    const email = this.form.value.email;
-    const password = this.form.value.password;
+    const email = this.form.value.email as string;
+    const password = this.form.value.password as string;
 
-    console.log(email, password);
+    this.authService.login({ email, password }).subscribe();
 
-    this.showSuccess();
-  }
-
-  showSuccess() {
     this.toastr.success('Logged in successfully!');
   }
 

@@ -1,4 +1,7 @@
-<nav class="flex flex-col pl-2 shadow-sm h-full backdrop-blur-3xl">
+<nav
+  class="flex flex-col pl-2 shadow-sm h-full backdrop-blur-3xl"
+  [@toggleMenu]="isCollapsed ? 'collapsed' : 'expanded'"
+>
   <button
     (click)="toggleSidebar()"
     class="bg-sky-500 rounded-full w-[30px] h-[30px] mr-1 flex items-center justify-center p-1 hover:bg-sky-600 transition-all"
