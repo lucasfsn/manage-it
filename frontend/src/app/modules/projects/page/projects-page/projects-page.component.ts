@@ -1,26 +1,19 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { ProjectStatisticsComponent } from '../../components/project-statistics/project-statistics.component';
-import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/upcoming-deadlines.component';
-import { ActiveProjectsSummaryComponent } from '../../components/active-projects-summary/active-projects-summary.component';
+import { ProjectsListComponent } from '../../components/projects-list/projects-list.component';
 
 @Component({
-  selector: 'app-dashboard-page',
+  selector: 'app-projects-page',
   standalone: true,
-  imports: [
-    ProjectStatisticsComponent,
-    SpinnerComponent,
-    UpcomingDeadlinesComponent,
-    ActiveProjectsSummaryComponent,
-  ],
-  templateUrl: './dashboard-page.component.html',
-  styleUrl: './dashboard-page.component.css',
+  imports: [ProjectsListComponent, SpinnerComponent],
+  templateUrl: './projects-page.component.html',
+  styleUrl: './projects-page.component.css',
 })
-export class DashboardPageComponent implements OnInit {
+export class ProjectsPageComponent {
   projects = signal<Project[] | undefined>(undefined);
   isLoading = signal<boolean>(false);
 
@@ -52,18 +45,5 @@ export class DashboardPageComponent implements OnInit {
         this.loadingService.loadingOff();
       },
     });
-  }
-
-  sortProjectsByEndDate(): Project[] {
-    const projects = this.projects();
-
-    return projects
-      ? projects
-          .slice()
-          .sort(
-            (a, b) =>
-              new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
-          )
-      : [];
   }
 }

@@ -1,0 +1,85 @@
+<div class="flex items-end flex-col sm:justify-end text-sm gap-2 sm:flex-row">
+  <div class="flex gap-1.5 items-center text-gray-400">
+    <label for="sort">Sort by:</label>
+    <select
+      id="sort"
+      class="bg-slate-900 p-1 rounded focus:outline-none focus:ring-2 focus:ring-gray-400"
+      (change)="onSortChange($event, 'criteria')"
+      [value]="sortCriteria"
+    >
+      <option value="name">Name</option>
+      <option value="status">Status</option>
+      <option value="startDate">Start Date</option>
+      <option value="endDate">Deadline</option>
+    </select>
+  </div>
+
+  <div class="flex gap-1.5 items-center text-gray-400">
+    <label for="order">Order:</label>
+    <select
+      id="order"
+      class="bg-slate-900 p-1 rounded focus:outline-none focus:ring-2 focus:ring-gray-400"
+      (change)="onSortChange($event, 'order')"
+      [value]="sortOrder"
+    >
+      <option value="ascending">Ascending</option>
+      <option value="descending">Descending</option>
+    </select>
+  </div>
+</div>
+
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5 overflow-hidden px-4">
+  @for (project of sortedProjects; track project.id) {
+  <div
+    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-slate-800 transition-all hover:scale-[102%] gap-4"
+    routerLink="/projects/{{ project.id }}"
+  >
+    <div class="flex flex-col gap-1 text-gray-400">
+      <h3
+        class="flex flex-row text-lg font-semibold justify-between items-center"
+      >
+        {{ project.name }}
+        <span
+          class="rounded-full h-[15px] aspect-square"
+          [ngClass]="{
+            'bg-completed': project.status === Status.Completed,
+            'bg-in-progress': project.status === Status.InProgress,
+          }"
+        >
+        </span>
+      </h3>
+      <p class="text-sm">{{ project.description }}</p>
+      <div
+        class="flex flex-col bg-slate-950 rounded-lg py-1 px-2 text-sm text-gray-400"
+      >
+        <p>
+          Start Date:
+          <span class="text-sky-500">
+            {{ project.startDate | date }}
+          </span>
+        </p>
+        <p>
+          Deadline:
+          <span class="text-pink-500">
+            {{ project.endDate | date }}
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="w-full bg-zinc-300 rounded-full h-4 relative">
+      <div
+        class="bg-sky-600 h-4 rounded-full"
+        [style.width.%]="(project.completedTasks / project.totalTasks) * 100"
+      ></div>
+      <span
+        class="absolute inset-0 flex items-center justify-center text-xs text-zinc-950"
+      >
+        {{
+          (project.completedTasks / project.totalTasks) * 100
+            | number : "1.0-0"
+        }}% Completed
+      </span>
+    </div>
+  </div>
+  }
+</div>

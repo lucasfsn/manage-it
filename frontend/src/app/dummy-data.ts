@@ -1,4 +1,4 @@
-import { Project } from './core/models/project.model';
+import { Project, Status } from './core/models/project.model';
 
 export const dummyProjects: Project[] = [
   {
@@ -9,6 +9,7 @@ export const dummyProjects: Project[] = [
     endDate: '2024-10-22',
     completedTasks: 5,
     totalTasks: 10,
+    status: Status.InProgress,
   },
   {
     id: '2',
@@ -18,6 +19,7 @@ export const dummyProjects: Project[] = [
     endDate: '2024-10-18',
     completedTasks: 3,
     totalTasks: 8,
+    status: Status.Completed,
   },
   {
     id: '3',
@@ -27,6 +29,7 @@ export const dummyProjects: Project[] = [
     endDate: '2024-08-01',
     completedTasks: 7,
     totalTasks: 15,
+    status: Status.Completed,
   },
   {
     id: '4',
@@ -36,6 +39,7 @@ export const dummyProjects: Project[] = [
     endDate: '2025-01-01',
     completedTasks: 2,
     totalTasks: 5,
+    status: Status.InProgress,
   },
   {
     id: '5',
@@ -45,5 +49,6 @@ export const dummyProjects: Project[] = [
     endDate: '2024-12-15',
     completedTasks: 6,
     totalTasks: 12,
+    status: Status.InProgress,
   },
 ];

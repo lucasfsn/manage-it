@@ -6,7 +6,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -42,8 +42,8 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
   templateUrl: './side-bar.component.html',
   styleUrl: './side-bar.component.css',
 })
-export class SideBarComponent {
-  isCollapsed = true;
+export class SideBarComponent implements OnInit {
+  isCollapsed = false;
   constructor(public dialog: MatDialog) {}
 
   toggleSidebar() {
@@ -54,6 +54,25 @@ export class SideBarComponent {
     this.dialog.open(SearchComponent, {
       width: '600px',
       panelClass: 'search-dialog',
+      backdropClass: 'search-dialog-backdrop',
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    const screenWidth = window.innerWidth;
+    if (screenWidth < 1024) {
+      this.isCollapsed = true;
+    } else {
+      this.isCollapsed = false;
+    }
+  }
+
+  ngOnInit(): void {
+    this.checkScreenSize();
   }
 }

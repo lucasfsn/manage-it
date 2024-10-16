@@ -1,13 +1,16 @@
-<div class="flex flex-col gap-1.5">
+<div class="flex flex-col gap-1.5 overflow-hidden">
   @for (project of projects; track project.id) {
-  <div class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm">
+  <div
+    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-slate-800 transition-all hover:scale-105"
+    routerLink="/projects/{{ project.id }}"
+  >
     <h3 class="text-lg font-semibold">{{ project.name }}</h3>
-    <div>
-      <p class="text-sm">
+    <div class="flex flex-col gap-2">
+      <p class="text-gray-400 text-sm">
         Completed Tasks: {{ project.completedTasks }} /
         {{ project.totalTasks }}
       </p>
-      <div class="w-full bg-zinc-300 rounded-full h-4 mt-2">
+      <div class="w-full bg-zinc-300 rounded-full h-4">
         <div
           class="bg-sky-600 h-4 rounded-full"
           [style.width.%]="(project.completedTasks / project.totalTasks) * 100"

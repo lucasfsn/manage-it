@@ -1,3 +1,8 @@
+export enum Status {
+  InProgress = 'In Progress',
+  Completed = 'Completed',
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -6,4 +11,5 @@ export interface Project {
   endDate: string;
   completedTasks: number;
   totalTasks: number;
+  status: Status;
 }

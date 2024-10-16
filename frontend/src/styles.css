@@ -22,8 +22,8 @@ button {
   cursor: pointer;
 }
 
-.mat-dialog-backdrop {
-  backdrop-filter: blur(20px); /* Zwiększona wartość rozmycia */
+.search-dialog-backdrop {
+  backdrop-filter: blur(2px);
 }
 
 .search-dialog mat-dialog-content {
