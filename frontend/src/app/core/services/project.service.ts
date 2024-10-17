@@ -12,14 +12,14 @@ export class ProjectService {
   private toastr = inject(ToastrService);
   private httpClient = inject(HttpClient);
 
-  private projects = signal<Project[]>([]);
+  private projects = signal<Project[]>(dummyProjects);
   private project = signal<Project | null>(null);
 
   loadedProjects = this.projects.asReadonly();
   loadedProject = this.project.asReadonly();
 
   getProjects(userId: string) {
-    return of(dummyProjects).pipe(
+    return of(this.projects()).pipe(
       tap({
         next: (projects) => {
           this.projects.set(projects);
@@ -35,7 +35,8 @@ export class ProjectService {
   }
 
   getProject(projectId: string) {
-    const project = dummyProjects.find((p) => p.id === projectId);
+    const project = this.projects().find((p) => p.id === projectId);
+
     return of(project).pipe(
       tap({
         next: (project) => {
@@ -90,6 +91,29 @@ export class ProjectService {
       })
     );
   }
+
+  deleteProject(projectId: string) {
+    const prevProjects = this.projects();
+    const updatedProjects = prevProjects.filter(
+      (project) => project.id !== projectId
+    );
+
+    this.projects.set(updatedProjects);
+
+    return of(null).pipe(
+      tap(() => {
+        this.toastr.success('Project deleted successfully');
+      }),
+      catchError((err) => {
+        this.projects.set(prevProjects);
+        this.toastr.error("Couldn't delete project. Please try again later.");
+        return throwError(
+          () => new Error("Couldn't delete project. Please try again later.")
+        );
+      })
+    );
+  }
+
   private fetchProjects(url: string, errorMessage: string) {
     return this.httpClient.get<{ projects: Project[] }>(url).pipe(
       map((res) => res.projects),

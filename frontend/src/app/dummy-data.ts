@@ -21,6 +21,51 @@ export const dummyProjects: Project[] = [
         lastName: 'Doe',
         userName: 'john_doe',
       },
+      {
+        firstName: 'Test',
+        lastName: 'Doe',
+        userName: 'test_doe',
+      },
+      {
+        firstName: 'Michael',
+        lastName: 'Doe',
+        userName: 'michael_doe',
+      },
+      {
+        firstName: 'Anna',
+        lastName: 'Doe',
+        userName: 'anna_doe',
+      },
+      {
+        firstName: 'Olivia',
+        lastName: 'Doe',
+        userName: 'olivia_doe',
+      },
+      {
+        firstName: 'Sophia',
+        lastName: 'Doe',
+        userName: 'sophia_doe',
+      },
+      {
+        firstName: 'Isabella',
+        lastName: 'Doe',
+        userName: 'isabella_doe',
+      },
+      {
+        firstName: 'Mia',
+        lastName: 'Doe',
+        userName: 'mia_doe',
+      },
+      {
+        firstName: 'Emily',
+        lastName: 'Doe',
+        userName: 'emily_doe',
+      },
+      {
+        firstName: 'Elizabeth',
+        lastName: 'Doe',
+        userName: 'elizabeth_doe',
+      },
     ],
   },
   {
