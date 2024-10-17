@@ -1,6 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { delay, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { dummyProjects } from '../../dummy-data';
 import { Project, ProjectCreate, Status } from '../models/project.model';
 
@@ -8,27 +9,94 @@ import { Project, ProjectCreate, Status } from '../models/project.model';
   providedIn: 'root',
 })
 export class ProjectService {
-  private projects: Project[] = dummyProjects;
   private toastr = inject(ToastrService);
+  private httpClient = inject(HttpClient);
 
-  getProjects(userId: string): Observable<Project[]> {
-    return of(this.projects).pipe(delay(300));
+  private projects = signal<Project[]>([]);
+  private project = signal<Project | null>(null);
+
+  loadedProjects = this.projects.asReadonly();
+  loadedProject = this.project.asReadonly();
+
+  getProjects(userId: string) {
+    return of(dummyProjects).pipe(
+      tap({
+        next: (projects) => {
+          this.projects.set(projects);
+        },
+        error: (error) => {
+          console.error(
+            "Couldn't fetch projects. Please try again later.",
+            error
+          );
+        },
+      })
+    );
   }
-  addProject(project: ProjectCreate): Observable<Project> {
-    const id = Math.random().toString(16).slice(2);
+
+  getProject(projectId: string) {
+    const project = dummyProjects.find((p) => p.id === projectId);
+    return of(project).pipe(
+      tap({
+        next: (project) => {
+          if (project) {
+            this.project.set(project);
+          } else {
+            throw new Error('Project not found');
+          }
+        },
+        error: (error) => {
+          throw new Error("Couldn't fetch project. Please try again later.");
+        },
+      })
+    );
+  }
+
+  addProject(project: ProjectCreate) {
+    const prevProjects = this.projects();
+
     const newProject: Project = {
       ...project,
-      id,
+      id: Math.random().toString(16).slice(2),
       completedTasks: 0,
       totalTasks: 0,
       status: Status.InProgress,
-      owner: '123',
-      members: [],
+      owner: {
+        firstName: 'John',
+        lastName: 'Doe',
+        userName: 'john_doe',
+      },
+      members: [
+        {
+          firstName: 'John',
+          lastName: 'Doe',
+          userName: 'john_doe',
+        },
+      ],
     };
-    this.projects.push(newProject);
 
-    this.toastr.success('Project created successfully');
+    this.projects.set([...prevProjects, newProject]);
 
-    return of(newProject).pipe(delay(300));
+    return of(newProject).pipe(
+      tap(() => {
+        this.toastr.success('Project created successfully');
+      }),
+      catchError((err) => {
+        this.projects.set(prevProjects);
+        this.toastr.error("Couldn't create project. Please try again later.");
+        return throwError(
+          () => new Error("Couldn't create project. Please try again later.")
+        );
+      })
+    );
+  }
+  private fetchProjects(url: string, errorMessage: string) {
+    return this.httpClient.get<{ projects: Project[] }>(url).pipe(
+      map((res) => res.projects),
+      catchError((err) => {
+        console.log(err);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 }

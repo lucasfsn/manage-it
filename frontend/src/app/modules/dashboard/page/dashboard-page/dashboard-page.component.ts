@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
@@ -21,29 +21,30 @@ import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/
   styleUrl: './dashboard-page.component.css',
 })
 export class DashboardPageComponent implements OnInit {
-  projects = signal<Project[] | undefined>(undefined);
-  isLoading = signal<boolean>(false);
+  isLoading = signal(false);
+  private projectService = inject(ProjectService);
 
   constructor(
-    private projectService: ProjectService,
     private loadingService: LoadingService,
     private toastrService: ToastrService
   ) {}
 
-  ngOnInit(): void {
-    this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading.set(loading);
-    });
+  projects: Signal<Project[] | []> = this.projectService.loadedProjects;
 
-    this.loadProjects();
+  sortProjectsByEndDate(): Project[] {
+    return this.projects()
+      ? this.projects()
+          .slice()
+          .sort(
+            (a, b) =>
+              new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+          )
+      : [];
   }
 
   loadProjects(): void {
     this.loadingService.loadingOn();
     this.projectService.getProjects('123').subscribe({
-      next: (projects) => {
-        this.projects.set(projects);
-      },
       error: (error: Error) => {
         this.toastrService.error(error.message);
         this.loadingService.loadingOff();
@@ -54,16 +55,11 @@ export class DashboardPageComponent implements OnInit {
     });
   }
 
-  sortProjectsByEndDate(): Project[] {
-    const projects = this.projects();
+  ngOnInit(): void {
+    this.loadingService.loading$.subscribe((loading) => {
+      this.isLoading.set(loading);
+    });
 
-    return projects
-      ? projects
-          .slice()
-          .sort(
-            (a, b) =>
-              new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
-          )
-      : [];
+    this.loadProjects();
   }
 }

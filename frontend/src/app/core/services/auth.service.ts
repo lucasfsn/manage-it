@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of, tap } from 'rxjs';
-import { AuthResponse, UserCredentials } from '../models/auth.model';
+import {
+  AuthResponse,
+  LoginCredentials,
+  UserCredentials,
+} from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,16 +15,21 @@ export class AuthService {
   // private apiUrl = 'http://localhost:3000';
 
   private dummyUser: UserCredentials = {
+    id: '123',
     email: 'test@example.com',
     password: '1qazXSW@',
+    firstName: 'Test',
+    lastName: 'User',
+    userName: 'testuser',
   };
+
   private dummyResponse: AuthResponse = {
     access_token: 'dummy-jwt-token',
   };
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(user: UserCredentials): Observable<AuthResponse> {
+  login(user: LoginCredentials): Observable<AuthResponse> {
     if (
       user.email === this.dummyUser.email &&
       user.password === this.dummyUser.password
@@ -48,6 +57,11 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('access_token');
     this.router.navigate(['/']);
+  }
+
+  getLoggedInUser(): UserCredentials | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   }
 
   isAuthenticated(): boolean {

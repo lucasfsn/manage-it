@@ -12,6 +12,7 @@ import { Project, Status } from '../../../../core/models/project.model';
 })
 export class ProjectsListComponent implements OnChanges {
   @Input() projects: Project[] | undefined;
+
   sortedProjects: Project[] | undefined;
   Status = Status;
   sortCriteria: string = 'name';

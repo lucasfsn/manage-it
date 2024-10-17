@@ -10,8 +10,18 @@ export const dummyProjects: Project[] = [
     completedTasks: 5,
     totalTasks: 10,
     status: Status.InProgress,
-    owner: '123',
-    members: [],
+    owner: {
+      firstName: 'John',
+      lastName: 'Doe',
+      userName: 'john_doe',
+    },
+    members: [
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        userName: 'john_doe',
+      },
+    ],
   },
   {
     id: '2',
@@ -22,8 +32,18 @@ export const dummyProjects: Project[] = [
     completedTasks: 3,
     totalTasks: 8,
     status: Status.Completed,
-    owner: '123',
-    members: [],
+    owner: {
+      firstName: 'John',
+      lastName: 'Doe',
+      userName: 'john_doe',
+    },
+    members: [
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        userName: 'john_doe',
+      },
+    ],
   },
   {
     id: '3',
@@ -34,8 +54,18 @@ export const dummyProjects: Project[] = [
     completedTasks: 7,
     totalTasks: 15,
     status: Status.Completed,
-    owner: '123',
-    members: [],
+    owner: {
+      firstName: 'John',
+      lastName: 'Doe',
+      userName: 'john_doe',
+    },
+    members: [
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        userName: 'john_doe',
+      },
+    ],
   },
   {
     id: '4',
@@ -46,8 +76,18 @@ export const dummyProjects: Project[] = [
     completedTasks: 2,
     totalTasks: 5,
     status: Status.InProgress,
-    owner: '123',
-    members: [],
+    owner: {
+      firstName: 'John',
+      lastName: 'Doe',
+      userName: 'john_doe',
+    },
+    members: [
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        userName: 'john_doe',
+      },
+    ],
   },
   {
     id: '5',
@@ -58,7 +98,17 @@ export const dummyProjects: Project[] = [
     completedTasks: 6,
     totalTasks: 12,
     status: Status.InProgress,
-    owner: '123',
-    members: [],
+    owner: {
+      firstName: 'John',
+      lastName: 'Doe',
+      userName: 'john_doe',
+    },
+    members: [
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        userName: 'john_doe',
+      },
+    ],
   },
 ];

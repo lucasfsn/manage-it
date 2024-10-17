@@ -1,5 +1,6 @@
+@if (isLoading()) {
 <app-spinner />
-@if (!isLoading()){
+} @else {
 <div class="flex gap-4 flex-col lg:flex-row">
   <app-project-statistics [projects]="projects()" />
   <hr class="block sm:hidden border-sky-600" />

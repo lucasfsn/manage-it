@@ -3,6 +3,12 @@ export enum Status {
   Completed = 'Completed',
 }
 
+export interface ProjectMember {
+  firstName: string;
+  lastName: string;
+  userName: string;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -12,8 +18,8 @@ export interface Project {
   completedTasks: number;
   totalTasks: number;
   status: Status;
-  owner: string;
-  members: string[];
+  owner: ProjectMember;
+  members: ProjectMember[];
 }
 
 export interface ProjectCreate {

@@ -1,3 +1,6 @@
+@if (isLoading()) {
 <app-spinner />
+} @else {
 <app-projects-list [projects]="projects()" />
 <app-project-create />
+}
