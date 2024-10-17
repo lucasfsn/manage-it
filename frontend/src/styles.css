@@ -10,7 +10,6 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  /* background: radial-gradient(circle at bottom left, #06212c, #03011a); */
   height: 100vh;
   color: #cbd5e1;
   margin: 0;
@@ -22,7 +21,7 @@ button {
   cursor: pointer;
 }
 
-.search-dialog-backdrop {
+.dialog-backdrop {
   backdrop-filter: blur(2px);
 }
 

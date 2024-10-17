@@ -54,7 +54,7 @@ export class SideBarComponent implements OnInit {
     this.dialog.open(SearchComponent, {
       width: '600px',
       panelClass: 'search-dialog',
-      backdropClass: 'search-dialog-backdrop',
+      backdropClass: 'dialog-backdrop',
     });
   }
 

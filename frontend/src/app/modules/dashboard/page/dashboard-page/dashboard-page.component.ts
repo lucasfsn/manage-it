@@ -4,9 +4,9 @@ import { Project } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { ActiveProjectsSummaryComponent } from '../../components/active-projects-summary/active-projects-summary.component';
 import { ProjectStatisticsComponent } from '../../components/project-statistics/project-statistics.component';
 import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/upcoming-deadlines.component';
-import { ActiveProjectsSummaryComponent } from '../../components/active-projects-summary/active-projects-summary.component';
 
 @Component({
   selector: 'app-dashboard-page',

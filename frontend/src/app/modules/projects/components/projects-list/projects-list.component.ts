@@ -17,6 +17,11 @@ export class ProjectsListComponent implements OnChanges {
   sortCriteria: string = 'name';
   sortOrder: string = 'ascending';
 
+  private statusPriority: { [key in Status]: number } = {
+    [Status.InProgress]: 1,
+    [Status.Completed]: 2,
+  };
+
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -40,7 +45,8 @@ export class ProjectsListComponent implements OnChanges {
           comparison = a.name.localeCompare(b.name);
           break;
         case 'status':
-          comparison = a.status.localeCompare(b.status);
+          comparison =
+            this.statusPriority[a.status] - this.statusPriority[b.status];
           break;
         case 'startDate':
           comparison =
@@ -72,6 +78,7 @@ export class ProjectsListComponent implements OnChanges {
     const el = event.target as HTMLSelectElement;
     if (type === 'criteria') {
       this.sortCriteria = el.value;
+      this.sortOrder = 'ascending';
     } else {
       this.sortOrder = el.value;
     }

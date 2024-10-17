@@ -1,6 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -28,7 +27,6 @@ const dummyData = [
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatButtonModule,
     MatDialogModule,
     MatDialogContent,
     MatDialogActions,

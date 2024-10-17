@@ -22,8 +22,13 @@
       (change)="onSortChange($event, 'order')"
       [value]="sortOrder"
     >
+      @if (sortCriteria === 'status') {
+      <option value="ascending">In Progress</option>
+      <option value="descending">Completed</option>
+      } @else {
       <option value="ascending">Ascending</option>
       <option value="descending">Descending</option>
+      }
     </select>
   </div>
 </div>
@@ -66,6 +71,7 @@
         </p>
       </div>
     </div>
+    @if (project.completedTasks !== 0 && project.totalTasks !== 0) {
     <div class="w-full bg-zinc-300 rounded-full h-4 relative">
       <div
         class="bg-sky-600 h-4 rounded-full"
@@ -80,6 +86,9 @@
         }}% Completed
       </span>
     </div>
+    } @else {
+    <p class="text-gray-400 text-sm">No tasks yet.</p>
+    }
   </div>
   }
 </div>

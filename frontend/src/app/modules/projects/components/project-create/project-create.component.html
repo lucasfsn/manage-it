@@ -1,0 +1,100 @@
+<button
+  class="fixed bottom-4 right-4 rounded-full bg-sky-500 h-10 flex items-center justify-center aspect-square hover:bg-sky-600 transition-all cursor-pointer shadow-sm text-white"
+  (click)="openDialog()"
+>
+  <mat-icon>add</mat-icon>
+</button>
+
+<ng-template #dialogTemplate>
+  <div class="flex justify-between items-center title-bg">
+    <h2 mat-dialog-title>Add New Project</h2>
+    <button class="relative right-4" (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-2"
+    >
+      <div class="flex flex-col gap-1">
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter project name"
+          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+        />
+        @if (nameIsInvalid) {
+        <p class="text-red-500 text-sm">
+          Project name must contain between 2 and 50 characters.
+        </p>
+        }
+      </div>
+      <div class="flex flex-col gap-1">
+        <input
+          type="text"
+          id="description"
+          formControlName="description"
+          placeholder="Enter project description"
+          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+        />
+        @if (descriptionIsInvalid) {
+        <p class="text-red-500 text-sm">
+          Project description must contain between 2 and 120 characters.
+        </p>
+        }
+      </div>
+      <div
+        class="flex flex-col sm:flex-row gap-3 justify-between"
+        formGroupName="dates"
+      >
+        <div class="flex flex-col gap-1">
+          <div class="flex gap-1 items-center">
+            <label for="startDate" class="text-gray-400">Start Date</label>
+            <input
+              type="date"
+              id="startDate"
+              formControlName="startDate"
+              class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+            />
+          </div>
+          @if (startDateIsInvalid) {
+          <p class="text-red-500 text-sm">Start date is required.</p>
+          }
+        </div>
+        <div class="flex flex-col gap-1">
+          <div class="flex sm:flex-row-reverse items-center gap-1">
+            <label for="endDate" class="text-gray-400 sm:text-end"
+              >End Date</label
+            >
+            <input
+              type="date"
+              id="endDate"
+              formControlName="endDate"
+              class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+            />
+          </div>
+          @if (wrongEndDate) {
+          <p class="text-red-500 text-sm">End date must be after start date.</p>
+          }
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <button
+          type="reset"
+          class="px-1.5 py-1 bg-slate-900 flex justify-center items-center rounded-md text-slate-300"
+        >
+          <p class="text-xs">reset</p>
+        </button>
+        <button
+          type="submit"
+          class="px-1.5 py-1 bg-sky-500 flex justify-center items-center rounded-md text-white"
+        >
+          <p class="text-xs">add</p>
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</ng-template>

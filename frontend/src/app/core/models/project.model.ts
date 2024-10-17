@@ -12,4 +12,13 @@ export interface Project {
   completedTasks: number;
   totalTasks: number;
   status: Status;
+  owner: string;
+  members: string[];
+}
+
+export interface ProjectCreate {
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
 }

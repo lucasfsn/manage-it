@@ -5,11 +5,12 @@ import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { ProjectsListComponent } from '../../components/projects-list/projects-list.component';
+import { ProjectCreateComponent } from '../../components/project-create/project-create.component';
 
 @Component({
   selector: 'app-projects-page',
   standalone: true,
-  imports: [ProjectsListComponent, SpinnerComponent],
+  imports: [ProjectsListComponent, SpinnerComponent, ProjectCreateComponent],
   templateUrl: './projects-page.component.html',
   styleUrl: './projects-page.component.css',
 })
