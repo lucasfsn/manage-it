@@ -20,12 +20,13 @@
 </mat-dialog-content>
 @if (searchResults.length > 0) {
 <ul class="flex flex-col pb-4 divide-y divide-slate-600 search-results">
-  @for (result of searchResults; track result.id) {
+  @for (result of searchResults; track result.userName) {
   <li
     class="cursor-pointer px-4 py-2 sm:px-6 sm:py-4 text-slate-400 text-sm"
     (click)="closeDialog()"
+    [routerLink]="['/users', result.userName]"
   >
-    {{ result.name }}
+    {{ result.firstName }} {{ result.lastName }}
   </li>
   }
 </ul>

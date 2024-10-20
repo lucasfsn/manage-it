@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { ProjectMember } from '../../../../core/models/project.model';
+import { User as ProjectMember } from '../../../../core/models/project.model';
 
 @Component({
   selector: 'app-show-more-members',

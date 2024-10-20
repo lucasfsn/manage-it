@@ -33,7 +33,7 @@ function endDateValidator(startDate: string, endDate: string) {
 }
 
 @Component({
-  selector: 'app-project-create',
+  selector: 'app-create-new-project',
   standalone: true,
   imports: [
     MatIconModule,
@@ -41,10 +41,10 @@ function endDateValidator(startDate: string, endDate: string) {
     MatFormFieldModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './project-create.component.html',
-  styleUrl: './project-create.component.css',
+  templateUrl: './create-new-project.component.html',
+  styleUrl: './create-new-project.component.css',
 })
-export class ProjectCreateComponent {
+export class CreateNewProjectComponent {
   @ViewChild('dialogTemplate') dialogTemplate!: TemplateRef<any>;
   private dialog = inject(MatDialog);
 

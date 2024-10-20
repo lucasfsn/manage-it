@@ -1,0 +1,161 @@
+<div
+  class="bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
+>
+  <h3 class="text-gray-100 self-start">Done</h3>
+  <ul
+    cdkDropList
+    #completedList="cdkDropList"
+    [cdkDropListData]="completedTasks"
+    [cdkDropListConnectedTo]="[inProgressList, notStartedList]"
+    class="w-full flex flex-col gap-1 min-h-[60px]"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (task of completedTasks; track task.id) {
+    <li
+      class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none cursor-move flex flex-col gap-2"
+      cdkDrag
+    >
+      <div class="flex justify-between items-center">
+        <p class="text-sm">{{ task.name }}</p>
+        <app-priority [priority]="task.priority" />
+      </div>
+      <div class="flex justify-between items-center gap-1">
+        <span class="text-xs text-gray-400 flex items-center gap-1">
+          <mat-icon class="text-base">schedule</mat-icon>
+          {{ task.dueDate | date : "mediumDate" }}</span
+        >
+        <div class="flex items-center gap-1">
+          <ng-container *ngFor="let user of task.users.slice(0, 3)">
+            <span
+              class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+              title="{{ user.firstName }} {{ user.lastName }}"
+            >
+              {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
+            </span>
+          </ng-container>
+          @if (task.users.length > 3) {
+          <span class="text-xs text-gray-400"
+            >+{{ task.users.length - 3 }}</span
+          >
+          }
+        </div>
+      </div>
+    </li>
+    }
+  </ul>
+  <button
+    class="self-start flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-full py-2"
+    (click)="openEditDialog(TaskStatus.Completed)"
+  >
+    <mat-icon class="text-base">add</mat-icon>
+    Add another card
+  </button>
+</div>
+
+<div
+  class="bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
+>
+  <h3 class="text-gray-100 self-start">In Progress</h3>
+  <ul
+    cdkDropList
+    #inProgressList="cdkDropList"
+    [cdkDropListData]="inProgressTasks"
+    [cdkDropListConnectedTo]="[completedList, notStartedList]"
+    class="w-full flex flex-col gap-1 min-h-[60px]"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (task of inProgressTasks; track task.id) {
+    <li
+      class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none cursor-move flex flex-col gap-2"
+      cdkDrag
+    >
+      <div class="flex justify-between items-center">
+        <p class="text-sm">{{ task.name }}</p>
+        <app-priority [priority]="task.priority" />
+      </div>
+      <div class="flex justify-between items-center gap-1">
+        <span class="text-xs text-gray-400 flex items-center gap-1">
+          <mat-icon class="text-base">schedule</mat-icon>
+          {{ task.dueDate | date : "mediumDate" }}</span
+        >
+        <div class="flex items-center gap-1">
+          <ng-container *ngFor="let user of task.users.slice(0, 3)">
+            <span
+              class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+              title="{{ user.firstName }} {{ user.lastName }}"
+            >
+              {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
+            </span>
+          </ng-container>
+          @if (task.users.length > 3) {
+          <span class="text-xs text-gray-400"
+            >+{{ task.users.length - 3 }}</span
+          >
+          }
+        </div>
+      </div>
+    </li>
+    }
+  </ul>
+  <button
+    class="self-start flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-full py-2"
+    (click)="openEditDialog(TaskStatus.InProgress)"
+  >
+    <mat-icon class="text-base">add</mat-icon>
+    Add another card
+  </button>
+</div>
+
+<div
+  class="bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
+>
+  <h3 class="text-gray-100 self-start">Upcoming</h3>
+  <ul
+    cdkDropList
+    #notStartedList="cdkDropList"
+    [cdkDropListData]="notStartedTasks"
+    [cdkDropListConnectedTo]="[inProgressList, completedList]"
+    class="w-full flex flex-col gap-1 min-h-[60px]"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (task of notStartedTasks; track task.id) {
+    <li
+      class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none cursor-move flex flex-col gap-2"
+      cdkDrag
+    >
+      <div class="flex justify-between items-center">
+        <p class="text-sm">{{ task.name }}</p>
+        <app-priority [priority]="task.priority" />
+      </div>
+      <div class="flex justify-between items-center gap-1">
+        <span class="text-xs text-gray-400 flex items-center gap-1">
+          <mat-icon class="text-base">schedule</mat-icon>
+          {{ task.dueDate | date : "mediumDate" }}</span
+        >
+        <div class="flex items-center gap-1">
+          <ng-container *ngFor="let user of task.users.slice(0, 3)">
+            <span
+              class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+              title="{{ user.firstName }} {{ user.lastName }}"
+            >
+              {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
+            </span>
+          </ng-container>
+          @if (task.users.length > 3) {
+          <span class="text-xs text-gray-400"
+            >+{{ task.users.length - 3 }}</span
+          >
+          }
+        </div>
+      </div>
+    </li>
+    }
+  </ul>
+  <button
+    class="self-start flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-full py-2"
+    (click)="openEditDialog(TaskStatus.NotStarted)"
+  >
+    <mat-icon class="text-base">add</mat-icon>
+    Add another card
+  </button>
+</div>

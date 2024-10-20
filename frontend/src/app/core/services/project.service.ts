@@ -3,7 +3,14 @@ import { inject, Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { dummyProjects } from '../../dummy-data';
-import { Project, ProjectCreate, Status } from '../models/project.model';
+import {
+  Priority,
+  Project,
+  ProjectCreate,
+  Status,
+  Task,
+  TaskStatus,
+} from '../models/project.model';
 
 @Injectable({
   providedIn: 'root',
@@ -74,6 +81,10 @@ export class ProjectService {
           userName: 'john_doe',
         },
       ],
+      teams: [],
+      tasks: [],
+      startDate: '2024-01-01',
+      endDate: '2024-12-31',
     };
 
     this.projects.set([...prevProjects, newProject]);
@@ -109,6 +120,33 @@ export class ProjectService {
         this.toastr.error("Couldn't delete project. Please try again later.");
         return throwError(
           () => new Error("Couldn't delete project. Please try again later.")
+        );
+      })
+    );
+  }
+
+  updateTask(projectId: string, task: Task): Observable<Task> {
+    const prevProjects = this.projects();
+    const project = prevProjects.find((p) => p.id === projectId);
+
+    if (!project) {
+      return throwError(() => new Error('Project not found'));
+    }
+
+    const taskIndex = project.tasks.findIndex((t) => t.id === task.id);
+    if (taskIndex === -1) {
+      return throwError(() => new Error('Task not found'));
+    }
+
+    project.tasks[taskIndex] = task;
+    this.projects.set([...prevProjects]);
+
+    return of(task).pipe(
+      catchError((err) => {
+        this.projects.set(prevProjects);
+        this.toastr.error("Couldn't update task. Please try again later.");
+        return throwError(
+          () => new Error("Couldn't update task. Please try again later.")
         );
       })
     );

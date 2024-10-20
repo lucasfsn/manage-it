@@ -1,26 +1,23 @@
-import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
 import { Component, inject, OnInit, Signal, signal } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Project, Status } from '../../../../core/models/project.model';
+import { Project, Status, Task } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
-import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { ShowMoreMembersComponent } from '../../components/show-more-members/show-more-members.component';
+import { ProjectInformationComponent } from '../../components/project-information/project-information.component';
+import { TasksComponent } from '../../components/tasks/tasks.component';
 
 @Component({
   selector: 'app-project-page',
   standalone: true,
   imports: [
-    DatePipe,
     SpinnerComponent,
     MatIconModule,
-    CommonModule,
     RouterLink,
-    SlicePipe,
+    TasksComponent,
+    ProjectInformationComponent,
   ],
   templateUrl: './project-page.component.html',
   styleUrl: './project-page.component.css',
@@ -36,11 +33,10 @@ export class ProjectPageComponent implements OnInit {
     private loadingService: LoadingService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastrService: ToastrService,
-    private dialog: MatDialog
+    private toastrService: ToastrService
   ) {}
 
-  handleDeleteProject() {
+  handleDelete() {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
     if (!projectId) {
@@ -66,23 +62,15 @@ export class ProjectPageComponent implements OnInit {
     });
   }
 
-  showMoreMembers(): void {
-    const members = this.project()?.members;
-    if (members) {
-      this.dialog.open(ShowMoreMembersComponent, {
-        data: { members },
-        width: '400px',
-        backdropClass: 'dialog-backdrop',
-      });
-    }
-  }
+  handleUpdate(task: Task) {
+    const projectId = this.route.snapshot.paramMap.get('projectId');
 
-  openSearchDialog(): void {
-    this.dialog.open(SearchComponent, {
-      width: '600px',
-      panelClass: 'search-dialog',
-      backdropClass: 'dialog-backdrop',
-    });
+    if (!projectId) {
+      this.toastrService.error('Project ID is missing');
+      return;
+    }
+
+    this.projectService.updateTask(projectId, task).subscribe();
   }
 
   ngOnInit(): void {

@@ -10,14 +10,9 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-
-const dummyData = [
-  { id: '1', name: 'Result 1' },
-  { id: '2', name: 'Result 2' },
-  { id: '3', name: 'Result 3' },
-  { id: '4', name: 'Result 4' },
-  { id: '5', name: 'Result 5' },
-];
+import { RouterLink } from '@angular/router';
+import { User } from '../../../core/models/project.model';
+import { users } from '../../../dummy-data';
 
 @Component({
   selector: 'app-search',
@@ -32,6 +27,7 @@ const dummyData = [
     MatDialogActions,
     MatDialogClose,
     MatIconModule,
+    RouterLink,
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
@@ -39,7 +35,7 @@ const dummyData = [
 export class SearchComponent {
   @ViewChild('searchInput') searchInput!: ElementRef;
   form = new FormControl('');
-  searchResults: { id: string; name: string }[] = [];
+  searchResults: User[] = [];
 
   constructor(readonly dialogRef: MatDialogRef<SearchComponent>) {}
 
@@ -53,9 +49,12 @@ export class SearchComponent {
 
   onSearch(): void {
     const query = this.form.value?.toLowerCase();
-    if (query) {
-      this.searchResults = dummyData.filter((item) =>
-        item.name.toLowerCase().includes(query)
+    if (query && query.length >= 2) {
+      this.searchResults = users.filter(
+        (item) =>
+          item.firstName.toLowerCase().includes(query) ||
+          item.lastName.toLowerCase().includes(query) ||
+          item.userName.toLowerCase().includes(query)
       );
     } else {
       this.searchResults = [];

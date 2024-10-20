@@ -4,13 +4,13 @@ import { Project } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { ProjectCreateComponent } from '../../components/project-create/project-create.component';
+import { CreateNewProjectComponent } from '../../components/create-new-project/create-new-project.component';
 import { ProjectsListComponent } from '../../components/projects-list/projects-list.component';
 
 @Component({
   selector: 'app-projects-page',
   standalone: true,
-  imports: [ProjectsListComponent, SpinnerComponent, ProjectCreateComponent],
+  imports: [ProjectsListComponent, SpinnerComponent, CreateNewProjectComponent],
   templateUrl: './projects-page.component.html',
   styleUrl: './projects-page.component.css',
 })
