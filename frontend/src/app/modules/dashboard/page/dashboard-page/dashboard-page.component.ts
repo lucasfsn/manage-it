@@ -21,15 +21,16 @@ import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/
   styleUrl: './dashboard-page.component.css',
 })
 export class DashboardPageComponent implements OnInit {
-  isLoading = signal(false);
-  private projectService = inject(ProjectService);
+  public isLoading: boolean = false;
+  public projects: Signal<Project[] | []>;
 
   constructor(
     private loadingService: LoadingService,
-    private toastrService: ToastrService
-  ) {}
-
-  projects: Signal<Project[] | []> = this.projectService.loadedProjects;
+    private toastrService: ToastrService,
+    private projectService: ProjectService
+  ) {
+    this.projects = this.projectService.loadedProjects;
+  }
 
   sortProjectsByEndDate(): Project[] {
     return this.projects()
@@ -57,9 +58,18 @@ export class DashboardPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading.set(loading);
+      this.isLoading = loading;
     });
 
-    this.loadProjects();
+    this.loadingService.loadingOn();
+    this.projectService.getProjects('123').subscribe({
+      error: (error: Error) => {
+        this.toastrService.error(error.message);
+        this.loadingService.loadingOff();
+      },
+      complete: () => {
+        this.loadingService.loadingOff();
+      },
+    });
   }
 }

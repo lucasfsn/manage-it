@@ -13,7 +13,7 @@ import { Project, Status } from '../../../../core/models/project.model';
 export class ActiveProjectsSummaryComponent implements OnInit {
   @Input() projects: Project[] | undefined;
 
-  activeProjectsCount = 0;
+  public activeProjectsCount = 0;
 
   progressChartData: ChartData<'doughnut'> = {
     labels: [Status.Completed, Status.InProgress],

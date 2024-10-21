@@ -1,7 +1,9 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { authGuard, projectAuthGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
+import { UserService } from './core/services/user.service';
 import { LoginPageComponent } from './modules/auth/pages/login-page/login-page.component';
 import { SignupPageComponent } from './modules/auth/pages/signup-page/signup-page.component';
 import { DashboardPageComponent } from './modules/dashboard/page/dashboard-page/dashboard-page.component';
@@ -9,6 +11,8 @@ import { HomePageComponent } from './modules/home/pages/home-page/home-page.comp
 import { NotFoundPageComponent } from './modules/not-found/pages/not-found-page/not-found-page.component';
 import { ProjectPageComponent } from './modules/projects/page/project-page/project-page.component';
 import { ProjectsPageComponent } from './modules/projects/page/projects-page/projects-page.component';
+import { UserPageComponent } from './modules/users/page/user-page/user-page.component';
+import { userResolver } from './modules/users/resolvers/user.resolver';
 
 export const routes: Routes = [
   {
@@ -58,6 +62,20 @@ export const routes: Routes = [
         canActivate: [projectAuthGuard],
         data: {
           title: 'Project Details',
+        },
+      },
+      {
+        path: 'users',
+        resolve: {
+          user: userResolver,
+        },
+        component: UserPageComponent,
+      },
+      {
+        path: 'users/:username',
+        component: UserPageComponent,
+        data: {
+          title: 'Profile',
         },
       },
     ],

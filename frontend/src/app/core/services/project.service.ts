@@ -16,8 +16,10 @@ import {
   providedIn: 'root',
 })
 export class ProjectService {
-  private toastr = inject(ToastrService);
-  private httpClient = inject(HttpClient);
+  constructor(
+    private toastrService: ToastrService,
+    private httpClient: HttpClient
+  ) {}
 
   private projects = signal<Project[]>(dummyProjects);
   private project = signal<Project | null>(null);
@@ -90,11 +92,13 @@ export class ProjectService {
 
     return of(newProject).pipe(
       tap(() => {
-        this.toastr.success('Project created successfully');
+        this.toastrService.success('Project created successfully');
       }),
       catchError((err) => {
         this.projects.set(prevProjects);
-        this.toastr.error("Couldn't create project. Please try again later.");
+        this.toastrService.error(
+          "Couldn't create project. Please try again later."
+        );
         return throwError(
           () => new Error("Couldn't create project. Please try again later.")
         );
@@ -112,11 +116,13 @@ export class ProjectService {
 
     return of(null).pipe(
       tap(() => {
-        this.toastr.success('Project deleted successfully');
+        this.toastrService.success('Project deleted successfully');
       }),
       catchError((err) => {
         this.projects.set(prevProjects);
-        this.toastr.error("Couldn't delete project. Please try again later.");
+        this.toastrService.error(
+          "Couldn't delete project. Please try again later."
+        );
         return throwError(
           () => new Error("Couldn't delete project. Please try again later.")
         );
@@ -143,7 +149,9 @@ export class ProjectService {
     return of(task).pipe(
       catchError((err) => {
         this.projects.set(prevProjects);
-        this.toastr.error("Couldn't update task. Please try again later.");
+        this.toastrService.error(
+          "Couldn't update task. Please try again later."
+        );
         return throwError(
           () => new Error("Couldn't update task. Please try again later.")
         );
@@ -164,11 +172,13 @@ export class ProjectService {
 
     return of(project).pipe(
       tap(() => {
-        this.toastr.success('Project marked as completed');
+        this.toastrService.success('Project marked as completed');
       }),
       catchError((err) => {
         this.projects.set(prevProjects);
-        this.toastr.error("Couldn't complete project. Please try again later.");
+        this.toastrService.error(
+          "Couldn't complete project. Please try again later."
+        );
         return throwError(
           () => new Error("Couldn't complete project. Please try again later.")
         );

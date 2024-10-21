@@ -15,15 +15,16 @@ import { ProjectsListComponent } from '../../components/projects-list/projects-l
   styleUrl: './projects-page.component.css',
 })
 export class ProjectsPageComponent implements OnInit {
-  isLoading = signal(false);
-  private projectService = inject(ProjectService);
-
-  projects: Signal<Project[] | []> = this.projectService.loadedProjects;
+  public isLoading: boolean = false;
+  public projects: Signal<Project[] | []>;
 
   constructor(
     private loadingService: LoadingService,
-    private toastrService: ToastrService
-  ) {}
+    private toastrService: ToastrService,
+    private projectService: ProjectService
+  ) {
+    this.projects = this.projectService.loadedProjects;
+  }
 
   loadProjects(): void {
     this.loadingService.loadingOn();
@@ -40,7 +41,7 @@ export class ProjectsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading.set(loading);
+      this.isLoading = loading;
     });
 
     this.loadProjects();

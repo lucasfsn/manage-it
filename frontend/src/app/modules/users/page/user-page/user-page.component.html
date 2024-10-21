@@ -1,0 +1,98 @@
+@if (isLoading) {
+<app-spinner />
+} @if (user()) {
+<div class="flex flex-col gap-10 items-center justify-center">
+  <div class="flex flex-col items-center text-center">
+    <div
+      class="bg-blue-500 text-white rounded-full w-16 h-16 flex items-center justify-center mb-4"
+    >
+      <span class="text-2xl font-semibold">
+        {{ user()?.firstName?.charAt(0) }}{{ user()?.lastName?.charAt(0) }}
+      </span>
+    </div>
+    <h2 class="text-2xl font-semibold mb-4">
+      {{ user()?.firstName }} {{ user()?.lastName }}
+    </h2>
+
+    @if (!isLoggedInUser(user()!.userName)) {
+    <button
+      class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors mb-4"
+    >
+      Invite to Project
+    </button>
+    }
+  </div>
+  <div class="flex flex-col gap-2">
+    <h3 class="text-xl font-semibold text-center">
+      {{
+        isLoggedInUser(user()!.userName) ? "Your projects" : "Common Projects"
+      }}
+    </h3>
+    <div
+      class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5 overflow-hidden px-4"
+    >
+      @for (project of commonProjects; track project.id) {
+      <div
+        class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-opacity-95 transition-all hover:scale-[102%] gap-4 justify-between"
+        routerLink="/projects/{{ project.id }}"
+      >
+        <div class="flex flex-col gap-2 h-full justify-between">
+          <div class="flex flex-col gap-1">
+            <h3
+              class="flex flex-row text-lg font-semibold justify-between items-center"
+            >
+              {{ project.name }}
+              <span
+                class="rounded-full h-[15px] aspect-square"
+                [ngClass]="{
+            'bg-sky-500': project.status === Status.Completed,
+            'bg-orange-400': project.status === Status.InProgress,
+          }"
+              >
+              </span>
+            </h3>
+            <p class="text-sm text-gray-400">{{ project.description }}</p>
+          </div>
+          <div
+            class="flex flex-col bg-slate-950 rounded-lg py-1 px-2 text-sm text-gray-400"
+          >
+            <p>
+              Start Date:
+              <span class="text-sky-500">
+                {{ project.startDate | date }}
+              </span>
+            </p>
+            <p>
+              Deadline:
+              <span class="text-pink-500">
+                {{ project.endDate | date }}
+              </span>
+            </p>
+          </div>
+        </div>
+        @if (project.completedTasks !== 0 && project.totalTasks !== 0) {
+        <div class="w-full bg-zinc-300 rounded-full h-4 relative">
+          <div
+            class="bg-sky-600 h-4 rounded-full"
+            [style.width.%]="
+              (project.completedTasks / project.totalTasks) * 100
+            "
+          ></div>
+          <span
+            class="absolute inset-0 flex items-center justify-center text-xs text-zinc-950"
+          >
+            {{
+              (project.completedTasks / project.totalTasks) * 100
+                | number : "1.0-0"
+            }}% Completed
+          </span>
+        </div>
+        } @else {
+        <p class="text-gray-400 text-sm">No tasks yet.</p>
+        }
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}

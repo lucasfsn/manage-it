@@ -36,9 +36,9 @@ import { InlineSearchComponent } from '../../../../shared/components/inline-sear
 export class AddCardComponent {
   private dialog = inject(MatDialog);
 
-  TaskStatus = TaskStatus;
-  priorities = Object.values(Priority);
-  selectedStatus: TaskStatus;
+  readonly TaskStatus = TaskStatus;
+  readonly priorities = Object.values(Priority);
+  public selectedStatus: TaskStatus;
 
   constructor(
     private projectService: ProjectService,

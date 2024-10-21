@@ -23,18 +23,19 @@ import { TasksComponent } from '../../components/tasks/tasks.component';
   styleUrl: './project-page.component.css',
 })
 export class ProjectPageComponent implements OnInit {
-  Status = Status;
-  isLoading = signal(false);
-  private projectService = inject(ProjectService);
-
-  project: Signal<Project | null> = this.projectService.loadedProject;
+  readonly Status = Status;
+  public isLoading: boolean = false;
+  public project: Signal<Project | null>;
 
   constructor(
+    private projectService: ProjectService,
     private loadingService: LoadingService,
     private route: ActivatedRoute,
     private router: Router,
     private toastrService: ToastrService
-  ) {}
+  ) {
+    this.project = this.projectService.loadedProject;
+  }
 
   handleDelete() {
     const projectId = this.route.snapshot.paramMap.get('projectId');
@@ -107,6 +108,10 @@ export class ProjectPageComponent implements OnInit {
       this.router.navigate(['/projects']);
       return;
     }
+
+    this.loadingService.loading$.subscribe((loading) => {
+      this.isLoading = loading;
+    });
 
     this.loadingService.loadingOn();
     this.projectService.getProject(projectId).subscribe({

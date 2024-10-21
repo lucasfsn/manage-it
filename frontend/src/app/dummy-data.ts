@@ -1,86 +1,12 @@
 import {
   Priority,
   Project,
+  User as ProjectMember,
   Status,
   Task,
   TaskStatus,
-  User,
 } from './core/models/project.model';
-
-export const users: User[] = [
-  { firstName: 'John', lastName: 'Doe', userName: 'john_doe' },
-  { firstName: 'Jane', lastName: 'Smith', userName: 'jane_smith' },
-  { firstName: 'Michael', lastName: 'Johnson', userName: 'michael_johnson' },
-  { firstName: 'Anna', lastName: 'Williams', userName: 'anna_williams' },
-  { firstName: 'Olivia', lastName: 'Brown', userName: 'olivia_brown' },
-  { firstName: 'Sophia', lastName: 'Jones', userName: 'sophia_jones' },
-  { firstName: 'Isabella', lastName: 'Garcia', userName: 'isabella_garcia' },
-  { firstName: 'Mia', lastName: 'Martinez', userName: 'mia_martinez' },
-  { firstName: 'Emily', lastName: 'Davis', userName: 'emily_davis' },
-  {
-    firstName: 'Elizabeth',
-    lastName: 'Rodriguez',
-    userName: 'elizabeth_rodriguez',
-  },
-  {
-    firstName: 'Alexis',
-    lastName: 'Hernandez',
-    userName: 'alexis_hernandez',
-  },
-  {
-    firstName: 'Ella',
-    lastName: 'Lopez',
-    userName: 'ella_lopez',
-  },
-];
-
-const tasks: Task[] = [
-  {
-    id: '1',
-    projectId: '1',
-    users: [users[0], users[1], users[10], users[11]],
-    description: 'Develop Header',
-    status: TaskStatus.InProgress,
-    priority: Priority.High,
-    dueDate: '2024-05-01',
-  },
-  {
-    id: '2',
-    projectId: '1',
-    users: [users[2], users[3]],
-    description: 'Develop Sidebar',
-    status: TaskStatus.NotStarted,
-    priority: Priority.Medium,
-    dueDate: '2024-06-01',
-  },
-  {
-    id: '3',
-    projectId: '1',
-    users: [users[4], users[5]],
-    description: 'Develop API',
-    status: TaskStatus.Completed,
-    priority: Priority.Low,
-    dueDate: '2024-07-01',
-  },
-  {
-    id: '4',
-    projectId: '1',
-    users: [users[6], users[7]],
-    description: 'Database Design',
-    status: TaskStatus.Completed,
-    priority: Priority.Medium,
-    dueDate: '2024-08-01',
-  },
-  {
-    id: '5',
-    projectId: '1',
-    users: [users[8], users[9]],
-    description: 'Testing',
-    status: TaskStatus.InProgress,
-    priority: Priority.High,
-    dueDate: '2024-09-01',
-  },
-];
+import { User } from './core/models/user.model';
 
 export const dummyProjects: Project[] = [
   {
@@ -92,9 +18,133 @@ export const dummyProjects: Project[] = [
     completedTasks: 5,
     totalTasks: 10,
     status: Status.InProgress,
-    owner: users[0],
-    members: users,
-    tasks: tasks.filter((task) => task.projectId === '1'),
+    owner: {
+      firstName: 'John',
+      lastName: 'Doe',
+      userName: 'john_doe',
+    },
+    members: [
+      { firstName: 'John', lastName: 'Doe', userName: 'john_doe' },
+      { firstName: 'Jane', lastName: 'Smith', userName: 'jane_smith' },
+      {
+        firstName: 'Alexis',
+        lastName: 'Hernandez',
+        userName: 'alexis_hernandez',
+      },
+      {
+        firstName: 'Ella',
+        lastName: 'Lopez',
+        userName: 'ella_lopez',
+      },
+    ],
+    tasks: [
+      {
+        id: '1',
+        projectId: '1',
+        users: [
+          { firstName: 'John', lastName: 'Doe', userName: 'john_doe' },
+          {
+            firstName: 'Jane',
+            lastName: 'Smith',
+            userName: 'jane_smith',
+          },
+          {
+            firstName: 'Alexis',
+            lastName: 'Hernandez',
+            userName: 'alexis_hernandez',
+          },
+          {
+            firstName: 'Ella',
+            lastName: 'Lopez',
+            userName: 'ella_lopez',
+          },
+        ],
+        description: 'Develop Header',
+        status: TaskStatus.InProgress,
+        priority: Priority.High,
+        dueDate: '2024-05-01',
+      },
+      {
+        id: '2',
+        projectId: '1',
+        users: [
+          {
+            firstName: 'Michael',
+            lastName: 'Johnson',
+            userName: 'michael_johnson',
+          },
+          {
+            firstName: 'Anna',
+            lastName: 'Williams',
+            userName: 'anna_williams',
+          },
+        ],
+        description: 'Develop Sidebar',
+        status: TaskStatus.NotStarted,
+        priority: Priority.Medium,
+        dueDate: '2024-06-01',
+      },
+      {
+        id: '3',
+        projectId: '1',
+        users: [
+          {
+            firstName: 'Olivia',
+            lastName: 'Brown',
+            userName: 'olivia_brown',
+          },
+          {
+            firstName: 'Sophia',
+            lastName: 'Jones',
+            userName: 'sophia_jones',
+          },
+        ],
+        description: 'Develop API',
+        status: TaskStatus.Completed,
+        priority: Priority.Low,
+        dueDate: '2024-07-01',
+      },
+      {
+        id: '4',
+        projectId: '1',
+        users: [
+          {
+            firstName: 'Isabella',
+            lastName: 'Garcia',
+            userName: 'isabella_garcia',
+          },
+          {
+            firstName: 'Mia',
+            lastName: 'Martinez',
+            userName: 'mia_martinez',
+          },
+        ],
+        description: 'Database Design',
+        status: TaskStatus.Completed,
+        priority: Priority.Medium,
+        dueDate: '2024-08-01',
+      },
+      {
+        id: '5',
+        projectId: '1',
+        users: [
+          {
+            firstName: 'Emily',
+            lastName: 'Davis',
+            userName: 'emily_davis',
+          },
+          {
+            firstName: 'Elizabeth',
+            lastName: 'Rodriguez',
+            userName: 'elizabeth_rodriguez',
+          },
+        ],
+        description: 'Testing',
+        status: TaskStatus.InProgress,
+        priority: Priority.High,
+        dueDate: '2024-09-01',
+      },
+    ],
   },
   {
     id: '2',
@@ -105,9 +155,25 @@ export const dummyProjects: Project[] = [
     completedTasks: 3,
     totalTasks: 8,
     status: Status.Completed,
-    owner: users[4],
-    members: [users[4], users[5], users[0]],
-    tasks: tasks.filter((task) => task.projectId === '2'),
+    owner: {
+      firstName: 'Olivia',
+      lastName: 'Brown',
+      userName: 'olivia_brown',
+    },
+    members: [
+      {
+        firstName: 'Olivia',
+        lastName: 'Brown',
+        userName: 'olivia_brown',
+      },
+      {
+        firstName: 'Sophia',
+        lastName: 'Jones',
+        userName: 'sophia_jones',
+      },
+      { firstName: 'John', lastName: 'Doe', userName: 'john_doe' },
+    ],
+    tasks: [],
   },
   {
     id: '3',
@@ -118,9 +184,24 @@ export const dummyProjects: Project[] = [
     completedTasks: 7,
     totalTasks: 15,
     status: Status.Completed,
-    owner: users[6],
-    members: [users[6], users[7]],
-    tasks: tasks.filter((task) => task.projectId === '3'),
+    owner: {
+      firstName: 'Isabella',
+      lastName: 'Garcia',
+      userName: 'isabella_garcia',
+    },
+    members: [
+      {
+        firstName: 'Isabella',
+        lastName: 'Garcia',
+        userName: 'isabella_garcia',
+      },
+      {
+        firstName: 'Mia',
+        lastName: 'Martinez',
+        userName: 'mia_martinez',
+      },
+    ],
+    tasks: [],
   },
   {
     id: '4',
@@ -131,9 +212,24 @@ export const dummyProjects: Project[] = [
     completedTasks: 2,
     totalTasks: 5,
     status: Status.InProgress,
-    owner: users[8],
-    members: [users[8], users[9]],
-    tasks: tasks.filter((task) => task.projectId === '4'),
+    owner: {
+      firstName: 'Emily',
+      lastName: 'Davis',
+      userName: 'emily_davis',
+    },
+    members: [
+      {
+        firstName: 'Emily',
+        lastName: 'Davis',
+        userName: 'emily_davis',
+      },
+      {
+        firstName: 'Elizabeth',
+        lastName: 'Rodriguez',
+        userName: 'elizabeth_rodriguez',
+      },
+    ],
+    tasks: [],
   },
   {
     id: '5',
@@ -145,8 +241,121 @@ export const dummyProjects: Project[] = [
     completedTasks: 6,
     totalTasks: 12,
     status: Status.InProgress,
-    owner: users[0],
-    members: [users[0], users[1]],
-    tasks: tasks.filter((task) => task.projectId === '5'),
+    owner: {
+      firstName: 'John',
+      lastName: 'Doe',
+      userName: 'john_doe',
+    },
+    members: [
+      { firstName: 'John', lastName: 'Doe', userName: 'john_doe' },
+      { firstName: 'Jane', lastName: 'Smith', userName: 'jane_smith' },
+    ],
+    tasks: [],
   },
 ];
+
+export const usersData: User[] = [
+  {
+    id: '1',
+    email: 'john.doe@example.com',
+    firstName: 'John',
+    lastName: 'Doe',
+    userName: 'john_doe',
+    projects: [dummyProjects[0], dummyProjects[1], dummyProjects[4]],
+  },
+  {
+    id: '2',
+    email: 'jane.smith@example.com',
+    firstName: 'Jane',
+    lastName: 'Smith',
+    userName: 'jane_smith',
+    projects: [dummyProjects[0], dummyProjects[4]],
+  },
+  {
+    id: '3',
+    email: 'michael.johnson@example.com',
+    firstName: 'Michael',
+    lastName: 'Johnson',
+    userName: 'michael_johnson',
+    projects: [],
+  },
+  {
+    id: '4',
+    email: 'anna.williams@example.com',
+    firstName: 'Anna',
+    lastName: 'Williams',
+    userName: 'anna_williams',
+    projects: [],
+  },
+  {
+    id: '5',
+    email: 'olivia.brown@example.com',
+    firstName: 'Olivia',
+    lastName: 'Brown',
+    userName: 'olivia_brown',
+    projects: [dummyProjects[1]],
+  },
+  {
+    id: '6',
+    email: 'sophia.jones@example.com',
+    firstName: 'Sophia',
+    lastName: 'Jones',
+    userName: 'sophia_jones',
+    projects: [dummyProjects[1]],
+  },
+  {
+    id: '7',
+    email: 'isabella.garcia@example.com',
+    firstName: 'Isabella',
+    lastName: 'Garcia',
+    userName: 'isabella_garcia',
+    projects: [dummyProjects[2]],
+  },
+  {
+    id: '8',
+    email: 'mia.martinez@example.com',
+    firstName: 'Mia',
+    lastName: 'Martinez',
+    userName: 'mia_martinez',
+    projects: [dummyProjects[2]],
+  },
+  {
+    id: '9',
+    email: 'emily.davis@example.com',
+    firstName: 'Emily',
+    lastName: 'Davis',
+    userName: 'emily_davis',
+    projects: [dummyProjects[3]],
+  },
+  {
+    id: '10',
+    email: 'elizabeth.rodriguez@example.com',
+    firstName: 'Elizabeth',
+    lastName: 'Rodriguez',
+    userName: 'elizabeth_rodriguez',
+    projects: [dummyProjects[3]],
+  },
+  {
+    id: '11',
+    email: 'alexis.hernandez@example.com',
+    firstName: 'Alexis',
+    lastName: 'Hernandez',
+    userName: 'alexis_hernandez',
+    projects: [dummyProjects[0]],
+  },
+  {
+    id: '12',
+    email: 'ella.lopez@example.com',
+    firstName: 'Ella',
+    lastName: 'Lopez',
+    userName: 'ella_lopez',
+    projects: [dummyProjects[0]],
+  },
+];
+
+export const users: ProjectMember[] = usersData.map((user) => ({
+  id: user.id,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  userName: user.userName,
+}));

@@ -33,18 +33,17 @@ import { InlineSearchComponent } from '../../../../shared/components/inline-sear
   styleUrls: ['./edit-card.component.css'],
 })
 export class EditCardComponent {
-  private dialog = inject(MatDialog);
+  readonly TaskStatus = TaskStatus;
+  readonly priorities = Object.values(Priority);
+  readonly statuses = Object.values(TaskStatus);
+  public selectedTask: Task;
+  public members: TaskUser[] = [];
 
-  TaskStatus = TaskStatus;
-  priorities = Object.values(Priority);
-  statuses = Object.values(TaskStatus);
-  selectedTask: Task;
-  members: TaskUser[] = [];
-
-  form: FormGroup;
+  public form: FormGroup;
 
   constructor(
     private projectService: ProjectService,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: { selectedTask: Task }
   ) {

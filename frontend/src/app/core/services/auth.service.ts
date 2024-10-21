@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of, tap } from 'rxjs';
+import { dummyProjects } from '../../dummy-data';
 import {
   AuthResponse,
   LoginCredentials,
-  User,
   UserCredentials,
 } from '../models/auth.model';
 
@@ -22,6 +22,7 @@ export class AuthService {
     firstName: 'John',
     lastName: 'Doe',
     userName: 'john_doe',
+    projects: [dummyProjects[0], dummyProjects[1], dummyProjects[4]],
   };
 
   private dummyResponse: AuthResponse = {
@@ -69,11 +70,6 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
     this.router.navigate(['/']);
-  }
-
-  getLoggedInUser(): User | null {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
   }
 
   isAuthenticated(): boolean {

@@ -2,7 +2,7 @@ import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Project, Status } from '../../../../core/models/project.model';
-import { AuthService } from '../../../../core/services/auth.service';
+import { UserService } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -14,10 +14,10 @@ import { AuthService } from '../../../../core/services/auth.service';
 export class ProjectsListComponent implements OnChanges {
   @Input() projects: Project[] | undefined;
 
-  sortedProjects: Project[] | undefined;
-  Status = Status;
-  sortCriteria: string = 'name';
-  sortOrder: string = 'ascending';
+  public sortedProjects: Project[] | undefined;
+  readonly Status = Status;
+  public sortCriteria: string = 'name';
+  public sortOrder: string = 'ascending';
 
   private statusPriority: { [key in Status]: number } = {
     [Status.InProgress]: 1,
@@ -27,7 +27,7 @@ export class ProjectsListComponent implements OnChanges {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private userService: UserService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -95,7 +95,7 @@ export class ProjectsListComponent implements OnChanges {
   isInProject(project: Project): boolean {
     return project.members.some(
       (member) =>
-        member.userName === this.authService.getLoggedInUser()?.userName
+        member.userName === this.userService.getLoggedInUser()?.userName
     );
   }
 }

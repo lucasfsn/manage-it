@@ -1,10 +1,4 @@
-export interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
-}
+import { User } from './user.model';
 
 export interface UserCredentials extends User {
   password: string;

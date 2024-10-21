@@ -39,11 +39,11 @@ export class TasksComponent implements OnInit {
   @Input() project!: Project;
   @Input() handleUpdate!: (task: Task) => void;
 
-  TaskStatus = TaskStatus;
+  readonly TaskStatus = TaskStatus;
 
-  completedTasks: Task[] = [];
-  inProgressTasks: Task[] = [];
-  notStartedTasks: Task[] = [];
+  public completedTasks: Task[] = [];
+  public inProgressTasks: Task[] = [];
+  public notStartedTasks: Task[] = [];
 
   drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {

@@ -10,5 +10,5 @@ import { Priority } from '../../../core/models/project.model';
 })
 export class PriorityComponent {
   @Input() priority!: Priority;
-  public Priority = Priority;
+  readonly Priority = Priority;
 }

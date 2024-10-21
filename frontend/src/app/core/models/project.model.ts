@@ -1,8 +1,3 @@
-export enum Status {
-  InProgress = 'In Progress',
-  Completed = 'Completed',
-}
-
 export enum TaskStatus {
   NotStarted = 'Not Started',
   InProgress = 'In Progress',
@@ -29,6 +24,11 @@ export interface Task {
   status: TaskStatus;
   priority: Priority;
   dueDate: string;
+}
+
+export enum Status {
+  InProgress = 'In Progress',
+  Completed = 'Completed',
 }
 
 export interface Project {

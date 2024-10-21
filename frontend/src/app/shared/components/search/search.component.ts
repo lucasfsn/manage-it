@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { User } from '../../../core/models/project.model';
-import { AuthService } from '../../../core/services/auth.service';
+import { UserService } from '../../../core/services/user.service';
 import { users } from '../../../dummy-data';
 
 @Component({
@@ -40,7 +40,7 @@ export class SearchComponent {
 
   constructor(
     readonly dialogRef: MatDialogRef<SearchComponent>,
-    private authService: AuthService
+    private userService: UserService
   ) {}
 
   closeDialog(): void {
@@ -66,6 +66,6 @@ export class SearchComponent {
   }
 
   isLoggedInUser(userName: string): boolean {
-    return this.authService.getLoggedInUser()?.userName === userName;
+    return this.userService.getLoggedInUser()?.userName === userName;
   }
 }

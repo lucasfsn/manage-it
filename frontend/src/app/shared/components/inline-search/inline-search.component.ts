@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../../core/models/project.model';
-import { AuthService } from '../../../core/services/auth.service';
+import { UserService } from '../../../core/services/user.service';
 import { users } from '../../../dummy-data';
 
 @Component({
@@ -17,7 +17,7 @@ export class InlineSearchComponent {
   form = new FormControl('');
   searchResults: User[] = [];
 
-  constructor(private authService: AuthService) {}
+  constructor(private userService: UserService) {}
 
   onSearch(): void {
     const query = this.form.value?.toLowerCase();
@@ -38,6 +38,6 @@ export class InlineSearchComponent {
   }
 
   isLoggedInUser(userName: string): boolean {
-    return this.authService.getLoggedInUser()?.userName === userName;
+    return this.userService.getLoggedInUser()?.userName === userName;
   }
 }
