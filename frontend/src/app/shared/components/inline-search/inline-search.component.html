@@ -1,0 +1,32 @@
+<input
+  placeholder="Find user"
+  [formControl]="form"
+  (input)="onSearch()"
+  class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-600"
+/>
+@if (searchResults.length > 0) {
+<ul class="flex flex-col search-results overflow-y-scroll h-14 mt-1">
+  @for (result of searchResults; track result.userName) {
+  <li
+    class="px-2 py-1 sm:p-4 text-slate-400 text-xs h-4 flex justify-between items-center gap-1 bg-item-hover transition-all rounded-full"
+  >
+    <p>
+      {{ result.firstName }} {{ result.lastName }}
+      <span class="text-gray-500">({{ result.userName }}) </span>
+    </p>
+    @if (isLoggedInUser(result.userName)) {
+    <span class="flex justify-center items-center">You</span>
+    } @else if (isProjectMember(result.userName)) {
+    <span class="flex justify-center items-center">Already in</span>
+    } @else {
+    <button
+      class="flex items-center justify-center bg-slate-900 hover:bg-opacity-95 rounded-full text-slate-400 shadow-sm"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+
+    }
+  </li>
+  }
+</ul>
+}

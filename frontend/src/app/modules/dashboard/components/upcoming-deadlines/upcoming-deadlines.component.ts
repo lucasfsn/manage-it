@@ -1,7 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Project } from '../../../../core/models/project.model';
+import { Project, Status } from '../../../../core/models/project.model';
 
 @Component({
   selector: 'app-upcoming-deadlines',
@@ -13,8 +13,13 @@ import { Project } from '../../../../core/models/project.model';
 export class UpcomingDeadlinesComponent {
   @Input() projects: Project[] | undefined;
 
-  getDeadlineClass(endDate: string): string {
+  getDeadlineClass(endDate: string, status: Status): string {
+    if (status === Status.Completed) {
+      return 'text-sky-500';
+    }
+
     const daysLeft = this.calculateDaysLeft(endDate);
+
     if (daysLeft <= 3) {
       return 'text-red-500';
     } else if (daysLeft <= 7) {
@@ -24,8 +29,12 @@ export class UpcomingDeadlinesComponent {
     }
   }
 
-  getDeadlineMessage(endDate: string): string {
+  getDeadlineMessage(endDate: string, status: Status): string {
+    if (status === Status.Completed) {
+      return 'Completed';
+    }
     const daysLeft = this.calculateDaysLeft(endDate);
+
     if (daysLeft <= 0) {
       return 'Deadline has passed!';
     } else if (daysLeft === 1) {

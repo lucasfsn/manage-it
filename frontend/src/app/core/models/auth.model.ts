@@ -1,10 +1,13 @@
-export interface UserCredentials {
+export interface User {
   id: string;
   email: string;
-  password: string;
   firstName: string;
   lastName: string;
   userName: string;
+}
+
+export interface UserCredentials extends User {
+  password: string;
 }
 
 export interface LoginCredentials {

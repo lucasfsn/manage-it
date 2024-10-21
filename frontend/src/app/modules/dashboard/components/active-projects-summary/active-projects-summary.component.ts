@@ -20,7 +20,7 @@ export class ActiveProjectsSummaryComponent implements OnInit {
     datasets: [
       {
         data: [0, 0, 0],
-        backgroundColor: ['#4caf50', '#ff9800'],
+        backgroundColor: ['#0ea5e9', '#fb923c'],
         borderColor: '#e5e7eb',
       },
     ],

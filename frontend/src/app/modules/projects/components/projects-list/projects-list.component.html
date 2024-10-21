@@ -34,26 +34,30 @@
 </div>
 
 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5 overflow-hidden px-4">
-  @for (project of sortedProjects; track project.id) {
+  @for (project of sortedProjects; track project.id) { @if
+  (isInProject(project)) {
+
   <div
-    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-slate-800 transition-all hover:scale-[102%] gap-4"
+    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-opacity-95 transition-all hover:scale-[102%] gap-4 justify-between"
     routerLink="/projects/{{ project.id }}"
   >
-    <div class="flex flex-col gap-1 text-gray-400">
-      <h3
-        class="flex flex-row text-lg font-semibold justify-between items-center"
-      >
-        {{ project.name }}
-        <span
-          class="rounded-full h-[15px] aspect-square"
-          [ngClass]="{
-            'bg-completed': project.status === Status.Completed,
-            'bg-in-progress': project.status === Status.InProgress,
-          }"
+    <div class="flex flex-col gap-2 h-full justify-between">
+      <div class="flex flex-col gap-1">
+        <h3
+          class="flex flex-row text-lg font-semibold justify-between items-center"
         >
-        </span>
-      </h3>
-      <p class="text-sm">{{ project.description }}</p>
+          {{ project.name }}
+          <span
+            class="rounded-full h-[15px] aspect-square"
+            [ngClass]="{
+            'bg-sky-500': project.status === Status.Completed,
+            'bg-orange-400': project.status === Status.InProgress,
+          }"
+          >
+          </span>
+        </h3>
+        <p class="text-sm text-gray-400">{{ project.description }}</p>
+      </div>
       <div
         class="flex flex-col bg-slate-950 rounded-lg py-1 px-2 text-sm text-gray-400"
       >
@@ -90,5 +94,5 @@
     <p class="text-gray-400 text-sm">No tasks yet.</p>
     }
   </div>
-  }
+  } }
 </div>

@@ -19,11 +19,17 @@ import {
   User,
 } from '../../../../core/models/project.model';
 import { ProjectService } from '../../../../core/services/project.service';
+import { InlineSearchComponent } from '../../../../shared/components/inline-search/inline-search.component';
 
 @Component({
   selector: 'app-add-card',
   standalone: true,
-  imports: [MatIconModule, MatDialogModule, ReactiveFormsModule],
+  imports: [
+    MatIconModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    InlineSearchComponent,
+  ],
   templateUrl: './add-card.component.html',
   styleUrl: './add-card.component.css',
 })
@@ -36,7 +42,8 @@ export class AddCardComponent {
 
   constructor(
     private projectService: ProjectService,
-    @Inject(MAT_DIALOG_DATA) public data: { selectedStatus: TaskStatus }
+    @Inject(MAT_DIALOG_DATA)
+    public data: { selectedStatus: TaskStatus }
   ) {
     this.selectedStatus = data.selectedStatus;
   }
@@ -94,7 +101,7 @@ export class AddCardComponent {
     const taskData: TaskCreate = {
       projectId: 'some-project-id',
       users: this.form.value.users as User[],
-      name: this.form.value.description as string,
+      description: this.form.value.description as string,
       priority: this.form.value.priority as Priority,
       dueDate: this.form.value.dueDate as string,
     };
@@ -102,9 +109,5 @@ export class AddCardComponent {
     // this.projectService.addTask(selectedStatus, taskData).subscribe(() => {
     //   this.closeDialog();
     // });
-  }
-
-  ngOnInit() {
-    console.log(this.selectedStatus);
   }
 }

@@ -5,6 +5,7 @@ import { Observable, of, tap } from 'rxjs';
 import {
   AuthResponse,
   LoginCredentials,
+  User,
   UserCredentials,
 } from '../models/auth.model';
 
@@ -18,9 +19,9 @@ export class AuthService {
     id: '123',
     email: 'test@example.com',
     password: '1qazXSW@',
-    firstName: 'Test',
-    lastName: 'User',
-    userName: 'testuser',
+    firstName: 'John',
+    lastName: 'Doe',
+    userName: 'john_doe',
   };
 
   private dummyResponse: AuthResponse = {
@@ -34,6 +35,16 @@ export class AuthService {
       user.email === this.dummyUser.email &&
       user.password === this.dummyUser.password
     ) {
+      const user = {
+        id: this.dummyUser.id,
+        email: this.dummyUser.email,
+        firstName: this.dummyUser.firstName,
+        lastName: this.dummyUser.lastName,
+        userName: this.dummyUser.userName,
+      };
+
+      localStorage.setItem('user', JSON.stringify(user));
+
       return of(this.dummyResponse).pipe(
         tap((res: AuthResponse) => {
           localStorage.setItem('access_token', res.access_token);
@@ -56,15 +67,18 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
     this.router.navigate(['/']);
   }
 
-  getLoggedInUser(): UserCredentials | null {
+  getLoggedInUser(): User | null {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('access_token');
+    return !!(
+      localStorage.getItem('access_token') && localStorage.getItem('user')
+    );
   }
 }

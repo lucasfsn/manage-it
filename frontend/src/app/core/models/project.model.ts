@@ -21,18 +21,11 @@ export interface User {
   userName: string;
 }
 
-export interface Team {
-  id: string;
-  name: string;
-  description: string;
-  members: User[];
-}
-
 export interface Task {
   id: string;
   projectId: string;
   users: User[];
-  name: string;
+  description: string;
   status: TaskStatus;
   priority: Priority;
   dueDate: string;
@@ -50,7 +43,6 @@ export interface Project {
   owner: User;
   members: User[];
   tasks: Task[];
-  teams: Team[];
 }
 
 export interface ProjectCreate {
@@ -63,7 +55,7 @@ export interface ProjectCreate {
 export interface TaskCreate {
   projectId: string;
   users: User[];
-  name: string;
+  description: string;
   priority: Priority;
   dueDate: string;
 }

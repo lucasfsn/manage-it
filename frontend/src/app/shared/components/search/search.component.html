@@ -22,11 +22,14 @@
 <ul class="flex flex-col pb-4 divide-y divide-slate-600 search-results">
   @for (result of searchResults; track result.userName) {
   <li
-    class="cursor-pointer px-4 py-2 sm:px-6 sm:py-4 text-slate-400 text-sm"
+    class="cursor-pointer px-4 py-2 sm:px-6 sm:py-4 text-slate-400 text-sm flex items-center gap-2"
     (click)="closeDialog()"
     [routerLink]="['/users', result.userName]"
   >
     {{ result.firstName }} {{ result.lastName }}
+    @if (isLoggedInUser(result.userName)) {
+    <span class="text-slate-600">(You)</span>
+    }
   </li>
   }
 </ul>

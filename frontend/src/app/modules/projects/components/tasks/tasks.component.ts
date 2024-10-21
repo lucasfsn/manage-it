@@ -14,8 +14,9 @@ import {
   Task,
   TaskStatus,
 } from '../../../../core/models/project.model';
-import { AddCardComponent } from '../add-card/add-card.component';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
+import { AddCardComponent } from '../add-card/add-card.component';
+import { EditCardComponent } from '../edit-card/edit-card.component';
 
 @Component({
   selector: 'app-tasks',
@@ -62,12 +63,22 @@ export class TasksComponent implements OnInit {
     this.handleUpdate(event.container.data[event.currentIndex]);
   }
 
-  openEditDialog(selectedStatus: TaskStatus): void {
+  openAddCardDialog(selectedStatus: TaskStatus): void {
     this.dialog.open(AddCardComponent, {
-      width: '600px',
+      width: '450px',
       backdropClass: 'dialog-backdrop',
       data: {
         selectedStatus,
+      },
+    });
+  }
+
+  openEditCardDialog(selectedTask: Task): void {
+    this.dialog.open(EditCardComponent, {
+      width: '600px',
+      backdropClass: 'dialog-backdrop',
+      data: {
+        selectedTask,
       },
     });
   }

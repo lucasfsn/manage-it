@@ -3,12 +3,25 @@
     <h2 class="text-2xl font-semibold text-gray-100">
       {{ project.name }}
     </h2>
-    <button
-      class="mr-4 bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-1 flex justify-center items-center rounded-full"
-      (click)="handleDelete()"
-    >
-      <mat-icon>delete</mat-icon>
-    </button>
+    @if (isOwner) {
+    <div class="flex items-center mr-4 gap-2">
+      @if (project.status !== Status.Completed) {
+
+      <button
+        class="bg-green-300 text-slate-900 hover:bg-green-400 transition-all p-1 flex justify-center items-center rounded-full"
+        (click)="handleComplete()"
+      >
+        <mat-icon>done</mat-icon>
+      </button>
+      }
+      <button
+        class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-1 flex justify-center items-center rounded-full"
+        (click)="handleDelete()"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    }
   </div>
   <div class="flex flex-col gap-2">
     <p>{{ project.description }}</p>
@@ -24,7 +37,7 @@
           <ul class="flex gap-1 justify-center items-center">
             <li
               *ngFor="let member of project.members | slice : 0 : 5"
-              class="p-1 bg-slate-300 hover:bg-slate-400 text-slate-950 rounded-full aspect-square w-8 h-8 flex justify-center cursor-pointer items-center transition-all shadow-sm"
+              class="p-0.5 bg-slate-300 hover:bg-slate-400 text-slate-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
               [routerLink]="['/users', member.userName]"
             >
               {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
@@ -39,7 +52,7 @@
           </ul>
           @if (project.status !== Status.Completed) {
           <button
-            class="flex p-1 bg-sky-500 rounded-full text-gray-100 hover:bg-sky-600 justify-center items-center"
+            class="flex p-0.5 bg-sky-500 rounded-full text-gray-100 hover:bg-sky-600 justify-center items-center"
             (click)="openSearchDialog()"
           >
             <mat-icon>add</mat-icon>
@@ -49,8 +62,8 @@
         <div
           class="rounded-full flex items-center justify-center text-slate-900 font-semibold text-sm px-2 py-1 mr-auto"
           [ngClass]="{
-            'bg-completed': project.status === Status.Completed,
-            'bg-in-progress': project.status === Status.InProgress,
+            'bg-sky-500': project.status === Status.Completed,
+            'bg-orange-400': project.status === Status.InProgress,
           }"
         >
           {{ project.status }}

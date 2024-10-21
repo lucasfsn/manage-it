@@ -4,7 +4,6 @@ import {
   Status,
   Task,
   TaskStatus,
-  Team,
   User,
 } from './core/models/project.model';
 
@@ -35,33 +34,12 @@ export const users: User[] = [
   },
 ];
 
-const teams: Team[] = [
-  {
-    id: '1',
-    name: 'Frontend Team',
-    description: 'Team responsible for frontend development',
-    members: [users[0], users[1], users[2], users[3], users[10], users[11]],
-  },
-  {
-    id: '2',
-    name: 'Backend Team',
-    description: 'Team responsible for backend development',
-    members: [users[4], users[5], users[6], users[7]],
-  },
-  {
-    id: '3',
-    name: 'QA Team',
-    description: 'Team responsible for quality assurance',
-    members: [users[8], users[9]],
-  },
-];
-
 const tasks: Task[] = [
   {
     id: '1',
     projectId: '1',
     users: [users[0], users[1], users[10], users[11]],
-    name: 'Develop Header',
+    description: 'Develop Header',
     status: TaskStatus.InProgress,
     priority: Priority.High,
     dueDate: '2024-05-01',
@@ -70,7 +48,7 @@ const tasks: Task[] = [
     id: '2',
     projectId: '1',
     users: [users[2], users[3]],
-    name: 'Develop Sidebar',
+    description: 'Develop Sidebar',
     status: TaskStatus.NotStarted,
     priority: Priority.Medium,
     dueDate: '2024-06-01',
@@ -79,7 +57,7 @@ const tasks: Task[] = [
     id: '3',
     projectId: '1',
     users: [users[4], users[5]],
-    name: 'Develop API',
+    description: 'Develop API',
     status: TaskStatus.Completed,
     priority: Priority.Low,
     dueDate: '2024-07-01',
@@ -88,7 +66,7 @@ const tasks: Task[] = [
     id: '4',
     projectId: '1',
     users: [users[6], users[7]],
-    name: 'Database Design',
+    description: 'Database Design',
     status: TaskStatus.Completed,
     priority: Priority.Medium,
     dueDate: '2024-08-01',
@@ -97,7 +75,7 @@ const tasks: Task[] = [
     id: '5',
     projectId: '1',
     users: [users[8], users[9]],
-    name: 'Testing',
+    description: 'Testing',
     status: TaskStatus.InProgress,
     priority: Priority.High,
     dueDate: '2024-09-01',
@@ -110,14 +88,13 @@ export const dummyProjects: Project[] = [
     name: 'Website Redesign',
     description: 'Complete redesign of the company website to improve UX/UI.',
     startDate: '2024-01-01',
-    endDate: '2024-10-22',
+    endDate: '2024-10-25',
     completedTasks: 5,
     totalTasks: 10,
     status: Status.InProgress,
     owner: users[0],
     members: users,
     tasks: tasks.filter((task) => task.projectId === '1'),
-    teams: [teams[0], teams[1], teams[2]],
   },
   {
     id: '2',
@@ -129,9 +106,8 @@ export const dummyProjects: Project[] = [
     totalTasks: 8,
     status: Status.Completed,
     owner: users[4],
-    members: [users[4], users[5]],
+    members: [users[4], users[5], users[0]],
     tasks: tasks.filter((task) => task.projectId === '2'),
-    teams: [teams[1]],
   },
   {
     id: '3',
@@ -145,7 +121,6 @@ export const dummyProjects: Project[] = [
     owner: users[6],
     members: [users[6], users[7]],
     tasks: tasks.filter((task) => task.projectId === '3'),
-    teams: [teams[2]],
   },
   {
     id: '4',
@@ -159,7 +134,6 @@ export const dummyProjects: Project[] = [
     owner: users[8],
     members: [users[8], users[9]],
     tasks: tasks.filter((task) => task.projectId === '4'),
-    teams: [teams[0]],
   },
   {
     id: '5',
@@ -174,6 +148,5 @@ export const dummyProjects: Project[] = [
     owner: users[0],
     members: [users[0], users[1]],
     tasks: tasks.filter((task) => task.projectId === '5'),
-    teams: [teams[1], teams[2]],
   },
 ];

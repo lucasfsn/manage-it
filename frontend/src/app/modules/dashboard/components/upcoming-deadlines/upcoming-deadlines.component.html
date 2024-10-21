@@ -9,8 +9,11 @@
       <p class="text-sm text-gray-400">
         Deadline: {{ project.endDate | date }}
       </p>
-      <p class="text-sm" [ngClass]="getDeadlineClass(project.endDate)">
-        {{ getDeadlineMessage(project.endDate) }}
+      <p
+        class="text-sm"
+        [ngClass]="getDeadlineClass(project.endDate, project.status)"
+      >
+        {{ getDeadlineMessage(project.endDate, project.status) }}
       </p>
     </div>
   </div>

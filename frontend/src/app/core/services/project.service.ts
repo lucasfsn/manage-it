@@ -81,7 +81,6 @@ export class ProjectService {
           userName: 'john_doe',
         },
       ],
-      teams: [],
       tasks: [],
       startDate: '2024-01-01',
       endDate: '2024-12-31',
@@ -150,6 +149,41 @@ export class ProjectService {
         );
       })
     );
+  }
+
+  completeProject(projectId: string): Observable<Project> {
+    const prevProjects = this.projects();
+    const project = prevProjects.find((p) => p.id === projectId);
+
+    if (!project) {
+      return throwError(() => new Error('Project not found'));
+    }
+
+    project.status = Status.Completed;
+    this.projects.set([...prevProjects]);
+
+    return of(project).pipe(
+      tap(() => {
+        this.toastr.success('Project marked as completed');
+      }),
+      catchError((err) => {
+        this.projects.set(prevProjects);
+        this.toastr.error("Couldn't complete project. Please try again later.");
+        return throwError(
+          () => new Error("Couldn't complete project. Please try again later.")
+        );
+      })
+    );
+  }
+
+  hasAccessToProject(userName: string, projectId: string): boolean {
+    const project = this.projects().find((p) => p.id === projectId);
+
+    if (!project) {
+      return false;
+    }
+
+    return project.members.some((member) => member.userName === userName);
   }
 
   private fetchProjects(url: string, errorMessage: string) {

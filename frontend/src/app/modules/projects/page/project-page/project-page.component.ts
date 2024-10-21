@@ -62,6 +62,32 @@ export class ProjectPageComponent implements OnInit {
     });
   }
 
+  handleComplete() {
+    const projectId = this.route.snapshot.paramMap.get('projectId');
+
+    if (!projectId) {
+      this.toastrService.error('Project ID is missing');
+      return;
+    }
+
+    const confirmComplete = confirm(
+      'Are you sure you want to mark this project as completed?'
+    );
+
+    if (!confirmComplete) {
+      return;
+    }
+
+    this.projectService.completeProject(projectId).subscribe({
+      next: () => {
+        this.router.navigate(['/projects']);
+      },
+      error: (error: Error) => {
+        this.toastrService.error(error.message);
+      },
+    });
+  }
+
   handleUpdate(task: Task) {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
