@@ -262,6 +262,7 @@ export const usersData: User[] = [
     lastName: 'Doe',
     userName: 'john_doe',
     projects: [dummyProjects[0], dummyProjects[1], dummyProjects[4]],
+    createdAt: '2022-01-15',
   },
   {
     id: '2',
@@ -270,6 +271,7 @@ export const usersData: User[] = [
     lastName: 'Smith',
     userName: 'jane_smith',
     projects: [dummyProjects[0], dummyProjects[4]],
+    createdAt: '2022-02-20',
   },
   {
     id: '3',
@@ -278,6 +280,7 @@ export const usersData: User[] = [
     lastName: 'Johnson',
     userName: 'michael_johnson',
     projects: [],
+    createdAt: '2022-03-25',
   },
   {
     id: '4',
@@ -286,6 +289,7 @@ export const usersData: User[] = [
     lastName: 'Williams',
     userName: 'anna_williams',
     projects: [],
+    createdAt: '2022-04-30',
   },
   {
     id: '5',
@@ -294,6 +298,7 @@ export const usersData: User[] = [
     lastName: 'Brown',
     userName: 'olivia_brown',
     projects: [dummyProjects[1]],
+    createdAt: '2022-05-05',
   },
   {
     id: '6',
@@ -302,6 +307,7 @@ export const usersData: User[] = [
     lastName: 'Jones',
     userName: 'sophia_jones',
     projects: [dummyProjects[1]],
+    createdAt: '2022-06-10',
   },
   {
     id: '7',
@@ -310,6 +316,7 @@ export const usersData: User[] = [
     lastName: 'Garcia',
     userName: 'isabella_garcia',
     projects: [dummyProjects[2]],
+    createdAt: '2022-07-15',
   },
   {
     id: '8',
@@ -318,6 +325,7 @@ export const usersData: User[] = [
     lastName: 'Martinez',
     userName: 'mia_martinez',
     projects: [dummyProjects[2]],
+    createdAt: '2022-08-20',
   },
   {
     id: '9',
@@ -326,6 +334,7 @@ export const usersData: User[] = [
     lastName: 'Davis',
     userName: 'emily_davis',
     projects: [dummyProjects[3]],
+    createdAt: '2022-09-25',
   },
   {
     id: '10',
@@ -334,6 +343,7 @@ export const usersData: User[] = [
     lastName: 'Rodriguez',
     userName: 'elizabeth_rodriguez',
     projects: [dummyProjects[3]],
+    createdAt: '2022-10-30',
   },
   {
     id: '11',
@@ -342,6 +352,7 @@ export const usersData: User[] = [
     lastName: 'Hernandez',
     userName: 'alexis_hernandez',
     projects: [dummyProjects[0]],
+    createdAt: '2022-11-05',
   },
   {
     id: '12',
@@ -350,6 +361,7 @@ export const usersData: User[] = [
     lastName: 'Lopez',
     userName: 'ella_lopez',
     projects: [dummyProjects[0]],
+    createdAt: '2022-12-10',
   },
 ];
 

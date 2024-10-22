@@ -1,5 +1,6 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule, DatePipe, Location } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { Project, Status } from '../../../../core/models/project.model';
 import { User } from '../../../../core/models/user.model';
@@ -10,7 +11,13 @@ import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.
 @Component({
   selector: 'app-user-page',
   standalone: true,
-  imports: [SpinnerComponent, RouterLink, CommonModule],
+  imports: [
+    SpinnerComponent,
+    RouterLink,
+    CommonModule,
+    MatIconModule,
+    DatePipe,
+  ],
   templateUrl: './user-page.component.html',
   styleUrl: './user-page.component.css',
 })

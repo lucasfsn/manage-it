@@ -1,0 +1,46 @@
+.chat-title {
+  background-color: rgb(2, 4, 19);
+}
+
+.chat-input {
+  border-color: #04050c;
+}
+
+.mat-icon {
+  height: auto;
+  width: auto;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 100% 0%;
+  width: 36%;
+}
+
+::ng-deep .emoji-mart-bar {
+  display: none;
+}
+
+::ng-deep .emoji-mart-anchors {
+  display: none;
+}
+
+::ng-deep .emoji-mart-dark .emoji-mart-search input {
+  background-color: #020617;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #192231;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+::ng-deep .emoji-mart-dark .emoji-mart-search input::placeholder {
+  color: #6b7280;
+}
+
+::ng-deep .emoji-mart-dark .emoji-mart-category-label span {
+  background-color: #020617;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}

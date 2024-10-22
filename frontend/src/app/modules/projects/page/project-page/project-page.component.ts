@@ -1,3 +1,11 @@
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -6,6 +14,7 @@ import { Project, Status, Task } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { ProjectChatComponent } from '../../../chat/components/project-chat/project-chat.component';
 import { ProjectInformationComponent } from '../../components/project-information/project-information.component';
 import { TasksComponent } from '../../components/tasks/tasks.component';
 
@@ -18,14 +27,36 @@ import { TasksComponent } from '../../components/tasks/tasks.component';
     RouterLink,
     TasksComponent,
     ProjectInformationComponent,
+    ProjectChatComponent,
+    CommonModule,
   ],
   templateUrl: './project-page.component.html',
   styleUrl: './project-page.component.css',
+  animations: [
+    trigger('chatAnimation', [
+      state(
+        'void',
+        style({
+          opacity: 0,
+          transform: 'translateY(20px)',
+        })
+      ),
+      state(
+        '*',
+        style({
+          opacity: 1,
+          transform: 'translateY(0)',
+        })
+      ),
+      transition('void <=> *', animate('300ms ease-in-out')),
+    ]),
+  ],
 })
 export class ProjectPageComponent implements OnInit {
   readonly Status = Status;
   public isLoading = signal<boolean>(false);
   public project = signal<Project | undefined>(undefined);
+  public showChat = signal<boolean>(false);
 
   constructor(
     private projectService: ProjectService,
@@ -34,6 +65,10 @@ export class ProjectPageComponent implements OnInit {
     private router: Router,
     private toastrService: ToastrService
   ) {}
+
+  toggleChat() {
+    this.showChat.set(!this.showChat());
+  }
 
   handleDelete() {
     const projectId = this.route.snapshot.paramMap.get('projectId');

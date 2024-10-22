@@ -7,4 +7,5 @@ export interface User {
   lastName: string;
   userName: string;
   projects: Project[];
+  createdAt: string;
 }

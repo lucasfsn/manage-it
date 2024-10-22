@@ -23,6 +23,7 @@ export class AuthService {
     lastName: 'Doe',
     userName: 'john_doe',
     projects: [dummyProjects[0], dummyProjects[1], dummyProjects[4]],
+    createdAt: '2022-01-15',
   };
 
   private dummyResponse: AuthResponse = {

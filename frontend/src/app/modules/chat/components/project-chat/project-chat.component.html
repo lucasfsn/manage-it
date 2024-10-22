@@ -1,0 +1,55 @@
+<div
+  class="fixed bottom-20 right-4 w-[400px] h-[70vh] bg-slate-950 text-white shadow-lg flex flex-col rounded-2xl overflow-hidden"
+>
+  <div class="p-4 border-none chat-title text-center">
+    <h2 class="text-lg font-semibold">Messages</h2>
+  </div>
+  <div class="flex flex-col gap-2 p-4 relative max-h-[90%]">
+    <div class="flex-1 px-4 py-3 overflow-y-scroll"></div>
+    <div
+      class="flex items-center bg-slate-950 text-gray-200 shadow-lg border chat-input rounded-full focus-within:ring-2 focus-within:ring-slate-600 px-4 py-3 gap-2 h-12 relative"
+    >
+      @if (showEmojiPicker) {
+      <div class="absolute bottom-12 right-0 z-50">
+        <emoji-mart
+          [darkMode]="true"
+          [showPreview]="false"
+          [perLine]="5"
+          color="#020617"
+          [emojiSize]="30"
+          [style]="{
+            backgroundColor: '#020617',
+            border: '1px solid #141a25',
+            borderRadius: ' 0.5rem'
+          }"
+          [i18n]="{
+              search: 'Search emoji...',
+            }"
+          (emojiClick)="addEmoji($event)"
+        ></emoji-mart>
+      </div>
+      }
+      <input
+        type="text"
+        placeholder="Message..."
+        class="flex-1 bg-transparent text-sm focus:outline-none placeholder:text-gray-500"
+        (input)="onTypeMessage($event)"
+        [(ngModel)]="message"
+      />
+      <button
+        class="flex justify-center items-center rounded-full w-8 h-8 aspect-square text-gray-500 hover:text-gray-400 transition-all"
+        (click)="toggleEmojiPicker()"
+      >
+        <mat-icon class="text-base">sentiment_satisfied_alt</mat-icon>
+      </button>
+      @if (message.length > 0) {
+      <button
+        @buttonAnimation
+        class="focus:outline-none flex justify-center items-center bg-slate-900 rounded-full w-8 h-8 aspect-square hover:bg-slate-800 transition-all"
+      >
+        <mat-icon class="text-gray-200 text-base">north</mat-icon>
+      </button>
+      }
+    </div>
+  </div>
+</div>
