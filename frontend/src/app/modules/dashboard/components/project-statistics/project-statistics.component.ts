@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Project } from '../../../../core/models/project.model';
+import { UserService } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-project-statistics',
@@ -11,4 +12,13 @@ import { Project } from '../../../../core/models/project.model';
 })
 export class ProjectStatisticsComponent {
   @Input() projects: Project[] | undefined;
+
+  constructor(private userService: UserService) {}
+
+  isInProject(project: Project): boolean {
+    return project.members.some(
+      (member) =>
+        member.userName === this.userService.getLoggedInUser()?.userName
+    );
+  }
 }

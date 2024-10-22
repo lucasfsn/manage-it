@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, Signal, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
+import { UserService } from '../../../../core/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { ActiveProjectsSummaryComponent } from '../../components/active-projects-summary/active-projects-summary.component';
 import { ProjectStatisticsComponent } from '../../components/project-statistics/project-statistics.component';
@@ -21,31 +22,38 @@ import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/
   styleUrl: './dashboard-page.component.css',
 })
 export class DashboardPageComponent implements OnInit {
-  public isLoading: boolean = false;
-  public projects: Signal<Project[] | []>;
+  public isLoading = signal<boolean>(false);
+  public projects = signal<Project[] | undefined>(undefined);
 
   constructor(
     private loadingService: LoadingService,
     private toastrService: ToastrService,
-    private projectService: ProjectService
-  ) {
-    this.projects = this.projectService.loadedProjects;
-  }
+    private projectService: ProjectService,
+    private userService: UserService
+  ) {}
 
   sortProjectsByEndDate(): Project[] {
-    return this.projects()
-      ? this.projects()
-          .slice()
-          .sort(
-            (a, b) =>
-              new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
-          )
-      : [];
+    const projects = this.projects();
+
+    if (!projects) return [];
+
+    return projects
+      .slice()
+      .sort(
+        (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+      );
   }
 
   loadProjects(): void {
+    const username = this.userService.getLoggedInUser()?.userName;
+
+    if (!username) return;
+
     this.loadingService.loadingOn();
-    this.projectService.getProjects('123').subscribe({
+    this.projectService.getProjects(username).subscribe({
+      next: (projects) => {
+        this.projects.set(projects);
+      },
       error: (error: Error) => {
         this.toastrService.error(error.message);
         this.loadingService.loadingOff();
@@ -58,18 +66,9 @@ export class DashboardPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading = loading;
+      this.isLoading.set(loading);
     });
 
-    this.loadingService.loadingOn();
-    this.projectService.getProjects('123').subscribe({
-      error: (error: Error) => {
-        this.toastrService.error(error.message);
-        this.loadingService.loadingOff();
-      },
-      complete: () => {
-        this.loadingService.loadingOff();
-      },
-    });
+    this.loadProjects();
   }
 }

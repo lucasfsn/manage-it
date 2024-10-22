@@ -1,4 +1,4 @@
-import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -6,10 +6,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-
 import { ProjectCreate } from '../../../../core/models/project.model';
 import { ProjectService } from '../../../../core/services/project.service';
 
@@ -45,12 +44,14 @@ function endDateValidator(startDate: string, endDate: string) {
   styleUrl: './create-new-project.component.css',
 })
 export class CreateNewProjectComponent {
-  @ViewChild('dialogTemplate') dialogTemplate!: TemplateRef<any>;
-  private dialog = inject(MatDialog);
+  @Output() projectAdded = new EventEmitter<void>();
 
-  constructor(private projectService: ProjectService) {}
+  constructor(
+    private projectService: ProjectService,
+    private dialogRef: MatDialogRef<CreateNewProjectComponent>
+  ) {}
 
-  form = new FormGroup({
+  protected form = new FormGroup({
     name: new FormControl('', {
       validators: [
         Validators.required,
@@ -116,15 +117,8 @@ export class CreateNewProjectComponent {
     return this.form.controls.dates.hasError('invalidEndDate');
   }
 
-  openDialog(): void {
-    this.dialog.open(this.dialogTemplate, {
-      width: '600px',
-      backdropClass: 'dialog-backdrop',
-    });
-  }
-
   closeDialog(): void {
-    this.dialog.closeAll();
+    this.dialogRef.close();
   }
 
   onSubmit(): void {
@@ -140,6 +134,7 @@ export class CreateNewProjectComponent {
     };
 
     this.projectService.addProject(projectData).subscribe(() => {
+      this.projectAdded.emit();
       this.closeDialog();
     });
   }

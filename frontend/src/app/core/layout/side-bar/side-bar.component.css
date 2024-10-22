@@ -14,7 +14,3 @@ li:hover {
 .active-link {
   color: #0ea5e9;
 }
-
-mat-icon {
-  vertical-align: text-bottom;
-}

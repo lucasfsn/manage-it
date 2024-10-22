@@ -1,8 +1,11 @@
-import { Component, inject, OnInit, Signal, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
+import { UserService } from '../../../../core/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { CreateNewProjectComponent } from '../../components/create-new-project/create-new-project.component';
 import { ProjectsListComponent } from '../../components/projects-list/projects-list.component';
@@ -10,25 +13,48 @@ import { ProjectsListComponent } from '../../components/projects-list/projects-l
 @Component({
   selector: 'app-projects-page',
   standalone: true,
-  imports: [ProjectsListComponent, SpinnerComponent, CreateNewProjectComponent],
+  imports: [
+    ProjectsListComponent,
+    SpinnerComponent,
+    CreateNewProjectComponent,
+    MatIconModule,
+  ],
   templateUrl: './projects-page.component.html',
   styleUrl: './projects-page.component.css',
 })
 export class ProjectsPageComponent implements OnInit {
-  public isLoading: boolean = false;
-  public projects: Signal<Project[] | []>;
+  public isLoading = signal<boolean>(false);
+  public projects = signal<Project[] | undefined>(undefined);
 
   constructor(
     private loadingService: LoadingService,
     private toastrService: ToastrService,
-    private projectService: ProjectService
-  ) {
-    this.projects = this.projectService.loadedProjects;
+    private projectService: ProjectService,
+    private userService: UserService,
+    private dialog: MatDialog
+  ) {}
+
+  openCreateProjectDialog(): void {
+    const dialogRef = this.dialog.open(CreateNewProjectComponent, {
+      width: '600px',
+      backdropClass: 'dialog-backdrop',
+    });
+
+    dialogRef.componentInstance.projectAdded.subscribe(() => {
+      this.loadProjects();
+    });
   }
 
   loadProjects(): void {
+    const username = this.userService.getLoggedInUser()?.userName;
+
+    if (!username) return;
+
     this.loadingService.loadingOn();
-    this.projectService.getProjects('123').subscribe({
+    this.projectService.getProjects(username).subscribe({
+      next: (projects) => {
+        this.projects.set(projects);
+      },
       error: (error: Error) => {
         this.toastrService.error(error.message);
         this.loadingService.loadingOff();
@@ -41,7 +67,7 @@ export class ProjectsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading = loading;
+      this.isLoading.set(loading);
     });
 
     this.loadProjects();

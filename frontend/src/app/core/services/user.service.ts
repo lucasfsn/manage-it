@@ -7,21 +7,23 @@ import { User } from '../models/user.model';
   providedIn: 'root',
 })
 export class UserService {
-  private user = signal<User | null>(null);
+  private user = signal<User | undefined>(undefined);
 
   loadedUser = this.user.asReadonly();
 
   getUserByUsername(username: string) {
-    const allUsers = usersData;
-    const user = allUsers.find((user) => user.userName === username);
+    const user = usersData.find((user) => user.userName === username);
 
     return of(user).pipe(
       tap({
         next: (user) => {
-          if (user) this.user.set(user);
+          this.user.set(user);
         },
         error: (error) => {
-          throw new Error("Couldn't fetch user data. Please try again later.");
+          console.error(
+            "Couldn't fetch user data. Please try again later.",
+            error
+          );
         },
       })
     );

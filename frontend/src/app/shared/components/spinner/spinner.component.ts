@@ -12,7 +12,7 @@ import { LoadingService } from '../../../core/services/loading.service';
   styleUrl: './spinner.component.css',
 })
 export class SpinnerComponent {
-  loading$: Observable<boolean>;
+  public loading$: Observable<boolean>;
 
   constructor(private loadingService: LoadingService) {
     this.loading$ = this.loadingService.loading$;

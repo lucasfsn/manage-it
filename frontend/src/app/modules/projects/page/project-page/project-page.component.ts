@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -24,8 +24,8 @@ import { TasksComponent } from '../../components/tasks/tasks.component';
 })
 export class ProjectPageComponent implements OnInit {
   readonly Status = Status;
-  public isLoading: boolean = false;
-  public project: Signal<Project | null>;
+  public isLoading = signal<boolean>(false);
+  public project = signal<Project | undefined>(undefined);
 
   constructor(
     private projectService: ProjectService,
@@ -33,9 +33,7 @@ export class ProjectPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastrService: ToastrService
-  ) {
-    this.project = this.projectService.loadedProject;
-  }
+  ) {}
 
   handleDelete() {
     const projectId = this.route.snapshot.paramMap.get('projectId');
@@ -110,11 +108,14 @@ export class ProjectPageComponent implements OnInit {
     }
 
     this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading = loading;
+      this.isLoading.set(loading);
     });
 
     this.loadingService.loadingOn();
     this.projectService.getProject(projectId).subscribe({
+      next: (project) => {
+        this.project.set(project);
+      },
       error: (error: Error) => {
         this.toastrService.error(error.message);
         this.loadingService.loadingOff();

@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { SearchComponent } from '../../../shared/components/search/search.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -27,13 +28,13 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
       state(
         'collapsed',
         style({
-          minWidth: '60px',
+          width: '*',
         })
       ),
       state(
         'expanded',
         style({
-          width: '175px',
+          width: '160px',
         })
       ),
       transition('collapsed <=> expanded', [animate('300ms ease-in-out')]),
@@ -43,8 +44,14 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
   styleUrl: './side-bar.component.css',
 })
 export class SideBarComponent implements OnInit {
-  isCollapsed = false;
-  constructor(public dialog: MatDialog) {}
+  public isCollapsed = false;
+
+  constructor(private dialog: MatDialog, private userService: UserService) {}
+
+  get userName(): string {
+    const username = this.userService.getLoggedInUser()!.userName;
+    return username;
+  }
 
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;

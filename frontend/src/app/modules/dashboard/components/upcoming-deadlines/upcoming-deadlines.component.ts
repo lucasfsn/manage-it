@@ -2,6 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Project, Status } from '../../../../core/models/project.model';
+import { UserService } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-upcoming-deadlines',
@@ -12,6 +13,8 @@ import { Project, Status } from '../../../../core/models/project.model';
 })
 export class UpcomingDeadlinesComponent {
   @Input() projects: Project[] | undefined;
+
+  constructor(private userService: UserService) {}
 
   getDeadlineClass(endDate: string, status: Status): string {
     if (status === Status.Completed) {
@@ -49,5 +52,12 @@ export class UpcomingDeadlinesComponent {
     const end = new Date(endDate);
     const timeDiff = end.getTime() - currentDate.getTime();
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
+  }
+
+  isInProject(project: Project): boolean {
+    return project.members.some(
+      (member) =>
+        member.userName === this.userService.getLoggedInUser()?.userName
+    );
   }
 }
