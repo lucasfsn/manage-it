@@ -9,6 +9,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import {
   Project,
   Task,
@@ -16,7 +17,6 @@ import {
 } from '../../../../core/models/project.model';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
 import { AddCardComponent } from '../add-card/add-card.component';
-import { EditCardComponent } from '../edit-card/edit-card.component';
 
 @Component({
   selector: 'app-tasks',
@@ -29,6 +29,7 @@ import { EditCardComponent } from '../edit-card/edit-card.component';
     CdkDrag,
     AddCardComponent,
     PriorityComponent,
+    RouterLink,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
@@ -69,16 +70,6 @@ export class TasksComponent implements OnInit {
       backdropClass: 'dialog-backdrop',
       data: {
         selectedStatus,
-      },
-    });
-  }
-
-  openEditCardDialog(selectedTask: Task): void {
-    this.dialog.open(EditCardComponent, {
-      width: '600px',
-      backdropClass: 'dialog-backdrop',
-      data: {
-        selectedTask,
       },
     });
   }

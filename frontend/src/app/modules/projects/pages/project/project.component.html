@@ -20,5 +20,8 @@
 </button>
 
 @if (showChat()) {
-<app-project-chat @chatAnimation />
+<app-chat
+  @chatAnimation
+  [customPosition]="'fixed bottom-20 right-4 h-[80%] w-[350px]'"
+/>
 } }

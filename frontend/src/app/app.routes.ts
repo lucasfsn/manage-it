@@ -1,23 +1,22 @@
-import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { authGuard, projectAuthGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
-import { UserService } from './core/services/user.service';
-import { LoginPageComponent } from './modules/auth/pages/login-page/login-page.component';
-import { SignupPageComponent } from './modules/auth/pages/signup-page/signup-page.component';
-import { DashboardPageComponent } from './modules/dashboard/page/dashboard-page/dashboard-page.component';
-import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
-import { NotFoundPageComponent } from './modules/not-found/pages/not-found-page/not-found-page.component';
-import { ProjectPageComponent } from './modules/projects/page/project-page/project-page.component';
-import { ProjectsPageComponent } from './modules/projects/page/projects-page/projects-page.component';
-import { UserPageComponent } from './modules/users/page/user-page/user-page.component';
+import { LoginComponent } from './modules/auth/pages/login/login.component';
+import { SignupComponent } from './modules/auth/pages/signup/signup.component';
+import { DashboardComponent } from './modules/dashboard/pages/dashboard/dashboard.component';
+import { HomeComponent } from './modules/home/pages/home/home.component';
+import { NotFoundComponent } from './modules/not-found/pages/not-found/not-found.component';
+import { ProjectComponent } from './modules/projects/pages/project/project.component';
+import { ProjectsComponent } from './modules/projects/pages/projects/projects.component';
+import { TaskComponent } from './modules/projects/pages/task/task.component';
+import { UserComponent } from './modules/users/pages/user/user.component';
 import { userResolver } from './modules/users/resolvers/user.resolver';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomePageComponent,
+    component: HomeComponent,
     canActivate: [guestGuard],
     data: {
       title: 'Manage Your Projects',
@@ -31,7 +30,7 @@ export const routes: Routes = [
   },
   {
     path: 'auth/login',
-    component: LoginPageComponent,
+    component: LoginComponent,
     canActivate: [guestGuard],
     data: {
       title: 'Login',
@@ -44,24 +43,32 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: DashboardPageComponent,
+        component: DashboardComponent,
         data: {
           title: 'Dashboard',
         },
       },
       {
         path: 'projects',
-        component: ProjectsPageComponent,
+        component: ProjectsComponent,
         data: {
           title: 'Projects',
         },
       },
       {
         path: 'projects/:projectId',
-        component: ProjectPageComponent,
+        component: ProjectComponent,
         canActivate: [projectAuthGuard],
         data: {
           title: 'Project Details',
+        },
+      },
+      {
+        path: 'projects/:projectId/tasks/:taskId',
+        component: TaskComponent,
+        canActivate: [projectAuthGuard],
+        data: {
+          title: 'Task Details',
         },
       },
       {
@@ -69,11 +76,11 @@ export const routes: Routes = [
         resolve: {
           user: userResolver,
         },
-        component: UserPageComponent,
+        component: UserComponent,
       },
       {
         path: 'users/:username',
-        component: UserPageComponent,
+        component: UserComponent,
         data: {
           title: 'Profile',
         },
@@ -82,13 +89,13 @@ export const routes: Routes = [
   },
   {
     path: 'auth/signup',
-    component: SignupPageComponent,
+    component: SignupComponent,
     canActivate: [guestGuard],
     data: { title: 'Sign Up' },
   },
   {
     path: '**',
-    component: NotFoundPageComponent,
+    component: NotFoundComponent,
     data: { title: 'Page Not Found' },
   },
 ];

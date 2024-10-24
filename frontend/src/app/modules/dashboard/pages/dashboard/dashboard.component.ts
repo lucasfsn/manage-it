@@ -10,7 +10,7 @@ import { ProjectStatisticsComponent } from '../../components/project-statistics/
 import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/upcoming-deadlines.component';
 
 @Component({
-  selector: 'app-dashboard-page',
+  selector: 'app-dashboard',
   standalone: true,
   imports: [
     ProjectStatisticsComponent,
@@ -18,10 +18,10 @@ import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/
     UpcomingDeadlinesComponent,
     ActiveProjectsSummaryComponent,
   ],
-  templateUrl: './dashboard-page.component.html',
-  styleUrl: './dashboard-page.component.css',
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css',
 })
-export class DashboardPageComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   public isLoading = signal<boolean>(false);
   public projects = signal<Project[] | undefined>(undefined);
 

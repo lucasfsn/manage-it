@@ -11,7 +11,7 @@ import { CreateNewProjectComponent } from '../../components/create-new-project/c
 import { ProjectsListComponent } from '../../components/projects-list/projects-list.component';
 
 @Component({
-  selector: 'app-projects-page',
+  selector: 'app-projects',
   standalone: true,
   imports: [
     ProjectsListComponent,
@@ -19,10 +19,10 @@ import { ProjectsListComponent } from '../../components/projects-list/projects-l
     CreateNewProjectComponent,
     MatIconModule,
   ],
-  templateUrl: './projects-page.component.html',
-  styleUrl: './projects-page.component.css',
+  templateUrl: './projects.component.html',
+  styleUrl: './projects.component.css',
 })
-export class ProjectsPageComponent implements OnInit {
+export class ProjectsComponent implements OnInit {
   public isLoading = signal<boolean>(false);
   public projects = signal<Project[] | undefined>(undefined);
 

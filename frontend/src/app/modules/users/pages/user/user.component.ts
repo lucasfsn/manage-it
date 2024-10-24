@@ -9,7 +9,7 @@ import { UserService } from '../../../../core/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 
 @Component({
-  selector: 'app-user-page',
+  selector: 'app-user',
   standalone: true,
   imports: [
     SpinnerComponent,
@@ -18,10 +18,10 @@ import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.
     MatIconModule,
     DatePipe,
   ],
-  templateUrl: './user-page.component.html',
-  styleUrl: './user-page.component.css',
+  templateUrl: './user.component.html',
+  styleUrl: './user.component.css',
 })
-export class UserPageComponent implements OnInit {
+export class UserComponent implements OnInit {
   public user = signal<User | undefined>(undefined);
   public isLoading = signal<boolean>(false);
   public commonProjects: Project[] = [];

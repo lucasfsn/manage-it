@@ -5,18 +5,19 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 @Component({
-  selector: 'app-project-chat',
+  selector: 'app-chat',
   standalone: true,
-  imports: [MatIconModule, PickerComponent, FormsModule],
-  templateUrl: './project-chat.component.html',
-  styleUrl: './project-chat.component.css',
+  imports: [MatIconModule, PickerComponent, FormsModule, CommonModule],
+  templateUrl: './chat.component.html',
+  styleUrl: './chat.component.css',
   animations: [
     trigger('buttonAnimation', [
       state(
@@ -37,7 +38,9 @@ import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
     ]),
   ],
 })
-export class ProjectChatComponent {
+export class ChatComponent {
+  @Input() customPosition: string = '';
+
   public message: string = '';
   public showEmojiPicker: boolean = false;
 

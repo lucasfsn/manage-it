@@ -13,13 +13,13 @@ import { ToastrService } from 'ngx-toastr';
 import { Project, Status, Task } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
+import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { ProjectChatComponent } from '../../../chat/components/project-chat/project-chat.component';
 import { ProjectInformationComponent } from '../../components/project-information/project-information.component';
 import { TasksComponent } from '../../components/tasks/tasks.component';
 
 @Component({
-  selector: 'app-project-page',
+  selector: 'app-project',
   standalone: true,
   imports: [
     SpinnerComponent,
@@ -27,11 +27,11 @@ import { TasksComponent } from '../../components/tasks/tasks.component';
     RouterLink,
     TasksComponent,
     ProjectInformationComponent,
-    ProjectChatComponent,
     CommonModule,
+    ChatComponent,
   ],
-  templateUrl: './project-page.component.html',
-  styleUrl: './project-page.component.css',
+  templateUrl: './project.component.html',
+  styleUrl: './project.component.css',
   animations: [
     trigger('chatAnimation', [
       state(
@@ -52,7 +52,7 @@ import { TasksComponent } from '../../components/tasks/tasks.component';
     ]),
   ],
 })
-export class ProjectPageComponent implements OnInit {
+export class ProjectComponent implements OnInit {
   readonly Status = Status;
   public isLoading = signal<boolean>(false);
   public project = signal<Project | undefined>(undefined);

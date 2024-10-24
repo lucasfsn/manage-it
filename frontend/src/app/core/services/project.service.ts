@@ -16,9 +16,11 @@ export class ProjectService {
 
   private projects = signal<Project[] | undefined>(undefined);
   private project = signal<Project | undefined>(undefined);
+  private task = signal<Task | undefined>(undefined);
 
   loadedProjects = this.projects.asReadonly();
   loadedProject = this.project.asReadonly();
+  loadedTask = this.task.asReadonly();
 
   getProjects(username: string) {
     const userProjects = dummyProjects.filter((project) =>
@@ -138,6 +140,23 @@ export class ProjectService {
     );
   }
 
+  getTask(projectId: string, taskId: string) {
+    const foundProject = dummyProjects.find((p) => p.id === projectId);
+    const foundTask = foundProject?.tasks.find((t) => t.id === taskId);
+
+    return of(foundTask).pipe(
+      delay(300),
+      tap({
+        next: (task) => {
+          this.task.set(task);
+        },
+        error: (error) => {
+          throw new Error("Couldn't fetch task. Please try again later.");
+        },
+      })
+    );
+  }
+
   updateTask(projectId: string, task: Task): Observable<Task> {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === projectId);
@@ -203,5 +222,9 @@ export class ProjectService {
     if (!project) return false;
 
     return project.members.some((member) => member.userName === userName);
+  }
+
+  areProjectsLoaded(): boolean {
+    return this.projects() !== undefined;
   }
 }

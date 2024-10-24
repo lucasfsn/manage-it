@@ -1,14 +1,14 @@
 <input
-  placeholder="Find user"
+  placeholder="Search users"
   [formControl]="form"
   (input)="onSearch()"
-  class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-600"
+  class="w-full px-3 py-1 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-gray-500"
 />
 @if (searchResults.length > 0) {
-<ul class="flex flex-col search-results overflow-y-scroll h-14 mt-1">
+<ul class="flex flex-col search-results overflow-y-scroll h-25 mt-1">
   @for (result of searchResults; track result.userName) {
   <li
-    class="px-2 py-1 sm:p-4 text-slate-400 text-xs h-4 flex justify-between items-center gap-1 bg-item-hover transition-all rounded-full"
+    class="px-2 py-1 sm:p-4 text-slate-400 text-xs lg:text-sm flex justify-between items-center gap-1 bg-item-hover transition-all rounded-full"
   >
     <p>
       {{ result.firstName }} {{ result.lastName }}
