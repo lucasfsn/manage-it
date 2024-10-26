@@ -7,6 +7,7 @@ import { SignupComponent } from './modules/auth/pages/signup/signup.component';
 import { DashboardComponent } from './modules/dashboard/pages/dashboard/dashboard.component';
 import { HomeComponent } from './modules/home/pages/home/home.component';
 import { NotFoundComponent } from './modules/not-found/pages/not-found/not-found.component';
+import { NotificationsComponent } from './modules/notifications/page/notifications/notifications.component';
 import { ProjectComponent } from './modules/projects/pages/project/project.component';
 import { ProjectsComponent } from './modules/projects/pages/projects/projects.component';
 import { TaskComponent } from './modules/projects/pages/task/task.component';
@@ -46,6 +47,13 @@ export const routes: Routes = [
         component: DashboardComponent,
         data: {
           title: 'Dashboard',
+        },
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
+        data: {
+          title: 'Notifications',
         },
       },
       {

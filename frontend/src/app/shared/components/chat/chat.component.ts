@@ -52,7 +52,6 @@ export class ChatComponent {
 
   addEmoji(event: EmojiEvent): void {
     this.message += event.emoji.native;
-    this.showEmojiPicker = false;
   }
 
   toggleEmojiPicker(): void {

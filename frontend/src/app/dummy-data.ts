@@ -1,3 +1,4 @@
+import { Notification } from './core/models/notification.model';
 import {
   Priority,
   Project,
@@ -362,6 +363,59 @@ export const usersData: User[] = [
     userName: 'ella_lopez',
     projects: [dummyProjects[0]],
     createdAt: '2022-12-10',
+  },
+];
+
+export const dummyNotifications: Notification[] = [
+  {
+    id: '1',
+    user: {
+      firstName: 'John',
+      lastName: 'Doe',
+      userName: 'john_doe',
+    },
+    message: 'has joined the project "Website Redesign"',
+    date: '2024-01-02T10:00:00Z',
+  },
+  {
+    id: '2',
+    user: {
+      firstName: 'Jane',
+      lastName: 'Smith',
+      userName: 'jane_smith',
+    },
+    message: 'has modified the task "Develop Header"',
+    date: '2024-01-03T11:30:00Z',
+  },
+  {
+    id: '3',
+    user: {
+      firstName: 'Alexis',
+      lastName: 'Hernandez',
+      userName: 'alexis_hernandez',
+    },
+    message: 'has completed the task "Develop API"',
+    date: '2024-01-04T14:45:00Z',
+  },
+  {
+    id: '4',
+    user: {
+      firstName: 'Ella',
+      lastName: 'Lopez',
+      userName: 'ella_lopez',
+    },
+    message: 'has joined the project "Mobile App Development"',
+    date: '2024-02-02T09:15:00Z',
+  },
+  {
+    id: '5',
+    user: {
+      firstName: 'Michael',
+      lastName: 'Johnson',
+      userName: 'michael_johnson',
+    },
+    message: 'has modified the task "Database Design"',
+    date: '2024-10-26T16:00:00Z',
   },
 ];
 

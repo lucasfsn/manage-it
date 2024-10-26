@@ -1,9 +1,9 @@
-<div class="flex justify-between items-center title-bg">
-  <h2 mat-dialog-title>Add New Card</h2>
-  <button class="relative right-4" (click)="closeDialog()">
-    <mat-icon>close</mat-icon>
-  </button>
-</div>
+<button
+  class="bg-slate-950 pt-4 pr-4 w-full flex justify-end"
+  (click)="closeDialog()"
+>
+  <mat-icon class="text-sky-500">close</mat-icon>
+</button>
 <mat-dialog-content>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-2">
     <div class="flex flex-col gap-1">
@@ -22,12 +22,12 @@
     </div>
     <div class="flex flex-col gap-1">
       <div class="flex gap-2 items-center justify-center">
-        <label for="dueDate" class="text-gray-400">Due date:</label>
+        <mat-icon class="text-sky-500">schedule</mat-icon>
         <input
           id="dueDate"
           type="date"
           formControlName="dueDate"
-          class="p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950"
+          class="p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 flex-grow"
         />
       </div>
       @if (dueDateIsInvalid) {

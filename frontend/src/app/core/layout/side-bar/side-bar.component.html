@@ -4,7 +4,7 @@
 >
   <button
     (click)="toggleSidebar()"
-    class="bg-sky-500 rounded-full items-center justify-center hover:bg-sky-600 transition-all hidden lg:flex p-0.5"
+    class="bg-sky-500 rounded-full items-center justify-center hover:bg-sky-600 transition-all hidden xl:flex p-0.5"
     [ngClass]="{ 'self-end': !isCollapsed, 'self-center': isCollapsed }"
   >
     <mat-icon>{{ isCollapsed ? "chevron_right" : "chevron_left" }}</mat-icon>

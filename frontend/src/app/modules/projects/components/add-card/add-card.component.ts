@@ -1,4 +1,4 @@
-import { Component, Inject, inject, Input } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -19,17 +19,11 @@ import {
   User,
 } from '../../../../core/models/project.model';
 import { ProjectService } from '../../../../core/services/project.service';
-import { InlineSearchComponent } from '../../../../shared/components/inline-search/inline-search.component';
 
 @Component({
   selector: 'app-add-card',
   standalone: true,
-  imports: [
-    MatIconModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    InlineSearchComponent,
-  ],
+  imports: [MatIconModule, ReactiveFormsModule, MatDialogModule],
   templateUrl: './add-card.component.html',
   styleUrl: './add-card.component.css',
 })
