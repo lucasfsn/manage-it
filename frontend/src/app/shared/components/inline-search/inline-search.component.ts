@@ -33,7 +33,7 @@ export class InlineSearchComponent {
     }
   }
 
-  isProjectMember(userName: string): boolean {
+  isAlreadyIn(userName: string): boolean {
     return this.usersAlreadyIn.some((u) => u === userName);
   }
 
