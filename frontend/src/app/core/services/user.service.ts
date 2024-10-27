@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { of, tap } from 'rxjs';
 import { usersData } from '../../dummy-data';
 import { User } from '../models/user.model';
@@ -7,6 +8,8 @@ import { User } from '../models/user.model';
   providedIn: 'root',
 })
 export class UserService {
+  constructor(private toastrService: ToastrService) {}
+
   private user = signal<User | undefined>(undefined);
 
   loadedUser = this.user.asReadonly();
@@ -20,6 +23,7 @@ export class UserService {
           this.user.set(user);
         },
         error: (error) => {
+          this.toastrService.error('Something went wrong.');
           console.error(
             "Couldn't fetch user data. Please try again later.",
             error

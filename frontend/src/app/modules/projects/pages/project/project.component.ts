@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { Project, Status, Task } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
@@ -54,17 +53,22 @@ import { TasksComponent } from '../../components/tasks/tasks.component';
 })
 export class ProjectComponent implements OnInit {
   readonly Status = Status;
-  public isLoading = signal<boolean>(false);
-  public project = signal<Project | undefined>(undefined);
   public showChat = signal<boolean>(false);
 
   constructor(
     private projectService: ProjectService,
     private loadingService: LoadingService,
     private route: ActivatedRoute,
-    private router: Router,
-    private toastrService: ToastrService
+    private router: Router
   ) {}
+
+  get project(): Project | undefined {
+    return this.projectService.loadedProject();
+  }
+
+  get isLoading(): boolean {
+    return this.loadingService.isLoading();
+  }
 
   toggleChat() {
     this.showChat.set(!this.showChat());
@@ -74,7 +78,6 @@ export class ProjectComponent implements OnInit {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
     if (!projectId) {
-      this.toastrService.error('Project ID is missing');
       return;
     }
 
@@ -90,9 +93,6 @@ export class ProjectComponent implements OnInit {
       next: () => {
         this.router.navigate(['/projects']);
       },
-      error: (error: Error) => {
-        this.toastrService.error(error.message);
-      },
     });
   }
 
@@ -100,7 +100,6 @@ export class ProjectComponent implements OnInit {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
     if (!projectId) {
-      this.toastrService.error('Project ID is missing');
       return;
     }
 
@@ -116,9 +115,6 @@ export class ProjectComponent implements OnInit {
       next: () => {
         this.router.navigate(['/projects']);
       },
-      error: (error: Error) => {
-        this.toastrService.error(error.message);
-      },
     });
   }
 
@@ -126,33 +122,23 @@ export class ProjectComponent implements OnInit {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
     if (!projectId) {
-      this.toastrService.error('Project ID is missing');
       return;
     }
 
     this.projectService.updateTask(projectId, task).subscribe();
   }
 
-  ngOnInit(): void {
+  private loadProject(): void {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
     if (!projectId) {
-      this.toastrService.error('Project ID is missing');
       this.router.navigate(['/projects']);
       return;
     }
 
-    this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading.set(loading);
-    });
-
     this.loadingService.loadingOn();
     this.projectService.getProject(projectId).subscribe({
-      next: (project) => {
-        this.project.set(project);
-      },
-      error: (error: Error) => {
-        this.toastrService.error(error.message);
+      error: () => {
         this.loadingService.loadingOff();
         this.router.navigate(['/projects']);
       },
@@ -160,5 +146,9 @@ export class ProjectComponent implements OnInit {
         this.loadingService.loadingOff();
       },
     });
+  }
+
+  ngOnInit(): void {
+    this.loadProject();
   }
 }

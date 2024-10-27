@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
@@ -22,9 +22,6 @@ import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
-  public isLoading = signal<boolean>(false);
-  public projects = signal<Project[] | undefined>(undefined);
-
   constructor(
     private loadingService: LoadingService,
     private toastrService: ToastrService,
@@ -32,8 +29,16 @@ export class DashboardComponent implements OnInit {
     private userService: UserService
   ) {}
 
+  get projects(): Project[] | undefined {
+    return this.projectService.loadedProjects();
+  }
+
+  get isLoading(): boolean {
+    return this.loadingService.isLoading();
+  }
+
   sortProjectsByEndDate(): Project[] {
-    const projects = this.projects();
+    const projects = this.projects;
 
     if (!projects) return [];
 
@@ -44,16 +49,13 @@ export class DashboardComponent implements OnInit {
       );
   }
 
-  loadProjects(): void {
+  private loadProjects(): void {
     const username = this.userService.getLoggedInUser()?.userName;
 
     if (!username) return;
 
     this.loadingService.loadingOn();
     this.projectService.getProjects(username).subscribe({
-      next: (projects) => {
-        this.projects.set(projects);
-      },
       error: (error: Error) => {
         this.toastrService.error(error.message);
         this.loadingService.loadingOff();
@@ -65,10 +67,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading.set(loading);
-    });
-
     this.loadProjects();
   }
 }

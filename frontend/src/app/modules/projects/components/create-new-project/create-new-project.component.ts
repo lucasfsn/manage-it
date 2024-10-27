@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -44,8 +44,6 @@ function endDateValidator(startDate: string, endDate: string) {
   styleUrl: './create-new-project.component.css',
 })
 export class CreateNewProjectComponent {
-  @Output() projectAdded = new EventEmitter<void>();
-
   constructor(
     private projectService: ProjectService,
     private dialogRef: MatDialogRef<CreateNewProjectComponent>
@@ -133,9 +131,8 @@ export class CreateNewProjectComponent {
       endDate: this.form.value.dates?.endDate as string,
     };
 
-    this.projectService.addProject(projectData).subscribe(() => {
-      this.projectAdded.emit();
-      this.closeDialog();
-    });
+    this.projectService.addProject(projectData).subscribe();
+
+    this.closeDialog();
   }
 }

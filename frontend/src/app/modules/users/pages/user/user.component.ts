@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe, Location } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { Project, Status } from '../../../../core/models/project.model';
@@ -22,8 +22,6 @@ import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.
   styleUrl: './user.component.css',
 })
 export class UserComponent implements OnInit {
-  public user = signal<User | undefined>(undefined);
-  public isLoading = signal<boolean>(false);
   public commonProjects: Project[] = [];
 
   readonly Status = Status;
@@ -35,11 +33,19 @@ export class UserComponent implements OnInit {
     private location: Location
   ) {}
 
+  get user(): User | undefined {
+    return this.userService.loadedUser();
+  }
+
+  get isLoading(): boolean {
+    return this.loadingService.isLoading();
+  }
+
   isLoggedInUser(userName: string): boolean {
     return this.userService.getLoggedInUser()?.userName === userName;
   }
 
-  loadUserData(params: ParamMap): void {
+  private loadUserData(params: ParamMap): void {
     const username = params.get('username');
 
     if (!username) return;
@@ -47,8 +53,6 @@ export class UserComponent implements OnInit {
     this.loadingService.loadingOn();
     this.userService.getUserByUsername(username).subscribe({
       next: (user) => {
-        this.user.set(user);
-
         this.commonProjects =
           user?.projects.filter((project) =>
             project.members.find((member) => member.userName === username)
@@ -66,10 +70,6 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.loadingService.loading$.subscribe((loading) => {
-        this.isLoading.set(loading);
-      });
-
       this.loadUserData(params);
     });
   }

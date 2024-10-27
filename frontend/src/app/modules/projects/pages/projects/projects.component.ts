@@ -1,7 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { ToastrService } from 'ngx-toastr';
 import { Project } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
@@ -23,40 +22,36 @@ import { ProjectsListComponent } from '../../components/projects-list/projects-l
   styleUrl: './projects.component.css',
 })
 export class ProjectsComponent implements OnInit {
-  public isLoading = signal<boolean>(false);
-  public projects = signal<Project[] | undefined>(undefined);
-
   constructor(
     private loadingService: LoadingService,
-    private toastrService: ToastrService,
     private projectService: ProjectService,
     private userService: UserService,
     private dialog: MatDialog
   ) {}
 
+  get projects(): Project[] | undefined {
+    return this.projectService.loadedProjects();
+  }
+
+  get isLoading(): boolean {
+    return this.loadingService.isLoading();
+  }
+
   openCreateProjectDialog(): void {
-    const dialogRef = this.dialog.open(CreateNewProjectComponent, {
+    this.dialog.open(CreateNewProjectComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
     });
-
-    dialogRef.componentInstance.projectAdded.subscribe(() => {
-      this.loadProjects();
-    });
   }
 
-  loadProjects(): void {
+  private loadProjects(): void {
     const username = this.userService.getLoggedInUser()?.userName;
 
     if (!username) return;
 
     this.loadingService.loadingOn();
     this.projectService.getProjects(username).subscribe({
-      next: (projects) => {
-        this.projects.set(projects);
-      },
-      error: (error: Error) => {
-        this.toastrService.error(error.message);
+      error: () => {
         this.loadingService.loadingOff();
       },
       complete: () => {
@@ -66,10 +61,6 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading.set(loading);
-    });
-
     this.loadProjects();
   }
 }

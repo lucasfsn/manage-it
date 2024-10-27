@@ -1,6 +1,5 @@
 import { Component, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { Task, User } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
@@ -25,46 +24,45 @@ import { TaskEditFormComponent } from '../../components/task-edit-form/task-edit
   styleUrl: './task.component.css',
 })
 export class TaskComponent {
-  public isLoading = signal<boolean>(false);
-  public task = signal<Task | undefined>(undefined);
   public allUsers = signal<User[]>([]);
   public isTaskAssignee = signal<boolean>(false);
 
   constructor(
     private projectService: ProjectService,
-    private toastrService: ToastrService,
     private loadingService: LoadingService,
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
+  get task(): Task | undefined {
+    return this.projectService.loadedTask();
+  }
+
+  get isLoading(): boolean {
+    return this.loadingService.isLoading();
+  }
+
   get taskAssignees(): User[] {
-    return this.task()?.users || [];
+    return this.task?.users || [];
   }
 
   get taskAssigneesNicknames(): string[] {
     return this.taskAssignees.map((user) => user.userName);
   }
 
-  ngOnInit(): void {
+  private loadTaskData(): void {
     const projectId = this.route.snapshot.paramMap.get('projectId');
     const taskId = this.route.snapshot.paramMap.get('taskId');
 
     if (!projectId || !taskId) {
-      this.toastrService.error('Invalid project or task ID');
       this.router.navigate(['/projects']);
       return;
     }
 
-    this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading.set(loading);
-    });
-
     this.loadingService.loadingOn();
     this.projectService.getTask(projectId, taskId).subscribe({
       next: (task) => {
-        this.task.set(task);
         if (task) {
           this.isTaskAssignee.set(
             task.users.some(
@@ -75,8 +73,7 @@ export class TaskComponent {
           this.allUsers.set(this.taskAssignees);
         }
       },
-      error: (error: Error) => {
-        this.toastrService.error(error.message);
+      error: () => {
         this.loadingService.loadingOff();
         this.router.navigate(['/projects', projectId]);
       },
@@ -84,5 +81,9 @@ export class TaskComponent {
         this.loadingService.loadingOff();
       },
     });
+  }
+
+  ngOnInit(): void {
+    this.loadTaskData();
   }
 }

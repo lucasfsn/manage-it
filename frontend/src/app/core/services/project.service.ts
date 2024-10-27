@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, delay, Observable, of, tap, throwError } from 'rxjs';
+import { delay, Observable, of, tap } from 'rxjs';
 import { dummyProjects } from '../../dummy-data';
 import { Project, ProjectCreate, Status, Task } from '../models/project.model';
 
@@ -9,10 +8,7 @@ import { Project, ProjectCreate, Status, Task } from '../models/project.model';
   providedIn: 'root',
 })
 export class ProjectService {
-  constructor(
-    private toastrService: ToastrService,
-    private httpClient: HttpClient
-  ) {}
+  constructor(private toastrService: ToastrService) {}
 
   private projects = signal<Project[] | undefined>(undefined);
   private project = signal<Project | undefined>(undefined);
@@ -27,17 +23,14 @@ export class ProjectService {
       project.members.some((member) => member.userName === username)
     );
 
+    this.projects.set(userProjects);
+
     return of(userProjects).pipe(
       delay(300),
       tap({
-        next: (projects) => {
-          this.projects.set(projects);
-        },
         error: (error) => {
-          console.error(
-            "Couldn't fetch projects. Please try again later.",
-            error
-          );
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
         },
       })
     );
@@ -46,14 +39,14 @@ export class ProjectService {
   getProject(projectId: string) {
     const foundProject = dummyProjects.find((p) => p.id === projectId);
 
+    this.project.set(foundProject);
+
     return of(foundProject).pipe(
       delay(300),
       tap({
-        next: (project) => {
-          this.project.set(project);
-        },
         error: (error) => {
-          throw new Error("Couldn't fetch project. Please try again later.");
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
         },
       })
     );
@@ -85,25 +78,19 @@ export class ProjectService {
 
     dummyProjects.push(newProject);
 
+    const prevProjects = this.projects() || [];
+    this.projects.set([...prevProjects, newProject]);
+
     return of(newProject).pipe(
-      delay(300),
+      delay(3000),
       tap({
         next: () => {
           this.toastrService.success('Project created successfully');
         },
-        error: (err) => {
-          this.toastrService.error(
-            "Couldn't create project. Please try again later."
-          );
+        error: (error) => {
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
         },
-      }),
-      catchError((err) => {
-        this.toastrService.error(
-          "Couldn't create project. Please try again later."
-        );
-        return throwError(
-          () => new Error("Couldn't create project. Please try again later.")
-        );
       })
     );
   }
@@ -125,17 +112,15 @@ export class ProjectService {
 
     return of(updatedProjects).pipe(
       delay(300),
-      tap(() => {
-        this.toastrService.success('Project deleted successfully');
-      }),
-      catchError((err) => {
-        this.projects.set(prevProjects);
-        this.toastrService.error(
-          "Couldn't delete project. Please try again later."
-        );
-        return throwError(
-          () => new Error("Couldn't delete project. Please try again later.")
-        );
+      tap({
+        next: () => {
+          this.toastrService.success('Project deleted successfully');
+        },
+        error: (error) => {
+          this.projects.set(prevProjects);
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
       })
     );
   }
@@ -144,14 +129,14 @@ export class ProjectService {
     const foundProject = dummyProjects.find((p) => p.id === projectId);
     const foundTask = foundProject?.tasks.find((t) => t.id === taskId);
 
+    this.task.set(foundTask);
+
     return of(foundTask).pipe(
       delay(300),
       tap({
-        next: (task) => {
-          this.task.set(task);
-        },
         error: (error) => {
-          throw new Error("Couldn't fetch task. Please try again later.");
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
         },
       })
     );
@@ -161,28 +146,22 @@ export class ProjectService {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === projectId);
 
-    if (!project) {
-      return throwError(() => new Error('Project not found'));
-    }
+    if (!project) throw new Error('Project not found');
 
     const taskIndex = project.tasks.findIndex((t) => t.id === task.id);
-    if (taskIndex === -1) {
-      return throwError(() => new Error('Task not found'));
-    }
+
+    if (taskIndex === -1) throw new Error('Task not found');
 
     project.tasks[taskIndex] = task;
     this.projects.set([...prevProjects]);
 
     return of(task).pipe(
       delay(300),
-      catchError((err) => {
-        this.projects.set(prevProjects);
-        this.toastrService.error(
-          "Couldn't update task. Please try again later."
-        );
-        return throwError(
-          () => new Error("Couldn't update task. Please try again later.")
-        );
+      tap({
+        error: (error) => {
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
       })
     );
   }
@@ -191,26 +170,18 @@ export class ProjectService {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === projectId);
 
-    if (!project) {
-      return throwError(() => new Error('Project not found'));
-    }
+    if (!project) throw new Error('Project not found');
 
     project.status = Status.Completed;
     this.projects.set([...prevProjects]);
 
     return of(project).pipe(
       delay(300),
-      tap(() => {
-        this.toastrService.success('Project marked as completed');
-      }),
-      catchError((err) => {
-        this.projects.set(prevProjects);
-        this.toastrService.error(
-          "Couldn't complete project. Please try again later."
-        );
-        return throwError(
-          () => new Error("Couldn't complete project. Please try again later.")
-        );
+      tap({
+        error: (error) => {
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
       })
     );
   }
@@ -225,6 +196,6 @@ export class ProjectService {
   }
 
   areProjectsLoaded(): boolean {
-    return this.projects() !== undefined;
+    return !!this.projects();
   }
 }
