@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -6,8 +6,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { UpdateUser, User } from '../../../../core/models/user.model';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { UserService } from '../../../../core/services/user.service';
 
 function equalValues(controlName1: string, controlName2: string) {
   return (control: AbstractControl) => {
@@ -45,19 +48,27 @@ function passwordValidator(control: AbstractControl) {
 }
 
 @Component({
-  selector: 'app-signup-form',
+  selector: 'app-edit-profile-form',
   standalone: true,
-  templateUrl: './signup-form.component.html',
-  styleUrl: './signup-form.component.css',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, MatIconModule],
+  templateUrl: './edit-profile-form.component.html',
+  styleUrl: './edit-profile-form.component.css',
 })
-export class SignupFormComponent {
-  constructor(private toastr: ToastrService) {}
+export class EditProfileFormComponent {
+  user: User | undefined;
 
-  form = new FormGroup({
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { user: User },
+    private dialogRef: MatDialogRef<EditProfileFormComponent>,
+    private userService: UserService,
+    private loadingService: LoadingService
+  ) {
+    this.user = data?.user;
+  }
+
+  protected form = new FormGroup({
     firstName: new FormControl('', {
       validators: [
-        Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
         nameValidator,
@@ -65,7 +76,6 @@ export class SignupFormComponent {
     }),
     lastName: new FormControl('', {
       validators: [
-        Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
         nameValidator,
@@ -73,30 +83,21 @@ export class SignupFormComponent {
     }),
     userName: new FormControl('', {
       validators: [
-        Validators.required,
         Validators.minLength(2),
         Validators.maxLength(20),
         nameValidator,
       ],
     }),
     email: new FormControl('', {
-      validators: [Validators.required, Validators.email],
+      validators: [Validators.email],
     }),
     passwords: new FormGroup(
       {
         password: new FormControl('', {
-          validators: [
-            Validators.required,
-            Validators.minLength(8),
-            passwordValidator,
-          ],
+          validators: [passwordValidator],
         }),
         confirmPassword: new FormControl('', {
-          validators: [
-            Validators.required,
-            Validators.minLength(8),
-            passwordValidator,
-          ],
+          validators: [passwordValidator],
         }),
       },
       {
@@ -139,6 +140,7 @@ export class SignupFormComponent {
 
   get passwordIsInvalid() {
     return (
+      this.form.controls.passwords.get('password')?.value &&
       this.form.controls.passwords.get('password')?.dirty &&
       this.form.controls.passwords.get('password')?.touched &&
       this.form.controls.passwords.get('password')?.invalid
@@ -152,9 +154,6 @@ export class SignupFormComponent {
   get firstNameErrors() {
     const control = this.form.controls.firstName;
     if (control.errors) {
-      if (control.errors['required']) {
-        return 'First name is required.';
-      }
       if (control.errors['minlength']) {
         return `First name must be at least ${control.errors['minlength'].requiredLength} characters long.`;
       }
@@ -171,9 +170,6 @@ export class SignupFormComponent {
   get lastNameErrors() {
     const control = this.form.controls.lastName;
     if (control.errors) {
-      if (control.errors['required']) {
-        return 'Last name is required.';
-      }
       if (control.errors['minlength']) {
         return `Last name must be at least ${control.errors['minlength'].requiredLength} characters long.`;
       }
@@ -190,9 +186,6 @@ export class SignupFormComponent {
   get userNameErrors() {
     const control = this.form.controls.userName;
     if (control.errors) {
-      if (control.errors['required']) {
-        return 'Username is required.';
-      }
       if (control.errors['minlength']) {
         return `Username must be at least ${control.errors['minlength'].requiredLength} characters long.`;
       }
@@ -209,9 +202,6 @@ export class SignupFormComponent {
   get emailErrors() {
     const control = this.form.controls.email;
     if (control.errors) {
-      if (control.errors['required']) {
-        return 'Email is required.';
-      }
       if (control.errors['email']) {
         return 'Email is not valid.';
       }
@@ -222,9 +212,6 @@ export class SignupFormComponent {
   get passwordErrors() {
     const control = this.form.controls.passwords.get('password');
     if (control?.errors) {
-      if (control.errors['required']) {
-        return 'Password is required.';
-      }
       if (control.errors['invalidPassword']) {
         return 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.';
       }
@@ -232,19 +219,72 @@ export class SignupFormComponent {
     return null;
   }
 
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  private fillFormWithDefaultValues() {
+    if (this.user) {
+      this.form.patchValue({
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        userName: this.user.userName,
+        email: this.user.email,
+        passwords: {
+          password: '',
+          confirmPassword: '',
+        },
+      });
+    }
+  }
+
   onSubmit() {
-    if (this.form.invalid) {
+    if (!this.user) return;
+
+    if (
+      this.form.invalid &&
+      !!this.form.controls.passwords.get('password')?.value &&
+      !!this.form.controls.passwords.get('confirmPassword')?.value
+    ) {
       return;
     }
 
-    this.showSuccess();
-  }
+    const updatedUserData: UpdateUser = {
+      firstName: this.form.value.firstName
+        ? this.form.value.firstName
+        : this.user.firstName,
+      lastName: this.form.value.lastName
+        ? this.form.value.lastName
+        : this.user.lastName,
+      userName: this.form.value.userName
+        ? this.form.value.userName
+        : this.user.userName,
+      email: this.form.value.email ? this.form.value.email : this.user.email,
+    };
 
-  showSuccess() {
-    this.toastr.success('Logged in successfully!');
+    if (this.form.value.passwords?.password) {
+      updatedUserData.password = this.form.value.passwords.password;
+    }
+
+    this.loadingService.loadingOn();
+    this.userService.updateUser(this.user, updatedUserData)?.subscribe({
+      next: () => {
+        this.closeDialog();
+      },
+      error: () => {
+        this.loadingService.loadingOff();
+      },
+      complete: () => {
+        this.loadingService.loadingOff();
+      },
+    });
   }
 
   onReset() {
-    this.form.reset();
+    this.fillFormWithDefaultValues();
+  }
+
+  ngOnInit(): void {
+    this.fillFormWithDefaultValues();
   }
 }

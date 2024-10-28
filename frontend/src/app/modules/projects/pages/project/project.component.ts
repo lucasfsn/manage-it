@@ -111,11 +111,7 @@ export class ProjectComponent implements OnInit {
       return;
     }
 
-    this.projectService.completeProject(projectId).subscribe({
-      next: () => {
-        this.router.navigate(['/projects']);
-      },
-    });
+    this.projectService.completeProject(projectId).subscribe();
   }
 
   handleUpdate(task: Task) {

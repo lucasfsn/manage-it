@@ -1,0 +1,110 @@
+<button
+  class="flex justify-end items-center pr-4 pt-4 bg-slate-800"
+  (click)="closeDialog()"
+>
+  <mat-icon>close</mat-icon>
+</button>
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col gap-4 p-9 shadow-sm bg-slate-100 text-xs sm:text-base"
+  style="background-color: #1e293b"
+>
+  <div class="flex flex-col gap-5 border-b pb-5 border-slate-500">
+    <div class="flex flex-col gap-3">
+      <div class="flex flex-col gap-2">
+        <input
+          type="text"
+          id="first-name"
+          name="first-name"
+          formControlName="firstName"
+          placeholder="{{ user?.firstName || 'Enter new first name' }}"
+          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+        />
+        @if (firstNameIsInvalid) {
+        <p class="text-red-500 text-sm">{{ firstNameErrors }}</p>
+        }
+      </div>
+      <div class="flex flex-col gap-2">
+        <input
+          type="text"
+          id="last-name"
+          name="last-name"
+          formControlName="lastName"
+          placeholder="{{ user?.lastName || 'Enter new last name' }}"
+          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+        />
+        @if (lastNameIsInvalid) {
+        <p class="text-red-500 text-sm">{{ lastNameErrors }}</p>
+        }
+      </div>
+      <div class="flex flex-col gap-2">
+        <input
+          type="text"
+          id="user-name"
+          name="user-name"
+          formControlName="userName"
+          placeholder="{{ user?.userName || 'Enter new username' }}"
+          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+        />
+        @if (userNameIsInvalid) {
+        <p class="text-red-500 text-sm">{{ userNameErrors }}</p>
+        }
+      </div>
+      <div class="flex flex-col gap-2">
+        <input
+          id="email"
+          type="email"
+          name="email"
+          formControlName="email"
+          placeholder="{{ user?.email || 'Enter new email' }}"
+          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+        />
+        @if (emailIsInvalid) {
+        <p class="text-red-500 text-sm">{{ emailErrors }}</p>
+        }
+      </div>
+      <div class="flex flex-col gap-2">
+        <div formGroupName="passwords" class="flex flex-row gap-3">
+          <input
+            id="password"
+            type="password"
+            name="password"
+            formControlName="password"
+            placeholder="Enter new password"
+            class="w-1/2 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+          />
+          <input
+            id="confirm-password"
+            type="password"
+            name="confirm-password"
+            formControlName="confirmPassword"
+            placeholder="Confirm password"
+            class="w-1/2 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+          />
+        </div>
+        <div class="flex flex-row gap-1">
+          @if (passwordIsInvalid) {
+          <p class="text-red-500 text-sm">{{ passwordErrors }}</p>
+          } @else if (!passwordIsInvalid && passwordsDoNotMatch) {
+          <p class="text-red-500 text-sm">Passwords do not match</p>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-between">
+      <button
+        class="bg-gray-500 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-gray-600 transition-all rounded-full"
+        (click)="onReset()"
+      >
+        Reset
+      </button>
+      <button
+        class="bg-sky-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full"
+        (click)="onSubmit()"
+      >
+        Edit
+      </button>
+    </div>
+  </div>
+</form>

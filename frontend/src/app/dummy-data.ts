@@ -243,9 +243,9 @@ export const dummyProjects: Project[] = [
     totalTasks: 12,
     status: Status.InProgress,
     owner: {
-      firstName: 'John',
-      lastName: 'Doe',
-      userName: 'john_doe',
+      firstName: 'Jane',
+      lastName: 'Smith',
+      userName: 'jane_smith',
     },
     members: [
       { firstName: 'John', lastName: 'Doe', userName: 'john_doe' },

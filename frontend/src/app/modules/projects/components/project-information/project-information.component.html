@@ -50,7 +50,7 @@
               +{{ project.members.length - 5 }} more
             </li>
           </ul>
-          @if (project.status !== Status.Completed) {
+          @if (project.status !== Status.Completed && isOwner) {
           <button
             class="flex p-0.5 bg-sky-500 rounded-full text-gray-100 hover:bg-sky-600 justify-center items-center"
             (click)="openSearchDialog()"

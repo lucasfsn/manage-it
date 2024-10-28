@@ -46,6 +46,9 @@ export class ProjectInformationComponent {
       width: '600px',
       panelClass: 'search-dialog',
       backdropClass: 'dialog-backdrop',
+      data: {
+        projectId: this.project.id,
+      },
     });
   }
 }

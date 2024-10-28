@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { addToProjectGuard } from './core/guards/add-to-project.guard';
 import { authGuard, projectAuthGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
@@ -91,6 +92,16 @@ export const routes: Routes = [
         component: UserComponent,
         data: {
           title: 'Profile',
+          routeType: 'profile',
+        },
+      },
+      {
+        path: 'users/:username/projects/:projectId/add',
+        component: UserComponent,
+        canActivate: [addToProjectGuard],
+        data: {
+          title: 'Add To Project',
+          routeType: 'addToProject',
         },
       },
     ],

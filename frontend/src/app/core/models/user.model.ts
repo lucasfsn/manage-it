@@ -9,3 +9,11 @@ export interface User {
   projects: Project[];
   createdAt: string;
 }
+
+export interface UpdateUser {
+  firstName?: string;
+  lastName?: string;
+  userName?: string;
+  email?: string;
+  password?: string;
+}

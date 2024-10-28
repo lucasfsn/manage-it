@@ -3,12 +3,15 @@ import { ToastrService } from 'ngx-toastr';
 import { delay, Observable, of, tap } from 'rxjs';
 import { dummyProjects } from '../../dummy-data';
 import { Project, ProjectCreate, Status, Task } from '../models/project.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
   constructor(private toastrService: ToastrService) {}
+
+  private allowAccess = false;
 
   private projects = signal<Project[] | undefined>(undefined);
   private project = signal<Project | undefined>(undefined);
@@ -193,6 +196,41 @@ export class ProjectService {
     if (!project) return false;
 
     return project.members.some((member) => member.userName === userName);
+  }
+
+  addToProject(projectId: string, user: User, currentUser: string) {
+    const project = dummyProjects.find((p) => p.id === projectId);
+
+    if (!project) throw new Error('Project not found');
+
+    if (project.owner.userName !== currentUser)
+      throw new Error('Only the project owner can add members to the project');
+
+    project.members.push(user);
+
+    console.log('addding');
+
+    return of(project).pipe(
+      delay(300),
+      tap({
+        next: () => {
+          this.toastrService.success('User has been added to project');
+          this.allowAccessToAddToProject = false;
+        },
+        error: (error) => {
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
+      })
+    );
+  }
+
+  get allowAccessToAddToProject(): boolean {
+    return this.allowAccess;
+  }
+
+  set allowAccessToAddToProject(value: boolean) {
+    this.allowAccess = value;
   }
 
   areProjectsLoaded(): boolean {

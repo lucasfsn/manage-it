@@ -1,6 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
+  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
@@ -12,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { User } from '../../../core/models/project.model';
+import { ProjectService } from '../../../core/services/project.service';
 import { UserService } from '../../../core/services/user.service';
 import { users } from '../../../dummy-data';
 
@@ -34,16 +36,24 @@ import { users } from '../../../dummy-data';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent {
+  projectId: string | null;
+
   @ViewChild('searchInput') searchInput!: ElementRef;
   form = new FormControl('');
   searchResults: User[] = [];
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) readonly data: { projectId?: string } | null,
     readonly dialogRef: MatDialogRef<SearchComponent>,
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    private projectService: ProjectService
+  ) {
+    this.projectId = data?.projectId ?? null;
+  }
 
   closeDialog(): void {
+    if (this.projectId) this.projectService.allowAccessToAddToProject = true;
+
     this.dialogRef.close();
   }
 

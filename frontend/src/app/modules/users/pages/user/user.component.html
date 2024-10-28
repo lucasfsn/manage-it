@@ -25,15 +25,12 @@
       </div>
     </div>
 
-    @if (!isLoggedInUser(user.userName)) {
+    @if (!isLoggedInUser(user.userName) && addToProject) {
+    <app-add-to-project [user]="user" />
+    } @else if (isLoggedInUser(user.userName)) {
     <button
       class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors mb-4"
-    >
-      Add to Project
-    </button>
-    } @else {
-    <button
-      class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors mb-4"
+      (click)="openEditProfileDialog()"
     >
       Edit profile
     </button>

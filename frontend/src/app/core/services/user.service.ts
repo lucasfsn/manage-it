@@ -1,8 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { of, tap } from 'rxjs';
+import { delay, of, tap } from 'rxjs';
 import { usersData } from '../../dummy-data';
-import { User } from '../models/user.model';
+import { UpdateUser, User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +26,31 @@ export class UserService {
           this.toastrService.error('Something went wrong.');
           console.error(
             "Couldn't fetch user data. Please try again later.",
+            error
+          );
+        },
+      })
+    );
+  }
+
+  updateUser(currentUser: User, updatedUserData: UpdateUser) {
+    if (!currentUser) return;
+
+    const updatedUser = { ...currentUser, ...updatedUserData };
+
+    const index = usersData.findIndex(
+      (user) => user.userName === currentUser.userName
+    );
+
+    usersData[index] = updatedUser;
+
+    return of(usersData).pipe(
+      delay(300),
+      tap({
+        error: (error) => {
+          this.toastrService.error('Something went wrong.');
+          console.error(
+            "Couldn't update user data. Please try again later.",
             error
           );
         },
