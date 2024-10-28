@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Project } from '../../../../core/models/project.model';
+import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { UserService } from '../../../../core/services/user.service';
@@ -25,7 +26,7 @@ export class ProjectsComponent implements OnInit {
   constructor(
     private loadingService: LoadingService,
     private projectService: ProjectService,
-    private userService: UserService,
+    private authService: AuthService,
     private dialog: MatDialog
   ) {}
 
@@ -45,7 +46,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   private loadProjects(): void {
-    const username = this.userService.getLoggedInUser()?.userName;
+    const username = this.authService.getLoggedInUsername();
 
     if (!username) return;
 

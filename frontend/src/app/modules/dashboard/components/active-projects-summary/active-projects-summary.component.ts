@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { Project, Status } from '../../../../core/models/project.model';
-import { UserService } from '../../../../core/services/user.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-active-projects-summary',
@@ -14,7 +14,7 @@ import { UserService } from '../../../../core/services/user.service';
 export class ActiveProjectsSummaryComponent implements OnInit {
   @Input() projects: Project[] | undefined;
 
-  constructor(private userService: UserService) {}
+  constructor(private authService: AuthService) {}
 
   public activeProjectsCount = 0;
 
@@ -55,8 +55,7 @@ export class ActiveProjectsSummaryComponent implements OnInit {
 
   isInProject(project: Project): boolean {
     return project.members.some(
-      (member) =>
-        member.userName === this.userService.getLoggedInUser()?.userName
+      (member) => member.userName === this.authService.getLoggedInUsername()
     );
   }
 

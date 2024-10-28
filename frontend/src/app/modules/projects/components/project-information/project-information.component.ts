@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { Project, Status } from '../../../../core/models/project.model';
+import { AuthService } from '../../../../core/services/auth.service';
 import { UserService } from '../../../../core/services/user.service';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { ShowMoreMembersComponent } from '../show-more-members/show-more-members.component';
@@ -21,12 +22,11 @@ export class ProjectInformationComponent {
   @Input() handleComplete!: () => void;
   readonly Status = Status;
 
-  constructor(private dialog: MatDialog, private userService: UserService) {}
+  constructor(private dialog: MatDialog, private authService: AuthService) {}
 
   public get isOwner(): boolean {
     return (
-      this.project.owner.userName ===
-      this.userService.getLoggedInUser()?.userName
+      this.project.owner.userName === this.authService.getLoggedInUsername()
     );
   }
 

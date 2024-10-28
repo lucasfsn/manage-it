@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of, tap } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { delay, of, tap } from 'rxjs';
 import { dummyProjects } from '../../dummy-data';
 import {
   AuthResponse,
@@ -13,7 +13,8 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  // private apiUrl = 'http://localhost:3000';
+  private readonly JWT_TOKEN = 'JWT_TOKEN';
+  private readonly USERNAME = 'USERNAME';
 
   private dummyUser: UserCredentials = {
     id: '123',
@@ -30,52 +31,50 @@ export class AuthService {
     access_token: 'dummy-jwt-token',
   };
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private router: Router, private toastrService: ToastrService) {}
 
-  login(user: LoginCredentials): Observable<AuthResponse> {
-    if (
-      user.email === this.dummyUser.email &&
-      user.password === this.dummyUser.password
-    ) {
-      const user = {
-        id: this.dummyUser.id,
-        email: this.dummyUser.email,
-        firstName: this.dummyUser.firstName,
-        lastName: this.dummyUser.lastName,
-        userName: this.dummyUser.userName,
-      };
-
-      localStorage.setItem('user', JSON.stringify(user));
-
-      return of(this.dummyResponse).pipe(
-        tap((res: AuthResponse) => {
-          localStorage.setItem('access_token', res.access_token);
-          this.router.navigate(['/dashboard']);
-        })
-      );
-    } else {
-      throw new Error('Invalid credentials');
-    }
+  login(user: LoginCredentials) {
+    return of(this.dummyResponse).pipe(
+      delay(300),
+      tap(() => {
+        if (
+          user.email !== this.dummyUser.email ||
+          user.password !== this.dummyUser.password
+        ) {
+          this.toastrService.error(
+            'Invalid credentials. Please try again later.'
+          );
+          throw new Error('Invalid credentials');
+        }
+      }),
+      tap((res: AuthResponse) => {
+        this.storeJwtToken(res.access_token);
+        this.storeUsername(this.dummyUser.userName);
+        this.toastrService.success('Logged in successfully!');
+        this.router.navigate(['/dashboard']);
+      })
+    );
   }
 
-  // login(user: UserCredentials): Observable<AuthResponse> {
-  //   console.log('Test');
-  //   return this.http.post<AuthResponse>(`${this.apiUrl}/login`, user).pipe(
-  //     tap((res: AuthResponse) => {
-  //       localStorage.setItem('access_token', res.access_token);
-  //     })
-  //   );
-  // }
-
-  logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user');
+  logout() {
+    localStorage.removeItem(this.JWT_TOKEN);
+    localStorage.removeItem(this.USERNAME);
     this.router.navigate(['/']);
   }
 
   isAuthenticated(): boolean {
-    return !!(
-      localStorage.getItem('access_token') && localStorage.getItem('user')
-    );
+    return !!localStorage.getItem(this.JWT_TOKEN);
+  }
+
+  private storeJwtToken(jwt: string) {
+    localStorage.setItem(this.JWT_TOKEN, jwt);
+  }
+
+  private storeUsername(username: string) {
+    localStorage.setItem(this.USERNAME, username);
+  }
+
+  getLoggedInUsername(): string | null {
+    return localStorage.getItem(this.USERNAME);
   }
 }

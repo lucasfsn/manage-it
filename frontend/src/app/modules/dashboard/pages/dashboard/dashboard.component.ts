@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from '../../../../core/models/project.model';
+import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
-import { UserService } from '../../../../core/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { ActiveProjectsSummaryComponent } from '../../components/active-projects-summary/active-projects-summary.component';
 import { ProjectStatisticsComponent } from '../../components/project-statistics/project-statistics.component';
@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
     private loadingService: LoadingService,
     private toastrService: ToastrService,
     private projectService: ProjectService,
-    private userService: UserService
+    private authService: AuthService
   ) {}
 
   get projects(): Project[] | undefined {
@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadProjects(): void {
-    const username = this.userService.getLoggedInUser()?.userName;
+    const username = this.authService.getLoggedInUsername();
 
     if (!username) return;
 

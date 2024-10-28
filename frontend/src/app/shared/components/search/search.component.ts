@@ -13,8 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { User } from '../../../core/models/project.model';
+import { AuthService } from '../../../core/services/auth.service';
 import { ProjectService } from '../../../core/services/project.service';
-import { UserService } from '../../../core/services/user.service';
 import { users } from '../../../dummy-data';
 
 @Component({
@@ -45,7 +45,7 @@ export class SearchComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) readonly data: { projectId?: string } | null,
     readonly dialogRef: MatDialogRef<SearchComponent>,
-    private userService: UserService,
+    private authService: AuthService,
     private projectService: ProjectService
   ) {
     this.projectId = data?.projectId ?? null;
@@ -76,6 +76,6 @@ export class SearchComponent {
   }
 
   isLoggedInUser(userName: string): boolean {
-    return this.userService.getLoggedInUser()?.userName === userName;
+    return this.authService.getLoggedInUsername() === userName;
   }
 }

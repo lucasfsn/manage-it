@@ -2,7 +2,7 @@ import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Project, Status } from '../../../../core/models/project.model';
-import { UserService } from '../../../../core/services/user.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -27,7 +27,7 @@ export class ProjectsListComponent implements OnChanges {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private authService: AuthService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -94,8 +94,7 @@ export class ProjectsListComponent implements OnChanges {
 
   isInProject(project: Project): boolean {
     return project.members.some(
-      (member) =>
-        member.userName === this.userService.getLoggedInUser()?.userName
+      (member) => member.userName === this.authService.getLoggedInUsername()
     );
   }
 }

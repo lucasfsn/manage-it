@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { Project, Status } from '../../../../core/models/project.model';
 import { User } from '../../../../core/models/user.model';
+import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { UserService } from '../../../../core/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
@@ -35,7 +36,8 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private location: Location,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   get user(): User | undefined {
@@ -47,7 +49,7 @@ export class UserComponent implements OnInit {
   }
 
   isLoggedInUser(userName: string): boolean {
-    return this.userService.getLoggedInUser()?.userName === userName;
+    return this.authService.getLoggedInUsername() === userName;
   }
 
   openEditProfileDialog(): void {

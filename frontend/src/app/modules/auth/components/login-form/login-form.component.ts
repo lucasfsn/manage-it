@@ -90,12 +90,10 @@ export class LoginFormComponent implements OnInit {
       return;
     }
 
-    const email = this.form.value.email as string;
-    const password = this.form.value.password as string;
+    const email = this.form.value.email ?? '';
+    const password = this.form.value.password ?? '';
 
     this.authService.login({ email, password }).subscribe();
-
-    this.toastr.success('Logged in successfully!');
   }
 
   ngOnInit() {

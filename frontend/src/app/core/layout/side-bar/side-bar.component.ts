@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { SearchComponent } from '../../../shared/components/search/search.component';
-import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -46,11 +46,10 @@ import { UserService } from '../../services/user.service';
 export class SideBarComponent implements OnInit {
   public isCollapsed = false;
 
-  constructor(private dialog: MatDialog, private userService: UserService) {}
+  constructor(private dialog: MatDialog, private authService: AuthService) {}
 
-  get userName(): string {
-    const username = this.userService.getLoggedInUser()!.userName;
-    return username;
+  get userName(): string | null {
+    return this.authService.getLoggedInUsername();
   }
 
   toggleSidebar() {

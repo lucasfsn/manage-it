@@ -9,7 +9,6 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { UpdateUser, User } from '../../../../core/models/user.model';
-import { LoadingService } from '../../../../core/services/loading.service';
 import { UserService } from '../../../../core/services/user.service';
 
 function equalValues(controlName1: string, controlName2: string) {
@@ -55,15 +54,14 @@ function passwordValidator(control: AbstractControl) {
   styleUrl: './edit-profile-form.component.css',
 })
 export class EditProfileFormComponent {
-  user: User | undefined;
+  userData: User | undefined;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { user: User },
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
-    private userService: UserService,
-    private loadingService: LoadingService
+    private userService: UserService
   ) {
-    this.user = data?.user;
+    this.userData = data?.user;
   }
 
   protected form = new FormGroup({
@@ -224,12 +222,12 @@ export class EditProfileFormComponent {
   }
 
   private fillFormWithDefaultValues() {
-    if (this.user) {
+    if (this.userData) {
       this.form.patchValue({
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        userName: this.user.userName,
-        email: this.user.email,
+        firstName: this.userData.firstName,
+        lastName: this.userData.lastName,
+        userName: this.userData.userName,
+        email: this.userData.email,
         passwords: {
           password: '',
           confirmPassword: '',
@@ -239,7 +237,7 @@ export class EditProfileFormComponent {
   }
 
   onSubmit() {
-    if (!this.user) return;
+    if (!this.userData) return;
 
     if (
       this.form.invalid &&
@@ -252,32 +250,24 @@ export class EditProfileFormComponent {
     const updatedUserData: UpdateUser = {
       firstName: this.form.value.firstName
         ? this.form.value.firstName
-        : this.user.firstName,
+        : this.userData.firstName,
       lastName: this.form.value.lastName
         ? this.form.value.lastName
-        : this.user.lastName,
+        : this.userData.lastName,
       userName: this.form.value.userName
         ? this.form.value.userName
-        : this.user.userName,
-      email: this.form.value.email ? this.form.value.email : this.user.email,
+        : this.userData.userName,
+      email: this.form.value.email
+        ? this.form.value.email
+        : this.userData.email,
     };
 
     if (this.form.value.passwords?.password) {
       updatedUserData.password = this.form.value.passwords.password;
     }
 
-    this.loadingService.loadingOn();
-    this.userService.updateUser(this.user, updatedUserData)?.subscribe({
-      next: () => {
-        this.closeDialog();
-      },
-      error: () => {
-        this.loadingService.loadingOff();
-      },
-      complete: () => {
-        this.loadingService.loadingOff();
-      },
-    });
+    this.userService.updateUserData(this.userData, updatedUserData).subscribe();
+    this.closeDialog();
   }
 
   onReset() {

@@ -1,14 +1,15 @@
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
-import { UserService } from '../../../core/services/user.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 export const userResolver: ResolveFn<void> = (route, state) => {
-  const userService = inject(UserService);
+  const authService = inject(AuthService);
   const router = inject(Router);
 
-  const loggedInUser = userService.getLoggedInUser();
+  const loggedInUser = authService.getLoggedInUsername();
+
   if (loggedInUser) {
-    router.navigate([`/users/${loggedInUser.userName}`]);
+    router.navigate([`/users/${loggedInUser}`]);
   } else {
     router.navigate(['/']);
   }

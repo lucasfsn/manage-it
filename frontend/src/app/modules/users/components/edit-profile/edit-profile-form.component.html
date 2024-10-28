@@ -18,7 +18,7 @@
           id="first-name"
           name="first-name"
           formControlName="firstName"
-          placeholder="{{ user?.firstName || 'Enter new first name' }}"
+          placeholder="{{ userData?.firstName || 'Enter new first name' }}"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (firstNameIsInvalid) {
@@ -31,7 +31,7 @@
           id="last-name"
           name="last-name"
           formControlName="lastName"
-          placeholder="{{ user?.lastName || 'Enter new last name' }}"
+          placeholder="{{ userData?.lastName || 'Enter new last name' }}"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (lastNameIsInvalid) {
@@ -44,7 +44,7 @@
           id="user-name"
           name="user-name"
           formControlName="userName"
-          placeholder="{{ user?.userName || 'Enter new username' }}"
+          placeholder="{{ userData?.userName || 'Enter new username' }}"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (userNameIsInvalid) {
@@ -57,7 +57,7 @@
           type="email"
           name="email"
           formControlName="email"
-          placeholder="{{ user?.email || 'Enter new email' }}"
+          placeholder="{{ userData?.email || 'Enter new email' }}"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (emailIsInvalid) {

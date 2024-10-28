@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Task, User } from '../../../../core/models/project.model';
+import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
-import { UserService } from '../../../../core/services/user.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { InlineSearchComponent } from '../../../../shared/components/inline-search/inline-search.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
@@ -30,7 +30,7 @@ export class TaskComponent {
   constructor(
     private projectService: ProjectService,
     private loadingService: LoadingService,
-    private userService: UserService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -66,8 +66,7 @@ export class TaskComponent {
         if (task) {
           this.isTaskAssignee.set(
             task.users.some(
-              (user) =>
-                user.userName === this.userService.getLoggedInUser()?.userName
+              (user) => user.userName === this.authService.getLoggedInUsername()
             )
           );
           this.allUsers.set(this.taskAssignees);

@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../../core/models/user.model';
+import { AuthService } from '../../../../core/services/auth.service';
 import { ProjectService } from '../../../../core/services/project.service';
-import { UserService } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-add-to-project',
@@ -19,16 +19,16 @@ export class AddToProjectComponent implements OnInit {
     private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private authService: AuthService
   ) {}
 
   handleAdd(): void {
-    const loggedInUser = this.userService.getLoggedInUser();
+    const loggedInUser = this.authService.getLoggedInUsername();
 
     if (!this.user || !this.projectId || !loggedInUser) return;
 
     this.projectService
-      .addToProject(this.projectId, this.user, loggedInUser.userName)
+      .addToProject(this.projectId, this.user, loggedInUser)
       .subscribe();
 
     this.router.navigate(['/projects', this.projectId]);

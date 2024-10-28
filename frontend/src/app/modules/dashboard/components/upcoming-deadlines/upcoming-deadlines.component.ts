@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Project, Status } from '../../../../core/models/project.model';
-import { UserService } from '../../../../core/services/user.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-upcoming-deadlines',
@@ -14,7 +14,7 @@ import { UserService } from '../../../../core/services/user.service';
 export class UpcomingDeadlinesComponent {
   @Input() projects: Project[] | undefined;
 
-  constructor(private userService: UserService) {}
+  constructor(private authService: AuthService) {}
 
   getDeadlineClass(endDate: string, status: Status): string {
     if (status === Status.Completed) {
@@ -56,8 +56,7 @@ export class UpcomingDeadlinesComponent {
 
   isInProject(project: Project): boolean {
     return project.members.some(
-      (member) =>
-        member.userName === this.userService.getLoggedInUser()?.userName
+      (member) => member.userName === this.authService.getLoggedInUsername()
     );
   }
 }

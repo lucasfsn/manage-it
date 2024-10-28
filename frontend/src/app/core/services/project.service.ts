@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { delay, Observable, of, tap } from 'rxjs';
+import { delay, mergeMap, Observable, of, tap, throwError } from 'rxjs';
 import { dummyProjects } from '../../dummy-data';
 import { Project, ProjectCreate, Status, Task } from '../models/project.model';
 import { User } from '../models/user.model';
@@ -26,11 +26,12 @@ export class ProjectService {
       project.members.some((member) => member.userName === username)
     );
 
-    this.projects.set(userProjects);
-
     return of(userProjects).pipe(
       delay(300),
       tap({
+        next: (projects) => {
+          this.projects.set(projects);
+        },
         error: (error) => {
           this.toastrService.error('Something went wrong.');
           console.error(error);
@@ -42,11 +43,12 @@ export class ProjectService {
   getProject(projectId: string) {
     const foundProject = dummyProjects.find((p) => p.id === projectId);
 
-    this.project.set(foundProject);
-
     return of(foundProject).pipe(
       delay(300),
       tap({
+        next: (project) => {
+          this.project.set(project);
+        },
         error: (error) => {
           this.toastrService.error('Something went wrong.');
           console.error(error);
@@ -91,6 +93,7 @@ export class ProjectService {
           this.toastrService.success('Project created successfully');
         },
         error: (error) => {
+          this.projects.set(prevProjects);
           this.toastrService.error('Something went wrong.');
           console.error(error);
         },
@@ -132,11 +135,12 @@ export class ProjectService {
     const foundProject = dummyProjects.find((p) => p.id === projectId);
     const foundTask = foundProject?.tasks.find((t) => t.id === taskId);
 
-    this.task.set(foundTask);
-
     return of(foundTask).pipe(
       delay(300),
       tap({
+        next: (task) => {
+          this.task.set(task);
+        },
         error: (error) => {
           this.toastrService.error('Something went wrong.');
           console.error(error);
@@ -145,7 +149,7 @@ export class ProjectService {
     );
   }
 
-  updateTask(projectId: string, task: Task): Observable<Task> {
+  updateTask(projectId: string, task: Task) {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === projectId);
 
@@ -155,12 +159,13 @@ export class ProjectService {
 
     if (taskIndex === -1) throw new Error('Task not found');
 
-    project.tasks[taskIndex] = task;
-    this.projects.set([...prevProjects]);
-
-    return of(task).pipe(
+    return of(project).pipe(
       delay(300),
       tap({
+        next: (project) => {
+          project.tasks[taskIndex] = task;
+          this.projects.set([...prevProjects]);
+        },
         error: (error) => {
           this.toastrService.error('Something went wrong.');
           console.error(error);
@@ -169,33 +174,33 @@ export class ProjectService {
     );
   }
 
-  completeProject(projectId: string): Observable<Project> {
+  completeProject(projectId: string) {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === projectId);
 
     if (!project) throw new Error('Project not found');
 
+    const updatedProjects = prevProjects.map((p) =>
+      p.id === projectId ? { ...p, status: Status.Completed } : p
+    );
+
     project.status = Status.Completed;
-    this.projects.set([...prevProjects]);
+    this.projects.set(updatedProjects);
 
     return of(project).pipe(
       delay(300),
+      // mergeMap(() => {
+      //   return throwError(() => new Error('Failed to update user data.'));
+      // }),
       tap({
         error: (error) => {
+          project.status = Status.InProgress;
+          this.projects.set(prevProjects);
           this.toastrService.error('Something went wrong.');
           console.error(error);
         },
       })
     );
-  }
-
-  hasAccessToProject(userName: string, projectId: string): boolean {
-    const projects = this.projects();
-    const project = projects?.find((p) => p.id === projectId);
-
-    if (!project) return false;
-
-    return project.members.some((member) => member.userName === userName);
   }
 
   addToProject(projectId: string, user: User, currentUser: string) {
@@ -206,18 +211,21 @@ export class ProjectService {
     if (project.owner.userName !== currentUser)
       throw new Error('Only the project owner can add members to the project');
 
-    project.members.push(user);
-
-    console.log('addding');
-
     return of(project).pipe(
       delay(300),
+      // mergeMap(() => {
+      //   return throwError(() => new Error('Failed to update user data.'));
+      // }),
       tap({
         next: () => {
-          this.toastrService.success('User has been added to project');
+          project.members.push(user);
+          this.toastrService.success(
+            `${user.firstName} ${user.lastName} has been added to project`
+          );
           this.allowAccessToAddToProject = false;
         },
         error: (error) => {
+          this.allowAccessToAddToProject = false;
           this.toastrService.error('Something went wrong.');
           console.error(error);
         },
@@ -235,5 +243,14 @@ export class ProjectService {
 
   areProjectsLoaded(): boolean {
     return !!this.projects();
+  }
+
+  hasAccessToProject(userName: string, projectId: string): boolean {
+    const projects = this.projects();
+    const project = projects?.find((p) => p.id === projectId);
+
+    if (!project) return false;
+
+    return project.members.some((member) => member.userName === userName);
   }
 }

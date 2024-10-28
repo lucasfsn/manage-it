@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { delay, of, tap } from 'rxjs';
+import { delay, mergeMap, of, tap, throwError } from 'rxjs';
 import { usersData } from '../../dummy-data';
 import { UpdateUser, User } from '../models/user.model';
 
@@ -33,21 +33,19 @@ export class UserService {
     );
   }
 
-  updateUser(currentUser: User, updatedUserData: UpdateUser) {
-    if (!currentUser) return;
+  updateUserData(prevData: User, updatedData: UpdateUser) {
+    const updatedUser = { ...prevData, ...updatedData };
 
-    const updatedUser = { ...currentUser, ...updatedUserData };
+    this.user.set(updatedUser);
 
-    const index = usersData.findIndex(
-      (user) => user.userName === currentUser.userName
-    );
-
-    usersData[index] = updatedUser;
-
-    return of(usersData).pipe(
-      delay(300),
+    return of(updatedUser).pipe(
+      delay(500),
+      // mergeMap((user) => {
+      //   return throwError(() => new Error('Failed to update user data.'));
+      // }),
       tap({
         error: (error) => {
+          this.user.set(prevData);
           this.toastrService.error('Something went wrong.');
           console.error(
             "Couldn't update user data. Please try again later.",
@@ -56,10 +54,5 @@ export class UserService {
         },
       })
     );
-  }
-
-  getLoggedInUser(): User | null {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
   }
 }

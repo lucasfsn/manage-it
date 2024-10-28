@@ -3,7 +3,6 @@ import { CanActivateFn, Router } from '@angular/router';
 import { of, switchMap, tap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { ProjectService } from '../services/project.service';
-import { UserService } from '../services/user.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -18,11 +17,16 @@ export const authGuard: CanActivateFn = (route, state) => {
 };
 
 export const projectAuthGuard: CanActivateFn = (route, state) => {
-  const userService = inject(UserService);
   const projectService = inject(ProjectService);
+  const authService = inject(AuthService);
   const router = inject(Router);
 
-  const userName = userService.getLoggedInUser()?.userName!;
+  const userName = authService.getLoggedInUsername();
+
+  if (!userName) {
+    return false;
+  }
+
   const projectId = route.paramMap.get('projectId');
 
   if (!projectId) {

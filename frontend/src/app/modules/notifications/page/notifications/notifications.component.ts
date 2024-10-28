@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Notification } from '../../../../core/models/notification.model';
+import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { NotificationService } from '../../../../core/services/notification.service';
-import { UserService } from '../../../../core/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { NotificationsListComponent } from '../../components/notifications-list/notifications-list.component';
 
@@ -16,7 +16,7 @@ import { NotificationsListComponent } from '../../components/notifications-list/
 export class NotificationsComponent implements OnInit {
   constructor(
     private loadingService: LoadingService,
-    private userService: UserService,
+    private authService: AuthService,
     private notificationService: NotificationService
   ) {}
 
@@ -35,7 +35,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   private loadNotifications(): void {
-    const userId = this.userService.getLoggedInUser()?.id;
+    const userId = this.authService.getLoggedInUsername();
 
     if (!userId) return;
 
