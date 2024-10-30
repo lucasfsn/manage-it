@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -22,12 +22,11 @@ import { ProjectService } from '../../../../core/services/project.service';
 
 function dueDateValidator(control: AbstractControl) {
   const selectedDate = new Date(control.value);
-  const nextDay = new Date();
-  nextDay.setDate(nextDay.getDate() + 1);
+  const today = new Date();
   selectedDate.setHours(0, 0, 0, 0);
-  nextDay.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
 
-  if (selectedDate >= nextDay) return null;
+  if (selectedDate >= today) return null;
 
   return {
     invalidDate: true,
@@ -35,13 +34,13 @@ function dueDateValidator(control: AbstractControl) {
 }
 
 @Component({
-  selector: 'app-add-card',
+  selector: 'app-create-task',
   standalone: true,
   imports: [MatIconModule, ReactiveFormsModule, MatDialogModule],
-  templateUrl: './add-card.component.html',
-  styleUrl: './add-card.component.css',
+  templateUrl: './create-task.component.html',
+  styleUrl: './create-task.component.css',
 })
-export class AddCardComponent {
+export class CreateTaskComponent {
   readonly TaskStatus = TaskStatus;
   readonly priorities = Object.values(Priority);
   public selectedStatus: TaskStatus;
@@ -58,11 +57,8 @@ export class AddCardComponent {
     this.projectId = data.projectId;
   }
 
-  public getNextDay(): string {
-    const today = new Date();
-    const nextDay = new Date(today);
-    nextDay.setDate(today.getDate() + 1);
-    return nextDay.toISOString().split('T')[0];
+  getToday(): string {
+    return new Date().toISOString().split('T')[0];
   }
 
   form = new FormGroup({
@@ -73,7 +69,7 @@ export class AddCardComponent {
         Validators.maxLength(120),
       ],
     }),
-    dueDate: new FormControl(this.getNextDay(), {
+    dueDate: new FormControl(this.getToday(), {
       validators: [Validators.required, dueDateValidator],
     }),
     priority: new FormControl('', {
@@ -98,19 +94,6 @@ export class AddCardComponent {
     );
   }
 
-  get dueDateErrors() {
-    const control = this.form.controls.dueDate;
-    if (control?.errors) {
-      if (control.errors['required']) {
-        return 'Due date is required.';
-      }
-      if (control.errors['invalidDate']) {
-        return 'Due date must be at least tomorrow.';
-      }
-    }
-    return null;
-  }
-
   get priorityIsInvalid() {
     return (
       this.form.controls.priority.dirty &&
@@ -130,7 +113,7 @@ export class AddCardComponent {
   onReset(): void {
     this.form.reset({
       priority: '',
-      dueDate: this.getNextDay(),
+      dueDate: this.getToday(),
     });
   }
 
@@ -148,11 +131,12 @@ export class AddCardComponent {
       dueDate: this.form.value.dueDate!,
     };
 
+    this.closeDialog();
+
     this.loadingService.loadingOn();
     this.projectService.addTask(newTask).subscribe({
       next: () => {
         this.loadingService.loadingOff();
-        this.closeDialog();
       },
       error: () => {
         this.loadingService.loadingOff();

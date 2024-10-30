@@ -4,9 +4,9 @@
       <div
         class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
       >
-        <mat-icon>create_new_folder</mat-icon>
+        <mat-icon>add_task</mat-icon>
       </div>
-      <p class="font-semibold">Create Project</p>
+      <p class="font-semibold">Add Task</p>
     </div>
     <button (click)="closeDialog()">
       <mat-icon>close</mat-icon>
@@ -14,28 +14,12 @@
   </div>
   <form [formGroup]="form" class="grid grid-cols-2 gap-2 bg-slate-900 p-2">
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="name">Title</label>
-      <input
-        id="name"
-        type="text"
-        formControlName="name"
-        placeholder="Enter project title"
-        class="w-full"
-      />
-      @if (nameIsInvalid) {
-      <p class="text-red-500 text-sm col-span-3">
-        Project name must contain between 2 and 50 characters.
-      </p>
-      }
-    </div>
-
-    <div class="grid grid-cols-3 gap-2 col-span-2">
       <label for="description">Description</label>
       <input
         type="text"
         id="description"
         formControlName="description"
-        placeholder="Enter project description"
+        placeholder="Enter task description"
         class="w-full"
       />
       @if (descriptionIsInvalid) {
@@ -44,37 +28,34 @@
       </p>
       }
     </div>
-
-    <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
-      <label for="startDate">Start date</label>
+    <div class="grid grid-cols-3 gap-2 col-span-2">
+      <label for="startDate">Due date</label>
       <input
+        id="dueDate"
         type="date"
-        id="startDate"
-        formControlName="startDate"
         [min]="getToday()"
+        formControlName="dueDate"
       />
-      @if (startDateIsInvalid) {
+      @if (dueDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        Start date must be at least today.
+        Due date must be at least today.
       </p>
       }
     </div>
-
-    <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
-      <label for="endDate">End date</label>
-      <input
-        type="date"
-        id="endDate"
-        formControlName="endDate"
-        [min]="getToday()"
-      />
-      @if (endDateIsInvalid) {
-      <p class="text-red-500 text-sm col-span-3">
-        End date cannot be earlier than the start date.
-      </p>
+    <div class="grid grid-cols-3 gap-2 col-span-2">
+      <label for="startDate">Due date</label>
+      <select id="priority" formControlName="priority">
+        <option value="" disabled>Select priority</option>
+        @for (priority of priorities; track priority) {
+        <option [value]="priority">
+          {{ priority }}
+        </option>
+        }
+      </select>
+      @if (priorityIsInvalid) {
+      <p class="text-red-500 text-sm col-span-3">Priority is required.</p>
       }
     </div>
-
     <div class="col-span-2 flex justify-end gap-2 mt-4">
       <button
         (click)="onReset()"
@@ -86,7 +67,7 @@
         (click)="onSubmit()"
         class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100"
       >
-        <p class="text-xs">Create Project</p>
+        <p class="text-xs">Add Task</p>
       </button>
     </div>
   </form>

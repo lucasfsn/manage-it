@@ -1,77 +1,78 @@
-<form [formGroup]="form" class="flex flex-col gap-2 px-4 py-3">
-  <button class="self-end" (click)="closeDialog()">
-    <mat-icon>close</mat-icon>
-  </button>
-  <div class="flex flex-col gap-1">
-    <input
-      id="name"
-      type="text"
-      formControlName="name"
-      placeholder="Enter project name"
-      class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
-    />
-    @if (nameIsInvalid) {
-    <p class="text-red-500 text-sm">
-      Project name must contain between 2 and 50 characters.
-    </p>
-    }
-  </div>
-  <div class="flex flex-col gap-1">
-    <input
-      type="text"
-      id="description"
-      formControlName="description"
-      placeholder="Enter project description"
-      class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
-    />
-    @if (descriptionIsInvalid) {
-    <p class="text-red-500 text-sm">
-      Project description must contain between 2 and 120 characters.
-    </p>
-    }
-  </div>
-  <div
-    class="flex flex-col sm:flex-row gap-3 justify-between"
-    formGroupName="dates"
-  >
-    <div class="flex flex-col gap-1">
-      <div class="flex gap-1 items-center">
-        <label for="startDate" class="text-gray-400">Start Date</label>
-        <input
-          type="date"
-          id="startDate"
-          formControlName="startDate"
-          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
-        />
+<div class="flex flex-col gap-2 px-4 py-3 rounded-sm bg-slate-900">
+  <div class="flex justify-between">
+    <div class="flex gap-2 items-center">
+      <div
+        class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
+      >
+        <mat-icon>folder_open</mat-icon>
       </div>
+      <p class="font-semibold">Edit Project</p>
     </div>
-    <div class="flex flex-col gap-1">
-      <div class="flex sm:flex-row-reverse items-center gap-1">
-        <label for="endDate" class="text-gray-400 sm:text-end">End Date</label>
-        <input
-          type="date"
-          id="endDate"
-          formControlName="endDate"
-          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
-        />
-      </div>
-      @if (wrongEndDate) {
-      <p class="text-red-500 text-sm">End date must be after start date.</p>
+    <button (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="form" class="grid grid-cols-2 gap-2 bg-slate-900 p-2">
+    <div class="grid grid-cols-3 gap-2 col-span-2">
+      <label for="name">Title</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Enter project title"
+        class="w-full"
+      />
+      @if (nameIsInvalid) {
+      <p class="text-red-500 text-sm col-span-3">
+        Project name must contain between 2 and 50 characters.
+      </p>
       }
     </div>
-  </div>
-  <div class="flex justify-end gap-2 mt-4">
-    <button
-      (click)="onReset()"
-      class="px-1.5 py-1 bg-slate-900 flex justify-center items-center rounded-md text-slate-300"
-    >
-      <p class="text-xs">reset</p>
-    </button>
-    <button
-      (click)="onSubmit()"
-      class="px-1.5 py-1 bg-sky-500 flex justify-center items-center rounded-md text-white"
-    >
-      <p class="text-xs">edit</p>
-    </button>
-  </div>
-</form>
+
+    <div class="grid grid-cols-3 gap-2 col-span-2">
+      <label for="description">Description</label>
+      <input
+        type="text"
+        id="description"
+        formControlName="description"
+        placeholder="Enter project description"
+        class="w-full"
+      />
+      @if (descriptionIsInvalid) {
+      <p class="text-red-500 text-sm col-span-3">
+        Project description must contain between 2 and 120 characters.
+      </p>
+      }
+    </div>
+
+    <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
+      <label for="startDate">Start date</label>
+      <input type="date" id="startDate" formControlName="startDate" />
+    </div>
+
+    <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
+      <label for="endDate">End date</label>
+      <input type="date" id="endDate" formControlName="endDate" />
+      @if (wrongEndDate) {
+      <p class="text-red-500 text-sm col-span-3">
+        End date cannot be earlier than the start date.
+      </p>
+      }
+    </div>
+
+    <div class="col-span-2 flex justify-end gap-2 mt-4">
+      <button
+        (click)="onReset()"
+        class="px-4 py-2 bg-slate-900 flex justify-center items-center rounded-md text-slate-300"
+      >
+        <p class="text-xs">Reset</p>
+      </button>
+      <button
+        (click)="onSubmit()"
+        class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100"
+      >
+        <p class="text-xs">Save Changes</p>
+      </button>
+    </div>
+  </form>
+</div>

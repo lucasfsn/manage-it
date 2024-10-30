@@ -1,4 +1,5 @@
-input {
+input,
+select {
   background-color: #0f172a;
   border: none;
   color: #cbd5e1;
@@ -8,11 +9,13 @@ input {
   grid-column: span 2 / span 2;
 }
 
-input:focus {
+input:focus,
+select:focus {
   outline: none;
 }
 
-input::placeholder {
+input::placeholder,
+select::placeholder {
   color: #64748b;
 }
 

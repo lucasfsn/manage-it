@@ -1,11 +1,22 @@
-form {
-  background-color: #1e293b;
+input {
+  background-color: #0f172a;
+  border: none;
+  color: #cbd5e1;
+  padding: 0.125rem;
+  margin-right: auto;
+  color-scheme: dark;
+  grid-column: span 2 / span 2;
 }
 
-mat-dialog-content {
-  background-color: #1e293b;
+input:focus {
+  outline: none;
 }
 
-.title-bg {
-  background-color: #1e293b;
+input::placeholder {
+  color: #64748b;
+}
+
+label {
+  color: #94a3b8;
+  grid-column: span 1 / span 1;
 }

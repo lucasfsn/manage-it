@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { Project } from '../../../../core/models/project.model';
+import { Project, UpdateProject } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 
@@ -52,15 +52,25 @@ export class EditProjectComponent {
     this.project = data.project;
     this.form = new FormGroup({
       name: new FormControl(this.project.name, {
-        validators: [Validators.minLength(2), Validators.maxLength(50)],
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
       }),
       description: new FormControl(this.project.description, {
-        validators: [Validators.minLength(2), Validators.maxLength(120)],
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(120),
+        ],
       }),
       dates: new FormGroup(
         {
-          startDate: new FormControl(this.project.startDate),
-          endDate: new FormControl(this.project.endDate),
+          startDate: new FormControl(this.project.startDate, [
+            Validators.required,
+          ]),
+          endDate: new FormControl(this.project.endDate, [Validators.required]),
         },
         {
           validators: [endDateValidator('startDate', 'endDate')],
@@ -93,6 +103,15 @@ export class EditProjectComponent {
     this.dialogRef.close();
   }
 
+  hasFormChanged(): boolean {
+    return (
+      this.form.value.name !== this.project.name ||
+      this.form.value.description !== this.project.description ||
+      this.form.value.dates.startDate !== this.project.startDate ||
+      this.form.value.dates.endDate !== this.project.endDate
+    );
+  }
+
   onReset() {
     this.form.reset({
       name: this.project.name,
@@ -109,8 +128,29 @@ export class EditProjectComponent {
       return;
     }
 
-    this.loadingService.loadingOn();
+    if (!this.hasFormChanged()) {
+      this.closeDialog();
+      return;
+    }
+
+    const updatedProject: UpdateProject = {
+      id: this.project.id,
+      name: this.form.value.name,
+      description: this.form.value.description,
+      startDate: this.form.value.dates.startDate,
+      endDate: this.form.value.dates.endDate,
+    };
 
     this.closeDialog();
+
+    this.loadingService.loadingOn();
+    this.projectService.updateProject(updatedProject).subscribe({
+      next: () => {
+        this.loadingService.loadingOff();
+      },
+      error: () => {
+        this.loadingService.loadingOff();
+      },
+    });
   }
 }

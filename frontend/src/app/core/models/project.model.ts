@@ -62,9 +62,9 @@ export interface ProjectCreate {
 }
 
 export interface UpdateProject {
-  name?: string;
-  description?: string;
-  startDate?: string;
-  endDate?: string;
-  owner?: User;
+  id: string;
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
 }

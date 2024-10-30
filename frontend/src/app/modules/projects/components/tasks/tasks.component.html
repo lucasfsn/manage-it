@@ -7,6 +7,7 @@
     #completedList="cdkDropList"
     [cdkDropListData]="completedTasks"
     [cdkDropListConnectedTo]="[inProgressList, notStartedList]"
+    id="completed"
     class="w-full flex flex-col gap-1 min-h-[1px]"
     (cdkDropListDropped)="drop($event)"
   >
@@ -62,6 +63,7 @@
     #inProgressList="cdkDropList"
     [cdkDropListData]="inProgressTasks"
     [cdkDropListConnectedTo]="[completedList, notStartedList]"
+    id="inProgress"
     class="w-full flex flex-col gap-1 min-h-[1px]"
     (cdkDropListDropped)="drop($event)"
   >
@@ -117,6 +119,7 @@
     #notStartedList="cdkDropList"
     [cdkDropListData]="notStartedTasks"
     [cdkDropListConnectedTo]="[inProgressList, completedList]"
+    id="notStarted"
     class="w-full flex flex-col gap-1 min-h-[1px]"
     (cdkDropListDropped)="drop($event)"
   >

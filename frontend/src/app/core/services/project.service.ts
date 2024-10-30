@@ -8,6 +8,7 @@ import {
   Status,
   Task,
   TaskCreate,
+  UpdateProject,
   User,
 } from '../models/project.model';
 
@@ -137,7 +138,34 @@ export class ProjectService {
     );
   }
 
-  updateProject(project: Project) {}
+  updateProject(updatedProject: UpdateProject) {
+    const prevProjects = this.projects() || [];
+    const project = prevProjects.find((p) => p.id === updatedProject.id);
+
+    if (!project) throw new Error('Project not found');
+
+    this.project.set({ ...project, ...updatedProject });
+
+    const updatedProjects = prevProjects.map((p) =>
+      p.id === updatedProject.id ? { ...p, ...updatedProject } : p
+    );
+
+    this.projects.set(updatedProjects);
+
+    return of(updatedProject).pipe(
+      delay(300),
+      tap({
+        next: () => {
+          this.toastrService.success('Project updated successfully');
+        },
+        error: (error) => {
+          this.projects.set(prevProjects);
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
+      })
+    );
+  }
 
   getTask(projectId: string, taskId: string) {
     const foundProject = dummyProjects.find((p) => p.id === projectId);
@@ -163,15 +191,14 @@ export class ProjectService {
 
     if (!project) throw new Error('Project not found');
 
-    console.log(task);
-
     return of(task).pipe(
       delay(300),
       tap({
         next: (task) => {
           const fakeId = Math.random().toString(16).slice(2);
-          project.tasks.push({ ...task, id: fakeId, users: [] });
+          project.tasks.push({ ...task, id: fakeId });
           this.projects.set([...prevProjects]);
+          this.toastrService.success('Task added successfully.');
         },
         error: (error) => {
           this.projects.set([...prevProjects]);
@@ -186,9 +213,11 @@ export class ProjectService {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === projectId);
 
+    const prevProject = this.project();
+
     if (!project) throw new Error('Project not found');
 
-    const taskIndex = project.tasks.findIndex((t) => t.id === task.id);
+    const taskIndex = this.project()?.tasks.findIndex((t) => t.id === task.id);
 
     if (taskIndex === -1) throw new Error('Task not found');
 
@@ -196,11 +225,20 @@ export class ProjectService {
       t.id === task.id ? { ...t, status: task.status } : t
     );
 
+    const updatedProject = { ...project, tasks: updatedProjectTasksList };
+    const updatedProjects = prevProjects.map((p) =>
+      p.id === projectId ? updatedProject : p
+    );
+
+    this.projects.set(updatedProjects);
+    this.project.set(updatedProject);
+
     return of(updatedProjectTasksList).pipe(
       delay(300),
       tap({
         error: (error) => {
           this.projects.set(prevProjects);
+          this.project.set(prevProject);
           this.toastrService.error('Something went wrong.');
           console.error(error);
         },

@@ -16,7 +16,7 @@ import {
   TaskStatus,
 } from '../../../../core/models/project.model';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
-import { AddCardComponent } from '../add-card/add-card.component';
+import { CreateTaskComponent } from '../create-task/create-task.component';
 
 @Component({
   selector: 'app-tasks',
@@ -27,7 +27,7 @@ import { AddCardComponent } from '../add-card/add-card.component';
     DatePipe,
     CdkDropList,
     CdkDrag,
-    AddCardComponent,
+    CreateTaskComponent,
     PriorityComponent,
     RouterLink,
   ],
@@ -65,14 +65,12 @@ export class TasksComponent implements OnInit {
     const task = event.container.data[event.currentIndex];
     let newStatus: TaskStatus;
 
-    if (event.container.id === 'cdk-drop-list-0') {
+    if (event.container.id === 'completed') {
       newStatus = TaskStatus.Completed;
-    } else if (event.container.id === 'cdk-drop-list-1') {
+    } else if (event.container.id === 'inProgress') {
       newStatus = TaskStatus.InProgress;
-    } else if (event.container.id === 'cdk-drop-list-2') {
-      newStatus = TaskStatus.NotStarted;
     } else {
-      return;
+      newStatus = TaskStatus.NotStarted;
     }
 
     task.status = newStatus;
@@ -80,7 +78,7 @@ export class TasksComponent implements OnInit {
   }
 
   openAddCardDialog(selectedStatus: TaskStatus): void {
-    this.dialog.open(AddCardComponent, {
+    this.dialog.open(CreateTaskComponent, {
       width: '450px',
       backdropClass: 'dialog-backdrop',
       data: {

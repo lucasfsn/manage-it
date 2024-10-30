@@ -31,6 +31,19 @@ function endDateValidator(startDate: string, endDate: string) {
   };
 }
 
+function startDateValidator(control: AbstractControl) {
+  const selectedDate = new Date(control.value);
+  const today = new Date();
+  selectedDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  if (selectedDate >= today) return null;
+
+  return {
+    invalidDate: true,
+  };
+}
+
 @Component({
   selector: 'app-create-new-project',
   standalone: true,
@@ -66,10 +79,10 @@ export class CreateNewProjectComponent {
     }),
     dates: new FormGroup(
       {
-        startDate: new FormControl('', {
-          validators: [Validators.required],
+        startDate: new FormControl(this.getToday(), {
+          validators: [Validators.required, startDateValidator],
         }),
-        endDate: new FormControl('', {
+        endDate: new FormControl(this.getToday(), {
           validators: [Validators.required],
         }),
       },
@@ -105,18 +118,28 @@ export class CreateNewProjectComponent {
 
   get endDateIsInvalid() {
     return (
-      this.form.controls.dates.get('endDate')?.dirty &&
-      this.form.controls.dates.get('endDate')?.touched &&
-      this.form.controls.dates.get('endDate')?.invalid
+      (this.form.controls.dates.get('endDate')?.dirty &&
+        this.form.controls.dates.get('endDate')?.touched &&
+        this.form.controls.dates.get('endDate')?.invalid) ||
+      this.form.controls.dates.hasError('invalidEndDate')
     );
   }
 
-  get wrongEndDate() {
-    return this.form.controls.dates.hasError('invalidEndDate');
+  getToday(): string {
+    return new Date().toISOString().split('T')[0];
   }
 
   closeDialog(): void {
     this.dialogRef.close();
+  }
+
+  onReset(): void {
+    this.form.reset({
+      dates: {
+        startDate: this.getToday(),
+        endDate: this.getToday(),
+      },
+    });
   }
 
   onSubmit(): void {
@@ -125,10 +148,10 @@ export class CreateNewProjectComponent {
     }
 
     const projectData: ProjectCreate = {
-      name: this.form.value.name as string,
-      description: this.form.value.description as string,
-      startDate: this.form.value.dates?.startDate as string,
-      endDate: this.form.value.dates?.endDate as string,
+      name: this.form.value.name!,
+      description: this.form.value.description!,
+      startDate: this.form.value.dates?.startDate!,
+      endDate: this.form.value.dates?.endDate!,
     };
 
     this.projectService.addProject(projectData).subscribe();
