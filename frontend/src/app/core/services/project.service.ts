@@ -1,9 +1,15 @@
 import { Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { delay, mergeMap, Observable, of, tap, throwError } from 'rxjs';
+import { delay, of, tap } from 'rxjs';
 import { dummyProjects } from '../../dummy-data';
-import { Project, ProjectCreate, Status, Task } from '../models/project.model';
-import { User } from '../models/user.model';
+import {
+  Project,
+  ProjectCreate,
+  Status,
+  Task,
+  TaskCreate,
+  User,
+} from '../models/project.model';
 
 @Injectable({
   providedIn: 'root',
@@ -131,6 +137,8 @@ export class ProjectService {
     );
   }
 
+  updateProject(project: Project) {}
+
   getTask(projectId: string, taskId: string) {
     const foundProject = dummyProjects.find((p) => p.id === projectId);
     const foundTask = foundProject?.tasks.find((t) => t.id === taskId);
@@ -149,7 +157,32 @@ export class ProjectService {
     );
   }
 
-  updateTask(projectId: string, task: Task) {
+  addTask(task: TaskCreate) {
+    const prevProjects = this.projects() || [];
+    const project = prevProjects.find((p) => p.id === task.projectId);
+
+    if (!project) throw new Error('Project not found');
+
+    console.log(task);
+
+    return of(task).pipe(
+      delay(300),
+      tap({
+        next: (task) => {
+          const fakeId = Math.random().toString(16).slice(2);
+          project.tasks.push({ ...task, id: fakeId, users: [] });
+          this.projects.set([...prevProjects]);
+        },
+        error: (error) => {
+          this.projects.set([...prevProjects]);
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
+      })
+    );
+  }
+
+  moveTask(projectId: string, task: Task) {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === projectId);
 
@@ -159,14 +192,15 @@ export class ProjectService {
 
     if (taskIndex === -1) throw new Error('Task not found');
 
-    return of(project).pipe(
+    const updatedProjectTasksList = project.tasks.map((t) =>
+      t.id === task.id ? { ...t, status: task.status } : t
+    );
+
+    return of(updatedProjectTasksList).pipe(
       delay(300),
       tap({
-        next: (project) => {
-          project.tasks[taskIndex] = task;
-          this.projects.set([...prevProjects]);
-        },
         error: (error) => {
+          this.projects.set(prevProjects);
           this.toastrService.error('Something went wrong.');
           console.error(error);
         },

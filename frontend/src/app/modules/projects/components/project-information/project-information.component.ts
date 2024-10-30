@@ -20,6 +20,7 @@ export class ProjectInformationComponent {
   @Input() project!: Project;
   @Input() handleDelete!: () => void;
   @Input() handleComplete!: () => void;
+  @Input() handleEdit!: () => void;
   readonly Status = Status;
 
   constructor(private dialog: MatDialog, private authService: AuthService) {}

@@ -5,8 +5,13 @@
     </h2>
     @if (isOwner) {
     <div class="flex items-center mr-4 gap-2">
+      <button
+        class="bg-sky-300 text-slate-900 hover:bg-sky-400 transition-all p-1 flex justify-center items-center rounded-full"
+        (click)="handleEdit()"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
       @if (project.status !== Status.Completed) {
-
       <button
         class="bg-green-300 text-slate-900 hover:bg-green-400 transition-all p-1 flex justify-center items-center rounded-full"
         (click)="handleComplete()"
@@ -30,6 +35,8 @@
         <p>Project Leader:</p>
         <p>Members:</p>
         <p>Status:</p>
+        <p>Start date:</p>
+        <p>End date:</p>
       </div>
       <div class="flex flex-col gap-2 text-slate-300">
         <p>{{ project.owner.firstName }} {{ project.owner.lastName }}</p>
@@ -68,6 +75,8 @@
         >
           {{ project.status }}
         </div>
+        <div>{{ project.startDate | date }}</div>
+        <div>{{ project.endDate | date }}</div>
       </div>
     </div>
   </div>

@@ -26,6 +26,15 @@ export interface Task {
   dueDate: string;
 }
 
+export interface TaskCreate {
+  description: string;
+  status: TaskStatus;
+  projectId: string;
+  priority: Priority;
+  dueDate: string;
+  users: User[];
+}
+
 export enum Status {
   InProgress = 'In Progress',
   Completed = 'Completed',
@@ -52,10 +61,10 @@ export interface ProjectCreate {
   endDate: string;
 }
 
-export interface TaskCreate {
-  projectId: string;
-  users: User[];
-  description: string;
-  priority: Priority;
-  dueDate: string;
+export interface UpdateProject {
+  name?: string;
+  description?: string;
+  startDate?: string;
+  endDate?: string;
+  owner?: User;
 }

@@ -7,6 +7,7 @@ import {
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Project, Status, Task } from '../../../../core/models/project.model';
@@ -14,6 +15,7 @@ import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { EditProjectComponent } from '../../components/edit-project/edit-project.component';
 import { ProjectInformationComponent } from '../../components/project-information/project-information.component';
 import { TasksComponent } from '../../components/tasks/tasks.component';
 
@@ -59,7 +61,8 @@ export class ProjectComponent implements OnInit {
     private projectService: ProjectService,
     private loadingService: LoadingService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   get project(): Project | undefined {
@@ -114,14 +117,30 @@ export class ProjectComponent implements OnInit {
     this.projectService.completeProject(projectId).subscribe();
   }
 
-  handleUpdate(task: Task) {
+  handleEdit() {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
     if (!projectId) {
       return;
     }
 
-    this.projectService.updateTask(projectId, task).subscribe();
+    this.dialog.open(EditProjectComponent, {
+      width: '600px',
+      backdropClass: 'dialog-backdrop',
+      data: {
+        project: this.project,
+      },
+    });
+  }
+
+  handleMoveTask(task: Task) {
+    const projectId = this.route.snapshot.paramMap.get('projectId');
+
+    if (!projectId) {
+      return;
+    }
+
+    this.projectService.moveTask(projectId, task).subscribe();
   }
 
   private loadProject(): void {

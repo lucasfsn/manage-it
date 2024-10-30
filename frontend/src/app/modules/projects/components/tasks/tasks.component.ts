@@ -35,10 +35,10 @@ import { AddCardComponent } from '../add-card/add-card.component';
   styleUrl: './tasks.component.css',
 })
 export class TasksComponent implements OnInit {
-  private dialog = inject(MatDialog);
-
   @Input() project!: Project;
-  @Input() handleUpdate!: (task: Task) => void;
+  @Input() handleMoveTask!: (task: Task) => void;
+
+  constructor(private dialog: MatDialog) {}
 
   readonly TaskStatus = TaskStatus;
 
@@ -61,7 +61,22 @@ export class TasksComponent implements OnInit {
         event.currentIndex
       );
     }
-    this.handleUpdate(event.container.data[event.currentIndex]);
+
+    const task = event.container.data[event.currentIndex];
+    let newStatus: TaskStatus;
+
+    if (event.container.id === 'cdk-drop-list-0') {
+      newStatus = TaskStatus.Completed;
+    } else if (event.container.id === 'cdk-drop-list-1') {
+      newStatus = TaskStatus.InProgress;
+    } else if (event.container.id === 'cdk-drop-list-2') {
+      newStatus = TaskStatus.NotStarted;
+    } else {
+      return;
+    }
+
+    task.status = newStatus;
+    this.handleMoveTask(task);
   }
 
   openAddCardDialog(selectedStatus: TaskStatus): void {
@@ -70,6 +85,7 @@ export class TasksComponent implements OnInit {
       backdropClass: 'dialog-backdrop',
       data: {
         selectedStatus,
+        projectId: this.project.id,
       },
     });
   }

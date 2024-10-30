@@ -6,8 +6,9 @@
     [project]="project"
     [handleDelete]="handleDelete.bind(this)"
     [handleComplete]="handleComplete.bind(this)"
+    [handleEdit]="handleEdit.bind(this)"
   />
-  <app-tasks [project]="project" [handleUpdate]="handleUpdate.bind(this)" />
+  <app-tasks [project]="project" [handleMoveTask]="handleMoveTask.bind(this)" />
 </div>
 
 <button

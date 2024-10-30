@@ -1,5 +1,6 @@
 import { Component, Inject, inject } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -11,14 +12,27 @@ import {
   MatDialogModule,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-
 import {
   Priority,
   TaskCreate,
   TaskStatus,
-  User,
 } from '../../../../core/models/project.model';
+import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
+
+function dueDateValidator(control: AbstractControl) {
+  const selectedDate = new Date(control.value);
+  const nextDay = new Date();
+  nextDay.setDate(nextDay.getDate() + 1);
+  selectedDate.setHours(0, 0, 0, 0);
+  nextDay.setHours(0, 0, 0, 0);
+
+  if (selectedDate >= nextDay) return null;
+
+  return {
+    invalidDate: true,
+  };
+}
 
 @Component({
   selector: 'app-add-card',
@@ -28,18 +42,27 @@ import { ProjectService } from '../../../../core/services/project.service';
   styleUrl: './add-card.component.css',
 })
 export class AddCardComponent {
-  private dialog = inject(MatDialog);
-
   readonly TaskStatus = TaskStatus;
   readonly priorities = Object.values(Priority);
   public selectedStatus: TaskStatus;
+  public projectId: string;
 
   constructor(
+    private loadingService: LoadingService,
     private projectService: ProjectService,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
-    public data: { selectedStatus: TaskStatus }
+    public data: { selectedStatus: TaskStatus; projectId: string }
   ) {
     this.selectedStatus = data.selectedStatus;
+    this.projectId = data.projectId;
+  }
+
+  public getNextDay(): string {
+    const today = new Date();
+    const nextDay = new Date(today);
+    nextDay.setDate(today.getDate() + 1);
+    return nextDay.toISOString().split('T')[0];
   }
 
   form = new FormGroup({
@@ -50,8 +73,8 @@ export class AddCardComponent {
         Validators.maxLength(120),
       ],
     }),
-    dueDate: new FormControl('', {
-      validators: [Validators.required],
+    dueDate: new FormControl(this.getNextDay(), {
+      validators: [Validators.required, dueDateValidator],
     }),
     priority: new FormControl('', {
       validators: [Validators.required],
@@ -75,6 +98,19 @@ export class AddCardComponent {
     );
   }
 
+  get dueDateErrors() {
+    const control = this.form.controls.dueDate;
+    if (control?.errors) {
+      if (control.errors['required']) {
+        return 'Due date is required.';
+      }
+      if (control.errors['invalidDate']) {
+        return 'Due date must be at least tomorrow.';
+      }
+    }
+    return null;
+  }
+
   get priorityIsInvalid() {
     return (
       this.form.controls.priority.dirty &&
@@ -83,8 +119,19 @@ export class AddCardComponent {
     );
   }
 
+  get isLoading(): boolean {
+    return this.loadingService.isLoading();
+  }
+
   closeDialog(): void {
     this.dialog.closeAll();
+  }
+
+  onReset(): void {
+    this.form.reset({
+      priority: '',
+      dueDate: this.getNextDay(),
+    });
   }
 
   onSubmit(): void {
@@ -92,16 +139,24 @@ export class AddCardComponent {
       return;
     }
 
-    const taskData: TaskCreate = {
-      projectId: 'some-project-id',
-      users: this.form.value.users as User[],
-      description: this.form.value.description as string,
+    const newTask: TaskCreate = {
+      projectId: this.projectId,
+      users: [],
+      status: this.selectedStatus,
+      description: this.form.value.description!,
       priority: this.form.value.priority as Priority,
-      dueDate: this.form.value.dueDate as string,
+      dueDate: this.form.value.dueDate!,
     };
 
-    // this.projectService.addTask(selectedStatus, taskData).subscribe(() => {
-    //   this.closeDialog();
-    // });
+    this.loadingService.loadingOn();
+    this.projectService.addTask(newTask).subscribe({
+      next: () => {
+        this.loadingService.loadingOff();
+        this.closeDialog();
+      },
+      error: () => {
+        this.loadingService.loadingOff();
+      },
+    });
   }
 }
