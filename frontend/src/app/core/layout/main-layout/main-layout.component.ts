@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { AuthService } from '../../services/auth.service';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 
 @Component({
@@ -10,4 +11,23 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css',
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent implements OnInit {
+  protected isLoading = signal(false);
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    if (!this.authService.isAuthenticated()) return;
+
+    this.isLoading.set(true);
+    this.authService.getUser().subscribe({
+      next: () => {
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.authService.logout();
+      },
+    });
+  }
+}

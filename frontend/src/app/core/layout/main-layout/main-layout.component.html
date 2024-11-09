@@ -1,4 +1,8 @@
 <app-side-bar />
 <div class="w-full">
+  @if (isLoading()) {
+  <app-spinner />
+  } @else {
   <router-outlet />
+  }
 </div>

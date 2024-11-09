@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { delay, of, tap } from 'rxjs';
@@ -14,7 +14,9 @@ import {
 })
 export class AuthService {
   private readonly JWT_TOKEN = 'JWT_TOKEN';
-  private readonly USERNAME = 'USERNAME';
+  private currentUser = signal<UserCredentials | null>(null);
+
+  loadedUser = this.currentUser.asReadonly();
 
   private dummyUser: UserCredentials = {
     id: '123',
@@ -49,7 +51,7 @@ export class AuthService {
       }),
       tap((res: AuthResponse) => {
         this.storeJwtToken(res.access_token);
-        this.storeUsername(this.dummyUser.userName);
+        this.getUser().subscribe();
         this.toastrService.success('Logged in successfully!');
         this.router.navigate(['/dashboard']);
       })
@@ -58,7 +60,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem(this.JWT_TOKEN);
-    localStorage.removeItem(this.USERNAME);
     this.router.navigate(['/']);
   }
 
@@ -70,11 +71,22 @@ export class AuthService {
     localStorage.setItem(this.JWT_TOKEN, jwt);
   }
 
-  private storeUsername(username: string) {
-    localStorage.setItem(this.USERNAME, username);
+  getUser() {
+    const token = localStorage.getItem(this.JWT_TOKEN);
+
+    return of(this.dummyUser).pipe(
+      delay(300),
+      tap((user: UserCredentials) => {
+        this.currentUser.set(user);
+      })
+    );
   }
 
   getLoggedInUsername(): string | null {
-    return localStorage.getItem(this.USERNAME);
+    if (!this.currentUser()) {
+      return null;
+    }
+
+    return this.currentUser()!.userName;
   }
 }

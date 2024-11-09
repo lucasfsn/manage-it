@@ -5,10 +5,61 @@
   <div class="p-4 border-none chat-title text-center">
     <h2 class="text-lg font-semibold">Messages</h2>
   </div>
-  <div class="flex flex-col gap-3 p-4 relative flex-grow justify-between">
-    <div class="px-4 py-3 overflow-y-scroll"></div>
+  <div
+    class="flex flex-col gap-3 p-4 relative flex-grow justify-between overflow-hidden"
+  >
     <div
-      class="flex items-center bg-slate-950 text-gray-200 shadow-lg border chat-input rounded-full focus-within:ring-2 focus-within:ring-slate-600 px-4 py-3 gap-2 h-12 relative"
+      class="flex flex-col gap-3 px-4 py-3 overflow-y-scroll max-h-[80%]"
+      #messageContainer
+    >
+      @for (message of messages; track message.id) {
+      <div
+        class="flex flex-col gap-1 max-w-[250px] lg:max-w-[350px]"
+        [ngClass]="{
+          'self-end flex-row-reverse':
+            message.sender.userName === currentUser?.userName
+        }"
+      >
+        <div
+          class="flex gap-2"
+          [ngClass]="{
+            'flex-row-reverse':
+              message.sender.userName === currentUser?.userName
+          }"
+        >
+          <div
+            class="flex items-center justify-center w-[30px] h-[30px] aspect-square rounded-full bg-gray-700 text-white text-xs font-semibold"
+          >
+            {{ message.sender.firstName[0] }}{{ message.sender.lastName[0] }}
+          </div>
+          <div
+            class="flex items-center gap-2"
+            [ngClass]="{
+              'flex-row-reverse':
+                message.sender.userName === currentUser?.userName
+            }"
+          >
+            @if (message.sender.userName === currentUser?.userName) {
+            <span class="text-gray-400 text-sm">Me</span>
+            } @else {
+            <span class="text-gray-400 text-sm"
+              >{{ message.sender.firstName }}
+              {{ message.sender.lastName }}</span
+            >
+            }
+            <span class="text-gray-500 text-xs">{{
+              message.createdAt | date : "short"
+            }}</span>
+          </div>
+        </div>
+        <div class="text-white text-sm break-words">
+          {{ message.content }}
+        </div>
+      </div>
+      }
+    </div>
+    <div
+      class="flex items-center bg-slate-950 text-gray-200 shadow-lg border chat-input rounded-full focus-within:ring-2 focus-within:ring-slate-600 px-4 py-3 h-12 relative"
     >
       @if (showEmojiPicker) {
       <div class="absolute bottom-12 right-0 z-50">
@@ -32,21 +83,26 @@
       }
       <input
         type="text"
-        placeholder="Message..."
-        class="flex-1 bg-transparent text-sm focus:outline-none placeholder:text-gray-500"
+        [placeholder]="isLoading() ? 'Loading...' : 'Message...'"
+        class="flex-1 bg-transparent text-sm focus:outline-none placeholder:text-gray-500 disabled:cursor-not-allowed"
         (input)="onTypeMessage($event)"
         [(ngModel)]="message"
+        [disabled]="isLoading()"
+        (keydown.enter)="sendMessage()"
       />
       <button
-        class="flex justify-center items-center rounded-full w-8 h-8 aspect-square text-gray-500 hover:text-gray-400 transition-all"
+        class="flex justify-center items-center rounded-full w-8 h-8 aspect-square text-gray-500 hover:text-gray-400 transition-all disabled:cursor-not-allowed"
         (click)="toggleEmojiPicker()"
+        [disabled]="isLoading()"
       >
         <mat-icon class="text-base">sentiment_satisfied_alt</mat-icon>
       </button>
-      @if (message.length > 0) {
+      @if (message.length >= 0) {
       <button
         @buttonAnimation
-        class="focus:outline-none flex justify-center items-center bg-slate-900 rounded-full w-8 h-8 aspect-square hover:bg-slate-800 transition-all"
+        class="focus:outline-none flex justify-center items-center bg-slate-900 rounded-full w-8 h-8 aspect-square hover:bg-slate-800 transition-all disabled:cursor-not-allowed"
+        [disabled]="isLoading()"
+        (click)="sendMessage()"
       >
         <mat-icon class="text-gray-200 text-base">north</mat-icon>
       </button>

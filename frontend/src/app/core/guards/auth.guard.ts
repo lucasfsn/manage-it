@@ -21,42 +21,53 @@ export const projectAuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const userName = authService.getLoggedInUsername();
+  return authService.getUser().pipe(
+    switchMap((user) => {
+      const userName = user?.userName;
 
-  if (!userName) {
-    return false;
-  }
+      if (!userName) {
+        router.navigate(['/auth/login']);
+        return of(false);
+      }
 
-  const projectId = route.paramMap.get('projectId');
+      const projectId = route.paramMap.get('projectId');
 
-  if (!projectId) {
-    router.navigate(['/projects']);
-    return false;
-  }
-
-  if (projectService.areProjectsLoaded()) {
-    const hasAccess = projectService.hasAccessToProject(userName, projectId);
-
-    if (hasAccess) return of(true);
-
-    router.navigate(['/projects']);
-    return of(false);
-  }
-
-  return projectService.getProjects(userName).pipe(
-    switchMap(() => {
-      const hasAccess = projectService.hasAccessToProject(userName, projectId);
-
-      if (hasAccess) return of(true);
-
-      router.navigate(['/projects']);
-      return of(false);
-    }),
-    tap({
-      error: (error) => {
-        console.error('Error loading projects:', error);
+      if (!projectId) {
         router.navigate(['/projects']);
-      },
+        return of(false);
+      }
+
+      if (projectService.areProjectsLoaded()) {
+        const hasAccess = projectService.hasAccessToProject(
+          userName,
+          projectId
+        );
+
+        if (hasAccess) return of(true);
+
+        router.navigate(['/projects']);
+        return of(false);
+      }
+
+      return projectService.getProjects(userName).pipe(
+        switchMap(() => {
+          const hasAccess = projectService.hasAccessToProject(
+            userName,
+            projectId
+          );
+
+          if (hasAccess) return of(true);
+
+          router.navigate(['/projects']);
+          return of(false);
+        }),
+        tap({
+          error: (error) => {
+            console.error('Error loading projects:', error);
+            router.navigate(['/projects']);
+          },
+        })
+      );
     })
   );
 };

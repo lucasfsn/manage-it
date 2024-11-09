@@ -5,17 +5,36 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { UserCredentials } from '../../../core/models/auth.model';
+import { Message, MessageReq } from '../../../core/models/message.model';
+import { AuthService } from '../../../core/services/auth.service';
+import { MessageService } from '../../../core/services/message.service';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [MatIconModule, PickerComponent, FormsModule, CommonModule],
+  imports: [
+    MatIconModule,
+    PickerComponent,
+    FormsModule,
+    CommonModule,
+    DatePipe,
+  ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
   animations: [
@@ -38,11 +57,19 @@ import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
     ]),
   ],
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit, AfterViewChecked {
   @Input() customPosition: string = '';
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
-  public message: string = '';
-  public showEmojiPicker: boolean = false;
+  constructor(
+    private authService: AuthService,
+    private messageService: MessageService,
+    private route: ActivatedRoute
+  ) {}
+
+  protected message: string = '';
+  protected showEmojiPicker: boolean = false;
+  protected isLoading = signal(false);
 
   onTypeMessage(event: Event) {
     this.showEmojiPicker = false;
@@ -56,5 +83,82 @@ export class ChatComponent {
 
   toggleEmojiPicker(): void {
     this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  get messages(): Message[] {
+    return this.messageService.loadedMessages();
+  }
+
+  get currentUser(): UserCredentials | null {
+    return this.authService.loadedUser();
+  }
+
+  sendMessage(): void {
+    const projectId = this.route.snapshot.paramMap.get('projectId');
+    const taskId = this.route.snapshot.paramMap.get('taskId');
+
+    if (!projectId || !this.message.trim() || !this.currentUser) {
+      return;
+    }
+
+    const newMessage: MessageReq = {
+      content: this.message,
+      sender: {
+        firstName: this.currentUser.firstName,
+        lastName: this.currentUser.lastName,
+        userName: this.currentUser.userName,
+      },
+      projectId,
+      taskId: taskId || undefined,
+    };
+
+    this.messageService.sendMessage(newMessage);
+    this.message = '';
+  }
+
+  private loadMessages(): void {
+    const projectId = this.route.snapshot.paramMap.get('projectId');
+    const taskId = this.route.snapshot.paramMap.get('taskId');
+
+    if (!projectId) {
+      return;
+    }
+
+    if (taskId) {
+      this.isLoading.set(true);
+      this.messageService.getTaskMessages(taskId).subscribe({
+        error: () => {
+          this.isLoading.set(false);
+        },
+        complete: () => {
+          this.isLoading.set(false);
+        },
+      });
+
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.messageService.getProjectMessages(projectId).subscribe({
+      error: () => {
+        this.isLoading.set(false);
+      },
+      complete: () => {
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadMessages();
+  }
+
+  ngAfterViewChecked(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop =
+        this.messageContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Scroll to bottom failed:', err);
+    }
   }
 }
