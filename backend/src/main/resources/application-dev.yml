@@ -1,4 +1,6 @@
 spring:
+  jwt:
+    key:
   datasource:
     url: jdbc:postgresql://localhost:3333/manageit
     username: root
@@ -13,3 +15,9 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+application:
+  security:
+    jwt:
+      secret-key: i1OoH6mKPAxzFfJ4R3eOAtYPc5jh0az4RoU9nk10HOnRFZtXpGLXdj4B1beAoTWx
+      expiration: 1440000
