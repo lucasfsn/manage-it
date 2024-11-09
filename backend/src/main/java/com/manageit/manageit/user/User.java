@@ -24,16 +24,18 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @EntityListeners(EntityListeners.class)
+@Table(name = "users")
 public class User implements UserDetails, Principal {
 
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Integer id;
 
-    @JsonProperty("firstName")
+    @JsonProperty("first_name")
     private String firstName;
-    @JsonProperty("lastName")
+    @JsonProperty("last_name")
     private String lastName;
     private String password;
 
@@ -45,16 +47,16 @@ public class User implements UserDetails, Principal {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("USER"));
     }
 
     @Override
