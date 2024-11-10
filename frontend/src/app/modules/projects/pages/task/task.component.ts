@@ -5,7 +5,6 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
-import { InlineSearchComponent } from '../../../../shared/components/inline-search/inline-search.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { TaskAssigneesComponent } from '../../components/task-assignees/task-assignees.component';
 import { TaskEditFormComponent } from '../../components/task-edit-form/task-edit-form.component';
@@ -14,7 +13,6 @@ import { TaskEditFormComponent } from '../../components/task-edit-form/task-edit
   selector: 'app-task',
   standalone: true,
   imports: [
-    InlineSearchComponent,
     SpinnerComponent,
     ChatComponent,
     TaskAssigneesComponent,
@@ -24,7 +22,6 @@ import { TaskEditFormComponent } from '../../components/task-edit-form/task-edit
   styleUrl: './task.component.css',
 })
 export class TaskComponent {
-  public allUsers = signal<User[]>([]);
   public isTaskAssignee = signal<boolean>(false);
 
   constructor(
@@ -69,7 +66,6 @@ export class TaskComponent {
               (user) => user.userName === this.authService.getLoggedInUsername()
             )
           );
-          this.allUsers.set(this.taskAssignees);
         }
       },
       error: () => {

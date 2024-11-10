@@ -6,13 +6,23 @@ import {
   trigger,
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { User } from '../../../../core/models/project.model';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { ProjectService } from '../../../../core/services/project.service';
 import { InlineSearchComponent } from '../../../../shared/components/inline-search/inline-search.component';
+import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-task-assignees',
@@ -24,6 +34,7 @@ import { InlineSearchComponent } from '../../../../shared/components/inline-sear
     ReactiveFormsModule,
     InlineSearchComponent,
     CommonModule,
+    SpinnerComponent,
   ],
   templateUrl: './task-assignees.component.html',
   styleUrl: './task-assignees.component.css',
@@ -51,9 +62,17 @@ import { InlineSearchComponent } from '../../../../shared/components/inline-sear
 })
 export class TaskAssigneesComponent implements OnInit {
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
-  @Input() allUsers: User[] = [];
-  @Input() taskAssigneesNicknames: string[] = [];
+  @Input() usersIn: User[] = [];
   @Input() isTaskAssignee!: boolean;
+  protected allUsersInProject = signal<User[]>([]);
+  protected projectId = signal<string>('');
+  protected taskId = signal<string>('');
+
+  constructor(
+    private projectService: ProjectService,
+    private route: ActivatedRoute,
+    private loadingService: LoadingService
+  ) {}
 
   public filteredUsers: User[] = [];
   public paginatedUsers: User[] = [];
@@ -62,6 +81,42 @@ export class TaskAssigneesComponent implements OnInit {
   public pageSize = 5;
 
   public showAssignees = true;
+
+  get usersInNicknames(): string[] {
+    return this.usersIn.map((user) => user.userName);
+  }
+
+  get isLoading(): boolean {
+    return this.loadingService.isLoading();
+  }
+
+  handleAdd(user: User): void {
+    this.loadingService.loadingOn();
+    this.projectService
+      .addToTask(this.projectId(), this.taskId(), user)
+      .subscribe({
+        next: () => {
+          this.loadingService.loadingOff();
+        },
+        error: () => {
+          this.loadingService.loadingOff();
+        },
+      });
+  }
+
+  handleRemove(user: User): void {
+    this.loadingService.loadingOn();
+    this.projectService
+      .removeFromTask(this.projectId(), this.taskId(), user)
+      .subscribe({
+        next: () => {
+          this.loadingService.loadingOff();
+        },
+        error: () => {
+          this.loadingService.loadingOff();
+        },
+      });
+  }
 
   toggleShowAssignees(): void {
     this.showAssignees = true;
@@ -78,7 +133,7 @@ export class TaskAssigneesComponent implements OnInit {
   filterUsers() {
     const searchTerm = this.searchControl.value?.toLowerCase() || '';
 
-    this.filteredUsers = this.allUsers.filter(
+    this.filteredUsers = this.usersIn.filter(
       (user) =>
         user.firstName.toLowerCase().includes(searchTerm) ||
         user.lastName.toLowerCase().includes(searchTerm) ||
@@ -99,8 +154,27 @@ export class TaskAssigneesComponent implements OnInit {
     this.paginatedUsers = this.filteredUsers.slice(start, end);
   }
 
+  private loadAllUsersInProject(): void {
+    const projectId = this.route.snapshot.paramMap.get('projectId');
+    const taskId = this.route.snapshot.paramMap.get('taskId');
+
+    if (!projectId || !taskId) {
+      return;
+    }
+
+    this.projectId.set(projectId!);
+    this.taskId.set(taskId!);
+
+    this.projectService.getProjectMembers(projectId).subscribe({
+      next: (users) => {
+        this.allUsersInProject.set(users);
+      },
+    });
+  }
+
   ngOnInit(): void {
-    this.filteredUsers = this.allUsers;
+    this.loadAllUsersInProject();
+    this.filteredUsers = this.usersIn;
     this.updatePaginatedUsers();
     this.searchControl.valueChanges.subscribe(() => {
       this.filterUsers();

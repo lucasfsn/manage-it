@@ -25,7 +25,6 @@ import { TasksComponent } from '../../components/tasks/tasks.component';
   imports: [
     SpinnerComponent,
     MatIconModule,
-    RouterLink,
     TasksComponent,
     ProjectInformationComponent,
     CommonModule,

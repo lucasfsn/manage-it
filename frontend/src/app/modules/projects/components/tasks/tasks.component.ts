@@ -27,7 +27,6 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
     DatePipe,
     CdkDropList,
     CdkDrag,
-    CreateTaskComponent,
     PriorityComponent,
     RouterLink,
   ],

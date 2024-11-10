@@ -1,3 +1,6 @@
+@if (isLoading) {
+<app-spinner />
+} @else {
 <div class="flex flex-col gap-3 text-gray-500">
   @if (isTaskAssignee) {
 
@@ -55,6 +58,7 @@
           @if (isTaskAssignee) {
           <button
             class="bg-slate-300 text-slate-900 flex justify-center items-center rounded-full p-0.5 hover:bg-slate-400 transition-all"
+            (click)="handleRemove(user)"
           >
             <mat-icon class="text-base">person_remove</mat-icon>
           </button>
@@ -71,6 +75,11 @@
     </div>
   </div>
   <div [@toggleDiv]="!showAssignees ? 'show' : 'hide'">
-    <app-inline-search [usersAlreadyIn]="taskAssigneesNicknames" />
+    <app-inline-search
+      [usersToShow]="allUsersInProject()"
+      [usersAlreadyIn]="usersInNicknames"
+      (onClick)="handleAdd($event)"
+    />
   </div>
 </div>
+}

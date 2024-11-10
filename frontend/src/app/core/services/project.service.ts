@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { delay, of, tap } from 'rxjs';
+import { delay, Observable, of, tap } from 'rxjs';
 import { dummyProjects } from '../../dummy-data';
 import {
   Project,
@@ -11,12 +11,16 @@ import {
   UpdateProject,
   User,
 } from '../models/project.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
-  constructor(private toastrService: ToastrService) {}
+  constructor(
+    private toastrService: ToastrService,
+    private authService: AuthService
+  ) {}
 
   private allowAccess = false;
 
@@ -28,7 +32,7 @@ export class ProjectService {
   loadedProject = this.project.asReadonly();
   loadedTask = this.task.asReadonly();
 
-  getProjects(username: string) {
+  getProjects(username: string): Observable<Project[]> {
     const userProjects = dummyProjects.filter((project) =>
       project.members.some((member) => member.userName === username)
     );
@@ -47,7 +51,7 @@ export class ProjectService {
     );
   }
 
-  getProject(projectId: string) {
+  getProject(projectId: string): Observable<Project | undefined> {
     const foundProject = dummyProjects.find((p) => p.id === projectId);
 
     return of(foundProject).pipe(
@@ -64,7 +68,26 @@ export class ProjectService {
     );
   }
 
-  addProject(project: ProjectCreate) {
+  getProjectMembers(projectId: string): Observable<User[]> {
+    const project = dummyProjects.find((p) => p.id === projectId);
+
+    if (!project) {
+      this.toastrService.error('Something went wrong.');
+      return of([]);
+    }
+
+    return of(project.members).pipe(
+      delay(300),
+      tap({
+        error: (error) => {
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
+      })
+    );
+  }
+
+  addProject(project: ProjectCreate): Observable<Project> {
     const newProject: Project = {
       ...project,
       id: Math.random().toString(16).slice(2),
@@ -108,7 +131,7 @@ export class ProjectService {
     );
   }
 
-  deleteProject(projectId: string) {
+  deleteProject(projectId: string): Observable<Project[]> {
     const prevProjects = this.projects() || [];
     const updatedProjects = prevProjects.filter(
       (project) => project.id !== projectId
@@ -138,11 +161,17 @@ export class ProjectService {
     );
   }
 
-  updateProject(updatedProject: UpdateProject) {
+  updateProject(
+    updatedProject: UpdateProject
+  ): Observable<UpdateProject | null> {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === updatedProject.id);
+    const user = this.authService.loadedUser();
 
-    if (!project) throw new Error('Project not found');
+    if (!project || !user) {
+      this.toastrService.error('Something went wrong.');
+      return of(null);
+    }
 
     this.project.set({ ...project, ...updatedProject });
 
@@ -167,7 +196,7 @@ export class ProjectService {
     );
   }
 
-  getTask(projectId: string, taskId: string) {
+  getTask(projectId: string, taskId: string): Observable<Task | undefined> {
     const foundProject = dummyProjects.find((p) => p.id === projectId);
     const foundTask = foundProject?.tasks.find((t) => t.id === taskId);
 
@@ -185,18 +214,28 @@ export class ProjectService {
     );
   }
 
-  addTask(task: TaskCreate) {
+  addTask(task: TaskCreate): Observable<TaskCreate | null> {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === task.projectId);
+    const user = this.authService.loadedUser();
 
-    if (!project) throw new Error('Project not found');
+    if (!project || !user) {
+      this.toastrService.error('Something went wrong.');
+      return of(null);
+    }
+
+    const taskUser = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      userName: user.userName,
+    };
 
     return of(task).pipe(
       delay(300),
       tap({
-        next: (task) => {
+        next: (task: TaskCreate) => {
           const fakeId = Math.random().toString(16).slice(2);
-          project.tasks.push({ ...task, id: fakeId });
+          project.tasks.push({ ...task, id: fakeId, users: [taskUser] });
           this.projects.set([...prevProjects]);
           this.toastrService.success('Task added successfully.');
         },
@@ -209,17 +248,23 @@ export class ProjectService {
     );
   }
 
-  moveTask(projectId: string, task: Task) {
+  moveTask(projectId: string, task: Task): Observable<Task[] | null> {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === projectId);
-
     const prevProject = this.project();
+    const user = this.authService.loadedUser();
 
-    if (!project) throw new Error('Project not found');
+    if (!project || !user) {
+      this.toastrService.error('Something went wrong.');
+      return of(null);
+    }
 
     const taskIndex = this.project()?.tasks.findIndex((t) => t.id === task.id);
 
-    if (taskIndex === -1) throw new Error('Task not found');
+    if (taskIndex === -1) {
+      this.toastrService.error('Task not found.');
+      return of(null);
+    }
 
     const updatedProjectTasksList = project.tasks.map((t) =>
       t.id === task.id ? { ...t, status: task.status } : t
@@ -246,11 +291,15 @@ export class ProjectService {
     );
   }
 
-  completeProject(projectId: string) {
+  completeProject(projectId: string): Observable<Project | null> {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === projectId);
+    const user = this.authService.loadedUser();
 
-    if (!project) throw new Error('Project not found');
+    if (!project || !user) {
+      this.toastrService.error('Something went wrong.');
+      return of(null);
+    }
 
     const updatedProjects = prevProjects.map((p) =>
       p.id === projectId ? { ...p, status: Status.Completed } : p
@@ -275,13 +324,24 @@ export class ProjectService {
     );
   }
 
-  addToProject(projectId: string, user: User, currentUser: string) {
+  addToProject(
+    projectId: string,
+    user: User,
+    currentUser: string
+  ): Observable<Project | null> {
     const project = dummyProjects.find((p) => p.id === projectId);
 
-    if (!project) throw new Error('Project not found');
+    if (!project) {
+      this.toastrService.error('Something went wrong.');
+      return of(null);
+    }
 
-    if (project.owner.userName !== currentUser)
-      throw new Error('Only the project owner can add members to the project');
+    if (project.owner.userName !== currentUser) {
+      this.toastrService.error(
+        'Only the project owner can add members to the project.'
+      );
+      return of(null);
+    }
 
     return of(project).pipe(
       delay(300),
@@ -298,6 +358,82 @@ export class ProjectService {
         },
         error: (error) => {
           this.allowAccessToAddToProject = false;
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
+      })
+    );
+  }
+
+  addToTask(
+    projectId: string,
+    taskId: string,
+    user: User
+  ): Observable<Task | null> {
+    const prevTask = this.task();
+    const loggedInUser = this.authService.loadedUser();
+
+    if (!projectId || !user || !loggedInUser || !taskId) {
+      this.toastrService.error('Something went wrong.');
+      return of(null);
+    }
+
+    const project = dummyProjects.find((p) => p.id === projectId);
+
+    const updatedTask = project?.tasks.map((t) =>
+      t.id === taskId ? { ...t, users: [...t.users, user] } : t
+    );
+
+    const updatedTaskItem = updatedTask?.find((t) => t.id === taskId);
+    if (updatedTaskItem) this.task.set(updatedTaskItem);
+
+    return of(updatedTaskItem ?? null).pipe(
+      delay(300),
+      tap({
+        next: () => {
+          this.toastrService.success(
+            `${user.firstName} ${user.lastName} has been added to task`
+          );
+        },
+        error: (error) => {
+          this.task.set(prevTask);
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
+      })
+    );
+  }
+
+  removeFromTask(projectId: string, taskId: string, user: User) {
+    const prevTask = this.task();
+    const loggedInUser = this.authService.loadedUser();
+
+    if (!projectId || !user || !loggedInUser || !taskId) {
+      this.toastrService.error('Something went wrong.');
+      return of(null);
+    }
+
+    const project = dummyProjects.find((p) => p.id === projectId);
+
+    const updatedTask = project?.tasks.map((t) =>
+      t.id === taskId
+        ? { ...t, users: t.users.filter((u) => u.userName !== user.userName) }
+        : t
+    );
+
+    const updatedTaskItem = updatedTask?.find((t) => t.id === taskId);
+    if (updatedTaskItem) this.task.set(updatedTaskItem);
+
+    return of(updatedTaskItem ?? null).pipe(
+      delay(300),
+      tap({
+        next: () => {
+          this.toastrService.success(
+            `${user.firstName} ${user.lastName} has been removed from task`
+          );
+        },
+        error: (error) => {
+          this.task.set(prevTask);
           this.toastrService.error('Something went wrong.');
           console.error(error);
         },

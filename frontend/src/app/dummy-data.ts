@@ -50,11 +50,6 @@ export const dummyProjects: Project[] = [
             userName: 'jane_smith',
           },
           {
-            firstName: 'Alexis',
-            lastName: 'Hernandez',
-            userName: 'alexis_hernandez',
-          },
-          {
             firstName: 'Ella',
             lastName: 'Lopez',
             userName: 'ella_lopez',

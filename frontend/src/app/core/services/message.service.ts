@@ -23,10 +23,11 @@ export class MessageService {
   }
 
   getProjectMessages(projectId: string) {
+    this.messages.set([]);
     return of(
       dummyMessages.filter((msg) => msg.projectId === projectId && !msg.taskId)
     ).pipe(
-      delay(200),
+      delay(2000),
       tap({
         next: (messages: MessageDummy[]) => {
           const res: Message[] = messages.map(
@@ -47,8 +48,9 @@ export class MessageService {
   }
 
   getTaskMessages(taskId: string) {
+    this.messages.set([]);
     return of(dummyMessages.filter((msg) => msg.taskId === taskId)).pipe(
-      delay(200),
+      delay(2000),
       tap({
         next: (messages: MessageDummy[]) => {
           const res: Message[] = messages.map(

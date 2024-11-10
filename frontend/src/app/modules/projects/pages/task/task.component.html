@@ -7,7 +7,7 @@
   }
   <div class="flex flex-col lg:flex-row lg:justify-between gap-5 flex-grow">
     <app-task-assignees
-      [allUsers]="allUsers()"
+      [usersIn]="task.users"
       [isTaskAssignee]="isTaskAssignee()"
     />
     @if (isTaskAssignee()) {

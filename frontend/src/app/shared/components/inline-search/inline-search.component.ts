@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../../core/models/project.model';
 import { AuthService } from '../../../core/services/auth.service';
-import { users } from '../../../dummy-data';
 
 @Component({
   selector: 'app-inline-search',
@@ -13,7 +12,9 @@ import { users } from '../../../dummy-data';
   styleUrl: './inline-search.component.css',
 })
 export class InlineSearchComponent {
+  @Input() usersToShow: User[] = [];
   @Input() usersAlreadyIn: string[] = [];
+  @Output() onClick = new EventEmitter<User>();
   form = new FormControl('');
   searchResults: User[] = [];
 
@@ -22,7 +23,7 @@ export class InlineSearchComponent {
   onSearch(): void {
     const query = this.form.value?.toLowerCase();
     if (query && query.length >= 2) {
-      this.searchResults = users.filter(
+      this.searchResults = this.usersToShow.filter(
         (item) =>
           item.firstName.toLowerCase().includes(query) ||
           item.lastName.toLowerCase().includes(query) ||
@@ -31,6 +32,12 @@ export class InlineSearchComponent {
     } else {
       this.searchResults = [];
     }
+  }
+
+  onUserSelect(user: User): void {
+    this.onClick.emit(user);
+    this.form.setValue('');
+    this.searchResults = [];
   }
 
   isAlreadyIn(userName: string): boolean {
