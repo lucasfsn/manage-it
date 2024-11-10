@@ -8,8 +8,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -34,16 +38,17 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        var auth = authenticationManager.authenticate(
+    public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
+        Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()
                 )
         );
-//        var claims = new HashMap<String, Object>();
-        var user = ((User)auth.getPrincipal());
-        var jwtToken = jwtService.generateToken(user);
+        Map<String, Object> claims = new HashMap<>();
+        User user = ((User) auth.getPrincipal());
+        claims.put("id", user.getId());
+        String jwtToken  = jwtService.generateToken(claims, user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
