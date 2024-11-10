@@ -17,12 +17,11 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { User } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { InlineSearchComponent } from '../../../../shared/components/inline-search/inline-search.component';
-import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-task-assignees',
@@ -34,7 +33,6 @@ import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.
     ReactiveFormsModule,
     InlineSearchComponent,
     CommonModule,
-    SpinnerComponent,
   ],
   templateUrl: './task-assignees.component.html',
   styleUrl: './task-assignees.component.css',
@@ -67,6 +65,7 @@ export class TaskAssigneesComponent implements OnInit {
   protected allUsersInProject = signal<User[]>([]);
   protected projectId = signal<string>('');
   protected taskId = signal<string>('');
+  protected loading = signal<boolean>(false);
 
   constructor(
     private projectService: ProjectService,
@@ -165,9 +164,14 @@ export class TaskAssigneesComponent implements OnInit {
     this.projectId.set(projectId!);
     this.taskId.set(taskId!);
 
+    this.loading.set(true);
     this.projectService.getProjectMembers(projectId).subscribe({
       next: (users) => {
         this.allUsersInProject.set(users);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
       },
     });
   }

@@ -1,6 +1,7 @@
 :host {
   display: flex;
   height: 100%;
+  overflow: hidden;
 }
 
 mat-paginator {
@@ -11,4 +12,34 @@ mat-paginator {
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.icon-transition {
+  transition: transform 0.3s ease-in-out;
+}
+
+.icon-rotate {
+  transform: rotate(180deg);
+}
+
+.chat-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.chat-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.chat-leave {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chat-leave-active {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }

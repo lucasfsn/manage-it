@@ -14,6 +14,7 @@ import { AuthService } from '../../../core/services/auth.service';
 export class InlineSearchComponent {
   @Input() usersToShow: User[] = [];
   @Input() usersAlreadyIn: string[] = [];
+  @Input() loading = false;
   @Output() onClick = new EventEmitter<User>();
   form = new FormControl('');
   searchResults: User[] = [];

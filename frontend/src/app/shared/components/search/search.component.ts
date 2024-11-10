@@ -2,10 +2,7 @@ import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
   MatDialogContent,
-  MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,10 +22,7 @@ import { users } from '../../../dummy-data';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatDialogModule,
     MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
     MatIconModule,
     RouterLink,
   ],

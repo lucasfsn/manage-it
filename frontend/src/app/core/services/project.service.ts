@@ -77,7 +77,7 @@ export class ProjectService {
     }
 
     return of(project.members).pipe(
-      delay(300),
+      delay(3000),
       tap({
         error: (error) => {
           this.toastrService.error('Something went wrong.');
