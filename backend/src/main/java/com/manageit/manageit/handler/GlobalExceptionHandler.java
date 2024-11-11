@@ -1,5 +1,6 @@
 package com.manageit.manageit.handler;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,8 +41,23 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(VALIDATION_ERROR.getHttpStatus())
                                 .errorDescription(VALIDATION_ERROR.getDescription())
-                                .error(exp.getMessage())
+                                .error(errors.iterator().next())
                                 .validationErrors(errors)
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException exp) {
+
+        return ResponseEntity
+                .status(DATA_INTEGRITY_VIOLATION.getHttpStatus())
+                .body(
+                        ExceptionResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .httpStatus(DATA_INTEGRITY_VIOLATION.getHttpStatus())
+                                .errorDescription(DATA_INTEGRITY_VIOLATION.getDescription())
+                                .error(exp.getMessage())
                                 .build()
                 );
     }
@@ -53,6 +69,7 @@ public class GlobalExceptionHandler {
                 .status(INTERNAL_ERROR.getHttpStatus())
                 .body(
                         ExceptionResponse.builder()
+                                .timestamp(LocalDateTime.now())
                                 .errorDescription(INTERNAL_ERROR.getDescription())
                                 .error(exp.getMessage())
                                 .build()

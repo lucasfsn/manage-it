@@ -1,7 +1,6 @@
 package com.manageit.manageit.auth;
 
 import com.manageit.manageit.security.JwtService;
-import com.manageit.manageit.user.Role;
 import com.manageit.manageit.user.User;
 import com.manageit.manageit.user.UserRepository;
 import jakarta.validation.Valid;

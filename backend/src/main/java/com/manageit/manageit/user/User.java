@@ -1,13 +1,16 @@
 package com.manageit.manageit.user;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.manageit.manageit.role.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,26 +36,35 @@ public class User implements UserDetails, Principal {
     @Column(name = "user_id")
     private Integer id;
 
-    @JsonProperty("first_name")
+
+    @NotBlank(message = "First name cannot be empty")
+    @Size(max = 30, min = 2, message = "First name must be between 2 and 30 characters")
+    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ]+$", message = "First name must contain only letters")
     private String firstName;
-    @JsonProperty("last_name")
+
+    @NotBlank(message = "First name cannot be empty")
+    @Size(max = 30, min = 2, message = "First name must be between 2 and 30 characters")
+    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ]+$", message = "Last name must contain only letters")
     private String lastName;
+
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 8, message = "Password must have at least 8 characters")
     private String password;
 
-    @Column(unique=true)
+
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email cannot be empty")
+    @Column(unique = true)
     private String email;
 
-    @Column(unique=true)
+    @NotBlank(message = "Username cannot be empty")
+    @Size(min = 8, max = 30, message = "Username must be between 8 and 30 characters")
+    @Column(unique = true)
     private String username;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
