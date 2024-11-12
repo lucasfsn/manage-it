@@ -41,6 +41,8 @@ function passwordValidator(control: AbstractControl) {
 
   if (passwordRegex.test(control.value)) return null;
 
+  if (!control.value) return null;
+
   return {
     invalidPassword: true,
   };
@@ -237,15 +239,7 @@ export class EditProfileFormComponent {
   }
 
   onSubmit() {
-    if (!this.userData) return;
-
-    if (
-      this.form.invalid &&
-      !!this.form.controls.passwords.get('password')?.value &&
-      !!this.form.controls.passwords.get('confirmPassword')?.value
-    ) {
-      return;
-    }
+    if (this.form.invalid || !this.userData) return;
 
     const updatedUserData: UpdateUser = {
       firstName: this.form.value.firstName
@@ -265,6 +259,14 @@ export class EditProfileFormComponent {
     if (this.form.value.passwords?.password) {
       updatedUserData.password = this.form.value.passwords.password;
     }
+
+    const isFormChanged =
+      updatedUserData.firstName !== this.userData.firstName ||
+      updatedUserData.lastName !== this.userData.lastName ||
+      updatedUserData.userName !== this.userData.userName ||
+      updatedUserData.email !== this.userData.email;
+
+    if (!isFormChanged) return;
 
     this.userService.updateUserData(this.userData, updatedUserData).subscribe();
     this.closeDialog();

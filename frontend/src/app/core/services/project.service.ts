@@ -9,6 +9,7 @@ import {
   Task,
   TaskCreate,
   UpdateProject,
+  UpdateTask,
   User,
 } from '../models/project.model';
 import { AuthService } from './auth.service';
@@ -284,6 +285,37 @@ export class ProjectService {
         error: (error) => {
           this.projects.set(prevProjects);
           this.project.set(prevProject);
+          this.toastrService.error('Something went wrong.');
+          console.error(error);
+        },
+      })
+    );
+  }
+
+  updateTask(updatedTask: UpdateTask): Observable<Task | null> {
+    const prevTask = this.task();
+    const user = this.authService.loadedUser();
+
+    if (!user || !prevTask) {
+      this.toastrService.error('Something went wrong.');
+      return of(null);
+    }
+
+    const updatedTaskData = {
+      ...prevTask,
+      description: updatedTask.description,
+      status: updatedTask.status,
+      priority: updatedTask.priority,
+      dueDate: updatedTask.dueDate,
+    };
+
+    this.task.set(updatedTaskData);
+
+    return of(updatedTaskData).pipe(
+      delay(300),
+      tap({
+        error: (error) => {
+          this.task.set(prevTask);
           this.toastrService.error('Something went wrong.');
           console.error(error);
         },

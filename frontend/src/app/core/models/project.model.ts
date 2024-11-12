@@ -68,3 +68,12 @@ export interface UpdateProject {
   startDate: string;
   endDate: string;
 }
+
+export interface UpdateTask {
+  id: string;
+  projectId: string;
+  description: string;
+  status: TaskStatus;
+  priority: Priority;
+  dueDate: string;
+}

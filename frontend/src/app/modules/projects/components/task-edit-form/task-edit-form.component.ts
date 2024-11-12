@@ -5,7 +5,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Priority, Status, Task } from '../../../../core/models/project.model';
+import {
+  Priority,
+  Status,
+  Task,
+  UpdateTask,
+} from '../../../../core/models/project.model';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { ProjectService } from '../../../../core/services/project.service';
 
 @Component({
   selector: 'app-task-edit-form',
@@ -19,6 +26,11 @@ export class TaskEditFormComponent implements OnInit {
   readonly Status = Status;
   readonly Priority = Priority;
   public form: FormGroup = new FormGroup({});
+
+  constructor(
+    private loadingService: LoadingService,
+    private projectService: ProjectService
+  ) {}
 
   get priorities(): Priority[] {
     return Object.values(Priority);
@@ -47,10 +59,38 @@ export class TaskEditFormComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.form.invalid) {
       return;
     }
+
+    const updatedTask: UpdateTask = {
+      id: this.task.id,
+      projectId: this.task.projectId,
+      description: this.form.value.description,
+      dueDate: this.form.value.dueDate,
+      status: this.form.value.status,
+      priority: this.form.value.priority,
+    };
+
+    if (
+      updatedTask.description === this.task.description &&
+      updatedTask.dueDate === this.task.dueDate &&
+      updatedTask.status === this.task.status &&
+      updatedTask.priority === this.task.priority
+    ) {
+      return;
+    }
+
+    this.loadingService.loadingOn();
+    this.projectService.updateTask(updatedTask).subscribe({
+      next: () => {
+        this.loadingService.loadingOff();
+      },
+      error: () => {
+        this.loadingService.loadingOff();
+      },
+    });
   }
 
   onReset(): void {
