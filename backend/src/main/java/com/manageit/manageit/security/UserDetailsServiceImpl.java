@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    // możliwe ze trzeba użyć impl
     private final UserRepository repository;
     @Override
     @Transactional
