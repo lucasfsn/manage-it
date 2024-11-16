@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -60,7 +61,7 @@ public class JwtService {
             UserDetails userDetails,
             long jwtExpiration
     ) {
-        var authorities = userDetails.getAuthorities()
+        List<String> authorities = userDetails.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
