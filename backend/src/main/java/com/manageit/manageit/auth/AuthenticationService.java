@@ -33,8 +33,8 @@ public class AuthenticationService {
 //                .role(Role.USER)
                 .build();
         repository.save(user);
-        String jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+//        String jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder().build();
     }
 
     public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
@@ -48,7 +48,7 @@ public class AuthenticationService {
         User user = ((User) auth.getPrincipal());
         claims.put("id", user.getId());
         String jwtToken  = jwtService.generateToken(claims, user);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder().token(jwtToken).user(user).build();
     }
 
 }
