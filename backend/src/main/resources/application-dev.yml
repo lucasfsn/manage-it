@@ -1,6 +1,4 @@
 spring:
-  jwt:
-    key:
   datasource:
     url: jdbc:postgresql://localhost:5432/manageit_database
     username: my_user

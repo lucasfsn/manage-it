@@ -47,11 +47,9 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        Map<String, Object> claims = new HashMap<>();
         User user = ((User) auth.getPrincipal());
-        claims.put("id", user.getId());
         UserResponse userResponse = userMapper.toUserResponse(user);
-        String jwtToken  = jwtService.generateToken(claims, user);
+        String jwtToken  = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).user(userResponse).build();
     }
 
