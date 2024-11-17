@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -38,7 +40,7 @@ public class RegisterRequest {
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 8, message = "Password must have at least 8 characters")
     @Pattern(
-            regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})",
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$",
             message = "Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*)."
     )
     private String password;

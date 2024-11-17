@@ -2,7 +2,9 @@ package com.manageit.manageit.auth;
 
 import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.user.User;
+import com.manageit.manageit.user.UserMapper;
 import com.manageit.manageit.user.UserRepository;
+import com.manageit.manageit.user.UserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +24,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
 
     public AuthenticationResponse register(@Valid RegisterRequest request) {
         User user = User.builder()
@@ -47,8 +50,9 @@ public class AuthenticationService {
         Map<String, Object> claims = new HashMap<>();
         User user = ((User) auth.getPrincipal());
         claims.put("id", user.getId());
+        UserResponse userResponse = userMapper.toUserResponse(user);
         String jwtToken  = jwtService.generateToken(claims, user);
-        return AuthenticationResponse.builder().token(jwtToken).user(user).build();
+        return AuthenticationResponse.builder().token(jwtToken).user(userResponse).build();
     }
 
 }

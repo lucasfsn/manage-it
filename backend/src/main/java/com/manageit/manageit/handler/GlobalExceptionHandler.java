@@ -1,5 +1,7 @@
 package com.manageit.manageit.handler;
 
+//import jakarta.validation.ConstraintViolationException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,14 +51,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException exp) {
-
+        String errorDescription = DATA_INTEGRITY_VIOLATION.getDescription();
+        if (exp.getCause() instanceof ConstraintViolationException constraintException) {
+            String constraintName = constraintException.getConstraintName();
+            if ("users_email_key".equals(constraintName)) {
+                errorDescription = "Email already exsists";
+            } else if ("users_username_key".equals(constraintName)) {
+                errorDescription = "Username already exsists";
+            }
+        }
         return ResponseEntity
                 .status(DATA_INTEGRITY_VIOLATION.getHttpStatus())
                 .body(
                         ExceptionResponse.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(DATA_INTEGRITY_VIOLATION.getHttpStatus())
-                                .errorDescription(DATA_INTEGRITY_VIOLATION.getDescription())
+                                .errorDescription(errorDescription)
                                 .error(exp.getMessage())
                                 .build()
                 );
