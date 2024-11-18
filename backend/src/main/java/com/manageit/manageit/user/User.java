@@ -71,8 +71,7 @@ public class User implements UserDetails, Principal {
     @Column(unique = true)
     private String username;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
     @Override

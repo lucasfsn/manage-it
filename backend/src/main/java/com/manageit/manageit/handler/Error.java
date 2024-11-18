@@ -8,7 +8,7 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 public enum Error {
     // to change
-    BAD_CREDENTIALS(UNAUTHORIZED, "Username and Password is incorrect."),
+    BAD_CREDENTIALS(UNAUTHORIZED, "Email and Password is incorrect."),
     VALIDATION_ERROR(BAD_REQUEST, "Validation failed for one or more arguments."),
     DATA_INTEGRITY_VIOLATION(CONFLICT, "Data already exsist"),
     INTERNAL_ERROR(INTERNAL_SERVER_ERROR, "Internal Server Error"),;
