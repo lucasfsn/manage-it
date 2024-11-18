@@ -79,18 +79,18 @@ CREATE TABLE messages (
 
 
 INSERT INTO users (user_id, first_name, last_name, password, email, username) VALUES 
-('b3c6063d-ce04-413e-b6c6-ae875eeb454a', 'John', 'Doe', '1qazXSW@', 'johndoe@mail.com', 'john_doe'),
-('5ad0c3c7-759c-4844-8322-dd9e16f0e9b0', 'Jane', 'Smith', '1qazXSW@', 'janesmith@example.com', 'jane_smith'),
-('9b6d95b7-1b0f-4c0c-9cd9-cfa00a96f6ac', 'Alexis', 'Hernandez', '1qazXSW@', 'alexis.hernandez@example.com', 'alexis_hernandez'),
-('d64a64b5-278d-4ac7-b9fa-cf6b2da5b7f2', 'Ella', 'Lopez', '1qazXSW@', 'ella.lopez@example.com', 'ella_lopez'),
-('8d1f7f5e-0b8f-4a9f-b7c4-0c61a8f43b32', 'Michael', 'Johnson', '1qazXSW@', 'michael.johnson@example.com', 'michael_johnson'),
-('2c9b0e0a-37b8-4e62-bd1c-3b750cf6fdd1', 'Anna', 'Williams', '1qazXSW@', 'anna.williams@example.com', 'anna_williams'),
-('fd9397f3-1e3e-4d98-bad8-f5986b3655a2', 'Olivia', 'Brown', '1qazXSW@', 'olivia.brown@example.com', 'olivia_brown'),
-('ee1d08d6-c9ad-4c6f-9ff7-76b10be973fc', 'Sophia', 'Jones', '1qazXSW@', 'sophia.jones@example.com', 'sophia_jones'),
-('5fc9c20a-b7f1-44db-85b0-7fa5c3cb9c16', 'Isabella', 'Garcia', '1qazXSW@', 'isabella.garcia@example.com', 'isabella_garcia'),
-('c1e5c6be-15f6-468b-9f37-9cc710ad7f27', 'Mia', 'Martinez', '1qazXSW@', 'mia.martinez@example.com', 'mia_martinez'),
-('358e431e-92d4-442f-8318-e2079fbbf10f', 'Emily', 'Davis', '1qazXSW@', 'emily.davis@example.com', 'emily_davis'),
-('06b8d207-b9b3-4308-9249-9228b383c917', 'Elizabeth', 'Rodriguez', '1qazXSW@', 'elizabeth.rodriguez@example.com', 'elizabeth_rodriguez');
+('b3c6063d-ce04-413e-b6c6-ae875eeb454a', 'John', 'Doe', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'johndoe@mail.com', 'john_doe'),
+('5ad0c3c7-759c-4844-8322-dd9e16f0e9b0', 'Jane', 'Smith', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'janesmith@example.com', 'jane_smith'),
+('9b6d95b7-1b0f-4c0c-9cd9-cfa00a96f6ac', 'Alexis', 'Hernandez', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'alexis.hernandez@example.com', 'alexis_hernandez'),
+('d64a64b5-278d-4ac7-b9fa-cf6b2da5b7f2', 'Ella', 'Lopez', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'ella.lopez@example.com', 'ella_lopez'),
+('8d1f7f5e-0b8f-4a9f-b7c4-0c61a8f43b32', 'Michael', 'Johnson', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'michael.johnson@example.com', 'michael_johnson'),
+('2c9b0e0a-37b8-4e62-bd1c-3b750cf6fdd1', 'Anna', 'Williams', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'anna.williams@example.com', 'anna_williams'),
+('fd9397f3-1e3e-4d98-bad8-f5986b3655a2', 'Olivia', 'Brown', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'olivia.brown@example.com', 'olivia_brown'),
+('ee1d08d6-c9ad-4c6f-9ff7-76b10be973fc', 'Sophia', 'Jones', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'sophia.jones@example.com', 'sophia_jones'),
+('5fc9c20a-b7f1-44db-85b0-7fa5c3cb9c16', 'Isabella', 'Garcia', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'isabella.garcia@example.com', 'isabella_garcia'),
+('c1e5c6be-15f6-468b-9f37-9cc710ad7f27', 'Mia', 'Martinez', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'mia.martinez@example.com', 'mia_martinez'),
+('358e431e-92d4-442f-8318-e2079fbbf10f', 'Emily', 'Davis', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'emily.davis@example.com', 'emily_davis'),
+('06b8d207-b9b3-4308-9249-9228b383c917', 'Elizabeth', 'Rodriguez', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'elizabeth.rodriguez@example.com', 'elizabeth_rodriguez');
 
 INSERT INTO projects (project_id, owner_id, project_name, description, status, created_at, start_date, end_date) VALUES 
 ('a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'b3c6063d-ce04-413e-b6c6-ae875eeb454a', 'Website Redesign', 'Complete redesign of the company website to improve UX/UI.', 'IN PROGRESS', '2024-10-14 10:00:00', '2024-10-14', '2025-01-25'),
