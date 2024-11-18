@@ -1,6 +1,7 @@
 package com.manageit.manageit.handler;
 
 //import jakarta.validation.ConstraintViolationException;
+import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,24 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(BAD_CREDENTIALS.getHttpStatus())
                                 .errorDescription(BAD_CREDENTIALS.getDescription())
+                                .error(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleException(EntityNotFoundException exp) {
+        String errorDescription = ENTITY_NOT_FOUND.getDescription();
+        if (exp.getMessage() != null && !exp.getMessage().isEmpty()) {
+            errorDescription = exp.getMessage();
+        }
+        return ResponseEntity
+                .status(ENTITY_NOT_FOUND.getHttpStatus())
+                .body(
+                        ExceptionResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .httpStatus(ENTITY_NOT_FOUND.getHttpStatus())
+                                .errorDescription(errorDescription)
                                 .error(exp.getMessage())
                                 .build()
                 );

@@ -26,7 +26,7 @@ public class JwtService {
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
 
-    public String extractEmail(String token) {
+    public String extractUserId(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -78,7 +78,7 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractEmail(token);
+        final String username = extractUserId(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
