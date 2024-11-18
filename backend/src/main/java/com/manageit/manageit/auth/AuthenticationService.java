@@ -49,8 +49,6 @@ public class AuthenticationService {
                 )
         );
         User user = ((User) auth.getPrincipal());
-        System.out.println(passwordEncoder.matches("1qazXSW@", "$2a$10$MeWNPKLaC9vi/2KdQqJ77.5HyoLqlkH/E8ZGzug2jXlZJgKYmGWYG"));
-        System.out.println(passwordEncoder.matches("1qazXSW@", "$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2"));
         UserResponse userResponse = userMapper.toUserResponse(user);
         String jwtToken  = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).user(userResponse).build();
