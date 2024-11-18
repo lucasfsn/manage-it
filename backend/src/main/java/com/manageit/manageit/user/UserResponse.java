@@ -2,6 +2,8 @@ package com.manageit.manageit.user;
 
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -9,7 +11,7 @@ import lombok.*;
 @Builder
 public class UserResponse {
 
-    private Integer id;
+    private UUID id;
     private String firstName;
     private String lastName;
 //    private String password;

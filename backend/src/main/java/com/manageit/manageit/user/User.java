@@ -19,6 +19,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 
 @Data
@@ -34,7 +35,7 @@ public class User implements UserDetails, Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Integer id;
+    private UUID id;
 
 
     @NotBlank(message = "First name cannot be empty")

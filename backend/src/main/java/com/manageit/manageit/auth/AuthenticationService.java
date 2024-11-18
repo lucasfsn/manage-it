@@ -36,8 +36,9 @@ public class AuthenticationService {
 //                .role(Role.USER)
                 .build();
         repository.save(user);
-//        String jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().build();
+        UserResponse userResponse = userMapper.toUserResponse(user);
+        String jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder().token(jwtToken).user(userResponse).build();
     }
 
     public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
