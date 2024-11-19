@@ -28,7 +28,8 @@ public class SecurityConfig {
             http.cors(Customizer.withDefaults()) // with Defaults tells that spring will try to search any definition of CorsFilter
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(req -> req.requestMatchers(
-                            "/auth/**"
+                            "/auth/register",
+                            "/auth/authenticate"
                         ).permitAll()
                             .anyRequest()
                             .authenticated()

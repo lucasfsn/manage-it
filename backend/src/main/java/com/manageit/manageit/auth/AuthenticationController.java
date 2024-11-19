@@ -1,5 +1,7 @@
 package com.manageit.manageit.auth;
 
+import com.manageit.manageit.user.UserResponse;
+import com.manageit.manageit.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Authentication")
 public class AuthenticationController {
 
+    private final UserService userService;
     private final AuthenticationService authService;
 
     @PostMapping("/register")
@@ -23,9 +26,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> register (
+    public ResponseEntity<AuthenticationResponse> authenticate (
             @RequestBody @Valid AuthenticationRequest request
     ) {
         return ResponseEntity.ok(authService.authenticate(request));
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<UserResponse> getCurrentUser(
+            @RequestHeader("Authorization") String token
+    ) {
+        return ResponseEntity.ok(userService.findByToken(token));
     }
 }

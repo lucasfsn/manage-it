@@ -1,5 +1,6 @@
 package com.manageit.manageit.security;
 
+import com.manageit.manageit.user.User;
 import com.manageit.manageit.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository repository;
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

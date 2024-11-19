@@ -13,10 +13,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/me")
-    public ResponseEntity<UserResponse> getCurrentUser(
-            @RequestHeader("Authorization") String token
-    ) {
-        return ResponseEntity.ok(userService.findByToken(token));
-    }
 }

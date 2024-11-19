@@ -4,10 +4,8 @@ package com.manageit.manageit.user;
 import com.manageit.manageit.security.JwtService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,9 +17,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponse findByToken(String token) {
-        String userId = jwtService.extractUserId(token.replace("Bearer ", ""));
-        return userRepository.findById(UUID.fromString(userId))
+        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
+        return userRepository.findByUsername(username)
                 .map(userMapper::toUserResponse)
-                .orElseThrow(() -> new EntityNotFoundException("No user found with ID: " + userId));
+                .orElseThrow(() -> new EntityNotFoundException("No user found with ID: " + username));
     }
 }
