@@ -1,11 +1,14 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { delay, of, tap } from 'rxjs';
-import { dummyProjects } from '../../dummy-data';
+import { catchError, tap, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import {
   AuthResponse,
+  AuthUserResponse,
   LoginCredentials,
+  RegisterCredentials,
   UserCredentials,
 } from '../models/auth.model';
 
@@ -18,44 +21,50 @@ export class AuthService {
 
   loadedUser = this.currentUser.asReadonly();
 
-  private dummyUser: UserCredentials = {
-    id: '123',
-    email: 'test@example.com',
-    password: '1qazXSW@',
-    firstName: 'John',
-    lastName: 'Doe',
-    userName: 'john_doe',
-    projects: [dummyProjects[0], dummyProjects[1], dummyProjects[4]],
-    createdAt: '2022-01-15',
-  };
+  constructor(
+    private router: Router,
+    private toastrService: ToastrService,
+    private http: HttpClient
+  ) {}
 
-  private dummyResponse: AuthResponse = {
-    access_token: 'dummy-jwt-token',
-  };
+  register(user: RegisterCredentials) {
+    return this.http
+      .post<AuthResponse>(`${environment.apiUrl}/auth/register`, user)
+      .pipe(
+        tap((res: AuthResponse) => {
+          const { token, user } = res;
 
-  constructor(private router: Router, private toastrService: ToastrService) {}
+          this.storeJwtToken(token);
+          this.currentUser.set(user);
+
+          this.toastrService.success('Registered successfully!');
+          this.router.navigate(['/dashboard']);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          this.toastrService.error(err.error.errorDescription);
+          return throwError(() => err);
+        })
+      );
+  }
 
   login(user: LoginCredentials) {
-    return of(this.dummyResponse).pipe(
-      delay(300),
-      tap(() => {
-        if (
-          user.email !== this.dummyUser.email ||
-          user.password !== this.dummyUser.password
-        ) {
-          this.toastrService.error(
-            'Invalid credentials. Please try again later.'
-          );
-          throw new Error('Invalid credentials');
-        }
-      }),
-      tap((res: AuthResponse) => {
-        this.storeJwtToken(res.access_token);
-        this.getUser().subscribe();
-        this.toastrService.success('Logged in successfully!');
-        this.router.navigate(['/dashboard']);
-      })
-    );
+    return this.http
+      .post<AuthResponse>(`${environment.apiUrl}/auth/authenticate`, user)
+      .pipe(
+        tap((res: AuthResponse) => {
+          const { token, user } = res;
+
+          this.storeJwtToken(token);
+          this.currentUser.set(user);
+
+          this.toastrService.success('Logged in successfully!');
+          this.router.navigate(['/dashboard']);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          this.toastrService.error(err.error.errorDescription);
+          return throwError(() => err);
+        })
+      );
   }
 
   logout() {
@@ -67,26 +76,33 @@ export class AuthService {
     return !!localStorage.getItem(this.JWT_TOKEN);
   }
 
-  private storeJwtToken(jwt: string) {
-    localStorage.setItem(this.JWT_TOKEN, jwt);
-  }
-
-  getUser() {
-    const token = localStorage.getItem(this.JWT_TOKEN);
-
-    return of(this.dummyUser).pipe(
-      delay(300),
-      tap((user: UserCredentials) => {
-        this.currentUser.set(user);
-      })
-    );
+  getUserByToken() {
+    return this.http
+      .get<AuthUserResponse>(`${environment.apiUrl}/users/me`)
+      .pipe(
+        tap((res: AuthUserResponse) => {
+          this.currentUser.set(res.user);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          this.toastrService.error(err.error.errorDescription);
+          this.logout();
+          return throwError(() => err);
+        })
+      );
   }
 
   getLoggedInUsername(): string | null {
-    if (!this.currentUser()) {
+    const currentUser = this.currentUser();
+
+    if (!currentUser) {
+      this.logout();
       return null;
     }
 
-    return this.currentUser()!.userName;
+    return currentUser.username;
+  }
+
+  private storeJwtToken(jwt: string) {
+    localStorage.setItem(this.JWT_TOKEN, jwt);
   }
 }

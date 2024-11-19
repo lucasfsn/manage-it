@@ -17,14 +17,14 @@
         class="flex flex-col gap-1 max-w-[250px] lg:max-w-[350px]"
         [ngClass]="{
           'self-end flex-row-reverse':
-            message.sender.userName === currentUser?.userName
+            message.sender.username === currentUser?.username
         }"
       >
         <div
           class="flex gap-2"
           [ngClass]="{
             'flex-row-reverse':
-              message.sender.userName === currentUser?.userName
+              message.sender.username === currentUser?.username
           }"
         >
           <div
@@ -36,10 +36,10 @@
             class="flex items-center gap-2"
             [ngClass]="{
               'flex-row-reverse':
-                message.sender.userName === currentUser?.userName
+                message.sender.username === currentUser?.username
             }"
           >
-            @if (message.sender.userName === currentUser?.userName) {
+            @if (message.sender.username === currentUser?.username) {
             <span class="text-sky-500 text-sm">You</span>
             } @else {
             <span class="text-gray-400 text-sm"

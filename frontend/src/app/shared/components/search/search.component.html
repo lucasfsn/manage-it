@@ -20,18 +20,18 @@
 </mat-dialog-content>
 @if (searchResults.length > 0) {
 <ul class="flex flex-col pb-4 divide-y divide-slate-600 search-results">
-  @for (result of searchResults; track result.userName) {
+  @for (result of searchResults; track result.username) {
   <li
     class="cursor-pointer px-4 py-2 sm:px-6 sm:py-4 text-slate-400 text-sm flex items-center gap-2"
     (click)="closeDialog()"
     [routerLink]="
       projectId
-        ? ['/users', result.userName, 'projects', projectId, 'add']
-        : ['/users', result.userName]
+        ? ['/users', result.username, 'projects', projectId, 'add']
+        : ['/users', result.username]
     "
   >
     {{ result.firstName }} {{ result.lastName }}
-    @if (isLoggedInUser(result.userName)) {
+    @if (isLoggedInUser(result.username)) {
     <span class="text-slate-600">(You)</span>
     }
   </li>

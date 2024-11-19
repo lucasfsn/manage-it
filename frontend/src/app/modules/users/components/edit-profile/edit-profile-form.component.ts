@@ -81,7 +81,7 @@ export class EditProfileFormComponent {
         nameValidator,
       ],
     }),
-    userName: new FormControl('', {
+    username: new FormControl('', {
       validators: [
         Validators.minLength(2),
         Validators.maxLength(20),
@@ -122,11 +122,11 @@ export class EditProfileFormComponent {
     );
   }
 
-  get userNameIsInvalid() {
+  get usernameIsInvalid() {
     return (
-      this.form.controls.userName.dirty &&
-      this.form.controls.userName.touched &&
-      this.form.controls.userName.invalid
+      this.form.controls.username.dirty &&
+      this.form.controls.username.touched &&
+      this.form.controls.username.invalid
     );
   }
 
@@ -183,8 +183,8 @@ export class EditProfileFormComponent {
     return null;
   }
 
-  get userNameErrors() {
-    const control = this.form.controls.userName;
+  get usernameErrors() {
+    const control = this.form.controls.username;
     if (control.errors) {
       if (control.errors['minlength']) {
         return `Username must be at least ${control.errors['minlength'].requiredLength} characters long.`;
@@ -228,7 +228,7 @@ export class EditProfileFormComponent {
       this.form.patchValue({
         firstName: this.userData.firstName,
         lastName: this.userData.lastName,
-        userName: this.userData.userName,
+        username: this.userData.username,
         email: this.userData.email,
         passwords: {
           password: '',
@@ -248,9 +248,9 @@ export class EditProfileFormComponent {
       lastName: this.form.value.lastName
         ? this.form.value.lastName
         : this.userData.lastName,
-      userName: this.form.value.userName
-        ? this.form.value.userName
-        : this.userData.userName,
+      username: this.form.value.username
+        ? this.form.value.username
+        : this.userData.username,
       email: this.form.value.email
         ? this.form.value.email
         : this.userData.email,
@@ -263,7 +263,7 @@ export class EditProfileFormComponent {
     const isFormChanged =
       updatedUserData.firstName !== this.userData.firstName ||
       updatedUserData.lastName !== this.userData.lastName ||
-      updatedUserData.userName !== this.userData.userName ||
+      updatedUserData.username !== this.userData.username ||
       updatedUserData.email !== this.userData.email;
 
     if (!isFormChanged) return;

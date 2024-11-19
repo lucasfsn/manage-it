@@ -26,7 +26,7 @@ export class ProjectInformationComponent {
 
   public get isOwner(): boolean {
     return (
-      this.project.owner.userName === this.authService.getLoggedInUsername()
+      this.project.owner.username === this.authService.getLoggedInUsername()
     );
   }
 

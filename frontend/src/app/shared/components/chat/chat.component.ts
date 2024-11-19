@@ -106,7 +106,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       sender: {
         firstName: this.currentUser.firstName,
         lastName: this.currentUser.lastName,
-        userName: this.currentUser.userName,
+        username: this.currentUser.username,
       },
       projectId,
       taskId: taskId || undefined,

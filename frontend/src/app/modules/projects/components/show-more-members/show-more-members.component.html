@@ -7,10 +7,10 @@
   </button>
   <div class="bg-slate-800 mt-4">
     <ul class="flex flex-col gap-1 overflow-y-scroll max-h-[400px]">
-      @for (member of data.members; track member.userName) {
+      @for (member of data.members; track member.username) {
       <li
         class="flex items-center p-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
-        [routerLink]="['/users', member.userName]"
+        [routerLink]="['/users', member.username]"
         (click)="onClose()"
       >
         <div

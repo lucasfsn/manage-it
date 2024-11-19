@@ -48,8 +48,8 @@ export class UserComponent implements OnInit {
     return this.loadingService.isLoading();
   }
 
-  isLoggedInUser(userName: string): boolean {
-    return this.authService.getLoggedInUsername() === userName;
+  isLoggedInUser(username: string): boolean {
+    return this.authService.getLoggedInUsername() === username;
   }
 
   openEditProfileDialog(): void {
@@ -72,7 +72,7 @@ export class UserComponent implements OnInit {
       next: (user) => {
         this.commonProjects =
           user?.projects.filter((project) =>
-            project.members.find((member) => member.userName === username)
+            project.members.find((member) => member.username === username)
           ) || [];
       },
       error: () => {

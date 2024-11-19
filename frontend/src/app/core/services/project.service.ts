@@ -35,7 +35,7 @@ export class ProjectService {
 
   getProjects(username: string): Observable<Project[]> {
     const userProjects = dummyProjects.filter((project) =>
-      project.members.some((member) => member.userName === username)
+      project.members.some((member) => member.username === username)
     );
 
     return of(userProjects).pipe(
@@ -98,13 +98,13 @@ export class ProjectService {
       owner: {
         firstName: 'John',
         lastName: 'Doe',
-        userName: 'john_doe',
+        username: 'john_doe',
       },
       members: [
         {
           firstName: 'John',
           lastName: 'Doe',
-          userName: 'john_doe',
+          username: 'john_doe',
         },
       ],
       tasks: [],
@@ -228,7 +228,7 @@ export class ProjectService {
     const taskUser = {
       firstName: user.firstName,
       lastName: user.lastName,
-      userName: user.userName,
+      username: user.username,
     };
 
     return of(task).pipe(
@@ -368,7 +368,7 @@ export class ProjectService {
       return of(null);
     }
 
-    if (project.owner.userName !== currentUser) {
+    if (project.owner.username !== currentUser) {
       this.toastrService.error(
         'Only the project owner can add members to the project.'
       );
@@ -449,7 +449,7 @@ export class ProjectService {
 
     const updatedTask = project?.tasks.map((t) =>
       t.id === taskId
-        ? { ...t, users: t.users.filter((u) => u.userName !== user.userName) }
+        ? { ...t, users: t.users.filter((u) => u.username !== user.username) }
         : t
     );
 
@@ -485,12 +485,12 @@ export class ProjectService {
     return !!this.projects();
   }
 
-  hasAccessToProject(userName: string, projectId: string): boolean {
+  hasAccessToProject(username: string, projectId: string): boolean {
     const projects = this.projects();
     const project = projects?.find((p) => p.id === projectId);
 
     if (!project) return false;
 
-    return project.members.some((member) => member.userName === userName);
+    return project.members.some((member) => member.username === username);
   }
 }

@@ -56,7 +56,7 @@ export class UpcomingDeadlinesComponent {
 
   isInProject(project: Project): boolean {
     return project.members.some(
-      (member) => member.userName === this.authService.getLoggedInUsername()
+      (member) => member.username === this.authService.getLoggedInUsername()
     );
   }
 }

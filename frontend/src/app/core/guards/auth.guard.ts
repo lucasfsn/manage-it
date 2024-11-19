@@ -21,11 +21,9 @@ export const projectAuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.getUser().pipe(
-    switchMap((user) => {
-      const userName = user?.userName;
-
-      if (!userName) {
+  return authService.getUserByToken().pipe(
+    switchMap((res) => {
+      if (!res.user) {
         router.navigate(['/auth/login']);
         return of(false);
       }
@@ -37,37 +35,45 @@ export const projectAuthGuard: CanActivateFn = (route, state) => {
         return of(false);
       }
 
-      if (projectService.areProjectsLoaded()) {
-        const hasAccess = projectService.hasAccessToProject(
-          userName,
-          projectId
-        );
-
-        if (hasAccess) return of(true);
-
-        router.navigate(['/projects']);
-        return of(false);
-      }
-
-      return projectService.getProjects(userName).pipe(
-        switchMap(() => {
-          const hasAccess = projectService.hasAccessToProject(
-            userName,
-            projectId
-          );
-
-          if (hasAccess) return of(true);
-
-          router.navigate(['/projects']);
-          return of(false);
-        }),
-        tap({
-          error: (error) => {
-            console.error('Error loading projects:', error);
-            router.navigate(['/projects']);
-          },
-        })
+      return checkProjectAccess(
+        projectService,
+        res.user.username,
+        projectId,
+        router
       );
     })
   );
 };
+
+function checkProjectAccess(
+  projectService: ProjectService,
+  username: string,
+  projectId: string,
+  router: Router
+) {
+  if (projectService.areProjectsLoaded()) {
+    const hasAccess = projectService.hasAccessToProject(username, projectId);
+
+    if (hasAccess) return of(true);
+
+    router.navigate(['/projects']);
+    return of(false);
+  }
+
+  return projectService.getProjects(username).pipe(
+    switchMap(() => {
+      const hasAccess = projectService.hasAccessToProject(username, projectId);
+
+      if (hasAccess) return of(true);
+
+      router.navigate(['/projects']);
+      return of(false);
+    }),
+    tap({
+      error: (error) => {
+        console.error('An error occurred while checking project access', error);
+        router.navigate(['/projects']);
+      },
+    })
+  );
+}

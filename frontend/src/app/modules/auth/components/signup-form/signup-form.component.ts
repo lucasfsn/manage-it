@@ -7,7 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { RegisterCredentials } from '../../../../core/models/auth.model';
+import { AuthService } from '../../../../core/services/auth.service';
 
 function equalValues(controlName1: string, controlName2: string) {
   return (control: AbstractControl) => {
@@ -52,7 +53,7 @@ function passwordValidator(control: AbstractControl) {
   imports: [ReactiveFormsModule, RouterLink],
 })
 export class SignupFormComponent {
-  constructor(private toastr: ToastrService) {}
+  constructor(private authService: AuthService) {}
 
   form = new FormGroup({
     firstName: new FormControl('', {
@@ -71,7 +72,7 @@ export class SignupFormComponent {
         nameValidator,
       ],
     }),
-    userName: new FormControl('', {
+    username: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
@@ -121,11 +122,11 @@ export class SignupFormComponent {
     );
   }
 
-  get userNameIsInvalid() {
+  get usernameIsInvalid() {
     return (
-      this.form.controls.userName.dirty &&
-      this.form.controls.userName.touched &&
-      this.form.controls.userName.invalid
+      this.form.controls.username.dirty &&
+      this.form.controls.username.touched &&
+      this.form.controls.username.invalid
     );
   }
 
@@ -187,8 +188,8 @@ export class SignupFormComponent {
     return null;
   }
 
-  get userNameErrors() {
-    const control = this.form.controls.userName;
+  get usernameErrors() {
+    const control = this.form.controls.username;
     if (control.errors) {
       if (control.errors['required']) {
         return 'Username is required.';
@@ -237,11 +238,15 @@ export class SignupFormComponent {
       return;
     }
 
-    this.showSuccess();
-  }
+    const registerCredentials: RegisterCredentials = {
+      firstName: this.form.value.firstName ?? '',
+      lastName: this.form.value.lastName ?? '',
+      username: this.form.value.username ?? '',
+      email: this.form.value.email ?? '',
+      password: this.form.value.passwords?.password ?? '',
+    };
 
-  showSuccess() {
-    this.toastr.success('Logged in successfully!');
+    this.authService.register(registerCredentials).subscribe();
   }
 
   onReset() {

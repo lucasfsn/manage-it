@@ -45,7 +45,7 @@
             <li
               *ngFor="let member of project.members | slice : 0 : 5"
               class="p-0.5 bg-slate-300 hover:bg-slate-400 text-slate-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
-              [routerLink]="['/users', member.userName]"
+              [routerLink]="['/users', member.username]"
             >
               {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
             </li>

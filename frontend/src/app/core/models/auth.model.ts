@@ -1,7 +1,9 @@
-import { User } from './user.model';
-
-export interface UserCredentials extends User {
-  password: string;
+export interface UserCredentials {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
 }
 
 export interface LoginCredentials {
@@ -9,6 +11,18 @@ export interface LoginCredentials {
   password: string;
 }
 
-export interface AuthResponse {
-  access_token: string;
+export interface RegisterCredentials {
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+export interface AuthUserResponse {
+  user: UserCredentials;
+}
+
+export interface AuthResponse extends AuthUserResponse {
+  token: string;
 }

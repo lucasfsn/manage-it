@@ -16,13 +16,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-side-bar',
   standalone: true,
-  imports: [
-    MatIconModule,
-    CommonModule,
-    RouterLink,
-    RouterLinkActive,
-    SearchComponent,
-  ],
+  imports: [MatIconModule, CommonModule, RouterLink, RouterLinkActive],
   animations: [
     trigger('toggleMenu', [
       state(
@@ -48,7 +42,7 @@ export class SideBarComponent implements OnInit {
 
   constructor(private dialog: MatDialog, private authService: AuthService) {}
 
-  get userName(): string | null {
+  get username(): string | null {
     return this.authService.getLoggedInUsername();
   }
 

@@ -20,7 +20,7 @@ export class MainLayoutComponent implements OnInit {
     if (!this.authService.isAuthenticated()) return;
 
     this.isLoading.set(true);
-    this.authService.getUser().subscribe({
+    this.authService.getUserByToken().subscribe({
       next: () => {
         this.isLoading.set(false);
       },

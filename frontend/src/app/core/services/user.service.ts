@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { delay, mergeMap, of, tap, throwError } from 'rxjs';
+import { delay, of, tap } from 'rxjs';
 import { usersData } from '../../dummy-data';
 import { UpdateUser, User } from '../models/user.model';
 
@@ -15,7 +15,7 @@ export class UserService {
   loadedUser = this.user.asReadonly();
 
   getUserByUsername(username: string) {
-    const user = usersData.find((user) => user.userName === username);
+    const user = usersData.find((user) => user.username === username);
 
     return of(user).pipe(
       tap({
@@ -40,9 +40,6 @@ export class UserService {
 
     return of(updatedUser).pipe(
       delay(500),
-      // mergeMap((user) => {
-      //   return throwError(() => new Error('Failed to update user data.'));
-      // }),
       tap({
         error: (error) => {
           this.user.set(prevData);

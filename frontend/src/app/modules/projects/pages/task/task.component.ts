@@ -76,7 +76,7 @@ export class TaskComponent {
   }
 
   get taskAssigneesNicknames(): string[] {
-    return this.taskAssignees.map((user) => user.userName);
+    return this.taskAssignees.map((user) => user.username);
   }
 
   toggleChat() {
@@ -98,7 +98,7 @@ export class TaskComponent {
         if (task) {
           this.isTaskAssignee.set(
             task.users.some(
-              (user) => user.userName === this.authService.getLoggedInUsername()
+              (user) => user.username === this.authService.getLoggedInUsername()
             )
           );
         }

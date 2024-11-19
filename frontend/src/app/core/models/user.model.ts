@@ -5,15 +5,15 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  userName: string;
+  username: string;
   projects: Project[];
   createdAt: string;
 }
 
 export interface UpdateUser {
-  firstName?: string;
-  lastName?: string;
-  userName?: string;
-  email?: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
   password?: string;
 }

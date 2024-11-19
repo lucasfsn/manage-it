@@ -28,7 +28,7 @@ export class InlineSearchComponent {
         (item) =>
           item.firstName.toLowerCase().includes(query) ||
           item.lastName.toLowerCase().includes(query) ||
-          item.userName.toLowerCase().includes(query)
+          item.username.toLowerCase().includes(query)
       );
     } else {
       this.searchResults = [];
@@ -41,11 +41,11 @@ export class InlineSearchComponent {
     this.searchResults = [];
   }
 
-  isAlreadyIn(userName: string): boolean {
-    return this.usersAlreadyIn.some((u) => u === userName);
+  isAlreadyIn(username: string): boolean {
+    return this.usersAlreadyIn.some((u) => u === username);
   }
 
-  isLoggedInUser(userName: string): boolean {
-    return this.authService.getLoggedInUsername() === userName;
+  isLoggedInUser(username: string): boolean {
+    return this.authService.getLoggedInUsername() === username;
   }
 }

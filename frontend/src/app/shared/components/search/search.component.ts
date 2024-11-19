@@ -62,14 +62,14 @@ export class SearchComponent {
         (item) =>
           item.firstName.toLowerCase().includes(query) ||
           item.lastName.toLowerCase().includes(query) ||
-          item.userName.toLowerCase().includes(query)
+          item.username.toLowerCase().includes(query)
       );
     } else {
       this.searchResults = [];
     }
   }
 
-  isLoggedInUser(userName: string): boolean {
-    return this.authService.getLoggedInUsername() === userName;
+  isLoggedInUser(username: string): boolean {
+    return this.authService.getLoggedInUsername() === username;
   }
 }

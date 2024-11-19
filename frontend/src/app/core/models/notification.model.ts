@@ -5,6 +5,6 @@ export interface Notification {
   user: User;
   message: string;
   date: string;
-  projectId?: string;
+  projectId: string;
   taskId?: string;
 }

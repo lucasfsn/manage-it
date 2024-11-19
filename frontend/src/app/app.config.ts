@@ -20,8 +20,8 @@ import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
-export function tokenGetter() {
-  return localStorage.getItem('access_token');
+function tokenGetter() {
+  return localStorage.getItem('JWT_TOKEN');
 }
 
 export const appConfig: ApplicationConfig = {
@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
       JwtModule.forRoot({
         config: {
           tokenGetter: tokenGetter,
-          allowedDomains: ['http://localhost:3000'],
+          allowedDomains: ['http://localhost:8080'],
         },
       })
     ),

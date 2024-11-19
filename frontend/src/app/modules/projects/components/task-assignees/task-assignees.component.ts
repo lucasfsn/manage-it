@@ -82,7 +82,7 @@ export class TaskAssigneesComponent implements OnInit {
   public showAssignees = true;
 
   get usersInNicknames(): string[] {
-    return this.usersIn.map((user) => user.userName);
+    return this.usersIn.map((user) => user.username);
   }
 
   get isLoading(): boolean {
@@ -136,7 +136,7 @@ export class TaskAssigneesComponent implements OnInit {
       (user) =>
         user.firstName.toLowerCase().includes(searchTerm) ||
         user.lastName.toLowerCase().includes(searchTerm) ||
-        user.userName.toLowerCase().includes(searchTerm)
+        user.username.toLowerCase().includes(searchTerm)
     );
     this.updatePaginatedUsers();
   }

@@ -13,7 +13,7 @@ export enum Priority {
 export interface User {
   firstName: string;
   lastName: string;
-  userName: string;
+  username: string;
 }
 
 export interface Task {
