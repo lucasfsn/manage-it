@@ -81,13 +81,6 @@ export class EditProfileFormComponent {
         nameValidator,
       ],
     }),
-    username: new FormControl('', {
-      validators: [
-        Validators.minLength(2),
-        Validators.maxLength(20),
-        nameValidator,
-      ],
-    }),
     email: new FormControl('', {
       validators: [Validators.email],
     }),
@@ -119,14 +112,6 @@ export class EditProfileFormComponent {
       this.form.controls.lastName.dirty &&
       this.form.controls.lastName.touched &&
       this.form.controls.lastName.invalid
-    );
-  }
-
-  get usernameIsInvalid() {
-    return (
-      this.form.controls.username.dirty &&
-      this.form.controls.username.touched &&
-      this.form.controls.username.invalid
     );
   }
 
@@ -183,22 +168,6 @@ export class EditProfileFormComponent {
     return null;
   }
 
-  get usernameErrors() {
-    const control = this.form.controls.username;
-    if (control.errors) {
-      if (control.errors['minlength']) {
-        return `Username must be at least ${control.errors['minlength'].requiredLength} characters long.`;
-      }
-      if (control.errors['maxlength']) {
-        return `Username cannot be more than ${control.errors['maxlength'].requiredLength} characters long.`;
-      }
-      if (control.errors['invalidName']) {
-        return 'Username cannot contain numbers and special characters.';
-      }
-    }
-    return null;
-  }
-
   get emailErrors() {
     const control = this.form.controls.email;
     if (control.errors) {
@@ -228,7 +197,6 @@ export class EditProfileFormComponent {
       this.form.patchValue({
         firstName: this.userData.firstName,
         lastName: this.userData.lastName,
-        username: this.userData.username,
         email: this.userData.email,
         passwords: {
           password: '',
@@ -248,9 +216,6 @@ export class EditProfileFormComponent {
       lastName: this.form.value.lastName
         ? this.form.value.lastName
         : this.userData.lastName,
-      username: this.form.value.username
-        ? this.form.value.username
-        : this.userData.username,
       email: this.form.value.email
         ? this.form.value.email
         : this.userData.email,
@@ -263,7 +228,6 @@ export class EditProfileFormComponent {
     const isFormChanged =
       updatedUserData.firstName !== this.userData.firstName ||
       updatedUserData.lastName !== this.userData.lastName ||
-      updatedUserData.username !== this.userData.username ||
       updatedUserData.email !== this.userData.email;
 
     if (!isFormChanged) return;

@@ -22,8 +22,8 @@ export const projectAuthGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return authService.getUserByToken().pipe(
-    switchMap((res) => {
-      if (!res.user) {
+    switchMap((user) => {
+      if (!user) {
         router.navigate(['/auth/login']);
         return of(false);
       }
@@ -37,7 +37,7 @@ export const projectAuthGuard: CanActivateFn = (route, state) => {
 
       return checkProjectAccess(
         projectService,
-        res.user.username,
+        user.username,
         projectId,
         router
       );

@@ -26,7 +26,6 @@ export class MainLayoutComponent implements OnInit {
       },
       error: () => {
         this.isLoading.set(false);
-        this.authService.logout();
       },
     });
   }

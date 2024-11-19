@@ -2,11 +2,10 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, of, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   AuthResponse,
-  AuthUserResponse,
   LoginCredentials,
   RegisterCredentials,
   UserCredentials,
@@ -77,11 +76,15 @@ export class AuthService {
   }
 
   getUserByToken() {
+    const currentUser = this.currentUser();
+
+    if (currentUser) return of(currentUser);
+
     return this.http
-      .get<AuthUserResponse>(`${environment.apiUrl}/users/me`)
+      .get<UserCredentials>(`${environment.apiUrl}/auth/user`)
       .pipe(
-        tap((res: AuthUserResponse) => {
-          this.currentUser.set(res.user);
+        tap((res: UserCredentials) => {
+          this.currentUser.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
           this.toastrService.error(err.error.errorDescription);
@@ -94,12 +97,10 @@ export class AuthService {
   getLoggedInUsername(): string | null {
     const currentUser = this.currentUser();
 
-    if (!currentUser) {
-      this.logout();
-      return null;
-    }
+    if (currentUser) return currentUser.username;
 
-    return currentUser.username;
+    this.logout();
+    return null;
   }
 
   private storeJwtToken(jwt: string) {

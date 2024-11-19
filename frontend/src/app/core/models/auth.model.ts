@@ -19,10 +19,7 @@ export interface RegisterCredentials {
   password: string;
 }
 
-export interface AuthUserResponse {
-  user: UserCredentials;
-}
-
-export interface AuthResponse extends AuthUserResponse {
+export interface AuthResponse {
   token: string;
+  user: UserCredentials;
 }
