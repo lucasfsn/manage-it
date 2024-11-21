@@ -189,7 +189,8 @@ export class EditProfileFormComponent {
     const formChanged =
       updatedUserData.firstName !== this.userData.firstName ||
       updatedUserData.lastName !== this.userData.lastName ||
-      updatedUserData.email !== this.userData.email;
+      updatedUserData.email !== this.userData.email ||
+      updatedUserData.password;
 
     if (!formChanged) return;
 
