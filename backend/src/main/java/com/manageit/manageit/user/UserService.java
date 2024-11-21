@@ -33,15 +33,21 @@ public class UserService {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
         return userRepository.findByUsername(username)
                 .map(user -> {
-                    user.setFirstName(updatedUser.getFirstName());
-                    user.setLastName(updatedUser.getLastName());
-                    user.setEmail(updatedUser.getEmail());
+                    if (updatedUser.getFirstName() != null) {
+                        user.setFirstName(updatedUser.getFirstName());
+                    }
+                    if (updatedUser.getLastName() != null) {
+                        user.setLastName(updatedUser.getLastName());
+                    }
+                    if (updatedUser.getEmail() != null) {
+                        user.setEmail(updatedUser.getEmail());
+                    }
                     if (updatedUser.getPassword() != null) {
                         user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
                     }
                     userRepository.save(user);
                     return true;
                 })
-                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username);
+                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
     }
 }
