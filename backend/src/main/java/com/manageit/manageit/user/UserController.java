@@ -26,5 +26,12 @@ public class UserController {
     ) {
         return ResponseEntity.ok(userService.updateUser(token, updatedUser));
     }
+
+    @PostMapping("/search")
+    public ResponseEntity<Object> searchUser(
+            @RequestBody UserSearchRequest userSearchRequest
+    ) {
+        return ResponseEntity.ok(userService.searchUsers(userSearchRequest.getPattern(), userSearchRequest.getProjectId()));
+    }
 }
 

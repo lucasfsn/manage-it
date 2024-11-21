@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -56,5 +59,14 @@ public class UserService {
                     return true;
                 })
                 .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+    }
+
+    public List<User> searchUsers(String pattern, UUID projectId) {
+        if (projectId == null) {
+            return userRepository.findByUsernameContainingIgnoreCase(pattern)
+                    .orElseThrow(() -> new EntityNotFoundException("No users found!"));
+        }
+        return userRepository.findByUsernameContainingIgnoreCaseInProject(pattern, projectId)
+                .orElseThrow(() -> new EntityNotFoundException("No users found!"));
     }
 }

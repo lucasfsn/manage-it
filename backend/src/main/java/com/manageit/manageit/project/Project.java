@@ -40,7 +40,8 @@ public class Project {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private ProjectStatus status;
 
     @Column(nullable = false, updatable = false, insertable = false)
