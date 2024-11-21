@@ -39,12 +39,12 @@ public class User implements UserDetails, Principal {
 
     @NotBlank(message = "First name cannot be empty")
     @Size(max = 50, min = 2, message = "First name must be between 2 and 50 characters")
-    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ]+$", message = "First name must contain only letters")
+    @Pattern(regexp = "^(?=(?:[^A-Za-z]*[A-Za-z]){2})(?![^\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,]*[\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,])\\S+(?: \\S+){0,2}$", message = "First name must contain only letters")
     private String firstName;
 
     @NotBlank(message = "First name cannot be empty")
     @Size(max = 50, min = 2, message = "First name must be between 2 and 50 characters")
-    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ]+$", message = "Last name must contain only letters")
+    @Pattern(regexp = "^(?=(?:[^A-Za-z]*[A-Za-z]){2})(?![^\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,]*[\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,])\\S+(?: \\S+){0,2}$", message = "Last name must contain only letters")
     private String lastName;
 
     @NotBlank(message = "Password cannot be empty")

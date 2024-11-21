@@ -27,8 +27,8 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(BAD_CREDENTIALS.getHttpStatus())
-                                .errorDescription(BAD_CREDENTIALS.getDescription())
-                                .message(exp.getMessage())
+                                .errorDescription(exp.getMessage())
+                                .message(BAD_CREDENTIALS.getDescription())
                                 .build()
                 );
     }
@@ -45,8 +45,8 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(ENTITY_NOT_FOUND.getHttpStatus())
-                                .errorDescription(errorDescription)
-                                .message(exp.getMessage())
+                                .errorDescription(exp.getMessage())
+                                .message(errorDescription)
                                 .build()
                 );
     }
@@ -85,8 +85,8 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(DATA_INTEGRITY_VIOLATION.getHttpStatus())
-                                .errorDescription(errorDescription)
-                                .message(exp.getMessage())
+                                .errorDescription(exp.getMessage())
+                                .message(errorDescription)
                                 .build()
                 );
     }
