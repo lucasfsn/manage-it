@@ -20,7 +20,7 @@ public class ExceptionResponse {
     private LocalDateTime timestamp;
     private HttpStatus httpStatus;
     private String errorDescription;
-    private String error;
+    private String message;
     private Set<String> validationErrors;
     private Map<String, String> errors;
 }

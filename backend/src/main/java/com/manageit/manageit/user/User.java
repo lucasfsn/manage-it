@@ -1,5 +1,6 @@
 package com.manageit.manageit.user;
 
+import com.manageit.manageit.project.Project;
 import com.manageit.manageit.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -10,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +19,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -27,16 +28,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EntityListeners(EntityListeners.class)
+//@EntityListeners(EntityListeners.class)
 @Table(name = "users")
 public class User implements UserDetails, Principal {
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id", updatable = false, nullable = false)
     private UUID id;
-
 
     @NotBlank(message = "First name cannot be empty")
     @Size(max = 50, min = 2, message = "First name must be between 2 and 50 characters")
@@ -50,10 +49,6 @@ public class User implements UserDetails, Principal {
 
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 8, message = "Password must have at least 8 characters")
-//    @Pattern(
-//            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$",
-//            message = "USER Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*)."
-//    )
     private String password;
 
 
@@ -64,15 +59,20 @@ public class User implements UserDetails, Principal {
 
     @NotBlank(message = "Username cannot be empty")
     @Size(min = 2, max = 20, message = "Username must be between 2 and 20 characters")
-//    @Pattern(
-//            regexp = "^(?=(?:[^A-Za-z]*[A-Za-z]){2})(?![^\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<#“.,]*[\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<#“.,])\\S+(?: \\S+){0,2}$",
-//            message = "Username must contain at least two letters, cannot include certain special characters, and must not start or end with spaces."
-//    )
     @Column(unique = true)
     private String username;
 
     @Column(nullable = false, updatable = false, insertable = false)
     private LocalDateTime createdAt;
+
+    @ManyToMany
+    @JoinTable(
+            name = "project_members",
+            joinColumns = @JoinColumn(name = "users_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "projects_project_id")
+    )
+    private Set<Project> projects;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

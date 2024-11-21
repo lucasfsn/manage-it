@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -18,16 +16,25 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserResponse findByToken(String token) {
+    public AuthenticatedUserResponse findByToken(String token) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        return this.findByUsername(username);
-    }
-
-    public UserResponse findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .map(userMapper::toUserResponse)
+                .map(userMapper::toAuthenticatedUserResponse)
                 .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
     }
+
+    public UserResponse findByUsername(String token, String username) {
+        String requestUsername = jwtService.extractUsername(token.replace("Bearer ", ""));
+        if (requestUsername.equals(username)) {
+            return userRepository.findByUsername(username)
+                    .map(userMapper::toUserResponse)
+                    .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        }
+        return userRepository.findByUsername(username)
+                .map(userMapper::toUserResponseWithoutEmail)
+                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+    }
+
 
     public boolean updateUser(String token, UpdateUserRequest updatedUser) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));

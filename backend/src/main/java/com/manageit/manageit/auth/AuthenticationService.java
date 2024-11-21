@@ -4,7 +4,7 @@ import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.user.User;
 import com.manageit.manageit.user.UserMapper;
 import com.manageit.manageit.user.UserRepository;
-import com.manageit.manageit.user.UserResponse;
+import com.manageit.manageit.user.AuthenticatedUserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,9 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -36,9 +33,9 @@ public class AuthenticationService {
 //                .role(Role.USER)
                 .build();
         repository.save(user);
-        UserResponse userResponse = userMapper.toUserResponse(user);
+        AuthenticatedUserResponse authenticatedUserResponse = userMapper.toAuthenticatedUserResponse(user);
         String jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().token(jwtToken).user(userResponse).build();
+        return AuthenticationResponse.builder().token(jwtToken).user(authenticatedUserResponse).build();
     }
 
     public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
@@ -49,9 +46,9 @@ public class AuthenticationService {
                 )
         );
         User user = ((User) auth.getPrincipal());
-        UserResponse userResponse = userMapper.toUserResponse(user);
+        AuthenticatedUserResponse authenticatedUserResponse = userMapper.toAuthenticatedUserResponse(user);
         String jwtToken  = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().token(jwtToken).user(userResponse).build();
+        return AuthenticationResponse.builder().token(jwtToken).user(authenticatedUserResponse).build();
     }
 
 }

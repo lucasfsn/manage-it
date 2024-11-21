@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(BAD_CREDENTIALS.getHttpStatus())
                                 .errorDescription(BAD_CREDENTIALS.getDescription())
-                                .error(exp.getMessage())
+                                .message(exp.getMessage())
                                 .build()
                 );
     }
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(ENTITY_NOT_FOUND.getHttpStatus())
                                 .errorDescription(errorDescription)
-                                .error(exp.getMessage())
+                                .message(exp.getMessage())
                                 .build()
                 );
     }
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(VALIDATION_ERROR.getHttpStatus())
                                 .errorDescription(VALIDATION_ERROR.getDescription())
-                                .error(errors.iterator().next())
+                                .message(errors.iterator().next())
                                 .validationErrors(errors)
                                 .build()
                 );
@@ -86,7 +86,7 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(DATA_INTEGRITY_VIOLATION.getHttpStatus())
                                 .errorDescription(errorDescription)
-                                .error(exp.getMessage())
+                                .message(exp.getMessage())
                                 .build()
                 );
     }
@@ -100,7 +100,7 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .timestamp(LocalDateTime.now())
                                 .errorDescription(INTERNAL_ERROR.getDescription())
-                                .error(exp.getMessage())
+                                .message(exp.getMessage())
                                 .build()
                 );
     }

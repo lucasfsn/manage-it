@@ -1,6 +1,6 @@
 package com.manageit.manageit.auth;
 
-import com.manageit.manageit.user.UserResponse;
+import com.manageit.manageit.user.AuthenticatedUserResponse;
 import com.manageit.manageit.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,7 +33,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<UserResponse> getCurrentUser(
+    public ResponseEntity<AuthenticatedUserResponse> getCurrentUser(
             @RequestHeader("Authorization") String token
     ) {
         return ResponseEntity.ok(userService.findByToken(token));

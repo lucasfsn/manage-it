@@ -1,8 +1,8 @@
 package com.manageit.manageit.user;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.manageit.manageit.project.Project;
 import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -11,12 +11,12 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserResponse {
+public class AuthenticatedUserResponse {
+
     private String firstName;
     private String lastName;
+//    private String password;
     private String email;
     private String username;
-    private LocalDateTime createdAt;
-    private Set<Project> projects;
+
 }
