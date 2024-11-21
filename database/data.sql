@@ -1,8 +1,8 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
-CREATE TYPE task_status AS ENUM ('NOT STARTED', 'IN PROGRESS', 'COMPLETED');
+CREATE TYPE task_status AS ENUM ('NOT_STARTED', 'IN_PROGRESS', 'COMPLETED');
 CREATE TYPE task_priority AS ENUM ('LOW', 'MEDIUM', 'HIGH');
-CREATE TYPE project_status AS ENUM ('IN PROGRESS', 'COMPLETED');
+CREATE TYPE project_status AS ENUM ('IN_PROGRESS', 'COMPLETED');
 
 CREATE TABLE users (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -93,18 +93,18 @@ INSERT INTO users (user_id, first_name, last_name, password, email, username) VA
 ('06b8d207-b9b3-4308-9249-9228b383c917', 'Elizabeth', 'Rodriguez', '$2a$10$ELfpGPOQhBkxcmRB.7rpAeapvsEbRVVWTwDemrjlo/dHAFeS04Ni2', 'elizabeth.rodriguez@example.com', 'elizabeth_rodriguez');
 
 INSERT INTO projects (project_id, owner_id, project_name, description, status, created_at, start_date, end_date) VALUES 
-('a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'b3c6063d-ce04-413e-b6c6-ae875eeb454a', 'Website Redesign', 'Complete redesign of the company website to improve UX/UI.', 'IN PROGRESS', '2024-10-14 10:00:00', '2024-10-14', '2025-01-25'),
+('a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'b3c6063d-ce04-413e-b6c6-ae875eeb454a', 'Website Redesign', 'Complete redesign of the company website to improve UX/UI.', 'IN_PROGRESS', '2024-10-14 10:00:00', '2024-10-14', '2025-01-25'),
 ('cc687098-fb51-4f28-b95e-c9b7b4241d58', '8d1f7f5e-0b8f-4a9f-b7c4-0c61a8f43b32', 'Mobile App Development', 'Development of a new mobile application for iOS and Android.', 'COMPLETED', '2024-09-01 10:00:00', '2024-09-01', '2024-10-18'),
 ('40424d07-1902-47f5-bf5e-9085ca8310bc', 'fd9397f3-1e3e-4d98-bad8-f5986b3655a2', 'E-commerce Platform', 'Building a new e-commerce platform with advanced features.', 'COMPLETED', '2024-03-01 10:00:00', '2024-03-01', '2024-08-01'),
-('2c9fcdc9-b591-41d0-9152-c5e4eec7b158', '5fc9c20a-b7f1-44db-85b0-7fa5c3cb9c16', 'Cloud Migration', 'Migrating all company data and applications to the cloud.', 'IN PROGRESS', '2024-11-01 10:00:00', '2024-11-01', '2025-01-20'),
-('f9712337-fb38-4b7f-b080-51b6a04eec6d', '5ad0c3c7-759c-4844-8322-dd9e16f0e9b0', 'Marketing Campaign', 'Launching a new marketing campaign to increase brand awareness.', 'IN PROGRESS', '2024-10-01 10:00:00', '2024-10-01', '2024-12-15');
+('2c9fcdc9-b591-41d0-9152-c5e4eec7b158', '5fc9c20a-b7f1-44db-85b0-7fa5c3cb9c16', 'Cloud Migration', 'Migrating all company data and applications to the cloud.', 'IN_PROGRESS', '2024-11-01 10:00:00', '2024-11-01', '2025-01-20'),
+('f9712337-fb38-4b7f-b080-51b6a04eec6d', '5ad0c3c7-759c-4844-8322-dd9e16f0e9b0', 'Marketing Campaign', 'Launching a new marketing campaign to increase brand awareness.', 'IN_PROGRESS', '2024-10-01 10:00:00', '2024-10-01', '2024-12-15');
 
 INSERT INTO tasks (task_id, assigned_project_id, task_name, description, status, priority, due_date) VALUES 
-('9d837fcb-b563-4895-8d52-e544623c1fc3', 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'Develop Header', 'Develop Header', 'IN PROGRESS', 'HIGH', '2025-01-20'),
-('87007e51-34cd-4e8d-8b7f-535e3481cb9b', 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'Develop Sidebar', 'Develop Sidebar', 'NOT STARTED', 'MEDIUM', '2024-12-16'),
+('9d837fcb-b563-4895-8d52-e544623c1fc3', 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'Develop Header', 'Develop Header', 'IN_PROGRESS', 'HIGH', '2025-01-20'),
+('87007e51-34cd-4e8d-8b7f-535e3481cb9b', 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'Develop Sidebar', 'Develop Sidebar', 'NOT_STARTED', 'MEDIUM', '2024-12-16'),
 ('e6d61c4b-0e9c-44d7-8d9e-d1531e2f64e1', 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'Develop API', 'Develop API', 'COMPLETED', 'LOW', '2024-11-29'),
 ('ccfc6b4e-5d31-4a79-b2a6-2eab6cf153fc', 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'Database Design', 'Database Design', 'COMPLETED', 'MEDIUM', '2024-12-09'),
-('3048a872-2c4f-46b1-bb2f-35a27be4ed65', 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'Testing', 'Testing', 'IN PROGRESS', 'HIGH', '2025-01-09');
+('3048a872-2c4f-46b1-bb2f-35a27be4ed65', 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'Testing', 'Testing', 'IN_PROGRESS', 'HIGH', '2025-01-09');
 
 INSERT INTO notifications (notification_id, assigned_project_id, users_user_id, tasks_task_id, message, created_at) VALUES 
 ('e2e31222-488b-47ac-9f70-205105f0b3fa', 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4', 'b3c6063d-ce04-413e-b6c6-ae875eeb454a', NULL, 'User John Doe has joined the project "Website Redesign"', '2024-10-14 10:00:00'),
