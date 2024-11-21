@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -9,41 +8,12 @@ import {
 import { RouterLink } from '@angular/router';
 import { RegisterCredentials } from '../../../../core/models/auth.model';
 import { AuthService } from '../../../../core/services/auth.service';
-
-function equalValues(controlName1: string, controlName2: string) {
-  return (control: AbstractControl) => {
-    const value1 = control.get(controlName1)?.value;
-    const value2 = control.get(controlName2)?.value;
-
-    if (value1 === value2) {
-      return null;
-    }
-
-    return { equalValues: true };
-  };
-}
-
-function nameValidator(control: AbstractControl) {
-  const nameRegex =
-    /^(?=(?:[^A-Za-z]*[A-Za-z]){2})(?![^\d~`?!^*¨ˆ;@=$%{}\[\]|\\\/<>#“.,]*[\d~`?!^*¨ˆ;@=$%{}\[\]|\\\/<>#“.,])\S+(?: \S+){0,2}$/;
-
-  if (nameRegex.test(control.value)) return null;
-
-  return {
-    invalidName: true,
-  };
-}
-
-function passwordValidator(control: AbstractControl) {
-  const passwordRegex =
-    /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
-
-  if (passwordRegex.test(control.value)) return null;
-
-  return {
-    invalidPassword: true,
-  };
-}
+import {
+  equalValues,
+  nameValidator,
+  passwordValidator,
+  usernameValidator,
+} from '../../validators';
 
 @Component({
   selector: 'app-signup-form',
@@ -77,7 +47,7 @@ export class SignupFormComponent {
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(20),
-        nameValidator,
+        usernameValidator,
       ],
     }),
     email: new FormControl('', {

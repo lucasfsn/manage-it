@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -10,43 +9,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { UpdateUser, User } from '../../../../core/models/user.model';
 import { UserService } from '../../../../core/services/user.service';
-
-function equalValues(controlName1: string, controlName2: string) {
-  return (control: AbstractControl) => {
-    const value1 = control.get(controlName1)?.value;
-    const value2 = control.get(controlName2)?.value;
-
-    if (value1 === value2) {
-      return null;
-    }
-
-    return { equalValues: true };
-  };
-}
-
-function nameValidator(control: AbstractControl) {
-  const nameRegex =
-    /^(?=(?:[^A-Za-z]*[A-Za-z]){2})(?![^\d~`?!^*¨ˆ;@=$%{}\[\]|\\\/<>#“.,]*[\d~`?!^*¨ˆ;@=$%{}\[\]|\\\/<>#“.,])\S+(?: \S+){0,2}$/;
-
-  if (nameRegex.test(control.value)) return null;
-
-  return {
-    invalidName: true,
-  };
-}
-
-function passwordValidator(control: AbstractControl) {
-  const passwordRegex =
-    /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
-
-  if (passwordRegex.test(control.value)) return null;
-
-  if (!control.value) return null;
-
-  return {
-    invalidPassword: true,
-  };
-}
+import {
+  equalValues,
+  nameValidator,
+  passwordValidator,
+} from '../../validators';
 
 @Component({
   selector: 'app-edit-profile-form',
@@ -63,7 +30,7 @@ export class EditProfileFormComponent {
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
     private userService: UserService
   ) {
-    this.userData = data?.user;
+    this.userData = data.user;
   }
 
   protected form = new FormGroup({
@@ -210,27 +177,21 @@ export class EditProfileFormComponent {
     if (this.form.invalid || !this.userData) return;
 
     const updatedUserData: UpdateUser = {
-      firstName: this.form.value.firstName
-        ? this.form.value.firstName
-        : this.userData.firstName,
-      lastName: this.form.value.lastName
-        ? this.form.value.lastName
-        : this.userData.lastName,
-      email: this.form.value.email
-        ? this.form.value.email
-        : this.userData.email,
+      firstName: this.form.value.firstName ?? this.userData.firstName,
+      lastName: this.form.value.lastName ?? this.userData.lastName,
+      email: this.form.value.email ?? this.userData.email!,
     };
 
     if (this.form.value.passwords?.password) {
       updatedUserData.password = this.form.value.passwords.password;
     }
 
-    const isFormChanged =
+    const formChanged =
       updatedUserData.firstName !== this.userData.firstName ||
       updatedUserData.lastName !== this.userData.lastName ||
       updatedUserData.email !== this.userData.email;
 
-    if (!isFormChanged) return;
+    if (!formChanged) return;
 
     this.userService.updateUserData(this.userData, updatedUserData).subscribe();
     this.closeDialog();

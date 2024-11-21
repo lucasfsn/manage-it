@@ -1,33 +1,14 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
-
-function passwordValidator(control: AbstractControl) {
-  const passwordRegex =
-    /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
-
-  if (passwordRegex.test(control.value)) return null;
-
-  return {
-    invalidPassword: true,
-  };
-}
-
-let initialValue = '';
-const savedLoginForm = window.localStorage.getItem('saved-login-form');
-if (savedLoginForm) {
-  const loadedForm = JSON.parse(savedLoginForm);
-  initialValue = loadedForm.email;
-}
+import { passwordValidator } from '../../validators';
 
 @Component({
   selector: 'app-login-form',
@@ -38,13 +19,12 @@ if (savedLoginForm) {
 })
 export class LoginFormComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
-  constructor(
-    private toastr: ToastrService,
-    private authService: AuthService
-  ) {}
+  private initialValue = '';
+
+  constructor(private authService: AuthService) {}
 
   form = new FormGroup({
-    email: new FormControl(initialValue, {
+    email: new FormControl(this.initialValue, {
       validators: [Validators.required, Validators.email],
     }),
     password: new FormControl('', {
@@ -97,6 +77,14 @@ export class LoginFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    const savedLoginForm = window.localStorage.getItem('saved-login-form');
+
+    if (savedLoginForm) {
+      const loadedData = JSON.parse(savedLoginForm);
+      this.initialValue = loadedData.email;
+      this.form.controls.email.setValue(this.initialValue);
+    }
+
     const subscription = this.form.valueChanges
       .pipe(debounceTime(500))
       .subscribe({

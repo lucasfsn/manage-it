@@ -1,13 +1,12 @@
 import { Project } from './project.model';
 
 export interface User {
-  id: string;
-  email: string;
   firstName: string;
   lastName: string;
   username: string;
   projects: Project[];
   createdAt: string;
+  email?: string;
 }
 
 export interface UpdateUser {

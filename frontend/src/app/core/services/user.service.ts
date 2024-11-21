@@ -1,34 +1,28 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { delay, of, tap } from 'rxjs';
-import { usersData } from '../../dummy-data';
+import { catchError, tap, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { UpdateUser, User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private toastrService: ToastrService) {}
-
   private user = signal<User | undefined>(undefined);
 
   loadedUser = this.user.asReadonly();
 
-  getUserByUsername(username: string) {
-    const user = usersData.find((user) => user.username === username);
+  constructor(private toastrService: ToastrService, private http: HttpClient) {}
 
-    return of(user).pipe(
-      tap({
-        next: (user) => {
-          this.user.set(user);
-        },
-        error: (error) => {
-          this.toastrService.error('Something went wrong.');
-          console.error(
-            "Couldn't fetch user data. Please try again later.",
-            error
-          );
-        },
+  getUserByUsername(username: string) {
+    return this.http.get<User>(`${environment.apiUrl}/users/${username}`).pipe(
+      tap((res: User) => {
+        this.user.set(res);
+      }),
+      catchError((err: HttpErrorResponse) => {
+        this.toastrService.error(err.error.message);
+        return throwError(() => err);
       })
     );
   }
@@ -38,18 +32,14 @@ export class UserService {
 
     this.user.set(updatedUser);
 
-    return of(updatedUser).pipe(
-      delay(500),
-      tap({
-        error: (error) => {
+    return this.http
+      .patch<User>(`${environment.apiUrl}/users/update`, updatedData)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
           this.user.set(prevData);
-          this.toastrService.error('Something went wrong.');
-          console.error(
-            "Couldn't update user data. Please try again later.",
-            error
-          );
-        },
-      })
-    );
+          this.toastrService.error(err.error.message);
+          return throwError(() => err);
+        })
+      );
   }
 }

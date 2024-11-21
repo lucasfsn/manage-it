@@ -252,7 +252,6 @@ export const dummyProjects: Project[] = [
 
 export const usersData: User[] = [
   {
-    id: '1',
     email: 'john.doe@example.com',
     firstName: 'John',
     lastName: 'Doe',
@@ -261,7 +260,6 @@ export const usersData: User[] = [
     createdAt: '2022-01-15',
   },
   {
-    id: '2',
     email: 'jane.smith@example.com',
     firstName: 'Jane',
     lastName: 'Smith',
@@ -270,7 +268,6 @@ export const usersData: User[] = [
     createdAt: '2022-02-20',
   },
   {
-    id: '3',
     email: 'michael.johnson@example.com',
     firstName: 'Michael',
     lastName: 'Johnson',
@@ -279,7 +276,6 @@ export const usersData: User[] = [
     createdAt: '2022-03-25',
   },
   {
-    id: '4',
     email: 'anna.williams@example.com',
     firstName: 'Anna',
     lastName: 'Williams',
@@ -288,7 +284,6 @@ export const usersData: User[] = [
     createdAt: '2022-04-30',
   },
   {
-    id: '5',
     email: 'olivia.brown@example.com',
     firstName: 'Olivia',
     lastName: 'Brown',
@@ -297,7 +292,6 @@ export const usersData: User[] = [
     createdAt: '2022-05-05',
   },
   {
-    id: '6',
     email: 'sophia.jones@example.com',
     firstName: 'Sophia',
     lastName: 'Jones',
@@ -306,7 +300,6 @@ export const usersData: User[] = [
     createdAt: '2022-06-10',
   },
   {
-    id: '7',
     email: 'isabella.garcia@example.com',
     firstName: 'Isabella',
     lastName: 'Garcia',
@@ -315,7 +308,6 @@ export const usersData: User[] = [
     createdAt: '2022-07-15',
   },
   {
-    id: '8',
     email: 'mia.martinez@example.com',
     firstName: 'Mia',
     lastName: 'Martinez',
@@ -324,7 +316,6 @@ export const usersData: User[] = [
     createdAt: '2022-08-20',
   },
   {
-    id: '9',
     email: 'emily.davis@example.com',
     firstName: 'Emily',
     lastName: 'Davis',
@@ -333,7 +324,6 @@ export const usersData: User[] = [
     createdAt: '2022-09-25',
   },
   {
-    id: '10',
     email: 'elizabeth.rodriguez@example.com',
     firstName: 'Elizabeth',
     lastName: 'Rodriguez',
@@ -342,7 +332,6 @@ export const usersData: User[] = [
     createdAt: '2022-10-30',
   },
   {
-    id: '11',
     email: 'alexis.hernandez@example.com',
     firstName: 'Alexis',
     lastName: 'Hernandez',
@@ -351,7 +340,6 @@ export const usersData: User[] = [
     createdAt: '2022-11-05',
   },
   {
-    id: '12',
     email: 'ella.lopez@example.com',
     firstName: 'Ella',
     lastName: 'Lopez',
@@ -423,7 +411,6 @@ export const dummyNotifications: Notification[] = [
 ];
 
 export const users: ProjectMember[] = usersData.map((user) => ({
-  id: user.id,
   firstName: user.firstName,
   lastName: user.lastName,
   username: user.username,

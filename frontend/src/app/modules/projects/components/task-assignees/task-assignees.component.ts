@@ -8,7 +8,9 @@ import {
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   ElementRef,
+  inject,
   Input,
   OnInit,
   signal,
@@ -59,6 +61,8 @@ import { InlineSearchComponent } from '../../../../shared/components/inline-sear
   ],
 })
 export class TaskAssigneesComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
+
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
   @Input() usersIn: User[] = [];
   @Input() isTaskAssignee!: boolean;
@@ -180,8 +184,10 @@ export class TaskAssigneesComponent implements OnInit {
     this.loadAllUsersInProject();
     this.filteredUsers = this.usersIn;
     this.updatePaginatedUsers();
-    this.searchControl.valueChanges.subscribe(() => {
+    const subscription = this.searchControl.valueChanges.subscribe(() => {
       this.filterUsers();
     });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }

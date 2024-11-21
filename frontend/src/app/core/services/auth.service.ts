@@ -40,7 +40,7 @@ export class AuthService {
           this.router.navigate(['/dashboard']);
         }),
         catchError((err: HttpErrorResponse) => {
-          this.toastrService.error(err.error.errorDescription);
+          this.toastrService.error(err.error.message);
           return throwError(() => err);
         })
       );
@@ -60,7 +60,7 @@ export class AuthService {
           this.router.navigate(['/dashboard']);
         }),
         catchError((err: HttpErrorResponse) => {
-          this.toastrService.error(err.error.errorDescription);
+          this.toastrService.error(err.error.message);
           return throwError(() => err);
         })
       );
@@ -87,7 +87,7 @@ export class AuthService {
           this.currentUser.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
-          this.toastrService.error(err.error.errorDescription);
+          this.toastrService.error(err.error.message);
           this.logout();
           return throwError(() => err);
         })
