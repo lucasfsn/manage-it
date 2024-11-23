@@ -1,7 +1,7 @@
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Project, Status } from '../../../../core/models/project.model';
+import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
@@ -15,13 +15,13 @@ export class ProjectsListComponent implements OnChanges {
   @Input() projects: Project[] | undefined;
 
   public sortedProjects: Project[] | undefined;
-  readonly Status = Status;
+  readonly ProjectStatus = ProjectStatus;
   public sortCriteria: string = 'name';
   public sortOrder: string = 'ascending';
 
-  private statusPriority: { [key in Status]: number } = {
-    [Status.InProgress]: 1,
-    [Status.Completed]: 2,
+  private statusPriority: { [key in ProjectStatus]: number } = {
+    [ProjectStatus.InProgress]: 1,
+    [ProjectStatus.Completed]: 2,
   };
 
   constructor(

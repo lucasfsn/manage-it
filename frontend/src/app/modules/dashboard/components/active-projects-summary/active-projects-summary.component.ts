@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { Project, Status } from '../../../../core/models/project.model';
+import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class ActiveProjectsSummaryComponent implements OnInit {
   public activeProjectsCount = 0;
 
   progressChartData: ChartData<'doughnut'> = {
-    labels: [Status.Completed, Status.InProgress],
+    labels: [ProjectStatus.Completed, ProjectStatus.InProgress],
     datasets: [
       {
         data: [0, 0, 0],
@@ -41,10 +41,10 @@ export class ActiveProjectsSummaryComponent implements OnInit {
   updateChart() {
     if (this.projects) {
       const inProgress = this.projects.filter(
-        (p) => p.status === 'In Progress'
+        (p) => p.status === ProjectStatus.InProgress
       ).length;
       const completed = this.projects.filter(
-        (p) => p.status === 'Completed'
+        (p) => p.status === ProjectStatus.Completed
       ).length;
 
       this.activeProjectsCount = inProgress;

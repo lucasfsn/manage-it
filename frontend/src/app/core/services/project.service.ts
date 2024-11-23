@@ -5,8 +5,8 @@ import { dummyProjects } from '../../dummy-data';
 import {
   Project,
   ProjectCreate,
+  ProjectStatus,
   ProjectUpdate,
-  Status,
   Task,
   TaskCreate,
   TaskUpdate,
@@ -94,7 +94,7 @@ export class ProjectService {
       id: Math.random().toString(16).slice(2),
       completedTasks: 0,
       totalTasks: 0,
-      status: Status.InProgress,
+      status: ProjectStatus.InProgress,
       owner: {
         firstName: 'John',
         lastName: 'Doe',
@@ -333,7 +333,7 @@ export class ProjectService {
       return of(null);
     }
 
-    const updatedProject = { ...project, status: Status.Completed };
+    const updatedProject = { ...project, status: ProjectStatus.Completed };
 
     const updatedProjects = prevProjects.map((p) =>
       p.id === projectId ? updatedProject : p

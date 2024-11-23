@@ -4,7 +4,7 @@ import {
   Priority,
   Project,
   User as ProjectMember,
-  Status,
+  ProjectStatus,
   TaskStatus,
 } from './core/models/project.model';
 import { User } from './core/models/user.model';
@@ -18,7 +18,7 @@ export const dummyProjects: Project[] = [
     endDate: '2024-10-25',
     completedTasks: 5,
     totalTasks: 10,
-    status: Status.InProgress,
+    status: ProjectStatus.InProgress,
     owner: {
       firstName: 'John',
       lastName: 'Doe',
@@ -150,7 +150,7 @@ export const dummyProjects: Project[] = [
     endDate: '2024-10-18',
     completedTasks: 3,
     totalTasks: 8,
-    status: Status.Completed,
+    status: ProjectStatus.Completed,
     owner: {
       firstName: 'Olivia',
       lastName: 'Brown',
@@ -179,7 +179,7 @@ export const dummyProjects: Project[] = [
     endDate: '2024-08-01',
     completedTasks: 7,
     totalTasks: 15,
-    status: Status.Completed,
+    status: ProjectStatus.Completed,
     owner: {
       firstName: 'Isabella',
       lastName: 'Garcia',
@@ -207,7 +207,7 @@ export const dummyProjects: Project[] = [
     endDate: '2025-01-01',
     completedTasks: 2,
     totalTasks: 5,
-    status: Status.InProgress,
+    status: ProjectStatus.InProgress,
     owner: {
       firstName: 'Emily',
       lastName: 'Davis',
@@ -236,7 +236,7 @@ export const dummyProjects: Project[] = [
     endDate: '2024-12-15',
     completedTasks: 6,
     totalTasks: 12,
-    status: Status.InProgress,
+    status: ProjectStatus.InProgress,
     owner: {
       firstName: 'Jane',
       lastName: 'Smith',

@@ -11,9 +11,9 @@ export enum Priority {
 }
 
 export enum TaskStatus {
-  NotStarted = 'Not Started',
-  InProgress = 'In Progress',
-  Completed = 'Completed',
+  NotStarted = 'NOT_STARTED',
+  InProgress = 'IN_PROGRESS',
+  Completed = 'COMPLETED',
 }
 
 export interface Task {
@@ -44,9 +44,9 @@ export interface TaskUpdate {
   dueDate: string;
 }
 
-export enum Status {
-  InProgress = 'In Progress',
-  Completed = 'Completed',
+export enum ProjectStatus {
+  InProgress = 'IN_PROGRESS',
+  Completed = 'COMPLETED',
 }
 
 export interface Project {
@@ -57,7 +57,7 @@ export interface Project {
   readonly endDate: string;
   readonly completedTasks: number;
   readonly totalTasks: number;
-  readonly status: Status;
+  readonly status: ProjectStatus;
   readonly owner: User;
   readonly members: User[];
   readonly tasks: Task[];

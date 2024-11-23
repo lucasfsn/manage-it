@@ -27,7 +27,7 @@
           <option value="" disabled>Select status</option>
           @for (status of statuses; track status) {
           <option [value]="status">
-            {{ status }}
+            {{ mapTaskStatus(status) }}
           </option>
           }
         </select>

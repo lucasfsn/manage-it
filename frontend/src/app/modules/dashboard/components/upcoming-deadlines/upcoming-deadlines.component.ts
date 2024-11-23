@@ -1,7 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Project, Status } from '../../../../core/models/project.model';
+import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
@@ -16,8 +16,8 @@ export class UpcomingDeadlinesComponent {
 
   constructor(private authService: AuthService) {}
 
-  getDeadlineClass(endDate: string, status: Status): string {
-    if (status === Status.Completed) {
+  getDeadlineClass(endDate: string, status: ProjectStatus): string {
+    if (status === ProjectStatus.Completed) {
       return 'text-sky-500';
     }
 
@@ -32,8 +32,8 @@ export class UpcomingDeadlinesComponent {
     }
   }
 
-  getDeadlineMessage(endDate: string, status: Status): string {
-    if (status === Status.Completed) {
+  getDeadlineMessage(endDate: string, status: ProjectStatus): string {
+    if (status === ProjectStatus.Completed) {
       return 'Completed';
     }
     const daysLeft = this.calculateDaysLeft(endDate);

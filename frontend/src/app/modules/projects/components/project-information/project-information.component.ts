@@ -3,9 +3,10 @@ import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { Project, Status } from '../../../../core/models/project.model';
+import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
+import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 import { ShowMoreMembersComponent } from '../show-more-members/show-more-members.component';
 
 @Component({
@@ -20,11 +21,11 @@ export class ProjectInformationComponent {
   @Input() handleDelete!: () => void;
   @Input() handleComplete!: () => void;
   @Input() handleEdit!: () => void;
-  readonly Status = Status;
+  readonly ProjectStatus = ProjectStatus;
 
   constructor(private dialog: MatDialog, private authService: AuthService) {}
 
-  public get isOwner(): boolean {
+  get isOwner(): boolean {
     return (
       this.project.owner.username === this.authService.getLoggedInUsername()
     );
@@ -50,5 +51,9 @@ export class ProjectInformationComponent {
         projectId: this.project.id,
       },
     });
+  }
+
+  mapProjectStatus(): string {
+    return projectStatusMapper(this.project.status);
   }
 }

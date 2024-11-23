@@ -9,8 +9,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Project, Status, Task } from '../../../../core/models/project.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Project, Task } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
@@ -53,7 +53,6 @@ import { TasksComponent } from '../../components/tasks/tasks.component';
   ],
 })
 export class ProjectComponent implements OnInit {
-  readonly Status = Status;
   public showChat = signal<boolean>(false);
 
   constructor(

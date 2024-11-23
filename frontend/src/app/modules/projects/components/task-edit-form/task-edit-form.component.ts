@@ -7,12 +7,13 @@ import {
 } from '@angular/forms';
 import {
   Priority,
-  Status,
   Task,
+  TaskStatus,
   TaskUpdate,
 } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
+import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 
 @Component({
   selector: 'app-task-edit-form',
@@ -23,7 +24,7 @@ import { ProjectService } from '../../../../core/services/project.service';
 })
 export class TaskEditFormComponent implements OnInit {
   @Input() task!: Task;
-  readonly Status = Status;
+  readonly TaskStatus = TaskStatus;
   readonly Priority = Priority;
   public form: FormGroup = new FormGroup({});
 
@@ -36,8 +37,12 @@ export class TaskEditFormComponent implements OnInit {
     return Object.values(Priority);
   }
 
-  get statuses(): Status[] {
-    return Object.values(Status);
+  get statuses(): TaskStatus[] {
+    return Object.values(TaskStatus);
+  }
+
+  mapTaskStatus(taskStatus: TaskStatus): string {
+    return taskStatusMapper(taskStatus);
   }
 
   get descriptionIsInvalid() {
