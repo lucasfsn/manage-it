@@ -11,7 +11,7 @@ import { User } from './core/models/user.model';
 
 export const dummyProjects: Project[] = [
   {
-    id: '1',
+    id: 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4',
     name: 'Website Redesign',
     description: 'Complete redesign of the company website to improve UX/UI.',
     startDate: '2024-01-01',
@@ -143,7 +143,7 @@ export const dummyProjects: Project[] = [
     ],
   },
   {
-    id: '2',
+    id: 'cc687098-fb51-4f28-b95e-c9b7b4241d58',
     name: 'Mobile App Development',
     description: 'Development of a new mobile application for iOS and Android.',
     startDate: '2024-02-01',
@@ -172,7 +172,7 @@ export const dummyProjects: Project[] = [
     tasks: [],
   },
   {
-    id: '3',
+    id: '40424d07-1902-47f5-bf5e-9085ca8310bc',
     name: 'E-commerce Platform',
     description: 'Building a new e-commerce platform with advanced features.',
     startDate: '2024-03-01',
@@ -200,7 +200,7 @@ export const dummyProjects: Project[] = [
     tasks: [],
   },
   {
-    id: '4',
+    id: '2c9fcdc9-b591-41d0-9152-c5e4eec7b158',
     name: 'Cloud Migration',
     description: 'Migrating all company data and applications to the cloud.',
     startDate: '2024-04-01',
@@ -228,7 +228,7 @@ export const dummyProjects: Project[] = [
     tasks: [],
   },
   {
-    id: '5',
+    id: 'f9712337-fb38-4b7f-b080-51b6a04eec6d',
     name: 'Marketing Campaign',
     description:
       'Launching a new marketing campaign to increase brand awareness.',

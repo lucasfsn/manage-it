@@ -1,10 +1,10 @@
 import { User } from './project.model';
 
 export interface Notification {
-  id: string;
-  user: User;
-  message: string;
-  date: string;
-  projectId: string;
-  taskId?: string;
+  readonly id: string;
+  readonly user: User;
+  readonly message: string;
+  readonly date: string;
+  readonly projectId: string;
+  readonly taskId?: string;
 }

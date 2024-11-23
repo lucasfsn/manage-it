@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 import { User } from '../../../core/models/project.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { ProjectService } from '../../../core/services/project.service';
-import { users } from '../../../dummy-data';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-search',
@@ -30,7 +30,7 @@ import { users } from '../../../dummy-data';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent {
-  projectId: string | null;
+  projectId?: string;
 
   @ViewChild('searchInput') searchInput!: ElementRef;
   form = new FormControl('');
@@ -40,9 +40,10 @@ export class SearchComponent {
     @Inject(MAT_DIALOG_DATA) readonly data: { projectId?: string } | null,
     readonly dialogRef: MatDialogRef<SearchComponent>,
     private authService: AuthService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private userService: UserService
   ) {
-    this.projectId = data?.projectId ?? null;
+    this.projectId = data?.projectId;
   }
 
   closeDialog(): void {
@@ -57,16 +58,21 @@ export class SearchComponent {
 
   onSearch(): void {
     const query = this.form.value?.toLowerCase();
-    if (query && query.length >= 2) {
-      this.searchResults = users.filter(
-        (item) =>
-          item.firstName.toLowerCase().includes(query) ||
-          item.lastName.toLowerCase().includes(query) ||
-          item.username.toLowerCase().includes(query)
-      );
-    } else {
+
+    if (!query || query.length < 2) {
       this.searchResults = [];
+      return;
     }
+
+    this.userService.searchUsers(query, this.projectId).subscribe({
+      next: (res) => {
+        this.searchResults = res;
+      },
+      error: (error) => {
+        console.error(error.message);
+        this.searchResults = [];
+      },
+    });
   }
 
   isLoggedInUser(username: string): boolean {

@@ -1,7 +1,7 @@
-export enum TaskStatus {
-  NotStarted = 'Not Started',
-  InProgress = 'In Progress',
-  Completed = 'Completed',
+export interface User {
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly username: string;
 }
 
 export enum Priority {
@@ -10,20 +10,20 @@ export enum Priority {
   High = 'High',
 }
 
-export interface User {
-  firstName: string;
-  lastName: string;
-  username: string;
+export enum TaskStatus {
+  NotStarted = 'Not Started',
+  InProgress = 'In Progress',
+  Completed = 'Completed',
 }
 
 export interface Task {
-  id: string;
-  projectId: string;
-  users: User[];
-  description: string;
-  status: TaskStatus;
-  priority: Priority;
-  dueDate: string;
+  readonly id: string;
+  readonly projectId: string;
+  readonly users: User[];
+  readonly description: string;
+  readonly status: TaskStatus;
+  readonly priority: Priority;
+  readonly dueDate: string;
 }
 
 export interface TaskCreate {
@@ -35,23 +35,32 @@ export interface TaskCreate {
   users: User[];
 }
 
+export interface TaskUpdate {
+  id: string;
+  projectId: string;
+  description: string;
+  status: TaskStatus;
+  priority: Priority;
+  dueDate: string;
+}
+
 export enum Status {
   InProgress = 'In Progress',
   Completed = 'Completed',
 }
 
 export interface Project {
-  id: string;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  completedTasks: number;
-  totalTasks: number;
-  status: Status;
-  owner: User;
-  members: User[];
-  tasks: Task[];
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly startDate: string;
+  readonly endDate: string;
+  readonly completedTasks: number;
+  readonly totalTasks: number;
+  readonly status: Status;
+  readonly owner: User;
+  readonly members: User[];
+  readonly tasks: Task[];
 }
 
 export interface ProjectCreate {
@@ -61,19 +70,10 @@ export interface ProjectCreate {
   endDate: string;
 }
 
-export interface UpdateProject {
+export interface ProjectUpdate {
   id: string;
   name: string;
   description: string;
   startDate: string;
   endDate: string;
-}
-
-export interface UpdateTask {
-  id: string;
-  projectId: string;
-  description: string;
-  status: TaskStatus;
-  priority: Priority;
-  dueDate: string;
 }

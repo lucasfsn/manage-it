@@ -10,13 +10,13 @@ export interface MessageDummy {
 }
 
 export interface Message {
-  id: string;
-  content: string;
-  sender: User;
-  createdAt: string;
+  readonly id: string;
+  readonly content: string;
+  readonly sender: User;
+  readonly createdAt: string;
 }
 
-export interface MessageReq {
+export interface MessageSend {
   content: string;
   sender: User;
   projectId: string;

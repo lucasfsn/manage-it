@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { ToastrService } from 'ngx-toastr';
 import { UpdateUser, User } from '../../../../core/models/user.model';
 import { UserService } from '../../../../core/services/user.service';
 import {
@@ -28,7 +29,8 @@ export class EditProfileFormComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { user: User },
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
-    private userService: UserService
+    private userService: UserService,
+    private toastrService: ToastrService
   ) {
     this.userData = data.user;
   }
@@ -194,7 +196,11 @@ export class EditProfileFormComponent {
 
     if (!formChanged) return;
 
-    this.userService.updateUserData(this.userData, updatedUserData).subscribe();
+    this.userService.updateUserData(this.userData, updatedUserData).subscribe({
+      error: (error) => {
+        this.toastrService.error(error.message);
+      },
+    });
     this.closeDialog();
   }
 

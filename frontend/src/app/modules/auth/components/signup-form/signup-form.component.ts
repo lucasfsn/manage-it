@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { RegisterCredentials } from '../../../../core/models/auth.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import {
@@ -23,7 +24,10 @@ import {
   imports: [ReactiveFormsModule, RouterLink],
 })
 export class SignupFormComponent {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private toastrService: ToastrService
+  ) {}
 
   form = new FormGroup({
     firstName: new FormControl('', {
@@ -45,8 +49,8 @@ export class SignupFormComponent {
     username: new FormControl('', {
       validators: [
         Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(20),
+        Validators.minLength(8),
+        Validators.maxLength(30),
         usernameValidator,
       ],
     }),
@@ -216,7 +220,14 @@ export class SignupFormComponent {
       password: this.form.value.passwords?.password ?? '',
     };
 
-    this.authService.register(registerCredentials).subscribe();
+    this.authService.register(registerCredentials).subscribe({
+      error: (error) => {
+        this.toastrService.error(error.message);
+      },
+      complete: () => {
+        this.toastrService.success('Signed up successfully');
+      },
+    });
   }
 
   onReset() {

@@ -21,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { UserCredentials } from '../../../core/models/auth.model';
-import { Message, MessageReq } from '../../../core/models/message.model';
+import { Message, MessageSend } from '../../../core/models/message.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { MessageService } from '../../../core/services/message.service';
 
@@ -101,7 +101,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       return;
     }
 
-    const newMessage: MessageReq = {
+    const newMessage: MessageSend = {
       content: this.message,
       sender: {
         firstName: this.currentUser.firstName,

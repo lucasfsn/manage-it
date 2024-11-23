@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Project, Status } from '../../../../core/models/project.model';
 import { User } from '../../../../core/models/user.model';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -37,7 +38,8 @@ export class UserComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastrService: ToastrService
   ) {}
 
   get user(): User | undefined {
@@ -75,7 +77,8 @@ export class UserComponent implements OnInit {
             project.members.find((member) => member.username === username)
           ) || [];
       },
-      error: () => {
+      error: (error) => {
+        this.toastrService.error(error.message);
         this.location.back();
         this.loadingService.loadingOff();
       },

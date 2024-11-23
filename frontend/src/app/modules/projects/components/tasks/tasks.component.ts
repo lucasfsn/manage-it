@@ -6,7 +6,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -62,18 +62,22 @@ export class TasksComponent implements OnInit {
     }
 
     const task = event.container.data[event.currentIndex];
-    let newStatus: TaskStatus;
+    const newStatus = this.getNewStatus(event.container.id);
 
-    if (event.container.id === 'completed') {
-      newStatus = TaskStatus.Completed;
-    } else if (event.container.id === 'inProgress') {
-      newStatus = TaskStatus.InProgress;
-    } else {
-      newStatus = TaskStatus.NotStarted;
+    if (task.status === newStatus) return;
+
+    this.handleMoveTask({ ...task, status: newStatus });
+  }
+
+  private getNewStatus(containerId: string): TaskStatus {
+    switch (containerId) {
+      case 'completed':
+        return TaskStatus.Completed;
+      case 'inProgress':
+        return TaskStatus.InProgress;
+      default:
+        return TaskStatus.NotStarted;
     }
-
-    task.status = newStatus;
-    this.handleMoveTask(task);
   }
 
   openAddCardDialog(selectedStatus: TaskStatus): void {

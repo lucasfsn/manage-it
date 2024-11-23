@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
 import { passwordValidator } from '../../validators';
@@ -21,7 +22,10 @@ export class LoginFormComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private initialValue = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private toastrService: ToastrService
+  ) {}
 
   form = new FormGroup({
     email: new FormControl(this.initialValue, {
@@ -73,7 +77,14 @@ export class LoginFormComponent implements OnInit {
     const email = this.form.value.email ?? '';
     const password = this.form.value.password ?? '';
 
-    this.authService.login({ email, password }).subscribe();
+    this.authService.login({ email, password }).subscribe({
+      error: (error) => {
+        this.toastrService.error(error.message);
+      },
+      complete: () => {
+        this.toastrService.success('Logged in successfully');
+      },
+    });
   }
 
   ngOnInit() {

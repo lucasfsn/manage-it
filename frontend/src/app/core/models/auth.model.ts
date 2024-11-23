@@ -1,9 +1,9 @@
 export interface UserCredentials {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
+  readonly id: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly email: string;
+  readonly username: string;
 }
 
 export interface LoginCredentials {

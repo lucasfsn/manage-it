@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { Project, UpdateProject } from '../../../../core/models/project.model';
+import { Project, ProjectUpdate } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 
@@ -133,7 +133,7 @@ export class EditProjectComponent {
       return;
     }
 
-    const updatedProject: UpdateProject = {
+    const updatedProject: ProjectUpdate = {
       id: this.project.id,
       name: this.form.value.name,
       description: this.form.value.description,

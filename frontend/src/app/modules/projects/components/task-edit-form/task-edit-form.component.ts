@@ -9,7 +9,7 @@ import {
   Priority,
   Status,
   Task,
-  UpdateTask,
+  TaskUpdate,
 } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
@@ -64,7 +64,7 @@ export class TaskEditFormComponent implements OnInit {
       return;
     }
 
-    const updatedTask: UpdateTask = {
+    const updatedTask: TaskUpdate = {
       id: this.task.id,
       projectId: this.task.projectId,
       description: this.form.value.description,

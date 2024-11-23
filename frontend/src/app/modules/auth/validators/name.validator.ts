@@ -4,7 +4,7 @@ export function nameValidator(
   control: AbstractControl
 ): ValidationErrors | null {
   const nameRegex =
-    /^(?=(?:[^A-Za-z]*[A-Za-z]){2})(?![^\d~`?!^*¨ˆ;@=$%{}\[\]|\\\/<>#“.,]*[\d~`?!^*¨ˆ;@=$%{}\[\]|\\\/<>#“.,])\S+(?: \S+){0,2}$/;
+    /^[a-zA-Z\xC0-\uFFFF]+([ \-']{0,1}[a-zA-Z\xC0-\uFFFF]+){0,2}[.]{0,1}$/;
 
   return nameRegex.test(control.value) ? null : { invalidName: true };
 }

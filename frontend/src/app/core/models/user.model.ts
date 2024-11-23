@@ -1,12 +1,12 @@
 import { Project } from './project.model';
 
 export interface User {
-  firstName: string;
-  lastName: string;
-  username: string;
-  projects: Project[];
-  createdAt: string;
-  email?: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly username: string;
+  readonly projects: Project[];
+  readonly createdAt: string;
+  readonly email?: string;
 }
 
 export interface UpdateUser {
@@ -14,4 +14,9 @@ export interface UpdateUser {
   lastName: string;
   email: string;
   password?: string;
+}
+
+export interface SearchUserRequest {
+  pattern: string;
+  projectId?: string;
 }

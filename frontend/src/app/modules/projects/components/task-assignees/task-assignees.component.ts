@@ -23,7 +23,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { User } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
-import { InlineSearchComponent } from '../../../../shared/components/inline-search/inline-search.component';
+import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-task.component';
 
 @Component({
   selector: 'app-task-assignees',
@@ -33,7 +33,7 @@ import { InlineSearchComponent } from '../../../../shared/components/inline-sear
     MatPaginatorModule,
     RouterLink,
     ReactiveFormsModule,
-    InlineSearchComponent,
+    SearchAddToTaskComponent,
     CommonModule,
   ],
   templateUrl: './task-assignees.component.html',

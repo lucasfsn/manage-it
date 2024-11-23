@@ -1,6 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { catchError, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { UpdateUser, User } from '../models/user.model';
@@ -13,7 +12,7 @@ export class UserService {
 
   loadedUser = this.user.asReadonly();
 
-  constructor(private toastrService: ToastrService, private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   getUserByUsername(username: string) {
     return this.http.get<User>(`${environment.apiUrl}/users/${username}`).pipe(
@@ -21,8 +20,7 @@ export class UserService {
         this.user.set(res);
       }),
       catchError((err: HttpErrorResponse) => {
-        this.toastrService.error(err.error.message);
-        return throwError(() => err);
+        return throwError(() => err.error);
       })
     );
   }
@@ -37,9 +35,24 @@ export class UserService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.user.set(prevData);
-          this.toastrService.error(err.error.message);
-          return throwError(() => err);
+          return throwError(() => err.error);
         })
       );
+  }
+
+  searchUsers(pattern: string, projectId?: string, taskId?: string) {
+    let url = `${environment.apiUrl}/users/search?pattern=${pattern}${
+      projectId ? `&projectId=${projectId}` : ''
+    }`;
+
+    if (projectId && taskId) {
+      url += `&taskId=${taskId}`;
+    }
+
+    return this.http.get<User[]>(url).pipe(
+      catchError((err: HttpErrorResponse) => {
+        return throwError(() => err.error);
+      })
+    );
   }
 }

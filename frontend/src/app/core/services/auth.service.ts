@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { catchError, of, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
@@ -20,11 +19,7 @@ export class AuthService {
 
   loadedUser = this.currentUser.asReadonly();
 
-  constructor(
-    private router: Router,
-    private toastrService: ToastrService,
-    private http: HttpClient
-  ) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   register(user: RegisterCredentials) {
     return this.http
@@ -36,12 +31,10 @@ export class AuthService {
           this.storeJwtToken(token);
           this.currentUser.set(user);
 
-          this.toastrService.success('Registered successfully!');
           this.router.navigate(['/dashboard']);
         }),
         catchError((err: HttpErrorResponse) => {
-          this.toastrService.error(err.error.message);
-          return throwError(() => err);
+          return throwError(() => err.error);
         })
       );
   }
@@ -56,12 +49,10 @@ export class AuthService {
           this.storeJwtToken(token);
           this.currentUser.set(user);
 
-          this.toastrService.success('Logged in successfully!');
           this.router.navigate(['/dashboard']);
         }),
         catchError((err: HttpErrorResponse) => {
-          this.toastrService.error(err.error.message);
-          return throwError(() => err);
+          return throwError(() => err.error);
         })
       );
   }
@@ -87,9 +78,8 @@ export class AuthService {
           this.currentUser.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
-          this.toastrService.error(err.error.message);
           this.logout();
-          return throwError(() => err);
+          return throwError(() => err.error);
         })
       );
   }

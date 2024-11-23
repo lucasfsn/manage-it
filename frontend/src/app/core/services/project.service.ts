@@ -5,11 +5,11 @@ import { dummyProjects } from '../../dummy-data';
 import {
   Project,
   ProjectCreate,
+  ProjectUpdate,
   Status,
   Task,
   TaskCreate,
-  UpdateProject,
-  UpdateTask,
+  TaskUpdate,
   User,
 } from '../models/project.model';
 import { AuthService } from './auth.service';
@@ -163,8 +163,8 @@ export class ProjectService {
   }
 
   updateProject(
-    updatedProject: UpdateProject
-  ): Observable<UpdateProject | null> {
+    updatedProject: ProjectUpdate
+  ): Observable<ProjectUpdate | null> {
     const prevProjects = this.projects() || [];
     const project = prevProjects.find((p) => p.id === updatedProject.id);
     const user = this.authService.loadedUser();
@@ -292,7 +292,7 @@ export class ProjectService {
     );
   }
 
-  updateTask(updatedTask: UpdateTask): Observable<Task | null> {
+  updateTask(updatedTask: TaskUpdate): Observable<Task | null> {
     const prevTask = this.task();
     const user = this.authService.loadedUser();
 
@@ -333,11 +333,12 @@ export class ProjectService {
       return of(null);
     }
 
+    const updatedProject = { ...project, status: Status.Completed };
+
     const updatedProjects = prevProjects.map((p) =>
-      p.id === projectId ? { ...p, status: Status.Completed } : p
+      p.id === projectId ? updatedProject : p
     );
 
-    project.status = Status.Completed;
     this.projects.set(updatedProjects);
 
     return of(project).pipe(
@@ -347,7 +348,6 @@ export class ProjectService {
       // }),
       tap({
         error: (error) => {
-          project.status = Status.InProgress;
           this.projects.set(prevProjects);
           this.toastrService.error('Something went wrong.');
           console.error(error);
