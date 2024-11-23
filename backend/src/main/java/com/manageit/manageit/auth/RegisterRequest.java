@@ -25,14 +25,14 @@ public class RegisterRequest {
     @NotBlank(message = "First name cannot be empty")
     @Size(max = 50, min = 2, message = "First name must be between 2 and 50 characters")
     @Pattern(
-            regexp = "^(?=(?:[^A-Za-z]*[A-Za-z]){2})(?![^\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,]*[\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,])\\S+(?: \\S+){0,2}$",
+            regexp = "^[a-zA-Z\\xC0-\\uFFFF]+([ \\-']{0,1}[a-zA-Z\\xC0-\\uFFFF]+){0,2}[.]{0,1}$",
             message = "First name must contain only letters")
     private String firstName;
 
     @NotBlank(message = "First name cannot be empty")
     @Size(max = 50, min = 2, message = "First name must be between 2 and 50 characters")
     @Pattern(
-            regexp = "^(?=(?:[^A-Za-z]*[A-Za-z]){2})(?![^\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,]*[\\d~`?!^*¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,])\\S+(?: \\S+){0,2}$",
+            regexp = "^[a-zA-Z\\xC0-\\uFFFF]+([ \\-']{0,1}[a-zA-Z\\xC0-\\uFFFF]+){0,2}[.]{0,1}$",
             message = "Last name must contain only letters")
     private String lastName;
 
