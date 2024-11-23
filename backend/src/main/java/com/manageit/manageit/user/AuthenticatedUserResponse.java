@@ -12,10 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class AuthenticatedUserResponse {
-
     private String firstName;
     private String lastName;
-//    private String password;
     private String email;
     private String username;
 

@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
 
     @NotBlank(message = "Username cannot be empty")
-    @Size(min = 2, max = 20, message = "Username must be between 2 and 20 characters")
+    @Size(min = 7, max = 30, message = "Username must be between 7 and 30 characters")
     @Pattern(
-            regexp = "^(?=(?:[^A-Za-z][A-Za-z]){2})(?![~`?!^¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,][~`?!^¨ˆ;@=$%{}\\[\\]|\\\\/<>#“.,])\\S+(?: \\S+){0,2}$",
+            regexp = "^[A-Za-z][A-Za-z0-9_]{7,29}$",
             message = "Username must contain at least two letters, cannot include certain special characters, and must not start or end with spaces."
     )
     private String username;

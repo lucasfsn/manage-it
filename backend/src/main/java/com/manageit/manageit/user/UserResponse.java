@@ -2,8 +2,10 @@ package com.manageit.manageit.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.manageit.manageit.project.Project;
+import com.manageit.manageit.project.ProjectResponse;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -18,5 +20,5 @@ public class UserResponse {
     private String email;
     private String username;
     private LocalDateTime createdAt;
-    private Set<Project> projects;
+    private List<ProjectResponse> projects;
 }

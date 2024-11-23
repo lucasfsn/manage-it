@@ -1,9 +1,18 @@
 package com.manageit.manageit.user;
 
+import com.manageit.manageit.project.ProjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 @Service
+@RequiredArgsConstructor
+
+// do poprawy
 public class UserMapper {
+
+    private final ProjectMapper projectMapper;
 
     public AuthenticatedUserResponse toAuthenticatedUserResponse(User user) {
         return AuthenticatedUserResponse
@@ -15,6 +24,7 @@ public class UserMapper {
                 .build();
     }
 
+
     public UserResponse toUserResponse(User user) {
         return UserResponse
                 .builder()
@@ -23,7 +33,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .username(user.getName())
                 .createdAt(user.getCreatedAt())
-                .projects(user.getProjects())
+                .projects(user.getProjects().stream().map(projectMapper::toProjectResponse).collect(Collectors.toList()))
                 .build();
     }
 
@@ -34,7 +44,7 @@ public class UserMapper {
                 .lastName(user.getLastName())
                 .username(user.getName())
                 .createdAt(user.getCreatedAt())
-                .projects(user.getProjects())
+                .projects(user.getProjects().stream().map(projectMapper::toProjectResponse).collect(Collectors.toList()))
                 .build();
     }
 

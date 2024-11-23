@@ -1,5 +1,6 @@
 package com.manageit.manageit.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.manageit.manageit.project.Project;
 import com.manageit.manageit.role.Role;
 import jakarta.persistence.*;
@@ -17,10 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 @Data
@@ -65,13 +63,14 @@ public class User implements UserDetails, Principal {
     @Column(nullable = false, updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "project_members",
             joinColumns = @JoinColumn(name = "users_user_id"),
             inverseJoinColumns = @JoinColumn(name = "projects_project_id")
     )
-    private Set<Project> projects;
+    @JsonBackReference
+    private List<Project> projects;
 
 
     @Override
