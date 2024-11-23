@@ -61,12 +61,18 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
     }
 
-    public List<User> searchUsers(String pattern, UUID projectId) {
+    public List<UserResponse> searchUsers(String pattern, UUID projectId) {
         if (projectId == null) {
             return userRepository.findByUsernameContainingIgnoreCase(pattern)
+                    .map(users -> users.stream()
+                            .map(userMapper::toBasicUserResponse)
+                            .toList())
                     .orElseThrow(() -> new EntityNotFoundException("No users found!"));
         }
         return userRepository.findByUsernameContainingIgnoreCaseInProject(pattern, projectId)
+                .map(users -> users.stream()
+                        .map(userMapper::toBasicUserResponse)
+                        .toList())
                 .orElseThrow(() -> new EntityNotFoundException("No users found!"));
     }
 }

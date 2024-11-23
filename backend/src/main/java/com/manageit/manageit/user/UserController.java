@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -27,11 +29,12 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(token, updatedUser));
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public ResponseEntity<Object> searchUser(
-            @RequestBody UserSearchRequest userSearchRequest
+            @RequestParam("pattern") String pattern,
+            @RequestParam(value = "projectId", required = false) UUID projectId
     ) {
-        return ResponseEntity.ok(userService.searchUsers(userSearchRequest.getPattern(), userSearchRequest.getProjectId()));
+        return ResponseEntity.ok(userService.searchUsers(pattern, projectId));
     }
 }
 

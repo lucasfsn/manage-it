@@ -37,4 +37,13 @@ public class UserMapper {
                 .projects(user.getProjects())
                 .build();
     }
+
+    public UserResponse toBasicUserResponse(User user) {
+        return UserResponse
+                .builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .username(user.getName())
+                .build();
+    }
 }
