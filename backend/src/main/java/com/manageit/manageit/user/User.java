@@ -3,6 +3,7 @@ package com.manageit.manageit.user;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.manageit.manageit.project.Project;
 import com.manageit.manageit.role.Role;
+import com.manageit.manageit.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -31,7 +32,7 @@ import java.util.*;
 public class User implements UserDetails, Principal {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id", updatable = false, nullable = false)
     private UUID id;
 
@@ -71,6 +72,10 @@ public class User implements UserDetails, Principal {
     )
     @JsonBackReference
     private List<Project> projects;
+
+//    @ManyToMany(mappedBy = "users")
+//    @JsonBackReference
+//    private List<Task> tasks;
 
 
     @Override

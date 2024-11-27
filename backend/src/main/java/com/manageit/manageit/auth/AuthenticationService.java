@@ -2,8 +2,8 @@ package com.manageit.manageit.auth;
 
 import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.user.User;
-import com.manageit.manageit.user.UserMapper;
-import com.manageit.manageit.user.UserRepository;
+import com.manageit.manageit.mapper.user.UserMapper;
+import com.manageit.manageit.repository.UserRepository;
 import com.manageit.manageit.user.AuthenticatedUserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

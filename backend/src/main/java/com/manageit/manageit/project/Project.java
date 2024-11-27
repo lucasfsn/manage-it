@@ -1,7 +1,6 @@
 package com.manageit.manageit.project;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.manageit.manageit.task.Task;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -10,13 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -34,13 +30,12 @@ public class Project {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
-    @JsonManagedReference
     private User owner;
 
     @NotBlank(message = "Project name cannot be empty")
     @Size(max = 255, message = "Project name cannot exceed 255 characters")
     @Column(name = "project_name", nullable = false)
-    private String projectName;
+    private String name;
 
     @NotBlank(message = "Description cannot be empty")
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -64,4 +59,7 @@ public class Project {
 
     @ManyToMany(mappedBy = "projects")
     private List<User> members;
+
+    @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
 }

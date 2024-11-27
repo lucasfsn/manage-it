@@ -1,7 +1,14 @@
-package com.manageit.manageit.user;
+package com.manageit.manageit.service;
 
 
+import com.manageit.manageit.dto.user.BasicUserDto;
+import com.manageit.manageit.dto.user.UserResponseDto;
+import com.manageit.manageit.mapper.user.BasicUserMapper;
+import com.manageit.manageit.mapper.user.UserMapper;
+import com.manageit.manageit.repository.UserRepository;
 import com.manageit.manageit.security.JwtService;
+import com.manageit.manageit.user.AuthenticatedUserResponse;
+import com.manageit.manageit.user.UpdateUserRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +25,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final BasicUserMapper basicUserMapper;
 
     public AuthenticatedUserResponse findByToken(String token) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
@@ -26,7 +34,7 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
     }
 
-    public UserResponse findByUsername(String token, String username) {
+    public UserResponseDto findByUsername(String token, String username) {
         String requestUsername = jwtService.extractUsername(token.replace("Bearer ", ""));
         if (requestUsername.equals(username)) {
             return userRepository.findByUsername(username)
@@ -61,17 +69,17 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
     }
 
-    public List<UserResponse> searchUsers(String pattern, UUID projectId) {
+    public List<BasicUserDto> searchUsers(String pattern, UUID projectId) {
         if (projectId == null) {
             return userRepository.findByUsernameContainingIgnoreCase(pattern)
                     .map(users -> users.stream()
-                            .map(userMapper::toBasicUserResponse)
+                            .map(basicUserMapper::toBasicUserDto)
                             .toList())
                     .orElseThrow(() -> new EntityNotFoundException("No users found!"));
         }
         return userRepository.findByUsernameContainingIgnoreCaseInProject(pattern, projectId)
                 .map(users -> users.stream()
-                        .map(userMapper::toBasicUserResponse)
+                        .map(basicUserMapper::toBasicUserDto)
                         .toList())
                 .orElseThrow(() -> new EntityNotFoundException("No users found!"));
     }

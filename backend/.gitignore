@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 
 todo.txt
+luki.txt
 ### STS ###
 .apt_generated
 .classpath

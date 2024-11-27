@@ -1,10 +1,15 @@
-package com.manageit.manageit.user;
+package com.manageit.manageit.controller.user;
 
+import com.manageit.manageit.dto.user.BasicUserDto;
+import com.manageit.manageit.dto.user.UserResponseDto;
+import com.manageit.manageit.user.UpdateUserRequest;
+import com.manageit.manageit.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -14,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserResponse> getUser(
+    public ResponseEntity<UserResponseDto> getUser(
             @RequestHeader("Authorization") String token,
             @PathVariable String username
     ) {
@@ -30,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> searchUser(
+    public ResponseEntity<List<BasicUserDto>> searchUser(
             @RequestParam("pattern") String pattern,
             @RequestParam(value = "projectId", required = false) UUID projectId
     ) {
