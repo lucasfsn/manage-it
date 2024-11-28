@@ -11,7 +11,8 @@ public enum Error {
     VALIDATION_ERROR(BAD_REQUEST, "Validation failed for one or more arguments."),
     DATA_INTEGRITY_VIOLATION(CONFLICT, "Data already exsist."),
     INTERNAL_ERROR(INTERNAL_SERVER_ERROR, "Internal Server Error."),
-    ENTITY_NOT_FOUND(NOT_FOUND, "Entity not found.");
+    ENTITY_NOT_FOUND(NOT_FOUND, "Entity not found."),
+    TOKEN_MISMATCH(UNAUTHORIZED, "The user provided does not match the user in the token.");
 
     private final String description;
     private final HttpStatus httpStatus;

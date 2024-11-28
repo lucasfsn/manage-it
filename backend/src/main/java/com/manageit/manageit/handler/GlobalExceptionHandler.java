@@ -1,7 +1,9 @@
 package com.manageit.manageit.handler;
 
 //import jakarta.validation.ConstraintViolationException;
+import com.manageit.manageit.exception.TokenUserMismatchException;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.coyote.Response;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,19 @@ import static com.manageit.manageit.handler.Error.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(TokenUserMismatchException.class)
+    public ResponseEntity<ExceptionResponse> handleException(TokenUserMismatchException exp) {
+        return ResponseEntity.status(TOKEN_MISMATCH.getHttpStatus())
+                .body(
+                        ExceptionResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .httpStatus(TOKEN_MISMATCH.getHttpStatus())
+                                .errorDescription(exp.getMessage())
+                                .message(TOKEN_MISMATCH.getDescription())
+                                .build()
+                );
+    }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ExceptionResponse> handleException(BadCredentialsException exp) {
