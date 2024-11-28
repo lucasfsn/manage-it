@@ -2,6 +2,7 @@ package com.manageit.manageit.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.manageit.manageit.dto.project.ProjectDto;
+import com.manageit.manageit.dto.project.UserProfileProjectDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -17,5 +18,5 @@ import java.util.List;
 public class UserResponseDto extends BasicUserDto {
     private String email;
     private LocalDateTime createdAt;
-    private List<ProjectDto> projects;
+    private List<UserProfileProjectDto> projects;
 }

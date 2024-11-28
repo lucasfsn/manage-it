@@ -3,6 +3,7 @@ package com.manageit.manageit.service;
 
 import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.dto.user.UserResponseDto;
+import com.manageit.manageit.exception.TokenUserMismatchException;
 import com.manageit.manageit.mapper.user.BasicUserMapper;
 import com.manageit.manageit.mapper.user.UserMapper;
 import com.manageit.manageit.repository.UserRepository;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.security.sasl.AuthenticationException;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,9 +49,13 @@ public class UserService {
     }
 
 
-    public boolean updateUser(String token, UpdateUserRequest updatedUser) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        return userRepository.findByUsername(username)
+    public boolean updateUser(String token, UpdateUserRequest updatedUser, String username) {
+        String tokenUsername = jwtService.extractUsername(token.replace("Bearer ", ""));
+        if (!tokenUsername.equals(username)) {
+            throw new TokenUserMismatchException("The user provided does not match the user in the token.");
+        }
+
+        return userRepository.findByUsername(tokenUsername)
                 .map(user -> {
                     if (updatedUser.getFirstName() != null) {
                         user.setFirstName(updatedUser.getFirstName());
@@ -66,7 +72,7 @@ public class UserService {
                     userRepository.save(user);
                     return true;
                 })
-                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + tokenUsername));
     }
 
     public List<BasicUserDto> searchUsers(String pattern, UUID projectId) {

@@ -26,12 +26,13 @@ public class UserController {
         return ResponseEntity.ok(userService.findByUsername(token, username));
     }
 
-    @PatchMapping("/update")
+    @PatchMapping("/update/{username}")
     public ResponseEntity<Boolean> updateUser(
             @RequestHeader("Authorization") String token,
-            @Valid @RequestBody UpdateUserRequest updatedUser
+            @Valid @RequestBody UpdateUserRequest updatedUser,
+            @PathVariable String username
     ) {
-        return ResponseEntity.ok(userService.updateUser(token, updatedUser));
+        return ResponseEntity.ok(userService.updateUser(token, updatedUser, username));
     }
 
     @GetMapping("/search")
