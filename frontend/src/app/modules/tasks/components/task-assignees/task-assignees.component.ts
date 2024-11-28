@@ -23,7 +23,7 @@ import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
-import { ProjectService } from '../../../../core/services/project.service';
+import { TaskService } from '../../../../core/services/task.service';
 import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-task.component';
 
 @Component({
@@ -73,7 +73,7 @@ export class TaskAssigneesComponent implements OnInit {
   protected loading = signal<boolean>(false);
 
   constructor(
-    private projectService: ProjectService,
+    private taskService: TaskService,
     private loadingService: LoadingService,
     private toastrService: ToastrService
   ) {}
@@ -96,7 +96,7 @@ export class TaskAssigneesComponent implements OnInit {
 
   handleAdd(user: User): void {
     this.loadingService.loadingOn();
-    this.projectService.addToTask(user).subscribe({
+    this.taskService.addToTask(user).subscribe({
       error: (error) => {
         this.toastrService.error(error.message);
         this.loadingService.loadingOff();
@@ -109,7 +109,7 @@ export class TaskAssigneesComponent implements OnInit {
 
   handleRemove(user: User): void {
     this.loadingService.loadingOn();
-    this.projectService.removeFromTask(user).subscribe({
+    this.taskService.removeFromTask(user).subscribe({
       error: (error) => {
         this.toastrService.error(error.message);
         this.loadingService.loadingOff();

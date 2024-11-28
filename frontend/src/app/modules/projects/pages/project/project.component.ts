@@ -13,8 +13,8 @@ import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { TasksComponent } from '../../../tasks/components/tasks/tasks.component';
 import { ProjectInformationComponent } from '../../components/project-information/project-information.component';
-import { TasksComponent } from '../../components/tasks/tasks.component';
 
 @Component({
   selector: 'app-project',

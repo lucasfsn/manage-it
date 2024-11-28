@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -11,43 +10,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ProjectCreate } from '../../../../core/models/project.model';
+import { ProjectData } from '../../../../core/models/project.model';
 import { ProjectService } from '../../../../core/services/project.service';
-
-function endDateValidator(startDate: string, endDate: string) {
-  return (control: AbstractControl) => {
-    const startDateValue = control.get(startDate)?.value;
-    const endDateValue = control.get(endDate)?.value;
-
-    if (!startDateValue || !endDateValue) {
-      return null;
-    }
-
-    if (new Date(startDateValue) <= new Date(endDateValue)) {
-      return null;
-    }
-
-    return {
-      invalidEndDate: true,
-    };
-  };
-}
-
-function startDateValidator(control: AbstractControl) {
-  const selectedDate = new Date(control.value);
-  const today = new Date();
-  selectedDate.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
-
-  if (selectedDate >= today) return null;
-
-  return {
-    invalidDate: true,
-  };
-}
+import { endDateValidator } from '../../validators/end-date.validator';
+import { startDateValidator } from '../../validators/start-date.validator';
 
 @Component({
-  selector: 'app-create-new-project',
+  selector: 'app-create-project',
   standalone: true,
   imports: [
     MatIconModule,
@@ -55,13 +24,13 @@ function startDateValidator(control: AbstractControl) {
     MatFormFieldModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './create-new-project.component.html',
-  styleUrl: './create-new-project.component.css',
+  templateUrl: './create-project.component.html',
+  styleUrl: './create-project.component.css',
 })
-export class CreateNewProjectComponent {
+export class CreateProjectComponent {
   constructor(
     private projectService: ProjectService,
-    private dialogRef: MatDialogRef<CreateNewProjectComponent>,
+    private dialogRef: MatDialogRef<CreateProjectComponent>,
     private router: Router,
     private toastrService: ToastrService
   ) {}
@@ -151,7 +120,7 @@ export class CreateNewProjectComponent {
       return;
     }
 
-    const projectData: ProjectCreate = {
+    const projectData: ProjectData = {
       name: this.form.value.name!,
       description: this.form.value.description!,
       startDate: this.form.value.dates?.startDate!,

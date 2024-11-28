@@ -8,32 +8,32 @@ import {
 import {
   Priority,
   Task,
+  TaskData,
   TaskStatus,
-  TaskUpdate,
 } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
-import { ProjectService } from '../../../../core/services/project.service';
+import { TaskService } from '../../../../core/services/task.service';
 import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 
 @Component({
-  selector: 'app-task-edit-form',
+  selector: 'app-edit-task',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './task-edit-form.component.html',
-  styleUrl: './task-edit-form.component.css',
+  templateUrl: './edit-task.component.html',
+  styleUrl: './edit-task.component.css',
 })
-export class TaskEditFormComponent implements OnInit {
+export class EditTaskComponent implements OnInit {
   readonly TaskStatus = TaskStatus;
   readonly Priority = Priority;
   public form: FormGroup = new FormGroup({});
 
   constructor(
     private loadingService: LoadingService,
-    private projectService: ProjectService
+    private taskService: TaskService
   ) {}
 
   get task(): Task | undefined {
-    return this.projectService.loadedTask();
+    return this.taskService.loadedTask();
   }
 
   get priorities(): Priority[] {
@@ -70,7 +70,7 @@ export class TaskEditFormComponent implements OnInit {
   onSubmit() {
     if (this.form.invalid || !this.task) return;
 
-    const updatedTask: TaskUpdate = {
+    const updatedTask: TaskData = {
       description: this.form.value.description,
       dueDate: this.form.value.dueDate,
       status: this.form.value.status,
@@ -87,7 +87,7 @@ export class TaskEditFormComponent implements OnInit {
     }
 
     this.loadingService.loadingOn();
-    this.projectService.updateTask(updatedTask).subscribe({
+    this.taskService.updateTask(updatedTask).subscribe({
       error: () => {
         this.loadingService.loadingOff();
       },

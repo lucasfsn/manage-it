@@ -26,14 +26,7 @@ export interface Task {
   readonly dueDate: string;
 }
 
-export interface TaskCreate {
-  description: string;
-  status: TaskStatus;
-  priority: Priority;
-  dueDate: string;
-}
-
-export interface TaskUpdate {
+export interface TaskData {
   description: string;
   status: TaskStatus;
   priority: Priority;
@@ -67,14 +60,7 @@ export interface UserProject {
   readonly members: User[];
 }
 
-export interface ProjectCreate {
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-}
-
-export interface ProjectUpdate {
+export interface ProjectData {
   name: string;
   description: string;
   startDate: string;

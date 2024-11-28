@@ -5,7 +5,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { CreateNewProjectComponent } from '../../components/create-new-project/create-new-project.component';
+import { CreateProjectComponent } from '../../components/create-project/create-project.component';
 import { ProjectsListComponent } from '../../components/projects-list/projects-list.component';
 
 @Component({
@@ -28,7 +28,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   openCreateProjectDialog(): void {
-    this.dialog.open(CreateNewProjectComponent, {
+    this.dialog.open(CreateProjectComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
     });

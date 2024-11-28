@@ -13,11 +13,11 @@ import { ToastrService } from 'ngx-toastr';
 import { Task, User } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
-import { ProjectService } from '../../../../core/services/project.service';
+import { TaskService } from '../../../../core/services/task.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { EditTaskComponent } from '../../components/edit-task/edit-task.component';
 import { TaskAssigneesComponent } from '../../components/task-assignees/task-assignees.component';
-import { TaskEditFormComponent } from '../../components/task-edit-form/task-edit-form.component';
 
 @Component({
   selector: 'app-task',
@@ -26,9 +26,9 @@ import { TaskEditFormComponent } from '../../components/task-edit-form/task-edit
     SpinnerComponent,
     ChatComponent,
     TaskAssigneesComponent,
-    TaskEditFormComponent,
     MatIconModule,
     CommonModule,
+    EditTaskComponent,
   ],
   templateUrl: './task.component.html',
   styleUrl: './task.component.css',
@@ -57,7 +57,7 @@ export class TaskComponent {
   public showChat = signal<boolean>(false);
 
   constructor(
-    private projectService: ProjectService,
+    private taskService: TaskService,
     private loadingService: LoadingService,
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -66,7 +66,7 @@ export class TaskComponent {
   ) {}
 
   get task(): Task | undefined {
-    return this.projectService.loadedTask();
+    return this.taskService.loadedTask();
   }
 
   get isLoading(): boolean {
@@ -95,7 +95,7 @@ export class TaskComponent {
     }
 
     this.loadingService.loadingOn();
-    this.projectService.getTask(projectId, taskId).subscribe({
+    this.taskService.getTask(projectId, taskId).subscribe({
       next: (task) => {
         if (task) {
           this.isTaskAssignee.set(

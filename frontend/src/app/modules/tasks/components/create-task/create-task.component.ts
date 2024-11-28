@@ -15,11 +15,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 import {
   Priority,
-  TaskCreate,
+  TaskData,
   TaskStatus,
 } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
-import { ProjectService } from '../../../../core/services/project.service';
+import { TaskService } from '../../../../core/services/task.service';
 
 function dueDateValidator(control: AbstractControl) {
   const selectedDate = new Date(control.value);
@@ -49,7 +49,7 @@ export class CreateTaskComponent {
 
   constructor(
     private loadingService: LoadingService,
-    private projectService: ProjectService,
+    private taskService: TaskService,
     private toastrService: ToastrService,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
@@ -124,7 +124,7 @@ export class CreateTaskComponent {
       return;
     }
 
-    const newTask: TaskCreate = {
+    const newTask: TaskData = {
       status: this.selectedStatus,
       description: this.form.value.description!,
       priority: this.form.value.priority as Priority,
@@ -132,7 +132,7 @@ export class CreateTaskComponent {
     };
 
     this.loadingService.loadingOn();
-    this.projectService.addTask(newTask).subscribe({
+    this.taskService.addTask(newTask).subscribe({
       error: (err) => {
         this.loadingService.loadingOff();
         this.toastrService.error(err.message);

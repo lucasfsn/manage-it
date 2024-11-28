@@ -9,7 +9,7 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
-import { Project, ProjectUpdate } from '../../../../core/models/project.model';
+import { Project, ProjectData } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 
@@ -135,7 +135,7 @@ export class EditProjectComponent {
       return;
     }
 
-    const updatedProject: ProjectUpdate = {
+    const updatedProject: ProjectData = {
       name: this.form.value.name,
       description: this.form.value.description,
       startDate: this.form.value.dates.startDate,

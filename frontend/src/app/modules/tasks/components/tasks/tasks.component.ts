@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Task, TaskStatus } from '../../../../core/models/project.model';
 import { ProjectService } from '../../../../core/services/project.service';
+import { TaskService } from '../../../../core/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
 import { CreateTaskComponent } from '../create-task/create-task.component';
 
@@ -35,6 +36,7 @@ export class TasksComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private projectService: ProjectService,
+    private taskService: TaskService,
     private toastrService: ToastrService
   ) {}
 
@@ -97,7 +99,7 @@ export class TasksComponent implements OnInit {
   }
 
   handleMoveTask(task: Task) {
-    this.projectService.moveProjectTask(task).subscribe({
+    this.taskService.moveProjectTask(task).subscribe({
       error: (err) => {
         this.toastrService.error(err.message);
       },
