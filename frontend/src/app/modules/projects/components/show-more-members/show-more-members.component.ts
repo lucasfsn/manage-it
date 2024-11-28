@@ -1,8 +1,9 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { User as ProjectMember } from '../../../../core/models/project.model';
+import { User } from '../../../../core/models/project.model';
+import { ProjectService } from '../../../../core/services/project.service';
 
 @Component({
   selector: 'app-show-more-members',
@@ -14,8 +15,16 @@ import { User as ProjectMember } from '../../../../core/models/project.model';
 export class ShowMoreMembersComponent {
   constructor(
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { members: ProjectMember[] }
+    private projectService: ProjectService
   ) {}
+
+  get members() {
+    return this.projectService.loadedProject()?.members;
+  }
+
+  handleRemove(user: User): void {
+    this.projectService.removeFromProject(user).subscribe();
+  }
 
   onClose(): void {
     this.dialogRef.close();

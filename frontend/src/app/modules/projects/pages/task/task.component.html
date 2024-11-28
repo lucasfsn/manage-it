@@ -1,7 +1,7 @@
 @if (task) {
 <div class="flex flex-col gap-10 w-full">
   @if (isTaskAssignee()) {
-  <app-task-edit-form [task]="task" />
+  <app-task-edit-form />
   }
   <div class="flex flex-col lg:flex-row lg:justify-between gap-5 flex-grow">
     @if (isLoading) {

@@ -1,8 +1,9 @@
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ProjectService } from '../../../../core/services/project.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -11,34 +12,21 @@ import { AuthService } from '../../../../core/services/auth.service';
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.css',
 })
-export class ProjectsListComponent implements OnChanges {
-  @Input() projects: Project[] | undefined;
-
+export class ProjectsListComponent implements OnInit {
   public sortedProjects: Project[] | undefined;
   readonly ProjectStatus = ProjectStatus;
-  public sortCriteria: string = 'name';
-  public sortOrder: string = 'ascending';
-
-  private statusPriority: { [key in ProjectStatus]: number } = {
-    [ProjectStatus.InProgress]: 1,
-    [ProjectStatus.Completed]: 2,
-  };
+  sortCriteria: string = 'name';
+  sortOrder: string = 'ascending';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private projectService: ProjectService
   ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['projects'] && this.projects) {
-      this.sortedProjects = [...this.projects];
-      this.route.queryParams.subscribe((params) => {
-        this.sortCriteria = params['sort'] || 'name';
-        this.sortOrder = params['order'] || 'ascending';
-        this.sortProjects();
-      });
-    }
+  get projects(): Project[] | undefined {
+    return this.projectService.loadedProjects();
   }
 
   sortProjects() {
@@ -96,5 +84,18 @@ export class ProjectsListComponent implements OnChanges {
     return project.members.some(
       (member) => member.username === this.authService.getLoggedInUsername()
     );
+  }
+
+  private statusPriority: { [key in ProjectStatus]: number } = {
+    [ProjectStatus.InProgress]: 1,
+    [ProjectStatus.Completed]: 2,
+  };
+
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.sortCriteria = params['sort'] || 'name';
+      this.sortOrder = params['order'] || 'ascending';
+      this.sortProjects();
+    });
   }
 }

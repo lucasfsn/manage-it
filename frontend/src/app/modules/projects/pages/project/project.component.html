@@ -1,14 +1,9 @@
 @if (isLoading) {
 <app-spinner />
-} @else if (project) {
+} @else {
 <div class="flex flex-col gap-10 w-full">
-  <app-project-information
-    [project]="project"
-    [handleDelete]="handleDelete.bind(this)"
-    [handleComplete]="handleComplete.bind(this)"
-    [handleEdit]="handleEdit.bind(this)"
-  />
-  <app-tasks [project]="project" [handleMoveTask]="handleMoveTask.bind(this)" />
+  <app-project-information />
+  <app-tasks />
 </div>
 
 <button

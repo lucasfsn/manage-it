@@ -6,15 +6,13 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import {
-  Project,
-  Task,
-  TaskStatus,
-} from '../../../../core/models/project.model';
+import { ToastrService } from 'ngx-toastr';
+import { Task, TaskStatus } from '../../../../core/models/project.model';
+import { ProjectService } from '../../../../core/services/project.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
 import { CreateTaskComponent } from '../create-task/create-task.component';
 
@@ -34,16 +32,21 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
   styleUrl: './tasks.component.css',
 })
 export class TasksComponent implements OnInit {
-  @Input() project!: Project;
-  @Input() handleMoveTask!: (task: Task) => void;
-
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private projectService: ProjectService,
+    private toastrService: ToastrService
+  ) {}
 
   readonly TaskStatus = TaskStatus;
 
   public completedTasks: Task[] = [];
   public inProgressTasks: Task[] = [];
   public notStartedTasks: Task[] = [];
+
+  get project() {
+    return this.projectService.loadedProject();
+  }
 
   drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
@@ -81,6 +84,8 @@ export class TasksComponent implements OnInit {
   }
 
   openAddCardDialog(selectedStatus: TaskStatus): void {
+    if (!this.project) return;
+
     this.dialog.open(CreateTaskComponent, {
       width: '450px',
       backdropClass: 'dialog-backdrop',
@@ -91,7 +96,17 @@ export class TasksComponent implements OnInit {
     });
   }
 
+  handleMoveTask(task: Task) {
+    this.projectService.moveProjectTask(task).subscribe({
+      error: (err) => {
+        this.toastrService.error(err.message);
+      },
+    });
+  }
+
   ngOnInit() {
+    if (!this.project) return;
+
     this.completedTasks = this.project.tasks.filter(
       (task) => task.status === TaskStatus.Completed
     );

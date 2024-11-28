@@ -19,7 +19,8 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
@@ -73,8 +74,8 @@ export class TaskAssigneesComponent implements OnInit {
 
   constructor(
     private projectService: ProjectService,
-    private route: ActivatedRoute,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private toastrService: ToastrService
   ) {}
 
   public filteredUsers: User[] = [];
@@ -95,30 +96,28 @@ export class TaskAssigneesComponent implements OnInit {
 
   handleAdd(user: User): void {
     this.loadingService.loadingOn();
-    this.projectService
-      .addToTask(this.projectId(), this.taskId(), user)
-      .subscribe({
-        next: () => {
-          this.loadingService.loadingOff();
-        },
-        error: () => {
-          this.loadingService.loadingOff();
-        },
-      });
+    this.projectService.addToTask(user).subscribe({
+      error: (error) => {
+        this.toastrService.error(error.message);
+        this.loadingService.loadingOff();
+      },
+      complete: () => {
+        this.loadingService.loadingOff();
+      },
+    });
   }
 
   handleRemove(user: User): void {
     this.loadingService.loadingOn();
-    this.projectService
-      .removeFromTask(this.projectId(), this.taskId(), user)
-      .subscribe({
-        next: () => {
-          this.loadingService.loadingOff();
-        },
-        error: () => {
-          this.loadingService.loadingOff();
-        },
-      });
+    this.projectService.removeFromTask(user).subscribe({
+      error: (error) => {
+        this.toastrService.error(error.message);
+        this.loadingService.loadingOff();
+      },
+      complete: () => {
+        this.loadingService.loadingOff();
+      },
+    });
   }
 
   toggleShowAssignees(): void {
@@ -157,31 +156,7 @@ export class TaskAssigneesComponent implements OnInit {
     this.paginatedUsers = this.filteredUsers.slice(start, end);
   }
 
-  private loadAllUsersInProject(): void {
-    const projectId = this.route.snapshot.paramMap.get('projectId');
-    const taskId = this.route.snapshot.paramMap.get('taskId');
-
-    if (!projectId || !taskId) {
-      return;
-    }
-
-    this.projectId.set(projectId!);
-    this.taskId.set(taskId!);
-
-    this.loading.set(true);
-    this.projectService.getProjectMembers(projectId).subscribe({
-      next: (users) => {
-        this.allUsersInProject.set(users);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.loading.set(false);
-      },
-    });
-  }
-
   ngOnInit(): void {
-    this.loadAllUsersInProject();
     this.filteredUsers = this.usersIn;
     this.updatePaginatedUsers();
     const subscription = this.searchControl.valueChanges.subscribe(() => {

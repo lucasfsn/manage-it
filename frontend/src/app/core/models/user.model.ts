@@ -1,10 +1,10 @@
-import { Project } from './project.model';
+import { UserProject } from './project.model';
 
 export interface User {
   readonly firstName: string;
   readonly lastName: string;
   readonly username: string;
-  readonly projects: Project[];
+  readonly projects: UserProject[];
   readonly createdAt: string;
   readonly email?: string;
 }

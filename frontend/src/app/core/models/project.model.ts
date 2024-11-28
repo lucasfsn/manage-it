@@ -5,9 +5,9 @@ export interface User {
 }
 
 export enum Priority {
-  Low = 'Low',
-  Medium = 'Medium',
-  High = 'High',
+  Low = 'LOW',
+  Medium = 'MEDIUM',
+  High = 'HIGH',
 }
 
 export enum TaskStatus {
@@ -29,15 +29,11 @@ export interface Task {
 export interface TaskCreate {
   description: string;
   status: TaskStatus;
-  projectId: string;
   priority: Priority;
   dueDate: string;
-  users: User[];
 }
 
 export interface TaskUpdate {
-  id: string;
-  projectId: string;
   description: string;
   status: TaskStatus;
   priority: Priority;
@@ -63,6 +59,14 @@ export interface Project {
   readonly tasks: Task[];
 }
 
+export interface UserProject {
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly status: ProjectStatus;
+  readonly members: User[];
+}
+
 export interface ProjectCreate {
   name: string;
   description: string;
@@ -71,7 +75,6 @@ export interface ProjectCreate {
 }
 
 export interface ProjectUpdate {
-  id: string;
   name: string;
   description: string;
   startDate: string;

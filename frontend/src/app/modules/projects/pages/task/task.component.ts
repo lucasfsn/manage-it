@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Task, User } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
@@ -60,7 +61,8 @@ export class TaskComponent {
     private loadingService: LoadingService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService
   ) {}
 
   get task(): Task | undefined {
@@ -103,9 +105,10 @@ export class TaskComponent {
           );
         }
       },
-      error: () => {
-        this.loadingService.loadingOff();
+      error: (err) => {
+        this.toastrService.error(err.message);
         this.router.navigate(['/projects', projectId]);
+        this.loadingService.loadingOff();
       },
       complete: () => {
         this.loadingService.loadingOff();

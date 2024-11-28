@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../../core/models/user.model';
-import { AuthService } from '../../../../core/services/auth.service';
 import { ProjectService } from '../../../../core/services/project.service';
 
 @Component({
@@ -19,19 +19,20 @@ export class AddToProjectComponent implements OnInit {
     private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private toastrService: ToastrService
   ) {}
 
   handleAdd(): void {
-    const loggedInUser = this.authService.getLoggedInUsername();
+    if (!this.user || !this.projectId) return;
 
-    if (!this.user || !this.projectId || !loggedInUser) return;
-
-    this.projectService
-      .addToProject(this.projectId, this.user, loggedInUser)
-      .subscribe();
-
-    this.router.navigate(['/projects', this.projectId]);
+    this.projectService.addToProject(this.projectId, this.user).subscribe({
+      error: (error) => {
+        this.toastrService.error(error.message);
+      },
+      complete: () => {
+        this.router.navigate(['/projects', this.projectId]);
+      },
+    });
   }
 
   ngOnInit(): void {

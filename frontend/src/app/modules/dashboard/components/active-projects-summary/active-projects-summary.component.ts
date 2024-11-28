@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ProjectService } from '../../../../core/services/project.service';
 
 @Component({
   selector: 'app-active-projects-summary',
@@ -12,9 +13,14 @@ import { AuthService } from '../../../../core/services/auth.service';
   styleUrl: './active-projects-summary.component.css',
 })
 export class ActiveProjectsSummaryComponent implements OnInit {
-  @Input() projects: Project[] | undefined;
+  constructor(
+    private authService: AuthService,
+    private projectService: ProjectService
+  ) {}
 
-  constructor(private authService: AuthService) {}
+  get projects(): Project[] | undefined {
+    return this.projectService.loadedProjects();
+  }
 
   public activeProjectsCount = 0;
 

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { Project } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
@@ -24,10 +23,6 @@ export class ProjectsComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-  get projects(): Project[] | undefined {
-    return this.projectService.loadedProjects();
-  }
-
   get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
@@ -45,7 +40,7 @@ export class ProjectsComponent implements OnInit {
     if (!username) return;
 
     this.loadingService.loadingOn();
-    this.projectService.getProjects(username).subscribe({
+    this.projectService.getProjects().subscribe({
       error: () => {
         this.loadingService.loadingOff();
       },

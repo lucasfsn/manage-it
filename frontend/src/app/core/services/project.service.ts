@@ -1,7 +1,7 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { delay, Observable, of, tap } from 'rxjs';
-import { dummyProjects } from '../../dummy-data';
+import { catchError, map, tap, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import {
   Project,
   ProjectCreate,
@@ -12,16 +12,12 @@ import {
   TaskUpdate,
   User,
 } from '../models/project.model';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
-  constructor(
-    private toastrService: ToastrService,
-    private authService: AuthService
-  ) {}
+  constructor(private http: HttpClient) {}
 
   private allowAccess = false;
 
@@ -33,444 +29,291 @@ export class ProjectService {
   loadedProject = this.project.asReadonly();
   loadedTask = this.task.asReadonly();
 
-  getProjects(username: string): Observable<Project[]> {
-    const userProjects = dummyProjects.filter((project) =>
-      project.members.some((member) => member.username === username)
-    );
-
-    return of(userProjects).pipe(
-      delay(300),
-      tap({
-        next: (projects) => {
-          this.projects.set(projects);
-        },
-        error: (error) => {
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
+  getProjects() {
+    return this.http.get<Project[]>(`${environment.apiUrl}/projects`).pipe(
+      tap((res: Project[]) => {
+        this.projects.set(res);
+      }),
+      catchError((err: HttpErrorResponse) => {
+        return throwError(() => err.error);
       })
     );
   }
 
-  getProject(projectId: string): Observable<Project | undefined> {
-    const foundProject = dummyProjects.find((p) => p.id === projectId);
-
-    return of(foundProject).pipe(
-      delay(300),
-      tap({
-        next: (project) => {
-          this.project.set(project);
-        },
-        error: (error) => {
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
+  addProject(project: ProjectCreate) {
+    return this.http
+      .post<Project>(`${environment.apiUrl}/projects`, project)
+      .pipe(
+        map((res: Project) => res.id),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err.error);
+        })
+      );
   }
 
-  getProjectMembers(projectId: string): Observable<User[]> {
-    const project = dummyProjects.find((p) => p.id === projectId);
-
-    if (!project) {
-      this.toastrService.error('Something went wrong.');
-      return of([]);
-    }
-
-    return of(project.members).pipe(
-      delay(3000),
-      tap({
-        error: (error) => {
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
+  getProject(projectId: string) {
+    return this.http
+      .get<Project>(`${environment.apiUrl}/projects/${projectId}`)
+      .pipe(
+        tap((res: Project) => {
+          console.log(res);
+          this.project.set(res);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err.error);
+        })
+      );
   }
 
-  addProject(project: ProjectCreate): Observable<Project> {
-    const newProject: Project = {
-      ...project,
-      id: Math.random().toString(16).slice(2),
-      completedTasks: 0,
-      totalTasks: 0,
-      status: ProjectStatus.InProgress,
-      owner: {
-        firstName: 'John',
-        lastName: 'Doe',
-        username: 'john_doe',
-      },
-      members: [
-        {
-          firstName: 'John',
-          lastName: 'Doe',
-          username: 'john_doe',
-        },
-      ],
-      tasks: [],
-      startDate: '2024-01-01',
-      endDate: '2024-12-31',
-    };
-
-    dummyProjects.push(newProject);
-
-    const prevProjects = this.projects() || [];
-    this.projects.set([...prevProjects, newProject]);
-
-    return of(newProject).pipe(
-      delay(3000),
-      tap({
-        next: () => {
-          this.toastrService.success('Project created successfully');
-        },
-        error: (error) => {
-          this.projects.set(prevProjects);
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
+  deleteProject(projectId: string) {
+    return this.http
+      .delete<Project>(`${environment.apiUrl}/projects/${projectId}`)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err.error);
+        })
+      );
   }
 
-  deleteProject(projectId: string): Observable<Project[]> {
-    const prevProjects = this.projects() || [];
-    const updatedProjects = prevProjects.filter(
-      (project) => project.id !== projectId
-    );
-
-    const dummyIndex = dummyProjects.findIndex(
-      (project) => project.id === projectId
-    );
-    if (dummyIndex !== -1) {
-      dummyProjects.splice(dummyIndex, 1);
-    }
-
-    this.projects.set(updatedProjects);
-
-    return of(updatedProjects).pipe(
-      delay(300),
-      tap({
-        next: () => {
-          this.toastrService.success('Project deleted successfully');
-        },
-        error: (error) => {
-          this.projects.set(prevProjects);
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
-  }
-
-  updateProject(
-    updatedProject: ProjectUpdate
-  ): Observable<ProjectUpdate | null> {
-    const prevProjects = this.projects() || [];
-    const project = prevProjects.find((p) => p.id === updatedProject.id);
-    const user = this.authService.loadedUser();
-
-    if (!project || !user) {
-      this.toastrService.error('Something went wrong.');
-      return of(null);
-    }
-
-    this.project.set({ ...project, ...updatedProject });
-
-    const updatedProjects = prevProjects.map((p) =>
-      p.id === updatedProject.id ? { ...p, ...updatedProject } : p
-    );
-
-    this.projects.set(updatedProjects);
-
-    return of(updatedProject).pipe(
-      delay(300),
-      tap({
-        next: () => {
-          this.toastrService.success('Project updated successfully');
-        },
-        error: (error) => {
-          this.projects.set(prevProjects);
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
-  }
-
-  getTask(projectId: string, taskId: string): Observable<Task | undefined> {
-    const foundProject = dummyProjects.find((p) => p.id === projectId);
-    const foundTask = foundProject?.tasks.find((t) => t.id === taskId);
-
-    return of(foundTask).pipe(
-      delay(300),
-      tap({
-        next: (task) => {
-          this.task.set(task);
-        },
-        error: (error) => {
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
-  }
-
-  addTask(task: TaskCreate): Observable<TaskCreate | null> {
-    const prevProjects = this.projects() || [];
-    const project = prevProjects.find((p) => p.id === task.projectId);
-    const user = this.authService.loadedUser();
-
-    if (!project || !user) {
-      this.toastrService.error('Something went wrong.');
-      return of(null);
-    }
-
-    const taskUser = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-    };
-
-    return of(task).pipe(
-      delay(300),
-      tap({
-        next: (task: TaskCreate) => {
-          const fakeId = Math.random().toString(16).slice(2);
-          project.tasks.push({ ...task, id: fakeId, users: [taskUser] });
-          this.projects.set([...prevProjects]);
-          this.toastrService.success('Task added successfully.');
-        },
-        error: (error) => {
-          this.projects.set([...prevProjects]);
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
-  }
-
-  moveTask(projectId: string, task: Task): Observable<Task[] | null> {
-    const prevProjects = this.projects() || [];
-    const project = prevProjects.find((p) => p.id === projectId);
+  updateProject(projectId: string, updatedProject: ProjectUpdate) {
     const prevProject = this.project();
-    const user = this.authService.loadedUser();
 
-    if (!project || !user) {
-      this.toastrService.error('Something went wrong.');
-      return of(null);
-    }
+    if (!prevProject)
+      return throwError(
+        () => new Error('Something went wrong. Project not found')
+      );
 
-    const taskIndex = this.project()?.tasks.findIndex((t) => t.id === task.id);
+    this.project.set({ ...prevProject, ...updatedProject });
 
-    if (taskIndex === -1) {
-      this.toastrService.error('Task not found.');
-      return of(null);
-    }
+    return this.http
+      .put<Project>(
+        `${environment.apiUrl}/projects/${projectId}`,
+        updatedProject
+      )
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.project.set(prevProject);
+          return throwError(() => err.error);
+        })
+      );
+  }
 
-    const updatedProjectTasksList = project.tasks.map((t) =>
-      t.id === task.id ? { ...t, status: task.status } : t
-    );
+  completeProject() {
+    const prevProject = this.project();
 
-    const updatedProject = { ...project, tasks: updatedProjectTasksList };
-    const updatedProjects = prevProjects.map((p) =>
-      p.id === projectId ? updatedProject : p
-    );
+    if (!prevProject)
+      return throwError(
+        () => new Error('Something went wrong. Project not found')
+      );
 
-    this.projects.set(updatedProjects);
+    const updatedProject = { ...prevProject, status: ProjectStatus.Completed };
+
     this.project.set(updatedProject);
 
-    return of(updatedProjectTasksList).pipe(
-      delay(300),
-      tap({
-        error: (error) => {
-          this.projects.set(prevProjects);
+    return this.http
+      .get<Project>(`${environment.apiUrl}/projects/${prevProject.id}/complete`)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
           this.project.set(prevProject);
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
-  }
-
-  updateTask(updatedTask: TaskUpdate): Observable<Task | null> {
-    const prevTask = this.task();
-    const user = this.authService.loadedUser();
-
-    if (!user || !prevTask) {
-      this.toastrService.error('Something went wrong.');
-      return of(null);
-    }
-
-    const updatedTaskData = {
-      ...prevTask,
-      description: updatedTask.description,
-      status: updatedTask.status,
-      priority: updatedTask.priority,
-      dueDate: updatedTask.dueDate,
-    };
-
-    this.task.set(updatedTaskData);
-
-    return of(updatedTaskData).pipe(
-      delay(300),
-      tap({
-        error: (error) => {
-          this.task.set(prevTask);
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
-  }
-
-  completeProject(projectId: string): Observable<Project | null> {
-    const prevProjects = this.projects() || [];
-    const project = prevProjects.find((p) => p.id === projectId);
-    const user = this.authService.loadedUser();
-
-    if (!project || !user) {
-      this.toastrService.error('Something went wrong.');
-      return of(null);
-    }
-
-    const updatedProject = { ...project, status: ProjectStatus.Completed };
-
-    const updatedProjects = prevProjects.map((p) =>
-      p.id === projectId ? updatedProject : p
-    );
-
-    this.projects.set(updatedProjects);
-
-    return of(project).pipe(
-      delay(300),
-      // mergeMap(() => {
-      //   return throwError(() => new Error('Failed to update user data.'));
-      // }),
-      tap({
-        error: (error) => {
-          this.projects.set(prevProjects);
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
-  }
-
-  addToProject(
-    projectId: string,
-    user: User,
-    currentUser: string
-  ): Observable<Project | null> {
-    const project = dummyProjects.find((p) => p.id === projectId);
-
-    if (!project) {
-      this.toastrService.error('Something went wrong.');
-      return of(null);
-    }
-
-    if (project.owner.username !== currentUser) {
-      this.toastrService.error(
-        'Only the project owner can add members to the project.'
+          return throwError(() => err.error);
+        })
       );
-      return of(null);
-    }
-
-    return of(project).pipe(
-      delay(300),
-      // mergeMap(() => {
-      //   return throwError(() => new Error('Failed to update user data.'));
-      // }),
-      tap({
-        next: () => {
-          project.members.push(user);
-          this.toastrService.success(
-            `${user.firstName} ${user.lastName} has been added to project`
-          );
-          this.allowAccessToAddToProject = false;
-        },
-        error: (error) => {
-          this.allowAccessToAddToProject = false;
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
   }
 
-  addToTask(
-    projectId: string,
-    taskId: string,
-    user: User
-  ): Observable<Task | null> {
-    const prevTask = this.task();
-    const loggedInUser = this.authService.loadedUser();
-
-    if (!projectId || !user || !loggedInUser || !taskId) {
-      this.toastrService.error('Something went wrong.');
-      return of(null);
-    }
-
-    const project = dummyProjects.find((p) => p.id === projectId);
-
-    const updatedTask = project?.tasks.map((t) =>
-      t.id === taskId ? { ...t, users: [...t.users, user] } : t
-    );
-
-    const updatedTaskItem = updatedTask?.find((t) => t.id === taskId);
-    if (updatedTaskItem) this.task.set(updatedTaskItem);
-
-    return of(updatedTaskItem ?? null).pipe(
-      delay(300),
-      tap({
-        next: () => {
-          this.toastrService.success(
-            `${user.firstName} ${user.lastName} has been added to task`
-          );
-        },
-        error: (error) => {
-          this.task.set(prevTask);
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
-    );
+  addToProject(projectId: string, user: User) {
+    return this.http
+      .put<Project>(
+        `${environment.apiUrl}/projects/${projectId}/user/add`,
+        user
+      )
+      .pipe(
+        tap(() => {
+          this.allowAccessToAddToProject = false;
+        }),
+        catchError((err: HttpErrorResponse) => {
+          this.allowAccessToAddToProject = false;
+          return throwError(() => err.error);
+        })
+      );
   }
 
-  removeFromTask(projectId: string, taskId: string, user: User) {
+  removeFromProject(user: User) {
+    const prevProject = this.project();
+
+    if (!prevProject)
+      return throwError(
+        () => new Error('Something went wrong. Project not found')
+      );
+
+    const updatedProjectMembers = prevProject.members.filter(
+      (u) => u.username !== user.username
+    );
+
+    this.project.set({ ...prevProject, members: updatedProjectMembers });
+
+    return this.http
+      .put<Project>(
+        `${environment.apiUrl}/projects/${prevProject.id}/user/add`,
+        user
+      )
+      .pipe(
+        tap(() => {}),
+        catchError((err: HttpErrorResponse) => {
+          this.project.set(prevProject);
+          return throwError(() => err.error);
+        })
+      );
+  }
+
+  moveProjectTask(updatedTask: Task) {
+    const prevProject = this.project();
+
+    if (!prevProject)
+      return throwError(
+        () => new Error('Something went wrong. Project not found')
+      );
+
+    const updatedProjectTasksList = prevProject.tasks.map((t) =>
+      t.id === updatedTask.id ? { ...t, status: updatedTask.status } : t
+    );
+
+    this.project.set({ ...prevProject, tasks: updatedProjectTasksList });
+
+    return this.http
+      .put<Task>(
+        `${environment.apiUrl}/projects/${prevProject.id}/tasks/${updatedTask.id}`,
+        { status: updatedTask.status }
+      )
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.project.set(prevProject);
+          return throwError(() => err.error);
+        })
+      );
+  }
+
+  addTask(task: TaskCreate) {
+    const prevProject = this.project();
+
+    if (!prevProject)
+      return throwError(
+        () => new Error('Something went wrong. Project not found')
+      );
+
+    return this.http
+      .post<Task>(
+        `${environment.apiUrl}/projects/${prevProject.id}/tasks`,
+        task
+      )
+      .pipe(
+        tap((res: Task) => {
+          const updatedProject = {
+            ...prevProject,
+            tasks: [...prevProject.tasks, res],
+          };
+          this.project.set(updatedProject);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          this.project.set(prevProject);
+          return throwError(() => err.error);
+        })
+      );
+  }
+
+  getTask(projectId: string, taskId: string) {
+    return this.http
+      .get<Task>(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
+      .pipe(
+        tap((res: Task) => {
+          this.task.set(res);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err.error);
+        })
+      );
+  }
+
+  updateTask(updatedTask: TaskUpdate) {
     const prevTask = this.task();
-    const loggedInUser = this.authService.loadedUser();
 
-    if (!projectId || !user || !loggedInUser || !taskId) {
-      this.toastrService.error('Something went wrong.');
-      return of(null);
-    }
+    if (!prevTask)
+      return throwError(
+        () => new Error('Something went wrong. Task not found')
+      );
 
-    const project = dummyProjects.find((p) => p.id === projectId);
+    this.task.set({ ...prevTask, ...updatedTask });
 
-    const updatedTask = project?.tasks.map((t) =>
-      t.id === taskId
-        ? { ...t, users: t.users.filter((u) => u.username !== user.username) }
-        : t
-    );
-
-    const updatedTaskItem = updatedTask?.find((t) => t.id === taskId);
-    if (updatedTaskItem) this.task.set(updatedTaskItem);
-
-    return of(updatedTaskItem ?? null).pipe(
-      delay(300),
-      tap({
-        next: () => {
-          this.toastrService.success(
-            `${user.firstName} ${user.lastName} has been removed from task`
-          );
-        },
-        error: (error) => {
+    return this.http
+      .put<Task>(
+        `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}`,
+        updatedTask
+      )
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
           this.task.set(prevTask);
-          this.toastrService.error('Something went wrong.');
-          console.error(error);
-        },
-      })
+          return throwError(() => err.error);
+        })
+      );
+  }
+
+  addToTask(user: User) {
+    const prevTask = this.task();
+
+    if (!prevTask)
+      return throwError(
+        () => new Error('Something went wrong. Task not found')
+      );
+
+    const updatedTaskMembers = prevTask?.users
+      ? [...prevTask.users, user]
+      : [user];
+
+    const updatedTask = { ...prevTask, users: updatedTaskMembers };
+
+    this.task.set(updatedTask);
+
+    return this.http
+      .put<Task>(
+        `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}/user/add`,
+        user
+      )
+      .pipe(
+        tap(() => {}),
+        catchError((err: HttpErrorResponse) => {
+          this.task.set(prevTask);
+          return throwError(() => err.error);
+        })
+      );
+  }
+
+  removeFromTask(user: User) {
+    const prevTask = this.task();
+
+    if (!prevTask)
+      return throwError(
+        () => new Error('Something went wrong. Task not found')
+      );
+
+    const updatedTaskMembers = prevTask.users.filter(
+      (u) => u.username !== user.username
     );
+
+    const updatedTask = { ...prevTask, users: updatedTaskMembers };
+
+    this.task.set(updatedTask);
+
+    return this.http
+      .put<Task>(
+        `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}/user/remove`,
+        user
+      )
+      .pipe(
+        tap(() => {}),
+        catchError((err: HttpErrorResponse) => {
+          this.task.set(prevTask);
+          return throwError(() => err.error);
+        })
+      );
   }
 
   get allowAccessToAddToProject(): boolean {

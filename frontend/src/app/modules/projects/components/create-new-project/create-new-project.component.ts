@@ -9,6 +9,8 @@ import {
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ProjectCreate } from '../../../../core/models/project.model';
 import { ProjectService } from '../../../../core/services/project.service';
 
@@ -59,7 +61,9 @@ function startDateValidator(control: AbstractControl) {
 export class CreateNewProjectComponent {
   constructor(
     private projectService: ProjectService,
-    private dialogRef: MatDialogRef<CreateNewProjectComponent>
+    private dialogRef: MatDialogRef<CreateNewProjectComponent>,
+    private router: Router,
+    private toastrService: ToastrService
   ) {}
 
   protected form = new FormGroup({
@@ -154,7 +158,15 @@ export class CreateNewProjectComponent {
       endDate: this.form.value.dates?.endDate!,
     };
 
-    this.projectService.addProject(projectData).subscribe();
+    this.projectService.addProject(projectData).subscribe({
+      next: (projectId: string) => {
+        this.toastrService.success('Project has been created');
+        this.router.navigate(['/projects', projectId]);
+      },
+      error: (err) => {
+        this.toastrService.error(err.error.message);
+      },
+    });
 
     this.closeDialog();
   }

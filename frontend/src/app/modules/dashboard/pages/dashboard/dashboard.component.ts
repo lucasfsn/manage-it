@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Project } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
@@ -29,33 +28,16 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  get projects(): Project[] | undefined {
-    return this.projectService.loadedProjects();
-  }
-
   get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
-
-  sortProjectsByEndDate(): Project[] {
-    const projects = this.projects;
-
-    if (!projects) return [];
-
-    return projects
-      .slice()
-      .sort(
-        (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
-      );
-  }
-
   private loadProjects(): void {
     const username = this.authService.getLoggedInUsername();
 
     if (!username) return;
 
     this.loadingService.loadingOn();
-    this.projectService.getProjects(username).subscribe({
+    this.projectService.getProjects().subscribe({
       error: (error: Error) => {
         this.toastrService.error(error.message);
         this.loadingService.loadingOff();

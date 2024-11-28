@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { ToastrService } from 'ngx-toastr';
 import { Project, ProjectUpdate } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
@@ -47,7 +48,8 @@ export class EditProjectComponent {
     private projectService: ProjectService,
     private dialogRef: MatDialogRef<EditProjectComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { project: Project }
+    public data: { project: Project },
+    private toastrService: ToastrService
   ) {
     this.project = data.project;
     this.form = new FormGroup({
@@ -134,7 +136,6 @@ export class EditProjectComponent {
     }
 
     const updatedProject: ProjectUpdate = {
-      id: this.project.id,
       name: this.form.value.name,
       description: this.form.value.description,
       startDate: this.form.value.dates.startDate,
@@ -144,13 +145,19 @@ export class EditProjectComponent {
     this.closeDialog();
 
     this.loadingService.loadingOn();
-    this.projectService.updateProject(updatedProject).subscribe({
-      next: () => {
-        this.loadingService.loadingOff();
-      },
-      error: () => {
-        this.loadingService.loadingOff();
-      },
-    });
+    this.projectService
+      .updateProject(this.project.id, updatedProject)
+      .subscribe({
+        next: () => {
+          this.toastrService.success('Project has been updated');
+        },
+        error: (err) => {
+          this.toastrService.error(err.message);
+          this.loadingService.loadingOff();
+        },
+        complete: () => {
+          this.loadingService.loadingOff();
+        },
+      });
   }
 }

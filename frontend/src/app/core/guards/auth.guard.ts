@@ -60,7 +60,7 @@ function checkProjectAccess(
     return of(false);
   }
 
-  return projectService.getProjects(username).pipe(
+  return projectService.getProjects().pipe(
     switchMap(() => {
       const hasAccess = projectService.hasAccessToProject(username, projectId);
 

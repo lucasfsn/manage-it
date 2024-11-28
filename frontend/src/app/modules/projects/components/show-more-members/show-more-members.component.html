@@ -1,26 +1,43 @@
-<div class="flex flex-col p-4 bg-slate-800 rounded-lg">
-  <button
-    (click)="onClose()"
-    class="self-end text-slate-100 hover:text-slate-300 transition-colors outline-none"
-  >
-    <mat-icon>close</mat-icon>
-  </button>
-  <div class="bg-slate-800 mt-4">
+<div class="flex flex-col gap-2 px-4 py-3 rounded-sm bg-slate-900">
+  <div class="flex justify-between">
+    <div class="flex gap-2 items-center">
+      <div
+        class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
+      >
+        <mat-icon>people</mat-icon>
+      </div>
+      <p class="font-semibold">Manage members</p>
+    </div>
+    <button (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div>
     <ul class="flex flex-col gap-1 overflow-y-scroll max-h-[400px]">
-      @for (member of data.members; track member.username) {
+      @for (member of members; track member.username) {
       <li
-        class="flex items-center p-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
-        [routerLink]="['/users', member.username]"
-        (click)="onClose()"
+        class="flex justify-between items-center p-2 hover:bg-slate-700 rounded-full cursor-pointer transition-colors"
       >
         <div
-          class="flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full mr-3"
+          class="flex gap-1 items-center flex-grow"
+          [routerLink]="['/users', member.username]"
+          (click)="onClose()"
         >
-          {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
+          <div
+            class="flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full mr-3"
+          >
+            {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
+          </div>
+          <span class="text-slate-100"
+            >{{ member.firstName }} {{ member.lastName }}</span
+          >
         </div>
-        <span class="text-slate-100"
-          >{{ member.firstName }} {{ member.lastName }}</span
+        <button
+          class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-0.5 flex justify-center items-center rounded-full"
+          (click)="handleRemove(member)"
         >
+          <mat-icon>delete</mat-icon>
+        </button>
       </li>
       }
     </ul>

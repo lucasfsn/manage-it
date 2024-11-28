@@ -1,8 +1,9 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ProjectService } from '../../../../core/services/project.service';
 
 @Component({
   selector: 'app-upcoming-deadlines',
@@ -12,9 +13,26 @@ import { AuthService } from '../../../../core/services/auth.service';
   styleUrl: './upcoming-deadlines.component.css',
 })
 export class UpcomingDeadlinesComponent {
-  @Input() projects: Project[] | undefined;
+  constructor(
+    private authService: AuthService,
+    private projectService: ProjectService
+  ) {}
 
-  constructor(private authService: AuthService) {}
+  get projects(): Project[] | undefined {
+    return this.projectService.loadedProjects();
+  }
+
+  sortedProjectsByEndDate(): Project[] {
+    const projects = this.projects;
+
+    if (!projects) return [];
+
+    return projects
+      .slice()
+      .sort(
+        (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+      );
+  }
 
   getDeadlineClass(endDate: string, status: ProjectStatus): string {
     if (status === ProjectStatus.Completed) {

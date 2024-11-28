@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Project } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ProjectService } from '../../../../core/services/project.service';
 
 @Component({
   selector: 'app-project-statistics',
@@ -11,9 +12,14 @@ import { AuthService } from '../../../../core/services/auth.service';
   styleUrl: './project-statistics.component.css',
 })
 export class ProjectStatisticsComponent {
-  @Input() projects: Project[] | undefined;
+  constructor(
+    private authService: AuthService,
+    private projectService: ProjectService
+  ) {}
 
-  constructor(private authService: AuthService) {}
+  get projects(): Project[] | undefined {
+    return this.projectService.loadedProjects();
+  }
 
   isInProject(project: Project): boolean {
     return project.members.some(

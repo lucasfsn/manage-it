@@ -12,6 +12,7 @@ import {
   MatDialogModule,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { ToastrService } from 'ngx-toastr';
 import {
   Priority,
   TaskCreate,
@@ -49,6 +50,7 @@ export class CreateTaskComponent {
   constructor(
     private loadingService: LoadingService,
     private projectService: ProjectService,
+    private toastrService: ToastrService,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: { selectedStatus: TaskStatus; projectId: string }
@@ -123,22 +125,20 @@ export class CreateTaskComponent {
     }
 
     const newTask: TaskCreate = {
-      projectId: this.projectId,
-      users: [],
       status: this.selectedStatus,
       description: this.form.value.description!,
       priority: this.form.value.priority as Priority,
       dueDate: this.form.value.dueDate!,
     };
 
-    this.closeDialog();
-
     this.loadingService.loadingOn();
     this.projectService.addTask(newTask).subscribe({
-      next: () => {
+      error: (err) => {
         this.loadingService.loadingOff();
+        this.toastrService.error(err.message);
       },
-      error: () => {
+      complete: () => {
+        this.closeDialog();
         this.loadingService.loadingOff();
       },
     });

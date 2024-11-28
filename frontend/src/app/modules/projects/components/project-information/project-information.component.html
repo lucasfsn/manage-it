@@ -1,3 +1,4 @@
+@if (project) {
 <div class="flex flex-col text-gray-400 gap-5">
   <div class="flex flex-row justify-between items-center">
     <h2 class="text-2xl font-semibold text-gray-100">
@@ -49,13 +50,16 @@
             >
               {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
             </li>
-            <li
-              *ngIf="project.members.length > 5"
-              class="font-semibold flex justify-center cursor-pointer items-center transition-colors text-xs text-gray-400 hover:text-gray-300"
-              (click)="showMoreMembers()"
+            <p
+              class="font-semibold flex cursor-pointer transition-colors text-xs text-gray-400 hover:text-gray-300 items-center gap-2"
+              (click)="showAllMembers()"
             >
-              +{{ project.members.length - 5 }} more
-            </li>
+              @if (project.members.length > 5) { +{{
+                project.members.length - 5
+              }}
+              more }
+              <mat-icon class="text-base text-sky-600">edit</mat-icon>
+            </p>
           </ul>
           @if (project.status !== ProjectStatus.Completed && isOwner) {
           <button
@@ -81,3 +85,4 @@
     </div>
   </div>
 </div>
+}

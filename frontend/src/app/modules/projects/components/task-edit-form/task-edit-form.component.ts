@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -23,7 +23,6 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
   styleUrl: './task-edit-form.component.css',
 })
 export class TaskEditFormComponent implements OnInit {
-  @Input() task!: Task;
   readonly TaskStatus = TaskStatus;
   readonly Priority = Priority;
   public form: FormGroup = new FormGroup({});
@@ -32,6 +31,10 @@ export class TaskEditFormComponent implements OnInit {
     private loadingService: LoadingService,
     private projectService: ProjectService
   ) {}
+
+  get task(): Task | undefined {
+    return this.projectService.loadedTask();
+  }
 
   get priorities(): Priority[] {
     return Object.values(Priority);
@@ -65,13 +68,9 @@ export class TaskEditFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
-      return;
-    }
+    if (this.form.invalid || !this.task) return;
 
     const updatedTask: TaskUpdate = {
-      id: this.task.id,
-      projectId: this.task.projectId,
       description: this.form.value.description,
       dueDate: this.form.value.dueDate,
       status: this.form.value.status,
@@ -89,16 +88,18 @@ export class TaskEditFormComponent implements OnInit {
 
     this.loadingService.loadingOn();
     this.projectService.updateTask(updatedTask).subscribe({
-      next: () => {
+      error: () => {
         this.loadingService.loadingOff();
       },
-      error: () => {
+      complete: () => {
         this.loadingService.loadingOff();
       },
     });
   }
 
   onReset(): void {
+    if (!this.task) return;
+
     this.form.reset({
       description: this.task.description,
       status: this.task.status,
@@ -108,6 +109,8 @@ export class TaskEditFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.task) return;
+
     this.initializeForm(this.task);
   }
 }

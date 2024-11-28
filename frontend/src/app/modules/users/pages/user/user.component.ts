@@ -4,7 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Project, ProjectStatus } from '../../../../core/models/project.model';
+import {
+  ProjectStatus,
+  UserProject,
+} from '../../../../core/models/project.model';
 import { User } from '../../../../core/models/user.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
@@ -28,7 +31,7 @@ import { EditProfileFormComponent } from '../../components/edit-profile/edit-pro
   styleUrl: './user.component.css',
 })
 export class UserComponent implements OnInit {
-  public commonProjects: Project[] = [];
+  public commonProjects: UserProject[] = [];
   addToProject: boolean = false;
   readonly ProjectStatus = ProjectStatus;
 

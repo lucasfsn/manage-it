@@ -14,7 +14,6 @@ import { UserService } from '../../../../core/services/user.service';
   styleUrl: './search-add-to-task.component.css',
 })
 export class SearchAddToTaskComponent {
-  @Input() usersToShow: User[] = [];
   @Input() usersAlreadyIn: string[] = [];
   @Input() loading = false;
   @Output() onClick = new EventEmitter<User>();
