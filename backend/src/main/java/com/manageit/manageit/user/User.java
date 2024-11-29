@@ -64,19 +64,9 @@ public class User implements UserDetails, Principal {
     @Column(nullable = false, updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "project_members",
-            joinColumns = @JoinColumn(name = "users_user_id"),
-            inverseJoinColumns = @JoinColumn(name = "projects_project_id")
-    )
-    @JsonBackReference
+
+    @ManyToMany(mappedBy = "members")
     private List<Project> projects;
-
-//    @ManyToMany(mappedBy = "users")
-//    @JsonBackReference
-//    private List<Task> tasks;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

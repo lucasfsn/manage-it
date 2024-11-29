@@ -2,12 +2,16 @@ package com.manageit.manageit.controller.project;
 
 
 import com.manageit.manageit.dto.project.ProjectDto;
+import com.manageit.manageit.dto.project.ProjectRequest;
 import com.manageit.manageit.service.ProjectService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,5 +34,20 @@ public class ProjectController {
             @PathVariable UUID projectId
     ) {
         return ResponseEntity.ok(projectService.getProject(projectId));
+    }
+
+    @PostMapping
+    public ResponseEntity<UUID> createProject(
+            @RequestHeader("Authorization") String token,
+            @Valid @RequestBody ProjectRequest projectRequest
+    ) {
+        UUID projectId = projectService.createProject(token, projectRequest);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(projectId)
+                .toUri();
+
+        return ResponseEntity.created(location).body(projectId);
     }
 }
