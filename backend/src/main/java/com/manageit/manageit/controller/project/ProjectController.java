@@ -3,6 +3,7 @@ package com.manageit.manageit.controller.project;
 
 import com.manageit.manageit.dto.project.ProjectDto;
 import com.manageit.manageit.dto.project.ProjectRequest;
+import com.manageit.manageit.dto.project.UpdateProjectRequest;
 import com.manageit.manageit.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,16 @@ public class ProjectController {
             @PathVariable UUID projectId
     ) {
         projectService.deleteProject(token, projectId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{projectId}")
+    public ResponseEntity<Void> updateProject(
+            @RequestHeader("Authorization") String token,
+            @PathVariable UUID projectId,
+            @RequestBody UpdateProjectRequest request
+    ) {
+        projectService.updateProject(token, projectId, request);
         return ResponseEntity.noContent().build();
     }
 }

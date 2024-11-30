@@ -2,6 +2,7 @@ package com.manageit.manageit.service;
 
 import com.manageit.manageit.dto.project.ProjectDto;
 import com.manageit.manageit.dto.project.ProjectRequest;
+import com.manageit.manageit.dto.project.UpdateProjectRequest;
 import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
 import com.manageit.manageit.mapper.project.ProjectMapper;
 import com.manageit.manageit.project.Project;
@@ -14,9 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,4 +72,30 @@ public class ProjectService {
         projectRepository.delete(project);
     }
 
+    public void updateProject(String token, UUID projectId, UpdateProjectRequest request) {
+        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
+        if (!project.getOwner().getId().equals(user.getId())) {
+            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
+        }
+        if (request.getStatus() != null) {
+            project.setStatus(request.getStatus());
+        } else {
+            if (request.getName() != null) {
+                project.setName(request.getName());
+            }
+            if (request.getDescription() != null) {
+                project.setDescription(request.getDescription());
+            }
+            if (request.getStartDate() != null) {
+                project.setStartDate(request.getStartDate());
+            }
+            if (request.getEndDate() != null) {
+                project.setEndDate(request.getEndDate());
+            }
+        }
+        project.setUpdatedAt(LocalDateTime.now());
+        projectRepository.save(project);
+    }
 }
