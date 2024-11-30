@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../features/dto/project.model';
 import { ProjectService } from '../../../features/services/project.service';
 
@@ -17,7 +18,8 @@ export class ShowMoreMembersComponent {
 
   constructor(
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private toastrService: ToastrService
   ) {}
 
   get projectOwner() {
@@ -29,7 +31,17 @@ export class ShowMoreMembersComponent {
   }
 
   handleRemove(user: User): void {
-    this.projectService.removeFromProject(user).subscribe();
+    this.projectService.removeFromProject(user).subscribe({
+      error: (error) => {
+        this.toastrService.error(error.message);
+      },
+      complete: () => {
+        this.dialogRef.close();
+        this.toastrService.success(
+          `${user.firstName} ${user.lastName} has been removed from project`
+        );
+      },
+    });
   }
 
   onClose(): void {

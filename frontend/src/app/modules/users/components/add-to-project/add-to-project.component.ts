@@ -30,6 +30,9 @@ export class AddToProjectComponent implements OnInit {
         this.toastrService.error(error.message);
       },
       complete: () => {
+        this.toastrService.success(
+          `${this.user?.firstName} ${this.user?.lastName} has been added to project`
+        );
         this.router.navigate(['/projects', this.projectId]);
       },
     });

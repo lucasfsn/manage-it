@@ -4,7 +4,11 @@
       <div
         class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
       >
+        @if (isOnlyShow) {
         <mat-icon>people</mat-icon>
+        } @else {
+        <mat-icon>manage_accounts</mat-icon>
+        }
       </div>
       <p class="font-semibold">
         {{ isOnlyShow ? "All members" : "Manage members" }}
