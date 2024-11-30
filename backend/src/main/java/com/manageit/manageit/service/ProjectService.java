@@ -43,7 +43,7 @@ public class ProjectService {
                 .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + id));
     }
 
-    public UUID createProject(String token, ProjectRequest projectRequest) {
+    public ProjectDto createProject(String token, ProjectRequest projectRequest) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
         User owner = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
         Project project = Project.builder()
@@ -55,9 +55,10 @@ public class ProjectService {
                 .endDate(projectRequest.getEndDate())
                 .createdAt(LocalDateTime.now())
                 .members(List.of(owner))
+                .tasks(List.of())
                 .build();
         projectRepository.save(project);
-        return project.getId();
+        return projectMapper.toProjectDto(project);
 
     }
 }

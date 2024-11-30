@@ -37,17 +37,17 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<UUID> createProject(
+    public ResponseEntity<ProjectDto> createProject(
             @RequestHeader("Authorization") String token,
             @Valid @RequestBody ProjectRequest projectRequest
     ) {
-        UUID projectId = projectService.createProject(token, projectRequest);
+        ProjectDto project = projectService.createProject(token, projectRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(projectId)
+                .buildAndExpand(project.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(projectId);
+        return ResponseEntity.created(location).body(project);
     }
 }
