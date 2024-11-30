@@ -2,6 +2,7 @@ package com.manageit.manageit.handler;
 
 //import jakarta.validation.ConstraintViolationException;
 import com.manageit.manageit.exception.TokenUserMismatchException;
+import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.Response;
 import org.hibernate.exception.ConstraintViolationException;
@@ -34,6 +35,25 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(UnauthorizedProjectAccessException.class)
+    public ResponseEntity<ExceptionResponse> handleException(UnauthorizedProjectAccessException exp) {
+        String message = INSUFFICIENT_PERMISSIONS.getDescription();
+        if (exp.getMessage() != null && !exp.getMessage().isEmpty()) {
+            message = exp.getMessage();
+        }
+        return ResponseEntity
+                .status(INSUFFICIENT_PERMISSIONS.getHttpStatus())
+                .body(
+                        ExceptionResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .httpStatus(INSUFFICIENT_PERMISSIONS.getHttpStatus())
+                                .errorDescription(exp.getMessage())
+                                .message(message)
+                                .build()
+                );
+    }
+
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ExceptionResponse> handleException(BadCredentialsException exp) {
         return ResponseEntity
@@ -50,9 +70,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleException(EntityNotFoundException exp) {
-        String errorDescription = ENTITY_NOT_FOUND.getDescription();
+        String message = ENTITY_NOT_FOUND.getDescription();
         if (exp.getMessage() != null && !exp.getMessage().isEmpty()) {
-            errorDescription = exp.getMessage();
+            message = exp.getMessage();
         }
         return ResponseEntity
                 .status(ENTITY_NOT_FOUND.getHttpStatus())
@@ -61,7 +81,7 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(ENTITY_NOT_FOUND.getHttpStatus())
                                 .errorDescription(exp.getMessage())
-                                .message(errorDescription)
+                                .message(message)
                                 .build()
                 );
     }
@@ -85,13 +105,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException exp) {
-        String errorDescription = DATA_INTEGRITY_VIOLATION.getDescription();
+        String message = DATA_INTEGRITY_VIOLATION.getDescription();
         if (exp.getCause() instanceof ConstraintViolationException constraintException) {
             String constraintName = constraintException.getConstraintName();
             if ("users_email_key".equals(constraintName)) {
-                errorDescription = "Email already exsists";
+                message = "Email already exsists";
             } else if ("users_username_key".equals(constraintName)) {
-                errorDescription = "Username already exsists";
+                message = "Username already exsists";
             }
         }
         return ResponseEntity
@@ -101,7 +121,7 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(DATA_INTEGRITY_VIOLATION.getHttpStatus())
                                 .errorDescription(exp.getMessage())
-                                .message(errorDescription)
+                                .message(message)
                                 .build()
                 );
     }

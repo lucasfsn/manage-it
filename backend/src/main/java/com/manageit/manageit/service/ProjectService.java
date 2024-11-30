@@ -2,6 +2,7 @@ package com.manageit.manageit.service;
 
 import com.manageit.manageit.dto.project.ProjectDto;
 import com.manageit.manageit.dto.project.ProjectRequest;
+import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
 import com.manageit.manageit.mapper.project.ProjectMapper;
 import com.manageit.manageit.project.Project;
 import com.manageit.manageit.project.ProjectStatus;
@@ -61,4 +62,15 @@ public class ProjectService {
         return projectMapper.toProjectDto(project);
 
     }
+
+    public void deleteProject(String token, UUID projectId) {
+        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
+        if (!project.getOwner().getId().equals(user.getId())) {
+            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
+        }
+        projectRepository.delete(project);
+    }
+
 }
