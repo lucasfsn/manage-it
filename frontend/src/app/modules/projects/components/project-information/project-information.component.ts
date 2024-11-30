@@ -20,8 +20,6 @@ import { EditProjectComponent } from '../edit-project/edit-project.component';
   styleUrl: './project-information.component.css',
 })
 export class ProjectInformationComponent {
-  readonly ProjectStatus = ProjectStatus;
-
   constructor(
     private dialog: MatDialog,
     private authService: AuthService,
@@ -33,6 +31,10 @@ export class ProjectInformationComponent {
 
   get project(): Project | undefined {
     return this.projectService.loadedProject();
+  }
+
+  get ProjectStatus(): typeof ProjectStatus {
+    return ProjectStatus;
   }
 
   get isOwner(): boolean {

@@ -40,14 +40,16 @@ export class TasksComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  readonly TaskStatus = TaskStatus;
-
   public completedTasks: Task[] = [];
   public inProgressTasks: Task[] = [];
   public notStartedTasks: Task[] = [];
 
   get project() {
     return this.projectService.loadedProject();
+  }
+
+  get TaskStatus(): typeof TaskStatus {
+    return TaskStatus;
   }
 
   drop(event: CdkDragDrop<Task[]>) {
@@ -93,7 +95,6 @@ export class TasksComponent implements OnInit {
       backdropClass: 'dialog-backdrop',
       data: {
         selectedStatus,
-        projectId: this.project.id,
       },
     });
   }

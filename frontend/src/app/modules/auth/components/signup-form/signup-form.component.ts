@@ -30,7 +30,7 @@ export class SignupFormComponent {
   ) {}
 
   form = new FormGroup({
-    firstName: new FormControl('', {
+    firstName: new FormControl<string>('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
@@ -38,7 +38,7 @@ export class SignupFormComponent {
         nameValidator,
       ],
     }),
-    lastName: new FormControl('', {
+    lastName: new FormControl<string>('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
@@ -46,7 +46,7 @@ export class SignupFormComponent {
         nameValidator,
       ],
     }),
-    username: new FormControl('', {
+    username: new FormControl<string>('', {
       validators: [
         Validators.required,
         Validators.minLength(8),
@@ -54,19 +54,19 @@ export class SignupFormComponent {
         usernameValidator,
       ],
     }),
-    email: new FormControl('', {
+    email: new FormControl<string>('', {
       validators: [Validators.required, Validators.email],
     }),
     passwords: new FormGroup(
       {
-        password: new FormControl('', {
+        password: new FormControl<string>('', {
           validators: [
             Validators.required,
             Validators.minLength(8),
             passwordValidator,
           ],
         }),
-        confirmPassword: new FormControl('', {
+        confirmPassword: new FormControl<string>('', {
           validators: [
             Validators.required,
             Validators.minLength(8),

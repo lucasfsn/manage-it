@@ -14,7 +14,6 @@ import { ProjectService } from '../../../../core/services/project.service';
 })
 export class ProjectsListComponent implements OnInit {
   public sortedProjects: Project[] | undefined;
-  readonly ProjectStatus = ProjectStatus;
   sortCriteria: string = 'name';
   sortOrder: string = 'ascending';
 
@@ -27,6 +26,10 @@ export class ProjectsListComponent implements OnInit {
 
   get projects(): Project[] | undefined {
     return this.projectService.loadedProjects();
+  }
+
+  get ProjectStatus(): typeof ProjectStatus {
+    return ProjectStatus;
   }
 
   sortProjects() {

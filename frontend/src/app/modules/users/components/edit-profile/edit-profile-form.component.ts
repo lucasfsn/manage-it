@@ -1,14 +1,16 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
-import { UpdateUser, User } from '../../../../core/models/user.model';
+import { UserCredentials } from '../../../../core/models/auth.model';
+import { UpdateUser } from '../../../../core/models/user.model';
+import { AuthService } from '../../../../core/services/auth.service';
 import { UserService } from '../../../../core/services/user.service';
 import {
   equalValues,
@@ -24,41 +26,41 @@ import {
   styleUrl: './edit-profile-form.component.css',
 })
 export class EditProfileFormComponent {
-  userData: User | undefined;
-
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { user: User },
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
     private userService: UserService,
-    private toastrService: ToastrService
-  ) {
-    this.userData = data.user;
+    private toastrService: ToastrService,
+    private authService: AuthService
+  ) {}
+
+  get userData(): UserCredentials | null {
+    return this.authService.loadedUser();
   }
 
-  protected form = new FormGroup({
-    firstName: new FormControl('', {
+  form = new FormGroup({
+    firstName: new FormControl<string>('', {
       validators: [
         Validators.minLength(2),
         Validators.maxLength(50),
         nameValidator,
       ],
     }),
-    lastName: new FormControl('', {
+    lastName: new FormControl<string>('', {
       validators: [
         Validators.minLength(2),
         Validators.maxLength(50),
         nameValidator,
       ],
     }),
-    email: new FormControl('', {
+    email: new FormControl<string>('', {
       validators: [Validators.email],
     }),
     passwords: new FormGroup(
       {
-        password: new FormControl('', {
+        password: new FormControl<string>('', {
           validators: [passwordValidator],
         }),
-        confirmPassword: new FormControl('', {
+        confirmPassword: new FormControl<string>('', {
           validators: [passwordValidator],
         }),
       },
@@ -162,17 +164,17 @@ export class EditProfileFormComponent {
   }
 
   private fillFormWithDefaultValues() {
-    if (this.userData) {
-      this.form.patchValue({
-        firstName: this.userData.firstName,
-        lastName: this.userData.lastName,
-        email: this.userData.email,
-        passwords: {
-          password: '',
-          confirmPassword: '',
-        },
-      });
-    }
+    if (!this.userData) return;
+
+    this.form.patchValue({
+      firstName: this.userData.firstName,
+      lastName: this.userData.lastName,
+      email: this.userData.email,
+    });
+  }
+
+  onReset() {
+    this.fillFormWithDefaultValues();
   }
 
   onSubmit() {
@@ -196,16 +198,12 @@ export class EditProfileFormComponent {
 
     if (!formChanged) return;
 
-    this.userService.updateUserData(this.userData, updatedUserData).subscribe({
+    this.userService.updateUserData(updatedUserData).subscribe({
       error: (error) => {
         this.toastrService.error(error.message);
       },
     });
     this.closeDialog();
-  }
-
-  onReset() {
-    this.fillFormWithDefaultValues();
   }
 
   ngOnInit(): void {

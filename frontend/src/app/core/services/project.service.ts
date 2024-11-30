@@ -97,7 +97,7 @@ export class ProjectService {
     this.project.set({ ...prevProject, ...updatedProject });
 
     return this.http
-      .put<Project>(
+      .patch<Project>(
         `${environment.apiUrl}/projects/${projectId}`,
         updatedProject
       )
@@ -133,7 +133,7 @@ export class ProjectService {
 
   addToProject(projectId: string, user: User) {
     return this.http
-      .put<Project>(
+      .patch<Project>(
         `${environment.apiUrl}/projects/${projectId}/user/add`,
         user
       )
@@ -163,7 +163,7 @@ export class ProjectService {
     this.project.set({ ...prevProject, members: updatedProjectMembers });
 
     return this.http
-      .put<Project>(
+      .patch<Project>(
         `${environment.apiUrl}/projects/${prevProject.id}/user/add`,
         user
       )

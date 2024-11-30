@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -30,21 +30,18 @@ import { UserService } from '../../../core/services/user.service';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent {
-  projectId?: string;
-
   @ViewChild('searchInput') searchInput!: ElementRef;
-  form = new FormControl('');
+  form = new FormControl<string>('');
   searchResults: User[] = [];
 
+  projectId = inject<{ projectId: string }>(MAT_DIALOG_DATA)?.projectId;
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) readonly data: { projectId?: string } | null,
-    readonly dialogRef: MatDialogRef<SearchComponent>,
+    private dialogRef: MatDialogRef<SearchComponent>,
     private authService: AuthService,
     private projectService: ProjectService,
     private userService: UserService
-  ) {
-    this.projectId = data?.projectId;
-  }
+  ) {}
 
   closeDialog(): void {
     if (this.projectId) this.projectService.allowAccessToAddToProject = true;
@@ -68,8 +65,7 @@ export class SearchComponent {
       next: (res) => {
         this.searchResults = res;
       },
-      error: (error) => {
-        console.error(error.message);
+      error: () => {
         this.searchResults = [];
       },
     });

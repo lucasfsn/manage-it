@@ -25,7 +25,11 @@ export class UserService {
     );
   }
 
-  updateUserData(prevData: User, updatedData: UpdateUser) {
+  updateUserData(updatedData: UpdateUser) {
+    const prevData = this.user();
+
+    if (!prevData) return throwError(() => 'User not found');
+
     const updatedUser = { ...prevData, ...updatedData };
 
     this.user.set(updatedUser);

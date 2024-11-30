@@ -35,15 +35,15 @@ export class CreateProjectComponent {
     private toastrService: ToastrService
   ) {}
 
-  protected form = new FormGroup({
-    name: new FormControl('', {
+  form = new FormGroup({
+    name: new FormControl<string>('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
       ],
     }),
-    description: new FormControl('', {
+    description: new FormControl<string>('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
@@ -52,10 +52,10 @@ export class CreateProjectComponent {
     }),
     dates: new FormGroup(
       {
-        startDate: new FormControl(this.getToday(), {
+        startDate: new FormControl<string>(this.getToday(), {
           validators: [Validators.required, startDateValidator],
         }),
-        endDate: new FormControl(this.getToday(), {
+        endDate: new FormControl<string>(this.getToday(), {
           validators: [Validators.required],
         }),
       },

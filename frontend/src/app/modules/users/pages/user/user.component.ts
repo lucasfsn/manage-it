@@ -31,9 +31,8 @@ import { EditProfileFormComponent } from '../../components/edit-profile/edit-pro
   styleUrl: './user.component.css',
 })
 export class UserComponent implements OnInit {
-  public commonProjects: UserProject[] = [];
+  commonProjects: UserProject[] = [];
   addToProject: boolean = false;
-  readonly ProjectStatus = ProjectStatus;
 
   constructor(
     private loadingService: LoadingService,
@@ -44,6 +43,10 @@ export class UserComponent implements OnInit {
     private authService: AuthService,
     private toastrService: ToastrService
   ) {}
+
+  get ProjectStatus(): typeof ProjectStatus {
+    return ProjectStatus;
+  }
 
   get user(): User | undefined {
     return this.userService.loadedUser();

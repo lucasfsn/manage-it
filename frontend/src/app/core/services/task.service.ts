@@ -74,7 +74,7 @@ export class TaskService {
     });
 
     return this.http
-      .put<Task>(
+      .patch<Task>(
         `${environment.apiUrl}/projects/${project.id}/tasks/${updatedTask.id}`,
         { status: updatedTask.status }
       )
@@ -97,7 +97,7 @@ export class TaskService {
     this.task.set({ ...prevTask, ...updatedTask });
 
     return this.http
-      .put<Task>(
+      .patch<Task>(
         `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}`,
         updatedTask
       )
@@ -126,7 +126,7 @@ export class TaskService {
     this.task.set(updatedTask);
 
     return this.http
-      .put<Task>(
+      .patch<Task>(
         `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}/user/add`,
         user
       )
@@ -156,7 +156,7 @@ export class TaskService {
     this.task.set(updatedTask);
 
     return this.http
-      .put<Task>(
+      .patch<Task>(
         `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}/user/remove`,
         user
       )

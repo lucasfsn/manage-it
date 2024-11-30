@@ -28,10 +28,10 @@ export class LoginFormComponent implements OnInit {
   ) {}
 
   form = new FormGroup({
-    email: new FormControl(this.initialValue, {
+    email: new FormControl<string>(this.initialValue, {
       validators: [Validators.required, Validators.email],
     }),
-    password: new FormControl('', {
+    password: new FormControl<string>('', {
       validators: [
         Validators.required,
         Validators.minLength(8),

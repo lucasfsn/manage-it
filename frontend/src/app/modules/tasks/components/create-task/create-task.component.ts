@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -20,6 +20,7 @@ import {
 } from '../../../../core/models/project.model';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { TaskService } from '../../../../core/services/task.service';
+import { priorityMapper } from '../../../../shared/utils/priority-mapper';
 
 function dueDateValidator(control: AbstractControl) {
   const selectedDate = new Date(control.value);
@@ -42,21 +43,22 @@ function dueDateValidator(control: AbstractControl) {
   styleUrl: './create-task.component.css',
 })
 export class CreateTaskComponent {
-  readonly TaskStatus = TaskStatus;
-  readonly priorities = Object.values(Priority);
-  public selectedStatus: TaskStatus;
-  public projectId: string;
+  selectedStatus = inject<{ selectedStatus: TaskStatus }>(MAT_DIALOG_DATA)
+    .selectedStatus;
 
   constructor(
     private loadingService: LoadingService,
     private taskService: TaskService,
     private toastrService: ToastrService,
-    private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA)
-    public data: { selectedStatus: TaskStatus; projectId: string }
-  ) {
-    this.selectedStatus = data.selectedStatus;
-    this.projectId = data.projectId;
+    private dialog: MatDialog
+  ) {}
+
+  get TaskStatus(): typeof TaskStatus {
+    return TaskStatus;
+  }
+
+  get priorities(): Priority[] {
+    return Object.values(Priority);
   }
 
   getToday(): string {
@@ -64,20 +66,19 @@ export class CreateTaskComponent {
   }
 
   form = new FormGroup({
-    description: new FormControl('', {
+    description: new FormControl<string>('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(120),
       ],
     }),
-    dueDate: new FormControl(this.getToday(), {
+    dueDate: new FormControl<string>(this.getToday(), {
       validators: [Validators.required, dueDateValidator],
     }),
-    priority: new FormControl('', {
+    priority: new FormControl<Priority>(Priority.Low, {
       validators: [Validators.required],
     }),
-    users: new FormControl([]),
   });
 
   get descriptionIsInvalid() {
@@ -112,9 +113,13 @@ export class CreateTaskComponent {
     this.dialog.closeAll();
   }
 
+  mapPriority(priority: Priority): string {
+    return priorityMapper(priority);
+  }
+
   onReset(): void {
     this.form.reset({
-      priority: '',
+      priority: Priority.Low,
       dueDate: this.getToday(),
     });
   }
@@ -127,7 +132,7 @@ export class CreateTaskComponent {
     const newTask: TaskData = {
       status: this.selectedStatus,
       description: this.form.value.description!,
-      priority: this.form.value.priority as Priority,
+      priority: this.form.value.priority!,
       dueDate: this.form.value.dueDate!,
     };
 

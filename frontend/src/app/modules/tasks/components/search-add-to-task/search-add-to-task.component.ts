@@ -17,7 +17,8 @@ export class SearchAddToTaskComponent {
   @Input() usersAlreadyIn: string[] = [];
   @Input() loading = false;
   @Output() onClick = new EventEmitter<User>();
-  form = new FormControl('');
+
+  form = new FormControl<string>('');
   searchResults: User[] = [];
 
   constructor(

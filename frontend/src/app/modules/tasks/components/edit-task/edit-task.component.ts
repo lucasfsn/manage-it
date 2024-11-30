@@ -23,17 +23,37 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
   styleUrl: './edit-task.component.css',
 })
 export class EditTaskComponent implements OnInit {
-  readonly TaskStatus = TaskStatus;
-  readonly Priority = Priority;
-  public form: FormGroup = new FormGroup({});
-
   constructor(
     private loadingService: LoadingService,
     private taskService: TaskService
   ) {}
 
+  form = new FormGroup({
+    description: new FormControl<string>('', [
+      Validators.minLength(2),
+      Validators.maxLength(120),
+    ]),
+    status: new FormControl<TaskStatus>(TaskStatus.NotStarted, {
+      validators: [Validators.required],
+    }),
+    priority: new FormControl<Priority>(Priority.Low, {
+      validators: [Validators.required],
+    }),
+    dueDate: new FormControl<string>('', {
+      validators: [Validators.required],
+    }),
+  });
+
   get task(): Task | undefined {
     return this.taskService.loadedTask();
+  }
+
+  get Priority(): typeof Priority {
+    return Priority;
+  }
+
+  get TaskStatus(): typeof TaskStatus {
+    return TaskStatus;
   }
 
   get priorities(): Priority[] {
@@ -56,25 +76,29 @@ export class EditTaskComponent implements OnInit {
     );
   }
 
-  private initializeForm(task: Task): void {
-    this.form = new FormGroup({
-      description: new FormControl(task.description, {
-        validators: [Validators.minLength(2), Validators.maxLength(120)],
-      }),
-      status: new FormControl(task.status),
-      priority: new FormControl(task.priority),
-      dueDate: new FormControl(task.dueDate),
+  private fillFormWithDefaultValues() {
+    if (!this.task) return;
+
+    this.form.patchValue({
+      description: this.task.description,
+      status: this.task.status,
+      priority: this.task.priority,
+      dueDate: this.task.dueDate,
     });
+  }
+
+  onReset(): void {
+    this.fillFormWithDefaultValues();
   }
 
   onSubmit() {
     if (this.form.invalid || !this.task) return;
 
     const updatedTask: TaskData = {
-      description: this.form.value.description,
-      dueDate: this.form.value.dueDate,
-      status: this.form.value.status,
-      priority: this.form.value.priority,
+      description: this.form.value.description!,
+      status: this.form.value.status!,
+      priority: this.form.value.priority!,
+      dueDate: this.form.value.dueDate!,
     };
 
     if (
@@ -97,20 +121,7 @@ export class EditTaskComponent implements OnInit {
     });
   }
 
-  onReset(): void {
-    if (!this.task) return;
-
-    this.form.reset({
-      description: this.task.description,
-      status: this.task.status,
-      priority: this.task.priority,
-      dueDate: this.task.dueDate,
-    });
-  }
-
   ngOnInit(): void {
-    if (!this.task) return;
-
-    this.initializeForm(this.task);
+    this.fillFormWithDefaultValues();
   }
 }
