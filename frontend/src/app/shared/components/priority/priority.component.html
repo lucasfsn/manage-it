@@ -2,18 +2,18 @@
 <div
   class="bg-yellow-200 text-gray-900 rounded-full px-2.5 py-0.5 flex items-center justify-center text-xs font-semibold"
 >
-  Low
+  {{ mapPriority(Priority.Low) }}
 </div>
 } @else if (priority === Priority.Medium) {
 <div
   class="bg-orange-500 text-gray-900 rounded-full px-2.5 py-0.5 flex items-center justify-center text-xs font-semibold"
 >
-  Medium
+  {{ mapPriority(Priority.Medium) }}
 </div>
 } @else {
 <div
   class="bg-rose-800 text-gray-900 rounded-full px-2.5 py-0.5 flex items-center justify-center text-xs font-semibold"
 >
-  High
+  {{ mapPriority(Priority.High) }}
 </div>
 }

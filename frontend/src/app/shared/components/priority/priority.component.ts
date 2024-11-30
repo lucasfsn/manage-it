@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Priority } from '../../../core/models/project.model';
+import { priorityMapper } from '../../utils/priority-mapper';
 
 @Component({
   selector: 'app-priority',
@@ -10,5 +11,12 @@ import { Priority } from '../../../core/models/project.model';
 })
 export class PriorityComponent {
   @Input() priority!: Priority;
-  readonly Priority = Priority;
+
+  get Priority(): typeof Priority {
+    return Priority;
+  }
+
+  mapPriority(priority: Priority): string {
+    return priorityMapper(priority);
+  }
 }
