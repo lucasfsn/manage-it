@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Task, TaskData, User } from '../models/project.model';
+import { Task, TaskData, User } from '../dto/project.model';
 import { ProjectService } from './project.service';
 
 @Injectable({
@@ -74,7 +74,7 @@ export class TaskService {
     });
 
     return this.http
-      .patch<Task>(
+      .patch<null>(
         `${environment.apiUrl}/projects/${project.id}/tasks/${updatedTask.id}`,
         { status: updatedTask.status }
       )
@@ -97,7 +97,7 @@ export class TaskService {
     this.task.set({ ...prevTask, ...updatedTask });
 
     return this.http
-      .patch<Task>(
+      .patch<null>(
         `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}`,
         updatedTask
       )
@@ -126,12 +126,11 @@ export class TaskService {
     this.task.set(updatedTask);
 
     return this.http
-      .patch<Task>(
+      .patch<null>(
         `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}/user/add`,
         user
       )
       .pipe(
-        tap(() => {}),
         catchError((err: HttpErrorResponse) => {
           this.task.set(prevTask);
           return throwError(() => err.error);
@@ -156,12 +155,11 @@ export class TaskService {
     this.task.set(updatedTask);
 
     return this.http
-      .patch<Task>(
+      .patch<null>(
         `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}/user/remove`,
         user
       )
       .pipe(
-        tap(() => {}),
         catchError((err: HttpErrorResponse) => {
           this.task.set(prevTask);
           return throwError(() => err.error);

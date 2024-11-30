@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { Project, ProjectStatus } from '../../../../core/models/project.model';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ProjectService } from '../../../../core/services/project.service';
+import { Project, ProjectStatus } from '../../../../features/dto/project.model';
+import { AuthService } from '../../../../features/services/auth.service';
+import { ProjectService } from '../../../../features/services/project.service';
 import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 
 @Component({

@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '../../../../core/models/project.model';
-import { AuthService } from '../../../../core/services/auth.service';
-import { UserService } from '../../../../core/services/user.service';
+import { User } from '../../../../features/dto/project.model';
+import { AuthService } from '../../../../features/services/auth.service';
+import { UserService } from '../../../../features/services/user.service';
 
 @Component({
   selector: 'app-search-add-to-task',

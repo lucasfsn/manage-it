@@ -8,7 +8,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../features/services/auth.service';
 import { passwordValidator } from '../../validators';
 
 @Component({

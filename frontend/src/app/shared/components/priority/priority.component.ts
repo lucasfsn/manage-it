@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Priority } from '../../../core/models/project.model';
+import { Priority } from '../../../features/dto/project.model';
 import { priorityMapper } from '../../utils/priority-mapper';
 
 @Component({

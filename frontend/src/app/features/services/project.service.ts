@@ -7,7 +7,7 @@ import {
   ProjectData,
   ProjectStatus,
   User,
-} from '../models/project.model';
+} from '../dto/project.model';
 
 @Injectable({
   providedIn: 'root',
@@ -67,7 +67,7 @@ export class ProjectService {
 
   deleteProject(projectId: string) {
     return this.http
-      .delete<string>(`${environment.apiUrl}/projects/${projectId}`)
+      .delete<null>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
         tap(() => {
           const prevProjects = this.projects();
@@ -97,7 +97,7 @@ export class ProjectService {
     this.project.set({ ...prevProject, ...updatedProject });
 
     return this.http
-      .patch<Project>(
+      .patch<null>(
         `${environment.apiUrl}/projects/${projectId}`,
         updatedProject
       )
@@ -122,7 +122,9 @@ export class ProjectService {
     this.project.set(updatedProject);
 
     return this.http
-      .get<Project>(`${environment.apiUrl}/projects/${prevProject.id}/complete`)
+      .patch<null>(`${environment.apiUrl}/projects/${prevProject.id}`, {
+        status: ProjectStatus.Completed,
+      })
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.project.set(prevProject);
@@ -133,10 +135,7 @@ export class ProjectService {
 
   addToProject(projectId: string, user: User) {
     return this.http
-      .patch<Project>(
-        `${environment.apiUrl}/projects/${projectId}/user/add`,
-        user
-      )
+      .patch<null>(`${environment.apiUrl}/projects/${projectId}/user/add`, user)
       .pipe(
         tap(() => {
           this.allowAccessToAddToProject = false;
@@ -163,12 +162,11 @@ export class ProjectService {
     this.project.set({ ...prevProject, members: updatedProjectMembers });
 
     return this.http
-      .patch<Project>(
-        `${environment.apiUrl}/projects/${prevProject.id}/user/add`,
+      .patch<null>(
+        `${environment.apiUrl}/projects/${prevProject.id}/user/remove`,
         user
       )
       .pipe(
-        tap(() => {}),
         catchError((err: HttpErrorResponse) => {
           this.project.set(prevProject);
           return throwError(() => err.error);
@@ -186,18 +184,5 @@ export class ProjectService {
 
   set allowAccessToAddToProject(value: boolean) {
     this.allowAccess = value;
-  }
-
-  areProjectsLoaded(): boolean {
-    return !!this.projects();
-  }
-
-  hasAccessToProject(username: string, projectId: string): boolean {
-    const projects = this.projects();
-    const project = projects?.find((p) => p.id === projectId);
-
-    if (!project) return false;
-
-    return project.members.some((member) => member.username === username);
   }
 }

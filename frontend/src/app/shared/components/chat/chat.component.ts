@@ -20,10 +20,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
-import { UserCredentials } from '../../../core/models/auth.model';
-import { Message, MessageSend } from '../../../core/models/message.model';
-import { AuthService } from '../../../core/services/auth.service';
-import { MessageService } from '../../../core/services/message.service';
+import { UserCredentials } from '../../../features/dto/auth.model';
+import { Message, MessageSend } from '../../../features/dto/message.model';
+import { AuthService } from '../../../features/services/auth.service';
+import { MessageService } from '../../../features/services/message.service';
 
 @Component({
   selector: 'app-chat',

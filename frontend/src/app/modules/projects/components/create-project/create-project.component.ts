@@ -10,8 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ProjectData } from '../../../../core/models/project.model';
-import { ProjectService } from '../../../../core/services/project.service';
+import { ProjectData } from '../../../../features/dto/project.model';
+import { ProjectService } from '../../../../features/services/project.service';
 import { endDateValidator } from '../../validators/end-date.validator';
 import { startDateValidator } from '../../validators/start-date.validator';
 

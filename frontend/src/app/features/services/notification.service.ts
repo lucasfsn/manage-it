@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { delay, of, tap } from 'rxjs';
 import { dummyNotifications } from '../../dummy-data';
-import { Notification } from '../models/notification.model';
+import { Notification } from '../dto/notification.model';
 
 @Injectable({
   providedIn: 'root',

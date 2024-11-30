@@ -2,16 +2,17 @@ import { CommonModule, DatePipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import {
   ProjectStatus,
   UserProject,
-} from '../../../../core/models/project.model';
-import { User } from '../../../../core/models/user.model';
-import { AuthService } from '../../../../core/services/auth.service';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { UserService } from '../../../../core/services/user.service';
+} from '../../../../features/dto/project.model';
+import { User } from '../../../../features/dto/user.model';
+import { AuthService } from '../../../../features/services/auth.service';
+import { LoadingService } from '../../../../features/services/loading.service';
+import { UserService } from '../../../../features/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { AddToProjectComponent } from '../../components/add-to-project/add-to-project.component';
 import { EditProfileFormComponent } from '../../components/edit-profile/edit-profile-form.component';
@@ -41,7 +42,8 @@ export class UserComponent implements OnInit {
     private location: Location,
     private dialog: MatDialog,
     private authService: AuthService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private titleService: Title
   ) {}
 
   get ProjectStatus(): typeof ProjectStatus {
@@ -95,6 +97,13 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      const username = params.get('username');
+      if (username) {
+        this.titleService.setTitle(`${username}'s Profile | ManageIt`);
+      }
+    });
+
     const routeType = this.route.snapshot.data['routeType'];
 
     if (routeType === 'addToProject') this.addToProject = true;

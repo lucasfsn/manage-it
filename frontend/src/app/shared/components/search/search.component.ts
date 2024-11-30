@@ -9,10 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
-import { User } from '../../../core/models/project.model';
-import { AuthService } from '../../../core/services/auth.service';
-import { ProjectService } from '../../../core/services/project.service';
-import { UserService } from '../../../core/services/user.service';
+import { User } from '../../../features/dto/project.model';
+import { AuthService } from '../../../features/services/auth.service';
+import { ProjectService } from '../../../features/services/project.service';
+import { UserService } from '../../../features/services/user.service';
 
 @Component({
   selector: 'app-search',

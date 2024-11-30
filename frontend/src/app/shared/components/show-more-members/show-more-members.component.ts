@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { User } from '../../../core/models/project.model';
-import { ProjectService } from '../../../core/services/project.service';
+import { User } from '../../../features/dto/project.model';
+import { ProjectService } from '../../../features/services/project.service';
 
 @Component({
   selector: 'app-show-more-members',
@@ -19,6 +19,10 @@ export class ShowMoreMembersComponent {
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
     private projectService: ProjectService
   ) {}
+
+  get projectOwner() {
+    return this.projectService.loadedProject()?.owner;
+  }
 
   get members() {
     return this.projectService.loadedProject()?.members;

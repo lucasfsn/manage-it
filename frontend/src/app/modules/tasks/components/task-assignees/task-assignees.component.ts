@@ -21,9 +21,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { User } from '../../../../core/models/project.model';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { TaskService } from '../../../../core/services/task.service';
+import { User } from '../../../../features/dto/project.model';
+import { LoadingService } from '../../../../features/services/loading.service';
+import { TaskService } from '../../../../features/services/task.service';
 import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-task.component';
 
 @Component({

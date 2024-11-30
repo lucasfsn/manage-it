@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { UpdateUser, User } from '../models/user.model';
+import { UpdateUser, User } from '../dto/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +35,7 @@ export class UserService {
     this.user.set(updatedUser);
 
     return this.http
-      .patch<User>(`${environment.apiUrl}/users`, updatedData)
+      .patch<null>(`${environment.apiUrl}/users`, updatedData)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.user.set(prevData);

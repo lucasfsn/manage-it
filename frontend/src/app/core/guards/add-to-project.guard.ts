@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { ProjectService } from '../services/project.service';
+import { ProjectService } from '../../features/services/project.service';
 
 export const addToProjectGuard: CanActivateFn = (route, state) => {
   const projectService = inject(ProjectService);

@@ -1,4 +1,4 @@
-import { ProjectStatus, TaskStatus } from '../../core/models/project.model';
+import { ProjectStatus, TaskStatus } from '../../features/dto/project.model';
 
 export function projectStatusMapper(status: ProjectStatus): string {
   switch (status) {

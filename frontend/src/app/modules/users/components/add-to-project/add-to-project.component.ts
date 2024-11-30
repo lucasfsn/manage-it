@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { User } from '../../../../core/models/user.model';
-import { ProjectService } from '../../../../core/services/project.service';
+import { User } from '../../../../features/dto/user.model';
+import { ProjectService } from '../../../../features/services/project.service';
 
 @Component({
   selector: 'app-add-to-project',

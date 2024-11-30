@@ -8,9 +8,9 @@ import {
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
-import { Project, ProjectData } from '../../../../core/models/project.model';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { ProjectService } from '../../../../core/services/project.service';
+import { Project, ProjectData } from '../../../../features/dto/project.model';
+import { LoadingService } from '../../../../features/services/loading.service';
+import { ProjectService } from '../../../../features/services/project.service';
 import { endDateValidator } from '../../validators/end-date.validator';
 
 @Component({

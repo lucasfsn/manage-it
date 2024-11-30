@@ -34,7 +34,7 @@
             >{{ member.firstName }} {{ member.lastName }}</span
           >
         </div>
-        @if (!isOnlyShow) {
+        @if (!isOnlyShow && !(projectOwner?.username === member.username)) {
         <button
           class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-0.5 flex justify-center items-center rounded-full"
           (click)="handleRemove(member)"

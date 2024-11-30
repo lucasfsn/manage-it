@@ -7,8 +7,8 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { RegisterCredentials } from '../../../../core/models/auth.model';
-import { AuthService } from '../../../../core/services/auth.service';
+import { RegisterCredentials } from '../../../../features/dto/auth.model';
+import { AuthService } from '../../../../features/services/auth.service';
 import {
   equalValues,
   nameValidator,

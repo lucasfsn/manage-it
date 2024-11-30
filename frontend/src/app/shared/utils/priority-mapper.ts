@@ -1,4 +1,4 @@
-import { Priority } from '../../core/models/project.model';
+import { Priority } from '../../features/dto/project.model';
 
 export function priorityMapper(priority: Priority): string {
   switch (priority) {

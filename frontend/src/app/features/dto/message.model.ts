@@ -1,4 +1,4 @@
-import { User } from './project.model';
+import { User } from '../../features/dto/project.model';
 
 export interface MessageDummy {
   id: string;

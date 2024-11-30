@@ -8,10 +8,8 @@ import {
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
-import { UserCredentials } from '../../../../core/models/auth.model';
-import { UpdateUser } from '../../../../core/models/user.model';
-import { AuthService } from '../../../../core/services/auth.service';
-import { UserService } from '../../../../core/services/user.service';
+import { UpdateUser, User } from '../../../../features/dto/user.model';
+import { UserService } from '../../../../features/services/user.service';
 import {
   equalValues,
   nameValidator,
@@ -29,12 +27,11 @@ export class EditProfileFormComponent {
   constructor(
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
     private userService: UserService,
-    private toastrService: ToastrService,
-    private authService: AuthService
+    private toastrService: ToastrService
   ) {}
 
-  get userData(): UserCredentials | null {
-    return this.authService.loadedUser();
+  get userData(): User | undefined {
+    return this.userService.loadedUser();
   }
 
   form = new FormGroup({

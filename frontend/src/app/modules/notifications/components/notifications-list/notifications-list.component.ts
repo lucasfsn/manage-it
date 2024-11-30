@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MomentModule } from 'ngx-moment';
-import { Notification } from '../../../../core/models/notification.model';
-import { NotificationService } from '../../../../core/services/notification.service';
+import { Notification } from '../../../../features/dto/notification.model';
+import { NotificationService } from '../../../../features/services/notification.service';
 
 @Component({
   selector: 'app-notifications-list',

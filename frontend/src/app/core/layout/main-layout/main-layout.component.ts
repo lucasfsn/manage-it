@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from '../../../features/services/auth.service';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
-import { AuthService } from '../../services/auth.service';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 
 @Component({

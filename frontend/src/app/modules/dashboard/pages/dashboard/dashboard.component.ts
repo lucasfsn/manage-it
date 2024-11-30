@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../../../../core/services/auth.service';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { ProjectService } from '../../../../core/services/project.service';
+import { AuthService } from '../../../../features/services/auth.service';
+import { LoadingService } from '../../../../features/services/loading.service';
+import { ProjectService } from '../../../../features/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { ActiveProjectsSummaryComponent } from '../../components/active-projects-summary/active-projects-summary.component';
 import { OngoingProjectsComponent } from '../../components/ongoing-projects/ongoing-projects.component';

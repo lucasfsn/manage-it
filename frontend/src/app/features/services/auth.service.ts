@@ -8,7 +8,7 @@ import {
   LoginCredentials,
   RegisterCredentials,
   UserCredentials,
-} from '../models/auth.model';
+} from '../dto/auth.model';
 
 @Injectable({
   providedIn: 'root',

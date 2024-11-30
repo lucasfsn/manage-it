@@ -17,9 +17,9 @@ import {
   Priority,
   TaskData,
   TaskStatus,
-} from '../../../../core/models/project.model';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { TaskService } from '../../../../core/services/task.service';
+} from '../../../../features/dto/project.model';
+import { LoadingService } from '../../../../features/services/loading.service';
+import { TaskService } from '../../../../features/services/task.service';
 import { priorityMapper } from '../../../../shared/utils/priority-mapper';
 
 function dueDateValidator(control: AbstractControl) {

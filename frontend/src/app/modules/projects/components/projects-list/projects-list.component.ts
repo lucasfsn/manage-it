@@ -1,9 +1,9 @@
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Project, ProjectStatus } from '../../../../core/models/project.model';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ProjectService } from '../../../../core/services/project.service';
+import { Project, ProjectStatus } from '../../../../features/dto/project.model';
+import { AuthService } from '../../../../features/services/auth.service';
+import { ProjectService } from '../../../../features/services/project.service';
 
 @Component({
   selector: 'app-projects-list',

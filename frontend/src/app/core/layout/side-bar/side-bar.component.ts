@@ -10,8 +10,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../../features/services/auth.service';
 import { SearchComponent } from '../../../shared/components/search/search.component';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-side-bar',

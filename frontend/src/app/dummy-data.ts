@@ -1,13 +1,13 @@
-import { MessageDummy } from './core/models/message.model';
-import { Notification } from './core/models/notification.model';
+import { MessageDummy } from './features/dto/message.model';
+import { Notification } from './features/dto/notification.model';
 import {
   Priority,
   Project,
   User as ProjectMember,
   ProjectStatus,
   TaskStatus,
-} from './core/models/project.model';
-import { User } from './core/models/user.model';
+} from './features/dto/project.model';
+import { User } from './features/dto/user.model';
 
 export const dummyProjects: Project[] = [
   {

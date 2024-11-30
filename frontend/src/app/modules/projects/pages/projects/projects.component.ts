@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '../../../../core/services/auth.service';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { ProjectService } from '../../../../core/services/project.service';
+import { AuthService } from '../../../../features/services/auth.service';
+import { LoadingService } from '../../../../features/services/loading.service';
+import { ProjectService } from '../../../../features/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { CreateProjectComponent } from '../../components/create-project/create-project.component';
 import { ProjectsListComponent } from '../../components/projects-list/projects-list.component';
