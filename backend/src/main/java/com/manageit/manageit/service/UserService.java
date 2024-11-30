@@ -49,12 +49,8 @@ public class UserService {
     }
 
 
-    public boolean updateUser(String token, UpdateUserRequest updatedUser, String username) {
+    public boolean updateUser(String token, UpdateUserRequest updatedUser) {
         String tokenUsername = jwtService.extractUsername(token.replace("Bearer ", ""));
-        if (!tokenUsername.equals(username)) {
-            throw new TokenUserMismatchException("The user provided does not match the user in the token.");
-        }
-
         return userRepository.findByUsername(tokenUsername)
                 .map(user -> {
                     if (updatedUser.getFirstName() != null) {
