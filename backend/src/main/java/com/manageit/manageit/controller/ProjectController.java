@@ -1,13 +1,13 @@
-package com.manageit.manageit.controller.project;
+package com.manageit.manageit.controller;
 
 
 import com.manageit.manageit.dto.project.ProjectDto;
 import com.manageit.manageit.dto.project.ProjectRequest;
 import com.manageit.manageit.dto.project.UpdateProjectRequest;
+import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -65,9 +65,30 @@ public class ProjectController {
     public ResponseEntity<Void> updateProject(
             @RequestHeader("Authorization") String token,
             @PathVariable UUID projectId,
-            @RequestBody UpdateProjectRequest request
+            @Valid @RequestBody UpdateProjectRequest request
     ) {
         projectService.updateProject(token, projectId, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{projectId}/user/add")
+    public ResponseEntity<Void> addUserToProject(
+            @RequestHeader("Authorization") String token,
+            @PathVariable UUID projectId,
+            @RequestBody BasicUserDto user
+
+    ) {
+        projectService.addUserToProject(token, projectId, user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{projectId}/user/remove")
+    public ResponseEntity<Void> removeUserFromProject(
+            @RequestHeader("Authorization") String token,
+            @PathVariable UUID projectId,
+            @RequestBody BasicUserDto user
+    ) {
+        projectService.removeUserFromProject(token, projectId, user);
         return ResponseEntity.noContent().build();
     }
 }

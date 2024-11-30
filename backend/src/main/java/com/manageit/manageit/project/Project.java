@@ -3,6 +3,7 @@ package com.manageit.manageit.project;
 import com.manageit.manageit.task.Task;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -54,6 +55,7 @@ public class Project {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @FutureOrPresent(message = "Start date cannot be in the past.")
     @Column(nullable = false)
     private LocalDate startDate;
 

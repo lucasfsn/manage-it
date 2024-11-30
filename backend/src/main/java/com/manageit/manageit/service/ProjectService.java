@@ -3,6 +3,7 @@ package com.manageit.manageit.service;
 import com.manageit.manageit.dto.project.ProjectDto;
 import com.manageit.manageit.dto.project.ProjectRequest;
 import com.manageit.manageit.dto.project.UpdateProjectRequest;
+import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
 import com.manageit.manageit.mapper.project.ProjectMapper;
 import com.manageit.manageit.project.Project;
@@ -13,6 +14,7 @@ import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -97,5 +99,37 @@ public class ProjectService {
         }
         project.setUpdatedAt(LocalDateTime.now());
         projectRepository.save(project);
+    }
+
+    public void addUserToProject(String token, UUID projectId, BasicUserDto request) {
+        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
+        if (!project.getOwner().getId().equals(user.getId())) {
+            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
+        }
+        User userToAdd = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        if (!project.getMembers().contains(userToAdd)) {
+            project.getMembers().add(userToAdd);
+            project.setUpdatedAt(LocalDateTime.now());
+            projectRepository.save(project);
+        }
+    }
+
+    public void removeUserFromProject(String token, UUID projectId, BasicUserDto request) {
+        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
+        if (!project.getOwner().getId().equals(user.getId())) {
+            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
+        }
+        User userToRemove = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        if (project.getMembers().contains(userToRemove)) {
+            project.getMembers().remove(userToRemove);
+            project.setUpdatedAt(LocalDateTime.now());
+            projectRepository.save(project);
+        } else {
+            throw new IllegalStateException("User is not a member of the project");
+        }
     }
 }

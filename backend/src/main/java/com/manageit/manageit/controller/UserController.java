@@ -1,4 +1,4 @@
-package com.manageit.manageit.controller.user;
+package com.manageit.manageit.controller;
 
 import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.dto.user.UserResponseDto;
@@ -27,11 +27,12 @@ public class UserController {
     }
 
     @PatchMapping()
-    public ResponseEntity<Boolean> updateUser(
+    public ResponseEntity<Void> updateUser(
             @RequestHeader("Authorization") String token,
             @Valid @RequestBody UpdateUserRequest updatedUser
     ) {
-        return ResponseEntity.ok(userService.updateUser(token, updatedUser));
+        userService.updateUser(token, updatedUser);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search")

@@ -1,4 +1,4 @@
-package com.manageit.manageit.controller.task;
+package com.manageit.manageit.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

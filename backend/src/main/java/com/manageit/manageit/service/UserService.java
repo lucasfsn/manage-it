@@ -10,6 +10,7 @@ import com.manageit.manageit.repository.UserRepository;
 import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.user.AuthenticatedUserResponse;
 import com.manageit.manageit.user.UpdateUserRequest;
+import com.manageit.manageit.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,26 +50,23 @@ public class UserService {
     }
 
 
-    public boolean updateUser(String token, UpdateUserRequest updatedUser) {
+    public void updateUser(String token, UpdateUserRequest updatedUser) {
         String tokenUsername = jwtService.extractUsername(token.replace("Bearer ", ""));
-        return userRepository.findByUsername(tokenUsername)
-                .map(user -> {
-                    if (updatedUser.getFirstName() != null) {
-                        user.setFirstName(updatedUser.getFirstName());
-                    }
-                    if (updatedUser.getLastName() != null) {
-                        user.setLastName(updatedUser.getLastName());
-                    }
-                    if (updatedUser.getEmail() != null) {
-                        user.setEmail(updatedUser.getEmail());
-                    }
-                    if (updatedUser.getPassword() != null) {
-                        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-                    }
-                    userRepository.save(user);
-                    return true;
-                })
+        User user = userRepository.findByUsername(tokenUsername)
                 .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + tokenUsername));
+        if (updatedUser.getFirstName() != null) {
+            user.setFirstName(updatedUser.getFirstName());
+        }
+        if (updatedUser.getLastName() != null) {
+            user.setLastName(updatedUser.getLastName());
+        }
+        if (updatedUser.getEmail() != null) {
+            user.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+        userRepository.save(user);
     }
 
     public List<BasicUserDto> searchUsers(String pattern, UUID projectId) {

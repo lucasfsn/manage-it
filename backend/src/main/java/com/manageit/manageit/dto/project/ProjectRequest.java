@@ -1,5 +1,6 @@
 package com.manageit.manageit.dto.project;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,8 @@ public class ProjectRequest {
     private String name;
     @NotBlank(message = "Description cannot be empty")
     private String description;
+
+    @FutureOrPresent(message = "Start date cannot be in the past.")
     @NotNull(message = "Start date cannot be null")
     private LocalDate startDate;
     @NotNull(message = "End date cannot be null")
