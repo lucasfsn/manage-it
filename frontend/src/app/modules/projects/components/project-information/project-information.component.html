@@ -43,17 +43,19 @@
         <p>{{ project.owner.firstName }} {{ project.owner.lastName }}</p>
         <div class="flex items-center">
           <ul class="flex gap-1 justify-center items-center">
+            @for (member of project.members.slice(0,5); track member.username) {
             <li
-              *ngFor="let member of project.members | slice : 0 : 5"
               class="p-0.5 bg-slate-300 hover:bg-slate-400 text-slate-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
               [routerLink]="['/users', member.username]"
             >
               {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
             </li>
-            @if (project.members.length > 5) {
-            <p class="text-sm cursor-pointer" (click)="showAllMembers(true)">
+            } @if (project.members.length > 5) {
+            <p
+              class="p-0.5 bg-slate-300 hover:bg-slate-400 text-slate-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
+              (click)="showAllMembers(true)"
+            >
               +{{ project.members.length - 5 }}
-              more
             </p>
             } @if (project.status !== ProjectStatus.Completed && isOwner) {
             <div class="flex ml-1.5 gap-0.5 bg-sky-950 rounded-full p-0.5">

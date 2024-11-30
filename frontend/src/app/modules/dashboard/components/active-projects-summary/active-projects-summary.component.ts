@@ -4,6 +4,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ProjectService } from '../../../../core/services/project.service';
+import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 
 @Component({
   selector: 'app-active-projects-summary',
@@ -25,7 +26,10 @@ export class ActiveProjectsSummaryComponent implements OnInit {
   public activeProjectsCount = 0;
 
   progressChartData: ChartData<'doughnut'> = {
-    labels: [ProjectStatus.Completed, ProjectStatus.InProgress],
+    labels: [
+      projectStatusMapper(ProjectStatus.Completed),
+      projectStatusMapper(ProjectStatus.InProgress),
+    ],
     datasets: [
       {
         data: [0, 0, 0],
