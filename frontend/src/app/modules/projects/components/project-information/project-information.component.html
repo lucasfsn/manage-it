@@ -41,7 +41,7 @@
       </div>
       <div class="flex flex-col gap-2 text-slate-300">
         <p>{{ project.owner.firstName }} {{ project.owner.lastName }}</p>
-        <div class="flex gap-3 items-center">
+        <div class="flex items-center">
           <ul class="flex gap-1 justify-center items-center">
             <li
               *ngFor="let member of project.members | slice : 0 : 5"
@@ -50,25 +50,34 @@
             >
               {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
             </li>
-            <p
-              class="font-semibold flex cursor-pointer transition-colors text-xs text-gray-400 hover:text-gray-300 items-center gap-2"
-              (click)="showAllMembers()"
-            >
-              @if (project.members.length > 5) { +{{
-                project.members.length - 5
-              }}
-              more }
-              <mat-icon class="text-base text-sky-600">edit</mat-icon>
+            @if (project.members.length > 5) {
+            <p class="text-sm cursor-pointer" (click)="showAllMembers(true)">
+              +{{ project.members.length - 5 }}
+              more
             </p>
+            } @if (project.status !== ProjectStatus.Completed && isOwner) {
+            <div class="flex ml-1.5 gap-0.5 bg-sky-950 rounded-full p-0.5">
+              <button
+                class="flex justify-center items-center"
+                (click)="showAllMembers(false)"
+              >
+                <mat-icon
+                  class="text-base text-sky-600 hover:text-sky-700 transition-all"
+                  >edit</mat-icon
+                >
+              </button>
+              <button
+                (click)="openSearchDialog()"
+                class="flex justify-center items-center"
+              >
+                <mat-icon
+                  class="text-base text-sky-200 hover:text-sky-300 transition-all"
+                  >add</mat-icon
+                >
+              </button>
+            </div>
+            }
           </ul>
-          @if (project.status !== ProjectStatus.Completed && isOwner) {
-          <button
-            class="flex p-0.5 bg-sky-500 rounded-full text-gray-100 hover:bg-sky-600 justify-center items-center"
-            (click)="openSearchDialog()"
-          >
-            <mat-icon>add</mat-icon>
-          </button>
-          }
         </div>
         <div
           class="rounded-full flex items-center justify-center text-slate-900 font-semibold text-sm px-2 py-1 mr-auto"

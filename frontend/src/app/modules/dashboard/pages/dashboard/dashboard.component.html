@@ -1,10 +1,11 @@
 @if (isLoading) {
 <app-spinner />
 } @else {
-<div class="flex gap-4 flex-col lg:flex-row">
-  <app-project-statistics />
+<div class="flex gap-4 flex-col-reverse lg:flex-row">
+  <app-ongoing-projects />
   <hr class="block sm:hidden border-sky-600" />
   <app-upcoming-deadlines />
+  <hr class="block sm:hidden border-sky-600" />
   <app-active-projects-summary />
 </div>
 }

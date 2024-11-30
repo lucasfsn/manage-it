@@ -19,7 +19,13 @@ export class UpcomingDeadlinesComponent {
   ) {}
 
   get projects(): Project[] | undefined {
-    return this.projectService.loadedProjects();
+    return this.projectService
+      .loadedProjects()
+      ?.filter(
+        (project) =>
+          this.isUpcomingDeadline(project.endDate) &&
+          project.status !== ProjectStatus.Completed
+      );
   }
 
   sortedProjectsByEndDate(): Project[] {
@@ -51,14 +57,11 @@ export class UpcomingDeadlinesComponent {
   }
 
   getDeadlineMessage(endDate: string, status: ProjectStatus): string {
-    if (status === ProjectStatus.Completed) {
-      return 'Completed';
-    }
+    if (status === ProjectStatus.Completed) return 'Completed';
+
     const daysLeft = this.calculateDaysLeft(endDate);
 
-    if (daysLeft <= 0) {
-      return 'Deadline has passed!';
-    } else if (daysLeft === 1) {
+    if (daysLeft === 1) {
       return '1 day left';
     } else {
       return `${daysLeft} days left`;
@@ -76,5 +79,10 @@ export class UpcomingDeadlinesComponent {
     return project.members.some(
       (member) => member.username === this.authService.getLoggedInUsername()
     );
+  }
+
+  private isUpcomingDeadline(endDate: string): boolean {
+    const daysLeft = this.calculateDaysLeft(endDate);
+    return daysLeft > 0 && daysLeft <= 14;
   }
 }

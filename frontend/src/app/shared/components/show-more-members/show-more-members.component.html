@@ -6,7 +6,9 @@
       >
         <mat-icon>people</mat-icon>
       </div>
-      <p class="font-semibold">Manage members</p>
+      <p class="font-semibold">
+        {{ isOnlyShow ? "All members" : "Manage members" }}
+      </p>
     </div>
     <button (click)="onClose()">
       <mat-icon>close</mat-icon>
@@ -32,12 +34,14 @@
             >{{ member.firstName }} {{ member.lastName }}</span
           >
         </div>
+        @if (!isOnlyShow) {
         <button
           class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-0.5 flex justify-center items-center rounded-full"
           (click)="handleRemove(member)"
         >
           <mat-icon>delete</mat-icon>
         </button>
+        }
       </li>
       }
     </ul>

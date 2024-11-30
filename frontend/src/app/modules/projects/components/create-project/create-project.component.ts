@@ -121,13 +121,13 @@ export class CreateProjectComponent {
     }
 
     const projectData: ProjectData = {
-      name: this.form.value.name!,
-      description: this.form.value.description!,
-      startDate: this.form.value.dates?.startDate!,
-      endDate: this.form.value.dates?.endDate!,
+      name: this.form.value.name ?? '',
+      description: this.form.value.description ?? '',
+      startDate: this.form.value.dates?.startDate ?? '',
+      endDate: this.form.value.dates?.endDate ?? '',
     };
 
-    this.projectService.addProject(projectData).subscribe({
+    this.projectService.createProject(projectData).subscribe({
       next: (projectId: string) => {
         this.toastrService.success('Project has been created');
         this.router.navigate(['/projects', projectId]);

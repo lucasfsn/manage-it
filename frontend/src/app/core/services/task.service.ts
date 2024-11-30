@@ -18,7 +18,7 @@ export class TaskService {
 
   loadedTask = this.task.asReadonly();
 
-  addTask(task: TaskData) {
+  createTask(task: TaskData) {
     const project = this.projectService.loadedProject();
 
     if (!project)

@@ -5,17 +5,17 @@ import { LoadingService } from '../../../../core/services/loading.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { ActiveProjectsSummaryComponent } from '../../components/active-projects-summary/active-projects-summary.component';
-import { ProjectStatisticsComponent } from '../../components/project-statistics/project-statistics.component';
+import { OngoingProjectsComponent } from '../../components/ongoing-projects/ongoing-projects.component';
 import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/upcoming-deadlines.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    ProjectStatisticsComponent,
     SpinnerComponent,
     UpcomingDeadlinesComponent,
     ActiveProjectsSummaryComponent,
+    OngoingProjectsComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',

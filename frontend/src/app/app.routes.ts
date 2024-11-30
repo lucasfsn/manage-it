@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { addToProjectGuard } from './core/guards/add-to-project.guard';
-import { authGuard, projectAuthGuard } from './core/guards/auth.guard';
+import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
@@ -67,7 +67,6 @@ export const routes: Routes = [
       {
         path: 'projects/:projectId',
         component: ProjectComponent,
-        canActivate: [projectAuthGuard],
         data: {
           title: 'Project Details',
         },
@@ -75,7 +74,6 @@ export const routes: Routes = [
       {
         path: 'projects/:projectId/tasks/:taskId',
         component: TaskComponent,
-        canActivate: [projectAuthGuard],
         data: {
           title: 'Task Details',
         },

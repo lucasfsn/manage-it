@@ -132,7 +132,7 @@ export class CreateTaskComponent {
     };
 
     this.loadingService.loadingOn();
-    this.taskService.addTask(newTask).subscribe({
+    this.taskService.createTask(newTask).subscribe({
       error: (err) => {
         this.loadingService.loadingOff();
         this.toastrService.error(err.message);

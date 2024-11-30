@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { User } from '../../../../core/models/project.model';
-import { ProjectService } from '../../../../core/services/project.service';
+import { User } from '../../../core/models/project.model';
+import { ProjectService } from '../../../core/services/project.service';
 
 @Component({
   selector: 'app-show-more-members',
@@ -13,6 +13,8 @@ import { ProjectService } from '../../../../core/services/project.service';
   styleUrl: './show-more-members.component.css',
 })
 export class ShowMoreMembersComponent {
+  isOnlyShow = inject<{ isOnlyShow: boolean }>(MAT_DIALOG_DATA).isOnlyShow;
+
   constructor(
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
     private projectService: ProjectService

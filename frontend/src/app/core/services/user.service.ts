@@ -31,7 +31,7 @@ export class UserService {
     this.user.set(updatedUser);
 
     return this.http
-      .patch<User>(`${environment.apiUrl}/users/update`, updatedData)
+      .patch<User>(`${environment.apiUrl}/users`, updatedData)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.user.set(prevData);

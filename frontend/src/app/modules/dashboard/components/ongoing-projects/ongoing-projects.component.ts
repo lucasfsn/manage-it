@@ -1,24 +1,26 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Project } from '../../../../core/models/project.model';
+import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ProjectService } from '../../../../core/services/project.service';
 
 @Component({
-  selector: 'app-project-statistics',
+  selector: 'app-ongoing-projects',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './project-statistics.component.html',
-  styleUrl: './project-statistics.component.css',
+  templateUrl: './ongoing-projects.component.html',
+  styleUrl: './ongoing-projects.component.css',
 })
-export class ProjectStatisticsComponent {
+export class OngoingProjectsComponent {
   constructor(
     private authService: AuthService,
     private projectService: ProjectService
   ) {}
 
   get projects(): Project[] | undefined {
-    return this.projectService.loadedProjects();
+    return this.projectService
+      .loadedProjects()
+      ?.filter((project) => project.status === ProjectStatus.InProgress);
   }
 
   isInProject(project: Project): boolean {

@@ -8,9 +8,9 @@ import { Project, ProjectStatus } from '../../../../core/models/project.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
+import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
 import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 import { EditProjectComponent } from '../edit-project/edit-project.component';
-import { ShowMoreMembersComponent } from '../show-more-members/show-more-members.component';
 
 @Component({
   selector: 'app-project-information',
@@ -105,10 +105,13 @@ export class ProjectInformationComponent {
     });
   }
 
-  showAllMembers(): void {
+  showAllMembers(isOnlyShow: boolean): void {
     this.dialog.open(ShowMoreMembersComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
+      data: {
+        isOnlyShow,
+      },
     });
   }
 

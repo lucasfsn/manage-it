@@ -34,10 +34,17 @@ export class ProjectService {
     );
   }
 
-  addProject(project: ProjectData) {
+  createProject(project: ProjectData) {
     return this.http
       .post<Project>(`${environment.apiUrl}/projects`, project)
       .pipe(
+        tap((res: Project) => {
+          const prevProjects = this.projects();
+
+          if (!prevProjects) return;
+
+          this.projects.set([...prevProjects, res]);
+        }),
         map((res: Project) => res.id),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
@@ -50,7 +57,6 @@ export class ProjectService {
       .get<Project>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
         tap((res: Project) => {
-          console.log(res);
           this.project.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
@@ -61,8 +67,19 @@ export class ProjectService {
 
   deleteProject(projectId: string) {
     return this.http
-      .delete<Project>(`${environment.apiUrl}/projects/${projectId}`)
+      .delete<string>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
+        tap(() => {
+          const prevProjects = this.projects();
+
+          if (!prevProjects) return;
+
+          const updatedProjects = prevProjects.filter(
+            (p) => p.id !== projectId
+          );
+
+          this.projects.set(updatedProjects);
+        }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
         })
