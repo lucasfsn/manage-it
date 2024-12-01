@@ -46,7 +46,6 @@ public class TaskService {
 
     public TaskMetadataDto createAndAddTaskToProject(String token, UUID projectId, CreateTaskRequest createTaskRequest) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
         ProjectDto project = projectService.getProject(projectId);
         if (project.getMembers().stream().noneMatch(member -> member.getUsername().equals(username))) {
             throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
@@ -58,7 +57,7 @@ public class TaskService {
                 .priority(createTaskRequest.getPriority())
                 .dueDate(createTaskRequest.getDueDate())
                 .createdAt(LocalDateTime.now())
-                .users(List.of(user))
+                .users(List.of())
                 .build();
         taskRepository.save(task);
         return taskMapper.toTaskMetadataDto(task);
