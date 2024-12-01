@@ -55,7 +55,6 @@ public class Project {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @FutureOrPresent(message = "Start date cannot be in the past.")
     @Column(nullable = false)
     private LocalDate startDate;
 

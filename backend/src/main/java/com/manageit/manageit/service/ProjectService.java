@@ -1,7 +1,7 @@
 package com.manageit.manageit.service;
 
 import com.manageit.manageit.dto.project.ProjectDto;
-import com.manageit.manageit.dto.project.ProjectRequest;
+import com.manageit.manageit.dto.project.CreateProjectRequest;
 import com.manageit.manageit.dto.project.UpdateProjectRequest;
 import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
@@ -14,7 +14,6 @@ import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -45,16 +44,16 @@ public class ProjectService {
                 .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + id));
     }
 
-    public ProjectDto createProject(String token, ProjectRequest projectRequest) {
+    public ProjectDto createProject(String token, CreateProjectRequest createProjectRequest) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
         User owner = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
         Project project = Project.builder()
                 .owner(owner)
-                .name(projectRequest.getName())
-                .description(projectRequest.getDescription())
+                .name(createProjectRequest.getName())
+                .description(createProjectRequest.getDescription())
                 .status(ProjectStatus.IN_PROGRESS)
-                .startDate(projectRequest.getStartDate())
-                .endDate(projectRequest.getEndDate())
+                .startDate(createProjectRequest.getStartDate())
+                .endDate(createProjectRequest.getEndDate())
                 .createdAt(LocalDateTime.now())
                 .members(List.of(owner))
                 .tasks(List.of())

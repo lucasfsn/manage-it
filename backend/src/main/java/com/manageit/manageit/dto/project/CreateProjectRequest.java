@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectRequest {
+public class CreateProjectRequest {
 
     @NotBlank(message = "Project name cannot be empty")
     @Size(max = 255, message = "Project name cannot exceed 255 characters")

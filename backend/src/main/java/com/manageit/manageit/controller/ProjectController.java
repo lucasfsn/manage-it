@@ -2,7 +2,7 @@ package com.manageit.manageit.controller;
 
 
 import com.manageit.manageit.dto.project.ProjectDto;
-import com.manageit.manageit.dto.project.ProjectRequest;
+import com.manageit.manageit.dto.project.CreateProjectRequest;
 import com.manageit.manageit.dto.project.UpdateProjectRequest;
 import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.service.ProjectService;
@@ -40,9 +40,9 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<ProjectDto> createProject(
             @RequestHeader("Authorization") String token,
-            @Valid @RequestBody ProjectRequest projectRequest
+            @Valid @RequestBody CreateProjectRequest createProjectRequest
     ) {
-        ProjectDto project = projectService.createProject(token, projectRequest);
+        ProjectDto project = projectService.createProject(token, createProjectRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
