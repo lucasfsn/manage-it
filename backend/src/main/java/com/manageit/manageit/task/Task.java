@@ -3,6 +3,7 @@ package com.manageit.manageit.task;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.manageit.manageit.project.Project;
+import com.manageit.manageit.project.ProjectStatus;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -32,8 +33,9 @@ public class Task {
     @Column(name = "task_id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "assigned_project_id", nullable = false)
-    private UUID projectId;
+    @ManyToOne
+    @JoinColumn(name = "assigned_project_id", nullable = false)
+    private Project project;
 
     @NotBlank(message = "Description cannot be empty")
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -58,7 +60,7 @@ public class Task {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_tasks",
             joinColumns = @JoinColumn(name = "tasks_task_id"),

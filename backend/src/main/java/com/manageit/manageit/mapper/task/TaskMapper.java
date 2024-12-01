@@ -18,7 +18,7 @@ public class TaskMapper {
     public TaskDto toTaskDto(Task task) {
         return TaskDto.builder()
                 .id(task.getId())
-                .projectId(task.getProjectId())
+                .projectId(task.getProject().getId())
                 .description(task.getDescription())
                 .status(task.getStatus())
                 .priority(task.getPriority())
@@ -30,7 +30,7 @@ public class TaskMapper {
     public TaskMetadataDto toTaskMetadataDto(Task task) {
         return TaskMetadataDto.builder()
                 .id(task.getId())
-                .projectId(task.getProjectId())
+                .projectId(task.getProject().getId())
                 .description(task.getDescription())
                 .status(task.getStatus())
                 .priority(task.getPriority())

@@ -68,6 +68,9 @@ public class User implements UserDetails, Principal {
     @ManyToMany(mappedBy = "members")
     private List<Project> projects;
 
+    @ManyToMany(mappedBy = "users")
+    private List<Task> tasks;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(Role.USER.name()));

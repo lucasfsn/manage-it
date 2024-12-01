@@ -70,6 +70,6 @@ public class Project {
     )
     private List<User> members;
 
-    @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Task> tasks;
 }
