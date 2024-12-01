@@ -2,7 +2,7 @@ package com.manageit.manageit.dto.project;
 
 import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.project.ProjectStatus;
-import com.manageit.manageit.dto.task.TaskDto;
+import com.manageit.manageit.dto.task.TaskMetadataDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -27,6 +27,6 @@ public class ProjectDto {
     private LocalDate endDate;
     private Integer completedTasks;
     private Integer totalTasks;
-    private List<TaskDto> tasks;
+    private List<TaskMetadataDto> tasks;
     private List<BasicUserDto> members;
 }

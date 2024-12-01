@@ -33,7 +33,7 @@ public class ProjectMapper {
                         .stream()
                         .filter(task -> task.getStatus() == TaskStatus.COMPLETED)
                         .count()))
-                .tasks(project.getTasks().stream().map(taskMapper::toTaskResponse).collect(Collectors.toList()))
+                .tasks(project.getTasks().stream().map(taskMapper::toTaskMetadataDto).collect(Collectors.toList()))
                 .members(project.getMembers().stream().map(basicUserMapper::toBasicUserDto).collect(Collectors.toList()))
                 .build();
     }

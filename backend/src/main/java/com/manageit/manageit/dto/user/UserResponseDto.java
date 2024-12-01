@@ -1,7 +1,6 @@
 package com.manageit.manageit.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.manageit.manageit.dto.project.ProjectDto;
 import com.manageit.manageit.dto.project.UserProfileProjectDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
