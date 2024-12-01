@@ -2,7 +2,9 @@ package com.manageit.manageit.service;
 
 
 import com.manageit.manageit.dto.project.ProjectDto;
+import com.manageit.manageit.dto.task.CreateTaskRequest;
 import com.manageit.manageit.dto.task.TaskDto;
+import com.manageit.manageit.dto.task.TaskMetadataDto;
 import com.manageit.manageit.exception.TaskNotInProjectException;
 import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
 import com.manageit.manageit.mapper.task.TaskMapper;
@@ -13,6 +15,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,5 +39,25 @@ public class TaskService {
             throw new TaskNotInProjectException(taskId, projectId);
         }
         return taskMapper.toTaskDto(task);
+    }
+
+    public TaskMetadataDto createAndAddTaskToProject(String token, UUID projectId, CreateTaskRequest createTaskRequest) {
+        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
+        ProjectDto project = projectService.getProject(projectId);
+        if (project.getMembers().stream().noneMatch(member -> member.getUsername().equals(username))) {
+            throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
+        }
+        Task task = Task.builder()
+                .projectId(project.getId())
+                .name(createTaskRequest.getName())
+                .description(createTaskRequest.getDescription())
+                .status(createTaskRequest.getStatus())
+                .priority(createTaskRequest.getPriority())
+                .dueDate(createTaskRequest.getDueDate())
+                .createdAt(LocalDateTime.now())
+                .users(List.of())
+                .build();
+        taskRepository.save(task);
+        return taskMapper.toTaskMetadataDto(task);
     }
 }
