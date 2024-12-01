@@ -19,7 +19,7 @@ export enum TaskStatus {
 export interface Task {
   readonly id: string;
   readonly projectId: string;
-  readonly users: User[];
+  readonly members: User[];
   readonly description: string;
   readonly status: TaskStatus;
   readonly priority: Priority;
@@ -60,7 +60,7 @@ export interface UserProject {
   readonly members: User[];
 }
 
-export interface ProjectData {
+export interface ProjectRequest {
   name: string;
   description: string;
   startDate: string;

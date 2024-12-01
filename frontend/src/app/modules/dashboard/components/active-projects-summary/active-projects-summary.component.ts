@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { AuthService } from '../../../../features/services/auth.service';
+import { ProjectStatus } from '../../../../features/dto/project.model';
 import { ProjectService } from '../../../../features/services/project.service';
 import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 
@@ -14,16 +13,9 @@ import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
   styleUrl: './active-projects-summary.component.css',
 })
 export class ActiveProjectsSummaryComponent implements OnInit {
-  constructor(
-    private authService: AuthService,
-    private projectService: ProjectService
-  ) {}
+  constructor(private projectService: ProjectService) {}
 
-  get projects(): Project[] | undefined {
-    return this.projectService.loadedProjects();
-  }
-
-  public activeProjectsCount = 0;
+  activeProjectsCount = 0;
 
   progressChartData: ChartData<'doughnut'> = {
     labels: [
@@ -49,31 +41,23 @@ export class ActiveProjectsSummaryComponent implements OnInit {
   };
 
   updateChart() {
-    if (this.projects) {
-      const inProgress = this.projects.filter(
-        (p) => p.status === ProjectStatus.InProgress
-      ).length;
-      const completed = this.projects.filter(
-        (p) => p.status === ProjectStatus.Completed
-      ).length;
+    const projects = this.projectService.loadedProjects();
 
-      this.activeProjectsCount = inProgress;
+    if (!projects) return;
 
-      this.progressChartData.datasets[0].data = [completed, inProgress];
-    }
-  }
+    const inProgress = projects.filter(
+      (p) => p.status === ProjectStatus.InProgress
+    ).length;
+    const completed = projects.filter(
+      (p) => p.status === ProjectStatus.Completed
+    ).length;
 
-  isInProject(project: Project): boolean {
-    return project.members.some(
-      (member) => member.username === this.authService.getLoggedInUsername()
-    );
+    this.activeProjectsCount = inProgress;
+
+    this.progressChartData.datasets[0].data = [completed, inProgress];
   }
 
   ngOnInit(): void {
-    this.updateChart();
-  }
-
-  ngOnChanges(): void {
     this.updateChart();
   }
 }

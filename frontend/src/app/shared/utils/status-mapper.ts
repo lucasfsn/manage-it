@@ -16,9 +16,9 @@ export function taskStatusMapper(status: TaskStatus): string {
     case TaskStatus.InProgress:
       return 'In Progress';
     case TaskStatus.Completed:
-      return 'Completed';
+      return 'Done';
     case TaskStatus.NotStarted:
-      return 'Not Started';
+      return 'Upcoming';
     default:
       return 'In Progress';
   }

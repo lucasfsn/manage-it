@@ -117,11 +117,11 @@ export class TaskService {
         () => new Error('Something went wrong. Task not found')
       );
 
-    const updatedTaskMembers = prevTask?.users
-      ? [...prevTask.users, user]
+    const updatedTaskMembers = prevTask?.members
+      ? [...prevTask.members, user]
       : [user];
 
-    const updatedTask = { ...prevTask, users: updatedTaskMembers };
+    const updatedTask = { ...prevTask, members: updatedTaskMembers };
 
     this.task.set(updatedTask);
 
@@ -146,11 +146,11 @@ export class TaskService {
         () => new Error('Something went wrong. Task not found')
       );
 
-    const updatedTaskMembers = prevTask.users.filter(
+    const updatedTaskMembers = prevTask.members.filter(
       (u) => u.username !== user.username
     );
 
-    const updatedTask = { ...prevTask, users: updatedTaskMembers };
+    const updatedTask = { ...prevTask, members: updatedTaskMembers };
 
     this.task.set(updatedTask);
 

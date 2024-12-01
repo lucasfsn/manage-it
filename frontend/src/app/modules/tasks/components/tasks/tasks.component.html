@@ -27,18 +27,18 @@
           <mat-icon class="text-base">schedule</mat-icon>
           {{ task.dueDate | date : "mediumDate" }}</span
         >
-        @if (task.users && task.users.length) {
+        @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
-          @for (user of task.users.slice(0, 3); track user.username) {
+          @for (user of task.members.slice(0, 3); track user.username) {
           <span
             class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
             title="{{ user.firstName }} {{ user.lastName }}"
           >
             {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
           </span>
-          } @if (task.users.length > 3) {
+          } @if (task.members.length > 3) {
           <span class="text-xs text-gray-400"
-            >+{{ task.users.length - 3 }}</span
+            >+{{ task.members.length - 3 }}</span
           >
           }
         </div>
@@ -84,18 +84,18 @@
           <mat-icon class="text-base">schedule</mat-icon>
           {{ task.dueDate | date : "mediumDate" }}</span
         >
-        @if (task.users && task.users.length) {
+        @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
-          @for (user of task.users.slice(0, 3); track user.username) {
+          @for (user of task.members.slice(0, 3); track user.username) {
           <span
             class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
             title="{{ user.firstName }} {{ user.lastName }}"
           >
             {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
           </span>
-          } @if (task.users.length > 3) {
+          } @if (task.members.length > 3) {
           <span class="text-xs text-gray-400"
-            >+{{ task.users.length - 3 }}</span
+            >+{{ task.members.length - 3 }}</span
           >
           }
         </div>
@@ -141,18 +141,18 @@
           <mat-icon class="text-base">schedule</mat-icon>
           {{ task.dueDate | date : "mediumDate" }}</span
         >
-        @if (task.users && task.users.length) {
+        @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
-          @for (user of task.users.slice(0, 3); track user.username) {
+          @for (user of task.members.slice(0, 3); track user.username) {
           <span
             class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
             title="{{ user.firstName }} {{ user.lastName }}"
           >
             {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
           </span>
-          } @if (task.users.length > 3) {
+          } @if (task.members.length > 3) {
           <span class="text-xs text-gray-400"
-            >+{{ task.users.length - 3 }}</span
+            >+{{ task.members.length - 3 }}</span
           >
           }
         </div>

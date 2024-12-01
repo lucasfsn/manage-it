@@ -4,7 +4,7 @@ import { catchError, map, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   Project,
-  ProjectData,
+  ProjectRequest,
   ProjectStatus,
   User,
 } from '../dto/project.model';
@@ -34,7 +34,7 @@ export class ProjectService {
     );
   }
 
-  createProject(project: ProjectData) {
+  createProject(project: ProjectRequest) {
     return this.http
       .post<Project>(`${environment.apiUrl}/projects`, project)
       .pipe(
@@ -86,7 +86,7 @@ export class ProjectService {
       );
   }
 
-  updateProject(projectId: string, updatedProject: ProjectData) {
+  updateProject(projectId: string, updatedProject: ProjectRequest) {
     const prevProject = this.project();
 
     if (!prevProject)

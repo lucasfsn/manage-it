@@ -97,18 +97,15 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      const username = params.get('username');
-      if (username) {
-        this.titleService.setTitle(`${username}'s Profile | ManageIt`);
-      }
-    });
-
     const routeType = this.route.snapshot.data['routeType'];
 
     if (routeType === 'addToProject') this.addToProject = true;
 
     this.route.paramMap.subscribe((params) => {
+      const username = params.get('username');
+      if (username)
+        this.titleService.setTitle(`${username}'s Profile | ManageIt`);
+
       this.loadUserData(params);
     });
   }

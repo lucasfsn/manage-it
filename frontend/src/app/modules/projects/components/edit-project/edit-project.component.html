@@ -53,7 +53,7 @@
     <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
       <label for="endDate">End date</label>
       <input type="date" id="endDate" formControlName="endDate" />
-      @if (wrongEndDate) {
+      @if (endDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
         End date cannot be earlier than the start date.
       </p>

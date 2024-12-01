@@ -61,10 +61,12 @@ export class ProjectInformationComponent {
     this.projectService.deleteProject(projectId).subscribe({
       next: () => {
         this.router.navigate(['/projects']);
-        this.toastrService.success('Project has been deleted');
       },
       error: (err) => {
-        this.toastrService.error(err.message || 'Failed to delete project');
+        this.toastrService.error(err.message);
+      },
+      complete: () => {
+        this.toastrService.success('Project has been deleted');
       },
     });
   }
@@ -118,12 +120,14 @@ export class ProjectInformationComponent {
   }
 
   openSearchDialog(): void {
+    if (!this.project) return;
+
     this.dialog.open(SearchComponent, {
       width: '600px',
       panelClass: 'search-dialog',
       backdropClass: 'dialog-backdrop',
       data: {
-        projectId: this.project?.id,
+        projectId: this.project.id,
       },
     });
   }

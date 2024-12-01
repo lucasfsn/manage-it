@@ -74,7 +74,7 @@ export class TaskComponent {
   }
 
   get taskAssignees(): User[] {
-    return this.task?.users || [];
+    return this.task?.members || [];
   }
 
   get taskAssigneesNicknames(): string[] {
@@ -99,8 +99,9 @@ export class TaskComponent {
       next: (task) => {
         if (task) {
           this.isTaskAssignee.set(
-            task.users.some(
-              (user) => user.username === this.authService.getLoggedInUsername()
+            task.members.some(
+              (member) =>
+                member.username === this.authService.getLoggedInUsername()
             )
           );
         }

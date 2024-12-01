@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ProjectData } from '../../../../features/dto/project.model';
+import { ProjectRequest } from '../../../../features/dto/project.model';
 import { ProjectService } from '../../../../features/services/project.service';
 import { endDateValidator } from '../../validators/end-date.validator';
 import { startDateValidator } from '../../validators/start-date.validator';
@@ -120,20 +120,22 @@ export class CreateProjectComponent {
       return;
     }
 
-    const projectData: ProjectData = {
-      name: this.form.value.name ?? '',
-      description: this.form.value.description ?? '',
-      startDate: this.form.value.dates?.startDate ?? '',
-      endDate: this.form.value.dates?.endDate ?? '',
+    const projectData: ProjectRequest = {
+      name: this.form.value.name!,
+      description: this.form.value.description!,
+      startDate: this.form.value.dates?.startDate!,
+      endDate: this.form.value.dates?.endDate!,
     };
 
     this.projectService.createProject(projectData).subscribe({
       next: (projectId: string) => {
-        this.toastrService.success('Project has been created');
         this.router.navigate(['/projects', projectId]);
       },
       error: (err) => {
         this.toastrService.error(err.error.message);
+      },
+      complete: () => {
+        this.toastrService.success('Project has been created');
       },
     });
 

@@ -160,16 +160,6 @@ export class EditProfileFormComponent {
     this.dialogRef.close();
   }
 
-  private fillFormWithDefaultValues() {
-    if (!this.userData) return;
-
-    this.form.patchValue({
-      firstName: this.userData.firstName,
-      lastName: this.userData.lastName,
-      email: this.userData.email,
-    });
-  }
-
   onReset() {
     this.fillFormWithDefaultValues();
   }
@@ -178,9 +168,9 @@ export class EditProfileFormComponent {
     if (this.form.invalid || !this.userData) return;
 
     const updatedUserData: UpdateUser = {
-      firstName: this.form.value.firstName ?? this.userData.firstName,
-      lastName: this.form.value.lastName ?? this.userData.lastName,
-      email: this.form.value.email ?? this.userData.email!,
+      firstName: this.form.value.firstName!,
+      lastName: this.form.value.lastName!,
+      email: this.form.value.email!,
     };
 
     if (this.form.value.passwords?.password) {
@@ -201,6 +191,16 @@ export class EditProfileFormComponent {
       },
     });
     this.closeDialog();
+  }
+
+  private fillFormWithDefaultValues() {
+    if (!this.userData) return;
+
+    this.form.patchValue({
+      firstName: this.userData.firstName,
+      lastName: this.userData.lastName,
+      email: this.userData.email,
+    });
   }
 
   ngOnInit(): void {

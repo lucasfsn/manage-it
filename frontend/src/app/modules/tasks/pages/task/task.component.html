@@ -8,7 +8,7 @@
     <app-spinner [relative]="true" />
     } @else {
     <app-task-assignees
-      [usersIn]="task.users"
+      [usersIn]="task.members"
       [isTaskAssignee]="isTaskAssignee()"
     />
     }

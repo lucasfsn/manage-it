@@ -6,6 +6,7 @@ import { ProjectService } from '../../../../features/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { ActiveProjectsSummaryComponent } from '../../components/active-projects-summary/active-projects-summary.component';
 import { OngoingProjectsComponent } from '../../components/ongoing-projects/ongoing-projects.component';
+import { TasksStatisticsComponent } from '../../components/tasks-statistics/tasks-statistics.component';
 import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/upcoming-deadlines.component';
 
 @Component({
@@ -16,6 +17,7 @@ import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/
     UpcomingDeadlinesComponent,
     ActiveProjectsSummaryComponent,
     OngoingProjectsComponent,
+    TasksStatisticsComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',

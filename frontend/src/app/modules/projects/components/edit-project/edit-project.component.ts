@@ -8,7 +8,10 @@ import {
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
-import { Project, ProjectData } from '../../../../features/dto/project.model';
+import {
+  Project,
+  ProjectRequest,
+} from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { endDateValidator } from '../../validators/end-date.validator';
@@ -76,8 +79,13 @@ export class EditProjectComponent {
     );
   }
 
-  get wrongEndDate() {
-    return this.form.controls['dates'].hasError('invalidEndDate');
+  get endDateIsInvalid() {
+    return (
+      (this.form.controls.dates.get('endDate')?.dirty &&
+        this.form.controls.dates.get('endDate')?.touched &&
+        this.form.controls.dates.get('endDate')?.invalid) ||
+      this.form.controls.dates.hasError('invalidEndDate')
+    );
   }
 
   closeDialog(): void {
@@ -122,7 +130,7 @@ export class EditProjectComponent {
       return;
     }
 
-    const updatedProject: ProjectData = {
+    const projectData: ProjectRequest = {
       name: this.form.value.name!,
       description: this.form.value.description!,
       startDate: this.form.value.dates?.startDate!,
@@ -132,20 +140,16 @@ export class EditProjectComponent {
     this.closeDialog();
 
     this.loadingService.loadingOn();
-    this.projectService
-      .updateProject(this.project.id, updatedProject)
-      .subscribe({
-        next: () => {
-          this.toastrService.success('Project has been updated');
-        },
-        error: (err) => {
-          this.toastrService.error(err.message);
-          this.loadingService.loadingOff();
-        },
-        complete: () => {
-          this.loadingService.loadingOff();
-        },
-      });
+    this.projectService.updateProject(this.project.id, projectData).subscribe({
+      error: (err) => {
+        this.toastrService.error(err.message);
+        this.loadingService.loadingOff();
+      },
+      complete: () => {
+        this.toastrService.success('Project has been updated');
+        this.loadingService.loadingOff();
+      },
+    });
   }
 
   ngOnInit(): void {

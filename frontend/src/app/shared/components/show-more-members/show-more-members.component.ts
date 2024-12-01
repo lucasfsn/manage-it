@@ -36,7 +36,6 @@ export class ShowMoreMembersComponent {
         this.toastrService.error(error.message);
       },
       complete: () => {
-        this.dialogRef.close();
         this.toastrService.success(
           `${user.firstName} ${user.lastName} has been removed from project`
         );

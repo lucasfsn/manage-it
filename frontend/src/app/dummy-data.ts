@@ -42,7 +42,7 @@ export const dummyProjects: Project[] = [
       {
         id: '1',
         projectId: '1',
-        users: [
+        members: [
           { firstName: 'John', lastName: 'Doe', username: 'john_doe' },
           {
             firstName: 'Jane',
@@ -63,7 +63,7 @@ export const dummyProjects: Project[] = [
       {
         id: '2',
         projectId: '1',
-        users: [
+        members: [
           {
             firstName: 'Michael',
             lastName: 'Johnson',
@@ -83,7 +83,7 @@ export const dummyProjects: Project[] = [
       {
         id: '3',
         projectId: '1',
-        users: [
+        members: [
           {
             firstName: 'Olivia',
             lastName: 'Brown',
@@ -103,7 +103,7 @@ export const dummyProjects: Project[] = [
       {
         id: '4',
         projectId: '1',
-        users: [
+        members: [
           {
             firstName: 'Isabella',
             lastName: 'Garcia',
@@ -123,7 +123,7 @@ export const dummyProjects: Project[] = [
       {
         id: '5',
         projectId: '1',
-        users: [
+        members: [
           {
             firstName: 'Emily',
             lastName: 'Davis',
