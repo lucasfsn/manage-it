@@ -9,8 +9,10 @@ import com.manageit.manageit.exception.TaskNotInProjectException;
 import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
 import com.manageit.manageit.mapper.task.TaskMapper;
 import com.manageit.manageit.repository.TaskRepository;
+import com.manageit.manageit.repository.UserRepository;
 import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.task.Task;
+import com.manageit.manageit.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class TaskService {
     private final ProjectService projectService;
     private final JwtService jwtService;
     private final TaskMapper taskMapper;
+    private final UserRepository userRepository;
 
     public TaskDto getTask(String token, UUID projectId, UUID taskId) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
@@ -43,6 +46,7 @@ public class TaskService {
 
     public TaskMetadataDto createAndAddTaskToProject(String token, UUID projectId, CreateTaskRequest createTaskRequest) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
         ProjectDto project = projectService.getProject(projectId);
         if (project.getMembers().stream().noneMatch(member -> member.getUsername().equals(username))) {
             throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
@@ -54,9 +58,10 @@ public class TaskService {
                 .priority(createTaskRequest.getPriority())
                 .dueDate(createTaskRequest.getDueDate())
                 .createdAt(LocalDateTime.now())
-                .users(List.of())
+                .users(List.of(user))
                 .build();
         taskRepository.save(task);
         return taskMapper.toTaskMetadataDto(task);
     }
+
 }
