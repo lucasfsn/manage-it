@@ -21,7 +21,6 @@ import java.util.UUID;
 public class TaskDto {
     private UUID id;
     private UUID projectId;
-    private String name;
     private String description;
     private TaskStatus status;
     private TaskPriority priority;

@@ -49,7 +49,6 @@ public class TaskService {
         }
         Task task = Task.builder()
                 .projectId(project.getId())
-                .name(createTaskRequest.getName())
                 .description(createTaskRequest.getDescription())
                 .status(createTaskRequest.getStatus())
                 .priority(createTaskRequest.getPriority())

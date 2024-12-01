@@ -35,11 +35,6 @@ public class Task {
     @Column(name = "assigned_project_id", nullable = false)
     private UUID projectId;
 
-    @NotBlank(message = "Task name cannot be empty")
-    @Size(max = 255, message = "Task name cannot exceed 255 characters")
-    @Column(name = "task_name", nullable = false)
-    private String name;
-
     @NotBlank(message = "Description cannot be empty")
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;

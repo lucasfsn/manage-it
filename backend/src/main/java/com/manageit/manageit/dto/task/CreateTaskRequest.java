@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateTaskRequest {
-    private String name;
     private String description;
     private TaskStatus status;
     private TaskPriority priority;
