@@ -3,7 +3,6 @@ package com.manageit.manageit.service;
 
 import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.dto.user.UserResponseDto;
-import com.manageit.manageit.exception.TokenUserMismatchException;
 import com.manageit.manageit.mapper.user.BasicUserMapper;
 import com.manageit.manageit.mapper.user.UserMapper;
 import com.manageit.manageit.repository.UserRepository;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.security.sasl.AuthenticationException;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,13 +69,13 @@ public class UserService {
 
     public List<BasicUserDto> searchUsers(String pattern, UUID projectId) {
         if (projectId == null) {
-            return userRepository.findByUsernameContainingIgnoreCase(pattern)
+            return userRepository.findByPatternInAllFields(pattern)
                     .map(users -> users.stream()
                             .map(basicUserMapper::toBasicUserDto)
                             .toList())
                     .orElseThrow(() -> new EntityNotFoundException("No users found!"));
         }
-        return userRepository.findByUsernameContainingIgnoreCaseInProject(pattern, projectId)
+        return userRepository.findByPatternInAllFieldsInProject(pattern, projectId)
                 .map(users -> users.stream()
                         .map(basicUserMapper::toBasicUserDto)
                         .toList())

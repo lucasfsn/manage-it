@@ -11,21 +11,35 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    @Query("""
-        SELECT u FROM User u
-        WHERE (:projectId IS NULL OR u.id NOT IN (
-            SELECT pm.id FROM Project p
-            JOIN p.members pm
-            WHERE p.id = :projectId
-        ))
-        AND LOWER(u.username) LIKE LOWER(CONCAT('%', :pattern, '%'))
-    """)
-    Optional<List<User>> findByUsernameContainingIgnoreCaseInProject(
-            @Param("pattern") String pattern,
-            @Param("projectId") UUID projectId
-    );
+    @Query("SELECT u FROM User u WHERE " +
+            "(LOWER(u.username) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
+            "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
+            "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
+            "LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :pattern, '%'))) AND " +
+            "u.project.id = :projectId")
+    Optional<List<User>> findByPatternInAllFieldsInProject(@Param("pattern") String pattern, @Param("projectId") UUID projectId);
 
-    Optional<List<User>> findByUsernameContainingIgnoreCase(String pattern);
+
+    @Query("SELECT u FROM User u " +
+            "WHERE u.project.id = :projectId AND " +
+            "u.id NOT IN (SELECT tu.id FROM Task t JOIN t.users tu WHERE t.id = :taskId) AND " +
+            "(LOWER(u.username) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
+            "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
+            "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
+            "LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :pattern, '%')))")
+    Optional<List<User>> findByPatternInProjectExcludingTask(@Param("pattern") String pattern,
+                                                             @Param("projectId") UUID projectId,
+                                                             @Param("taskId") UUID taskId);
+
+
+    @Query("SELECT u FROM User u WHERE " +
+            "LOWER(u.username) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
+            "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
+            "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
+            "LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :pattern, '%'))")
+    Optional<List<User>> findByPatternInAllFields(@Param("pattern") String pattern);
+
+    //    Optional<List<User>> findByPatternInAllFields(String pattern);
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
     Optional<User> findById(UUID id);
