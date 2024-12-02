@@ -67,18 +67,27 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<BasicUserDto> searchUsers(String pattern, UUID projectId) {
-        if (projectId == null) {
+    public List<BasicUserDto> searchUsers(String pattern, UUID projectId, UUID taskId) {
+        if (projectId == null && taskId == null) {
             return userRepository.findByPatternInAllFields(pattern)
                     .map(users -> users.stream()
                             .map(basicUserMapper::toBasicUserDto)
                             .toList())
                     .orElseThrow(() -> new EntityNotFoundException("No users found!"));
         }
-        return userRepository.findByPatternInAllFieldsInProject(pattern, projectId)
+        if (taskId == null) {
+            return userRepository.findByPatternInAllFieldsInProject(pattern, projectId)
+                    .map(users -> users.stream()
+                            .map(basicUserMapper::toBasicUserDto)
+                            .toList())
+                    .orElseThrow(() -> new EntityNotFoundException("No users found!"));
+        }
+        // sprawdz czy podany task nalezy do projektu.
+        return userRepository.findByPatternInProjectExcludingTask(pattern, projectId, taskId)
                 .map(users -> users.stream()
                         .map(basicUserMapper::toBasicUserDto)
                         .toList())
                 .orElseThrow(() -> new EntityNotFoundException("No users found!"));
+
     }
 }

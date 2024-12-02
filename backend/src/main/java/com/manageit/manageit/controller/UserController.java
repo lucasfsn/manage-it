@@ -38,9 +38,10 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<List<BasicUserDto>> searchUser(
             @RequestParam("pattern") String pattern,
-            @RequestParam(value = "projectId", required = false) UUID projectId
+            @RequestParam(value = "projectId", required = false) UUID projectId,
+            @RequestParam(value = "taskId", required = false) UUID taskId
     ) {
-        return ResponseEntity.ok(userService.searchUsers(pattern, projectId));
+        return ResponseEntity.ok(userService.searchUsers(pattern, projectId, taskId));
     }
 
 }
