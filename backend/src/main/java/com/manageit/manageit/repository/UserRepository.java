@@ -11,17 +11,16 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    @Query("SELECT u FROM User u WHERE " +
+    @Query("SELECT u FROM User u JOIN u.projects p WHERE " +
             "(LOWER(u.username) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
             "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
             "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
             "LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :pattern, '%'))) AND " +
-            "u.project.id = :projectId")
+            "p.id = :projectId")
     Optional<List<User>> findByPatternInAllFieldsInProject(@Param("pattern") String pattern, @Param("projectId") UUID projectId);
 
-
-    @Query("SELECT u FROM User u " +
-            "WHERE u.project.id = :projectId AND " +
+    @Query("SELECT u FROM User u JOIN u.projects p WHERE " +
+            "p.id = :projectId AND " +
             "u.id NOT IN (SELECT tu.id FROM Task t JOIN t.users tu WHERE t.id = :taskId) AND " +
             "(LOWER(u.username) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
             "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
@@ -38,8 +37,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
             "LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :pattern, '%'))")
     Optional<List<User>> findByPatternInAllFields(@Param("pattern") String pattern);
-
-    //    Optional<List<User>> findByPatternInAllFields(String pattern);
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
     Optional<User> findById(UUID id);
