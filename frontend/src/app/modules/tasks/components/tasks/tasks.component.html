@@ -9,7 +9,7 @@
     [cdkDropListData]="completedTasks"
     [cdkDropListConnectedTo]="[inProgressList, notStartedList]"
     id="completed"
-    class="w-full flex flex-col gap-1 min-h-[1px]"
+    class="w-full flex flex-col gap-1 min-h-[10px]"
     (cdkDropListDropped)="drop($event)"
   >
     @for (task of completedTasks; track task.id) {
@@ -66,7 +66,7 @@
     [cdkDropListData]="inProgressTasks"
     [cdkDropListConnectedTo]="[completedList, notStartedList]"
     id="inProgress"
-    class="w-full flex flex-col gap-1 min-h-[1px]"
+    class="w-full flex flex-col gap-1 min-h-[10px]"
     (cdkDropListDropped)="drop($event)"
   >
     @for (task of inProgressTasks; track task.id) {
@@ -123,7 +123,7 @@
     [cdkDropListData]="notStartedTasks"
     [cdkDropListConnectedTo]="[inProgressList, completedList]"
     id="notStarted"
-    class="w-full flex flex-col gap-1 min-h-[1px]"
+    class="w-full flex flex-col gap-1 min-h-[10px]"
     (cdkDropListDropped)="drop($event)"
   >
     @for (task of notStartedTasks; track task.id) {

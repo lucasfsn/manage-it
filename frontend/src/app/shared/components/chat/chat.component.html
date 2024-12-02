@@ -13,46 +13,34 @@
       #messageContainer
     >
       @for (message of messages; track message.id) {
-      <div
-        class="flex flex-col gap-1 max-w-[250px] lg:max-w-[350px]"
-        [ngClass]="{
-          'self-end flex-row-reverse':
-            message.sender.username === currentUser?.username
-        }"
-      >
-        <div
-          class="flex gap-2"
-          [ngClass]="{
-            'flex-row-reverse':
-              message.sender.username === currentUser?.username
-          }"
-        >
+      <div class="flex flex-col gap-1 max-w-[250px] lg:max-w-[350px]">
+        <div class="flex gap-2">
           <div
-            class="flex items-center justify-center w-[30px] h-[30px] aspect-square rounded-full bg-gray-700 text-white text-xs font-semibold"
+            class="flex items-center justify-center w-[30px] h-[30px] aspect-square rounded-full bg-sky-950 text-white text-xs font-semibold"
           >
             {{ message.sender.firstName[0] }}{{ message.sender.lastName[0] }}
           </div>
-          <div
-            class="flex items-center gap-2"
-            [ngClass]="{
-              'flex-row-reverse':
-                message.sender.username === currentUser?.username
-            }"
-          >
+          <div class="flex items-center gap-2">
             @if (message.sender.username === currentUser?.username) {
-            <span class="text-sky-500 text-sm">You</span>
+            <span class="text-sky-600 text-sm font-semibold">You</span>
             } @else {
-            <span class="text-gray-400 text-sm"
+            <span class="text-sky-300 text-sm"
               >{{ message.sender.firstName }}
               {{ message.sender.lastName }}</span
             >
             }
             <span class="text-gray-500 text-xs">{{
-              message.createdAt | date : "short"
+              message.createdAt | date : "EEEE h:mm a"
             }}</span>
           </div>
         </div>
-        <div class="text-white text-sm break-words">
+        <div
+          class="text-sm break-words"
+          [ngClass]="{
+            'text-gray-300': message.sender.username === currentUser?.username,
+            'text-gray-100': message.sender.username !== currentUser?.username
+          }"
+        >
           {{ message.content }}
         </div>
       </div>
@@ -97,7 +85,7 @@
       >
         <mat-icon class="text-base">sentiment_satisfied_alt</mat-icon>
       </button>
-      @if (message.length >= 0) {
+      @if (message.length > 0) {
       <button
         @buttonAnimation
         class="focus:outline-none flex justify-center items-center bg-slate-900 rounded-full w-8 h-8 aspect-square hover:bg-slate-800 transition-all disabled:cursor-not-allowed"

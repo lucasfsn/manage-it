@@ -14,9 +14,7 @@
       {{ result.firstName }} {{ result.lastName }}
       <span class="text-gray-500">({{ result.username }}) </span>
     </p>
-    @if (isLoggedInUser(result.username)) {
-    <span class="flex justify-center items-center cursor-not-allowed">You</span>
-    } @else if (isAlreadyIn(result.username)) {
+    @if (isAlreadyIn(result.username)) {
     <span class="flex justify-center items-center cursor-not-allowed"
       >Already in</span
     >

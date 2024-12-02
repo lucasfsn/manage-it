@@ -110,4 +110,26 @@ export const dummyMessages: MessageDummy[] = [
     createdAt: '2024-01-06T11:30:00Z',
     projectId: 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4',
   },
+  {
+    id: '5',
+    content: 'Started working on the header.',
+    sender: {
+      firstName: 'John',
+      lastName: 'Doe',
+      username: 'john_doe',
+    },
+    createdAt: '2024-01-05T10:00:00Z',
+    projectId: 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4',
+  },
+  {
+    id: '5',
+    content: 'Lorem ipsum :D',
+    sender: {
+      firstName: 'John',
+      lastName: 'Doe',
+      username: 'john_doe',
+    },
+    createdAt: '2024-01-08T10:00:00Z',
+    projectId: 'a3c4f7f7-b48c-4c90-bfc1-d03277561ef4',
+  },
 ];
