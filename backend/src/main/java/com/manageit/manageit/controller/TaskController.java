@@ -5,6 +5,7 @@ import com.manageit.manageit.dto.task.CreateTaskRequest;
 import com.manageit.manageit.dto.task.TaskDto;
 import com.manageit.manageit.dto.task.TaskMetadataDto;
 import com.manageit.manageit.dto.task.UpdateTaskRequest;
+import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -65,4 +66,27 @@ public class TaskController {
         taskService.updateTask(token, taskId, projectId, updateTaskRequest);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{taskId}/user/add")
+    public ResponseEntity<Void> addUserToTask(
+            @RequestHeader("Authorization") String token,
+            @PathVariable UUID taskId,
+            @PathVariable UUID projectId,
+            @RequestBody BasicUserDto request
+    ) {
+        taskService.addUserToProject(token, taskId, projectId, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{taskId}/user/remove")
+    public ResponseEntity<Void> removeUserFromProject(
+            @RequestHeader("Authorization") String token,
+            @PathVariable UUID taskId,
+            @PathVariable UUID projectId,
+            @RequestBody BasicUserDto request
+    ) {
+        taskService.removeUserFromTask(token, taskId, projectId, request);
+        return ResponseEntity.noContent().build();
+    }
+
 }
