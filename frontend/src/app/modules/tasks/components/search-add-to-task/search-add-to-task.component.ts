@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
+import { TaskService } from '../../../../features/services/task.service';
 import { UserService } from '../../../../features/services/user.service';
 
 @Component({
@@ -14,18 +15,20 @@ import { UserService } from '../../../../features/services/user.service';
   styleUrl: './search-add-to-task.component.css',
 })
 export class SearchAddToTaskComponent {
-  @Input() usersAlreadyIn: string[] = [];
-  @Input() loading = false;
   @Output() onClick = new EventEmitter<User>();
-
   form = new FormControl<string>('');
   searchResults: User[] = [];
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private taskService: TaskService
   ) {}
+
+  get members(): User[] {
+    return this.taskService.loadedTask()?.members ?? [];
+  }
 
   onSearch(): void {
     const projectId =
@@ -43,21 +46,20 @@ export class SearchAddToTaskComponent {
       next: (res) => {
         this.searchResults = res;
       },
-      error: (error) => {
-        console.error(error.message);
+      error: () => {
         this.searchResults = [];
       },
     });
   }
 
-  onUserSelect(user: User): void {
+  handleAdd(user: User): void {
     this.onClick.emit(user);
     this.form.setValue('');
     this.searchResults = [];
   }
 
   isAlreadyIn(username: string): boolean {
-    return this.usersAlreadyIn.some((u) => u === username);
+    return this.members.some((u) => u.username === username);
   }
 
   isLoggedInUser(username: string): boolean {

@@ -35,6 +35,7 @@ export class EditTaskComponent implements OnInit {
     description: new FormControl<string>('', [
       Validators.minLength(2),
       Validators.maxLength(120),
+      Validators.required,
     ]),
     status: new FormControl<TaskStatus>(TaskStatus.NotStarted, {
       validators: [Validators.required],

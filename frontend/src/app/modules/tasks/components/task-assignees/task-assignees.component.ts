@@ -12,7 +12,6 @@ import {
   ElementRef,
   inject,
   OnInit,
-  signal,
   ViewChild,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -63,7 +62,6 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
 export class TaskAssigneesComponent implements OnInit {
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
   private destroyRef = inject(DestroyRef);
-  protected loading = signal<boolean>(false);
   public filteredUsers: User[] = [];
   public paginatedUsers: User[] = [];
   public searchControl = new FormControl('');
@@ -77,42 +75,37 @@ export class TaskAssigneesComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  get usersInNicknames(): string[] {
-    return this.usersIn.map((user) => user.username);
-  }
-
   get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
 
-  get usersIn(): User[] {
+  get members(): User[] {
     return this.taskService.loadedTask()?.members || [];
   }
 
   handleAdd(user: User): void {
-    this.loadingService.loadingOn();
     this.taskService.addToTask(user).subscribe({
       error: (error) => {
-        this.toastrService.error(error.message);
-        this.loadingService.loadingOff();
+        this.toastrService.error(error?.message);
+        this.refreshUsersIn();
       },
       complete: () => {
-        this.loadingService.loadingOff();
+        this.toastrService.success(
+          `${user.firstName} ${user.lastName} has been added to task`
+        );
       },
     });
+    this.refreshUsersIn();
   }
 
   handleRemove(user: User): void {
-    this.loadingService.loadingOn();
     this.taskService.removeFromTask(user).subscribe({
       error: (error) => {
-        this.toastrService.error(error.message);
-        this.loadingService.loadingOff();
-      },
-      complete: () => {
-        this.loadingService.loadingOff();
+        this.toastrService.error(error?.message);
+        this.refreshUsersIn();
       },
     });
+    this.refreshUsersIn();
   }
 
   toggleShowAssignees(): void {
@@ -130,7 +123,7 @@ export class TaskAssigneesComponent implements OnInit {
   filterUsers() {
     const searchTerm = this.searchControl.value?.toLowerCase() || '';
 
-    this.filteredUsers = this.usersIn.filter(
+    this.filteredUsers = this.members.filter(
       (user) =>
         user.firstName.toLowerCase().includes(searchTerm) ||
         user.lastName.toLowerCase().includes(searchTerm) ||
@@ -151,9 +144,13 @@ export class TaskAssigneesComponent implements OnInit {
     this.paginatedUsers = this.filteredUsers.slice(start, end);
   }
 
-  ngOnInit(): void {
-    this.filteredUsers = this.usersIn;
+  private refreshUsersIn(): void {
+    this.filteredUsers = this.members;
     this.updatePaginatedUsers();
+  }
+
+  ngOnInit(): void {
+    this.refreshUsersIn();
     const subscription = this.searchControl.valueChanges.subscribe(() => {
       this.filterUsers();
     });

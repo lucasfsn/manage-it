@@ -67,10 +67,6 @@
     </div>
   </div>
   <div [@toggleDiv]="!showAssignees ? 'show' : 'hide'" class="px-3">
-    <app-search-add-to-task
-      [usersAlreadyIn]="usersInNicknames"
-      [loading]="loading()"
-      (onClick)="handleAdd($event)"
-    />
+    <app-search-add-to-task (onClick)="handleAdd($event)" />
   </div>
 </div>

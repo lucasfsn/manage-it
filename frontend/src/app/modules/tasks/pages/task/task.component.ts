@@ -74,6 +74,12 @@ export class TaskComponent {
     this.showChat.set(!this.showChat());
   }
 
+  handleGoBack() {
+    if (!this.task) return;
+
+    this.router.navigate(['/projects', this.task.projectId]);
+  }
+
   handleDelete() {
     this.taskService.deleteTask().subscribe({
       error: (err) => {
