@@ -6,13 +6,13 @@ import { ProjectService } from '../../../../features/services/project.service';
 import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 
 @Component({
-  selector: 'app-active-projects-summary',
+  selector: 'app-projects-summary',
   standalone: true,
   imports: [BaseChartDirective],
-  templateUrl: './active-projects-summary.component.html',
-  styleUrl: './active-projects-summary.component.css',
+  templateUrl: './projects-summary.component.html',
+  styleUrl: './projects-summary.component.css',
 })
-export class ActiveProjectsSummaryComponent implements OnInit {
+export class ProjectsSummaryComponent implements OnInit {
   constructor(private projectService: ProjectService) {}
 
   activeProjectsCount = 0;

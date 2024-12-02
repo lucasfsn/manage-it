@@ -4,9 +4,9 @@ import { AuthService } from '../../../../features/services/auth.service';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { ActiveProjectsSummaryComponent } from '../../components/active-projects-summary/active-projects-summary.component';
 import { OngoingProjectsComponent } from '../../components/ongoing-projects/ongoing-projects.component';
-import { TasksStatisticsComponent } from '../../components/tasks-statistics/tasks-statistics.component';
+import { ProjectsSummaryComponent } from '../../components/projects-summary/projects-summary.component';
+import { TasksSummaryComponent } from '../../components/tasks-summary/tasks-summary.component';
 import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/upcoming-deadlines.component';
 
 @Component({
@@ -15,9 +15,9 @@ import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/
   imports: [
     SpinnerComponent,
     UpcomingDeadlinesComponent,
-    ActiveProjectsSummaryComponent,
     OngoingProjectsComponent,
-    TasksStatisticsComponent,
+    ProjectsSummaryComponent,
+    TasksSummaryComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',

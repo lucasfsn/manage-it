@@ -6,13 +6,13 @@ import { ProjectService } from '../../../../features/services/project.service';
 import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 
 @Component({
-  selector: 'app-tasks-statistics',
+  selector: 'app-tasks-summary',
   standalone: true,
   imports: [BaseChartDirective],
-  templateUrl: './tasks-statistics.component.html',
-  styleUrl: './tasks-statistics.component.css',
+  templateUrl: './tasks-summary.component.html',
+  styleUrl: './tasks-summary.component.css',
 })
-export class TasksStatisticsComponent implements OnInit {
+export class TasksSummaryComponent implements OnInit {
   constructor(private projectService: ProjectService) {}
 
   barChartData: ChartData<'bar'> = {
