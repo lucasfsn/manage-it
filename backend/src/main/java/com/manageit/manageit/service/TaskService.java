@@ -52,7 +52,7 @@ public class TaskService {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-        if (project.getMembers().stream().noneMatch(member -> member.getUsername().equals(username))) {
+        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(username))) {
             throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
         }
         Task task = Task.builder()
