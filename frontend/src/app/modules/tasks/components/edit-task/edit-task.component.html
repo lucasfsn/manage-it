@@ -6,23 +6,23 @@
         type="text"
         formControlName="description"
         placeholder="Enter task description"
-        class="py-1 px-2 border border-slate-800 bg-slate-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-300 placeholder-slate-400 lg:self-end flex-grow"
+        class="py-1 px-3 border border-none text-slate-300 bg-slate-950 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-500 lg:self-end flex-grow"
       />
       <div class="flex flex-col gap-1">
-        <label for="dueDate" class="text-gray-400 self-center">Due date:</label>
+        <label for="dueDate" class="text-sky-500 self-center">Due date:</label>
         <input
           id="dueDate"
           type="date"
           formControlName="dueDate"
-          class="py-1 px-2 border border-slate-800 bg-slate-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-300 placeholder-slate-400 lg:self-end"
+          class="py-1 px-2 border border-none text-slate-300 bg-slate-950 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-500 lg:self-end flex-grow"
         />
       </div>
       <div class="flex flex-col gap-1">
-        <label for="status" class="text-gray-400 self-center">Status:</label>
+        <label for="status" class="text-sky-500 self-center">Status:</label>
         <select
           id="status"
           formControlName="status"
-          class="py-1 px-2 border border-slate-800 bg-slate-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-300 placeholder-slate-400 lg:self-end"
+          class="py-1 px-2 border border-none text-slate-300 bg-slate-950 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-500 lg:self-end flex-grow"
         >
           <option value="" disabled>Select status</option>
           @for (status of statuses; track status) {
@@ -33,13 +33,11 @@
         </select>
       </div>
       <div class="flex flex-col gap-1">
-        <label for="priority" class="text-gray-400 self-center"
-          >Priority:</label
-        >
+        <label for="priority" class="text-sky-500 self-center">Priority:</label>
         <select
           id="priority"
           formControlName="priority"
-          class="py-1 px-2 border border-slate-800 bg-slate-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-300 placeholder-slate-400 lg:self-end"
+          class="py-1 px-2 border border-none text-slate-300 bg-slate-950 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-500 lg:self-end flex-grow"
         >
           <option value="" disabled>Select priority</option>
           @for (priority of priorities; track priority) {
