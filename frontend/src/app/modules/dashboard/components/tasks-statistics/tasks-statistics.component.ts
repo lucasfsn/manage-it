@@ -54,13 +54,13 @@ export class TasksStatisticsComponent implements OnInit {
         {
           data: Object.values(taskStatusCounts),
           backgroundColor: [
-            'rgba(244, 63, 94, 0.6)',
-            'rgba(249, 115, 22, 0.6)',
-            'rgba(14, 165, 233, 0.6)',
+            'rgba(251, 113, 133, 0.7)',
+            'rgba(251, 146, 60, 0.7)',
+            'rgba(14, 165, 233, 0.7)',
           ],
           borderColor: [
-            'rgba(244, 63, 94, 1)',
-            'rgba(249, 115, 22, 1)',
+            'rgba(251, 113, 133, 1)',
+            'rgba(251, 146, 60, 1)',
             'rgba(54, 162, 235, 1)',
           ],
           borderWidth: 1,

@@ -10,8 +10,7 @@ import { Component, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Task, User } from '../../../../features/dto/project.model';
-import { AuthService } from '../../../../features/services/auth.service';
+import { Task } from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
@@ -53,13 +52,11 @@ import { TaskAssigneesComponent } from '../../components/task-assignees/task-ass
   ],
 })
 export class TaskComponent {
-  public isTaskAssignee = signal<boolean>(false);
   public showChat = signal<boolean>(false);
 
   constructor(
     private taskService: TaskService,
     private loadingService: LoadingService,
-    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private toastrService: ToastrService
@@ -73,16 +70,19 @@ export class TaskComponent {
     return this.loadingService.isLoading();
   }
 
-  get taskAssignees(): User[] {
-    return this.task?.members || [];
-  }
-
-  get taskAssigneesNicknames(): string[] {
-    return this.taskAssignees.map((user) => user.username);
-  }
-
   toggleChat() {
     this.showChat.set(!this.showChat());
+  }
+
+  handleDelete() {
+    this.taskService.deleteTask().subscribe({
+      error: (err) => {
+        this.toastrService.error(err.message);
+      },
+      complete: () => {
+        this.router.navigate(['/projects', this.task?.projectId]);
+      },
+    });
   }
 
   private loadTaskData(): void {
@@ -96,16 +96,6 @@ export class TaskComponent {
 
     this.loadingService.loadingOn();
     this.taskService.getTask(projectId, taskId).subscribe({
-      next: (task) => {
-        if (task) {
-          this.isTaskAssignee.set(
-            task.members.some(
-              (member) =>
-                member.username === this.authService.getLoggedInUsername()
-            )
-          );
-        }
-      },
       error: (err) => {
         this.toastrService.error(err.message);
         this.router.navigate(['/projects', projectId]);

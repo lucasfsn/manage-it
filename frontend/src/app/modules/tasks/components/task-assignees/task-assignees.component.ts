@@ -11,7 +11,6 @@ import {
   DestroyRef,
   ElementRef,
   inject,
-  Input,
   OnInit,
   signal,
   ViewChild,
@@ -62,15 +61,15 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
   ],
 })
 export class TaskAssigneesComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
-
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
-  @Input() usersIn: User[] = [];
-  @Input() isTaskAssignee!: boolean;
-  protected allUsersInProject = signal<User[]>([]);
-  protected projectId = signal<string>('');
-  protected taskId = signal<string>('');
+  private destroyRef = inject(DestroyRef);
   protected loading = signal<boolean>(false);
+  public filteredUsers: User[] = [];
+  public paginatedUsers: User[] = [];
+  public searchControl = new FormControl('');
+  public currentPage = 0;
+  public pageSize = 5;
+  public showAssignees = true;
 
   constructor(
     private taskService: TaskService,
@@ -78,20 +77,16 @@ export class TaskAssigneesComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  public filteredUsers: User[] = [];
-  public paginatedUsers: User[] = [];
-  public searchControl = new FormControl('');
-  public currentPage = 0;
-  public pageSize = 5;
-
-  public showAssignees = true;
-
   get usersInNicknames(): string[] {
     return this.usersIn.map((user) => user.username);
   }
 
   get isLoading(): boolean {
     return this.loadingService.isLoading();
+  }
+
+  get usersIn(): User[] {
+    return this.taskService.loadedTask()?.members || [];
   }
 
   handleAdd(user: User): void {

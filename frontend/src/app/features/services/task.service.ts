@@ -58,6 +58,7 @@ export class TaskService {
 
   moveProjectTask(updatedTask: Task) {
     const project = this.projectService.loadedProject();
+    const prevTask = this.task();
 
     if (!project)
       return throwError(
@@ -73,6 +74,8 @@ export class TaskService {
       tasks: updatedProjectTasksList,
     });
 
+    this.task.set(updatedTask);
+
     return this.http
       .patch<null>(
         `${environment.apiUrl}/projects/${project.id}/tasks/${updatedTask.id}`,
@@ -81,6 +84,26 @@ export class TaskService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.projectService.setProject(project);
+          this.task.set(prevTask);
+          return throwError(() => err.error);
+        })
+      );
+  }
+
+  deleteTask() {
+    const projectId = this.task()?.projectId;
+    const taskId = this.task()?.id;
+
+    if (!projectId || !taskId)
+      return throwError(() => new Error('Something went wrong'));
+
+    return this.http
+      .delete<null>(
+        `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`
+      )
+      .pipe(
+        tap(() => {}),
+        catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
         })
       );

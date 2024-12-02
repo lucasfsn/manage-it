@@ -73,7 +73,7 @@ export class TasksComponent implements OnInit {
 
     if (task.status === newStatus) return;
 
-    this.handleMoveTask({ ...task, status: newStatus });
+    this.handleMoveTask({ ...task, status: newStatus }, task.status);
   }
 
   private getNewStatus(containerId: string): TaskStatus {
@@ -99,12 +99,45 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  handleMoveTask(task: Task) {
+  handleMoveTask(task: Task, prevStatus: TaskStatus) {
     this.taskService.moveProjectTask(task).subscribe({
       error: (err) => {
         this.toastrService.error(err.message);
+        this.restoreTaskState(task, prevStatus);
       },
     });
+  }
+
+  private restoreTaskState(task: Task, prevStatus: TaskStatus) {
+    switch (task.status) {
+      case TaskStatus.Completed:
+        this.completedTasks = this.completedTasks.filter(
+          (t) => t.id !== task.id
+        );
+        break;
+      case TaskStatus.InProgress:
+        this.inProgressTasks = this.inProgressTasks.filter(
+          (t) => t.id !== task.id
+        );
+        break;
+      case TaskStatus.NotStarted:
+        this.notStartedTasks = this.notStartedTasks.filter(
+          (t) => t.id !== task.id
+        );
+        break;
+    }
+
+    switch (prevStatus) {
+      case TaskStatus.Completed:
+        this.completedTasks.push(task);
+        break;
+      case TaskStatus.InProgress:
+        this.inProgressTasks.push(task);
+        break;
+      case TaskStatus.NotStarted:
+        this.notStartedTasks.push(task);
+        break;
+    }
   }
 
   ngOnInit() {

@@ -1,20 +1,20 @@
 @if (task) {
 <div class="flex flex-col gap-10 w-full">
-  @if (isTaskAssignee()) {
+  <button
+    class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-1 flex justify-center items-center rounded-full ml-auto"
+    (click)="handleDelete()"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
   <app-edit-task />
-  }
   <div class="flex flex-col lg:flex-row lg:justify-between gap-5 flex-grow">
     @if (isLoading) {
     <app-spinner [relative]="true" />
     } @else {
-    <app-task-assignees
-      [usersIn]="task.members"
-      [isTaskAssignee]="isTaskAssignee()"
-    />
+    <app-task-assignees />
     }
   </div>
 </div>
-@if (isTaskAssignee()) {
 <button
   class="fixed bottom-4 right-4 rounded-full bg-sky-500 h-10 flex items-center justify-center aspect-square transition-all cursor-pointer shadow-sm text-white hover:scale-105"
   (click)="toggleChat()"
@@ -28,4 +28,4 @@
   @chatAnimation
   [customPosition]="'fixed bottom-20 right-4 h-[600px] w-[300px] lg:w-[400px]'"
 />
-}} }
+}}

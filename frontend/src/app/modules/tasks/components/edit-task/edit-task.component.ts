@@ -5,14 +5,15 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import {
   Priority,
   Task,
   TaskData,
   TaskStatus,
 } from '../../../../features/dto/project.model';
-import { LoadingService } from '../../../../features/services/loading.service';
 import { TaskService } from '../../../../features/services/task.service';
+import { priorityMapper } from '../../../../shared/utils/priority-mapper';
 import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 
 @Component({
@@ -23,9 +24,11 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
   styleUrl: './edit-task.component.css',
 })
 export class EditTaskComponent implements OnInit {
+  isLoading: boolean = false;
+
   constructor(
-    private loadingService: LoadingService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private toastrService: ToastrService
   ) {}
 
   form = new FormGroup({
@@ -43,6 +46,10 @@ export class EditTaskComponent implements OnInit {
       validators: [Validators.required],
     }),
   });
+
+  get disabled(): boolean {
+    return this.form.invalid || !this.isFormChanged() || this.isLoading;
+  }
 
   get task(): Task | undefined {
     return this.taskService.loadedTask();
@@ -68,11 +75,26 @@ export class EditTaskComponent implements OnInit {
     return taskStatusMapper(taskStatus);
   }
 
+  mapPriority(priority: Priority): string {
+    return priorityMapper(priority);
+  }
+
   get descriptionIsInvalid() {
     return (
       this.form.controls['description'].dirty &&
       this.form.controls['description'].touched &&
       this.form.controls['description'].invalid
+    );
+  }
+
+  private isFormChanged(): boolean {
+    if (!this.task) return false;
+
+    return (
+      this.form.value.description !== this.task.description ||
+      this.form.value.status !== this.task.status ||
+      this.form.value.priority !== this.task.priority ||
+      this.form.value.dueDate !== this.task.dueDate
     );
   }
 
@@ -92,7 +114,7 @@ export class EditTaskComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid || !this.task) return;
+    if (this.form.invalid) return;
 
     const updatedTask: TaskData = {
       description: this.form.value.description!,
@@ -101,22 +123,17 @@ export class EditTaskComponent implements OnInit {
       dueDate: this.form.value.dueDate!,
     };
 
-    if (
-      updatedTask.description === this.task.description &&
-      updatedTask.dueDate === this.task.dueDate &&
-      updatedTask.status === this.task.status &&
-      updatedTask.priority === this.task.priority
-    ) {
-      return;
-    }
+    if (!this.isFormChanged()) return;
 
-    this.loadingService.loadingOn();
+    this.isLoading = true;
     this.taskService.updateTask(updatedTask).subscribe({
-      error: () => {
-        this.loadingService.loadingOff();
+      error: (err) => {
+        this.toastrService.error(err.message);
+        this.isLoading = false;
       },
       complete: () => {
-        this.loadingService.loadingOff();
+        this.toastrService.success('Task has been updated');
+        this.isLoading = false;
       },
     });
   }
