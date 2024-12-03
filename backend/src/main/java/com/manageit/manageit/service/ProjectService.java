@@ -76,14 +76,17 @@ public class ProjectService {
 
     public void updateProject(String token, UUID projectId, UpdateProjectRequest request) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        User owner = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-        if (!project.getOwner().getId().equals(user.getId())) {
+        String message;
+        if (!project.getOwner().getId().equals(owner.getId())) {
             throw new UnauthorizedProjectAccessException("User is not the owner of the project");
         }
         if (request.getStatus() != null) {
             project.setStatus(request.getStatus());
+            message = "has marked the project " + project.getName() + "as completed";
         } else {
+            message = "has modified the project " + project.getName();
             if (request.getName() != null) {
                 project.setName(request.getName());
             }
@@ -99,6 +102,13 @@ public class ProjectService {
         }
         project.setUpdatedAt(LocalDateTime.now());
         projectRepository.save(project);
+        notificationService.createAndSendNotification(
+                project.getMembers(),
+                owner,
+                message,
+                project,
+                null
+        );
     }
 
     public void addUserToProject(String token, UUID projectId, BasicUserDto request) {
@@ -135,6 +145,13 @@ public class ProjectService {
             project.getMembers().remove(userToRemove);
             project.setUpdatedAt(LocalDateTime.now());
             projectRepository.save(project);
+            notificationService.createAndSendNotification(
+                    project.getMembers(),
+                    userToRemove,
+                    "has left the project " + project.getName(),
+                    project,
+                    null
+            );
         } else {
             throw new IllegalStateException("User is not a member of the project");
         }

@@ -35,6 +35,7 @@ public class TaskService {
     private final TaskMapper taskMapper;
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
+    private final NotificationService notificationService;
 
     public TaskDto getTask(String token, UUID projectId, UUID taskId) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
@@ -51,6 +52,8 @@ public class TaskService {
 
     public TaskMetadataDto createAndAddTaskToProject(String token, UUID projectId, CreateTaskRequest createTaskRequest) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
+        User owner = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(username))) {
@@ -66,6 +69,13 @@ public class TaskService {
                 .users(List.of())
                 .build();
         taskRepository.save(task);
+        notificationService.createAndSendNotification(
+                project.getMembers(),
+                owner,
+                "has created task in " + project.getName(),
+                project,
+                task
+        );
         return taskMapper.toTaskMetadataDto(task);
     }
 
@@ -74,6 +84,9 @@ public class TaskService {
     // nie rozumiem czemu Project dziala a ProjectDto juz nie
     public void deleteTask(String token, UUID taskId, UUID projectId) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(username))) {
@@ -84,12 +97,24 @@ public class TaskService {
             throw new TaskNotInProjectException(taskId, projectId);
         }
         taskRepository.delete(task);
+        notificationService.createAndSendNotification(
+                project.getMembers(),
+                user,
+                "has modified task in " + project.getName(),
+                project,
+                task
+        );
     }
 
     public void updateTask(String token, UUID taskId, UUID projectId, UpdateTaskRequest request) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        ProjectDto project = projectService.getProject(projectId);
-        if (project.getMembers().stream().noneMatch(member -> member.getUsername().equals(username))) {
+        User updater = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
+
+        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(username))) {
             throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
         }
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
@@ -110,6 +135,13 @@ public class TaskService {
         }
         task.setUpdatedAt(LocalDateTime.now());
         taskRepository.save(task);
+        notificationService.createAndSendNotification(
+                project.getMembers(),
+                updater,
+                "has modified task in " + project.getName(),
+                project,
+                task
+        );
      }
 
     public void addUserToProject(String token, UUID taskId, UUID projectId, BasicUserDto request) {
@@ -132,6 +164,13 @@ public class TaskService {
             task.setUpdatedAt(LocalDateTime.now());
             System.out.println(taskMapper.toTaskDto(task));
             taskRepository.save(task);
+            notificationService.createAndSendNotification(
+                    project.getMembers(),
+                    userToAdd,
+                    "has been added to task in " + project.getName(),
+                    project,
+                    task
+            );
         }
     }
 
@@ -151,6 +190,15 @@ public class TaskService {
             task.getUsers().remove(userToRemove);
             task.setUpdatedAt(LocalDateTime.now());
             taskRepository.save(task);
+            notificationService.createAndSendNotification(
+                    project.getMembers(),
+                    userToRemove,
+                    "has been removed to task in " + project.getName(),
+                    project,
+                    task
+            );
         }
     }
 }
+
+// to refactor

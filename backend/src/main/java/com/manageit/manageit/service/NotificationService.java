@@ -39,8 +39,8 @@ public class NotificationService {
                 .toList();
     }
 
-    public void createAndSendNotification(List<User> users, User sender, String message, Project project, Task task) {
-        users.stream()
+    public void createAndSendNotification(List<User> recipients, User sender, String message, Project project, Task task) {
+        recipients.stream()
                 .filter(user -> !user.equals(sender))
                 .toList()
                 .forEach(user -> {
