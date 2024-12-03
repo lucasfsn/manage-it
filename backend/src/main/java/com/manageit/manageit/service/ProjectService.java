@@ -28,6 +28,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     public List<ProjectDto> getProjects(String token) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
@@ -112,6 +113,13 @@ public class ProjectService {
             project.getMembers().add(userToAdd);
             project.setUpdatedAt(LocalDateTime.now());
             projectRepository.save(project);
+            notificationService.createAndSendNotification(
+                    project.getMembers(),
+                    userToAdd,
+                    "has joined the project " + project.getName(),
+                    project,
+                    null
+            );
         }
     }
 

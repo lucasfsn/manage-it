@@ -4,12 +4,10 @@ import com.manageit.manageit.dto.notification.NotificationDto;
 import com.manageit.manageit.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +21,21 @@ public class NotificationController {
             @RequestHeader("Authorization") String token
     ) {
         return ResponseEntity.ok(notificationService.getNotifications(token));
+    }
+
+    @DeleteMapping("/{notificationId}")
+    public ResponseEntity<Void> deleteNotification(
+            @PathVariable UUID notificationId
+    ) {
+        notificationService.deleteNotification(notificationId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteNotifications(
+            @RequestHeader("Authorization") String token
+    ) {
+        notificationService.deleteNotifications(token);
+        return ResponseEntity.noContent().build();
     }
 }

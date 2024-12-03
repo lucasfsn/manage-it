@@ -19,7 +19,7 @@ public class NotificationDto {
     private UUID id;
     private BasicUserDto user;
     private String message;
-    private LocalDateTime createdAt;
+    private LocalDateTime date;
     private UUID projectId;
     private UUID taskId;
 }

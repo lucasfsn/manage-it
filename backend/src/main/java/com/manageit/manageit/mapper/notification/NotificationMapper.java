@@ -15,9 +15,9 @@ public class NotificationMapper {
     public NotificationDto toNotificationDto(Notification notification) {
         return NotificationDto.builder()
                 .id(notification.getNotificationId())
-                .user(basicUserMapper.toBasicUserDto(notification.getUser()))
+                .user(basicUserMapper.toBasicUserDto(notification.getSender()))
                 .message(notification.getMessage())
-                .createdAt(notification.getCreatedAt())
+                .date(notification.getCreatedAt())
                 .projectId(notification.getAssignedProject().getId())
                 .taskId(notification.getTask() != null ? notification.getTask().getId() : null)
                 .build();
