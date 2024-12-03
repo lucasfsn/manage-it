@@ -1,9 +1,6 @@
 @if (project) {
 <div class="flex flex-col text-gray-400 gap-3">
-  <div class="flex flex-row justify-between items-center">
-    <h2 class="text-2xl font-semibold text-gray-100">
-      {{ project.name }}
-    </h2>
+  <div class="flex flex-row justify-between items-center self-end">
     <div class="flex flex-col-reverse gap-2 items-end mr-4">
       <button
         class="bg-slate-400 text-slate-900 hover:bg-slate-500 transition-all p-1 hidden lg:flex justify-center items-center rounded-full"
@@ -37,6 +34,9 @@
       }
     </div>
   </div>
+  <h2 class="text-2xl font-semibold text-gray-100">
+    {{ project.name }}
+  </h2>
   <div class="flex flex-col gap-2">
     <p>{{ project.description }}</p>
     <div
