@@ -67,6 +67,10 @@ export class EditProfileFormComponent {
     ),
   });
 
+  get disabled(): boolean {
+    return this.form.invalid || !this.isFormChanged();
+  }
+
   get firstNameIsInvalid() {
     return (
       this.form.controls.firstName.dirty &&
@@ -177,13 +181,7 @@ export class EditProfileFormComponent {
       updatedUserData.password = this.form.value.passwords.password;
     }
 
-    const formChanged =
-      updatedUserData.firstName !== this.userData.firstName ||
-      updatedUserData.lastName !== this.userData.lastName ||
-      updatedUserData.email !== this.userData.email ||
-      updatedUserData.password;
-
-    if (!formChanged) return;
+    if (!this.isFormChanged()) return;
 
     this.userService.updateUserData(updatedUserData).subscribe({
       error: (error) => {
@@ -191,6 +189,17 @@ export class EditProfileFormComponent {
       },
     });
     this.closeDialog();
+  }
+
+  private isFormChanged() {
+    if (!this.userData) return false;
+
+    return (
+      this.form.value.firstName !== this.userData.firstName ||
+      this.form.value.lastName !== this.userData.lastName ||
+      this.form.value.email !== this.userData.email ||
+      this.form.value.passwords?.password
+    );
   }
 
   private fillFormWithDefaultValues() {
