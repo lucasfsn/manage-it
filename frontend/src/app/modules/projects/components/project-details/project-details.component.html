@@ -4,30 +4,38 @@
     <h2 class="text-2xl font-semibold text-gray-100">
       {{ project.name }}
     </h2>
-    @if (isOwner) {
-    <div class="flex items-center mr-4 gap-2">
+    <div class="flex flex-col-reverse gap-2 items-end mr-4">
       <button
-        class="bg-sky-300 text-slate-900 hover:bg-sky-400 transition-all p-1 flex justify-center items-center rounded-full"
-        (click)="handleEdit()"
+        class="bg-slate-400 text-slate-900 hover:bg-slate-500 transition-all p-1 hidden lg:flex justify-center items-center rounded-full"
+        (click)="handleGoBack()"
       >
-        <mat-icon>edit</mat-icon>
+        <mat-icon>arrow_back</mat-icon>
       </button>
-      @if (project.status !== ProjectStatus.Completed) {
-      <button
-        class="bg-green-300 text-slate-900 hover:bg-green-400 transition-all p-1 flex justify-center items-center rounded-full"
-        (click)="handleComplete()"
-      >
-        <mat-icon>done</mat-icon>
-      </button>
+      @if (isOwner) {
+      <div class="flex items-center gap-2">
+        <button
+          class="bg-sky-300 text-slate-900 hover:bg-sky-400 transition-all p-1 flex justify-center items-center rounded-full"
+          (click)="handleEdit()"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        @if (project.status !== ProjectStatus.Completed) {
+        <button
+          class="bg-green-300 text-slate-900 hover:bg-green-400 transition-all p-1 flex justify-center items-center rounded-full"
+          (click)="handleComplete()"
+        >
+          <mat-icon>done</mat-icon>
+        </button>
+        }
+        <button
+          class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-1 flex justify-center items-center rounded-full"
+          (click)="handleDelete()"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
       }
-      <button
-        class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-1 flex justify-center items-center rounded-full"
-        (click)="handleDelete()"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
     </div>
-    }
   </div>
   <div class="flex flex-col gap-2">
     <p>{{ project.description }}</p>

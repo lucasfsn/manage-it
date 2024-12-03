@@ -150,6 +150,7 @@ export class EditTaskComponent implements OnInit {
       complete: () => {
         this.toastrService.success('Task has been updated');
         this.isLoading = false;
+        this.closeDialog();
       },
     });
   }

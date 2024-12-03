@@ -36,6 +36,7 @@ export class ProjectsSummaryComponent implements OnInit {
       legend: {
         position: 'top',
         align: 'center',
+        onClick: () => {},
       },
     },
   };

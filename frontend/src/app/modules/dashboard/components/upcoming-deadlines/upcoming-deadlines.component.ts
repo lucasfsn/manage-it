@@ -83,6 +83,6 @@ export class UpcomingDeadlinesComponent {
 
   private isUpcomingDeadline(endDate: string): boolean {
     const daysLeft = this.calculateDaysLeft(endDate);
-    return daysLeft > 0 && daysLeft <= 14;
+    return daysLeft > 0 && daysLeft <= 30;
   }
 }

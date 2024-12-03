@@ -43,6 +43,12 @@ export class ProjectDetailsComponent {
     );
   }
 
+  handleGoBack() {
+    if (!this.project) return;
+
+    this.router.navigate(['/projects']);
+  }
+
   handleDelete() {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
