@@ -1,6 +1,5 @@
 package com.manageit.manageit.controller;
 
-import com.manageit.manageit.dto.project.UpdateProjectRequest;
 import com.manageit.manageit.dto.task.CreateTaskRequest;
 import com.manageit.manageit.dto.task.TaskDto;
 import com.manageit.manageit.dto.task.TaskMetadataDto;

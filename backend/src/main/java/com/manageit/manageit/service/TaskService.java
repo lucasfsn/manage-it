@@ -18,7 +18,6 @@ import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.task.Task;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -114,7 +113,6 @@ public class TaskService {
      }
 
     public void addUserToProject(String token, UUID taskId, UUID projectId, BasicUserDto request) {
-        System.out.println("siemanko3");
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
@@ -129,9 +127,7 @@ public class TaskService {
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
-        System.out.println("siemanko2");
         if (!task.getUsers().contains(userToAdd)) {
-            System.out.println("siemanko3");
             task.getUsers().add(userToAdd);
             task.setUpdatedAt(LocalDateTime.now());
             System.out.println(taskMapper.toTaskDto(task));

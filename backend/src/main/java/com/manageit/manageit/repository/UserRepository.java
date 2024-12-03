@@ -11,13 +11,14 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    @Query("SELECT u FROM User u JOIN u.projects p WHERE " +
+    @Query("SELECT u FROM User u WHERE " +
             "(LOWER(u.username) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
             "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
             "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :pattern, '%')) OR " +
             "LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :pattern, '%'))) AND " +
-            "p.id = :projectId")
-    Optional<List<User>> findByPatternInAllFieldsInProject(@Param("pattern") String pattern, @Param("projectId") UUID projectId);
+            "u.id NOT IN (SELECT member.id FROM Project p JOIN p.members member WHERE p.id = :projectId)")
+    Optional<List<User>> findByPatternInAllFieldsNotInProject(@Param("pattern") String pattern, @Param("projectId") UUID projectId);
+
 
     @Query("SELECT u FROM User u JOIN u.projects p WHERE " +
             "p.id = :projectId AND " +

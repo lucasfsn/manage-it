@@ -1,13 +1,9 @@
 package com.manageit.manageit.task;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.manageit.manageit.project.Project;
-import com.manageit.manageit.project.ProjectStatus;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
