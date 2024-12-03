@@ -96,14 +96,14 @@ public class TaskService {
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
-        taskRepository.delete(task);
         notificationService.createAndSendNotification(
                 project.getMembers(),
                 user,
-                "has modified task in " + project.getName(),
+                "has removed task in " + project.getName(),
                 project,
                 task
         );
+        taskRepository.delete(task);
     }
 
     public void updateTask(String token, UUID taskId, UUID projectId, UpdateTaskRequest request) {
@@ -162,7 +162,6 @@ public class TaskService {
         if (!task.getUsers().contains(userToAdd)) {
             task.getUsers().add(userToAdd);
             task.setUpdatedAt(LocalDateTime.now());
-            System.out.println(taskMapper.toTaskDto(task));
             taskRepository.save(task);
             notificationService.createAndSendNotification(
                     project.getMembers(),
@@ -200,5 +199,3 @@ public class TaskService {
         }
     }
 }
-
-// to refactor

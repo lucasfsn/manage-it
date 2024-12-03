@@ -142,6 +142,9 @@ public class ProjectService {
         }
         User userToRemove = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
         if (project.getMembers().contains(userToRemove)) {
+            project.getTasks().forEach(task -> {
+                task.getUsers().remove(userToRemove);
+            });
             project.getMembers().remove(userToRemove);
             project.setUpdatedAt(LocalDateTime.now());
             projectRepository.save(project);
