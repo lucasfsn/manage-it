@@ -1,0 +1,66 @@
+@if (task) {
+<div class="flex flex-col text-gray-400 gap-5 lg:w-2/3">
+  <div class="flex flex-row justify-between items-center">
+    <h2 class="text-2xl font-semibold text-gray-300">
+      {{ task.description }}
+    </h2>
+  </div>
+  <div class="flex flex-col gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1">
+      <div class="grid grid-cols-2 grid-rows-2 gap-2">
+        <p class="flex items-center">
+          <mat-icon class="text-base">task_alt</mat-icon>
+          <span>Status</span>
+        </p>
+        <div
+          class="rounded-full text-gray-900 font-semibold text-sm px-2 py-1 text-center mr-auto"
+          [ngClass]="{
+            'bg-sky-400': task.status === TaskStatus.Completed,
+            'bg-orange-400': task.status === TaskStatus.InProgress,
+            'bg-rose-400': task.status === TaskStatus.NotStarted
+          }"
+        >
+          {{ mapTaskStatus() }}
+        </div>
+        <p class="flex items-center">
+          <mat-icon class="text-base">calendar_today</mat-icon>
+          <span>Due date</span>
+        </p>
+        <div class="text-slate-300">{{ task.dueDate | date }}</div>
+      </div>
+      <div class="grid grid-cols-2 grid-rows-2 gap-2">
+        <p class="flex items-center">
+          <mat-icon class="text-base">person</mat-icon>
+          <span>Assignees</span>
+        </p>
+        <ul class="flex gap-1 items-center">
+          @if (task.members.length === 0) {
+          <p class="text-slate-300">No assignees</p>
+          } @for (member of task.members.slice(0,4); track member.username) {
+          <li
+            class="p-0.5 bg-sky-500 hover:bg-sky-600 text-sky-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
+            [routerLink]="['/users', member.username]"
+          >
+            {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
+          </li>
+          } @if (task.members.length > 4) {
+          <p
+            class="p-0.5 bg-sky-500 hover:bg-sky-600 text-sky-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
+            (click)="showAllMembers(true)"
+          >
+            +{{ task.members.length - 4 }}
+          </p>
+          }
+        </ul>
+        <p class="flex items-center">
+          <mat-icon class="text-base">priority_high</mat-icon>
+          <span>Priority</span>
+        </p>
+        <div class="mr-auto">
+          <app-priority textSize="text-sm" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

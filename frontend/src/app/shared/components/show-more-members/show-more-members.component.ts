@@ -15,6 +15,7 @@ import { ProjectService } from '../../../features/services/project.service';
 })
 export class ShowMoreMembersComponent {
   isOnlyShow = inject<{ isOnlyShow: boolean }>(MAT_DIALOG_DATA).isOnlyShow;
+  members = inject<{ members: User[] }>(MAT_DIALOG_DATA).members;
 
   constructor(
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
@@ -24,10 +25,6 @@ export class ShowMoreMembersComponent {
 
   get projectOwner() {
     return this.projectService.loadedProject()?.owner;
-  }
-
-  get members() {
-    return this.projectService.loadedProject()?.members;
   }
 
   handleRemove(user: User): void {

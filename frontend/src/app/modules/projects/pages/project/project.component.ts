@@ -14,7 +14,7 @@ import { ProjectService } from '../../../../features/services/project.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { TasksComponent } from '../../../tasks/components/tasks/tasks.component';
-import { ProjectInformationComponent } from '../../components/project-information/project-information.component';
+import { ProjectDetailsComponent } from '../../components/project-details/project-details.component';
 
 @Component({
   selector: 'app-project',
@@ -23,9 +23,9 @@ import { ProjectInformationComponent } from '../../components/project-informatio
     SpinnerComponent,
     MatIconModule,
     TasksComponent,
-    ProjectInformationComponent,
     CommonModule,
     ChatComponent,
+    ProjectDetailsComponent,
   ],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css',

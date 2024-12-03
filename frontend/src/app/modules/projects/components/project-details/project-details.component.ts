@@ -13,13 +13,13 @@ import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 import { EditProjectComponent } from '../edit-project/edit-project.component';
 
 @Component({
-  selector: 'app-project-information',
+  selector: 'app-project-details',
   standalone: true,
   imports: [CommonModule, RouterLink, MatIconModule],
-  templateUrl: './project-information.component.html',
-  styleUrl: './project-information.component.css',
+  templateUrl: './project-details.component.html',
+  styleUrl: './project-details.component.css',
 })
-export class ProjectInformationComponent {
+export class ProjectDetailsComponent {
   constructor(
     private dialog: MatDialog,
     private authService: AuthService,
@@ -54,19 +54,15 @@ export class ProjectInformationComponent {
       'Are you sure you want to delete this project?'
     );
 
-    if (!confirmDelete) {
-      return;
-    }
+    if (!confirmDelete) return;
 
     this.projectService.deleteProject(projectId).subscribe({
-      next: () => {
-        this.router.navigate(['/projects']);
-      },
       error: (err) => {
         this.toastrService.error(err.message);
       },
       complete: () => {
         this.toastrService.success('Project has been deleted');
+        this.router.navigate(['/projects']);
       },
     });
   }
@@ -115,6 +111,7 @@ export class ProjectInformationComponent {
       backdropClass: 'dialog-backdrop',
       data: {
         isOnlyShow,
+        members: this.project?.members,
       },
     });
   }

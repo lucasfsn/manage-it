@@ -59,6 +59,10 @@ export class EditProjectComponent {
     ),
   });
 
+  get disabled(): boolean {
+    return this.form.invalid || !this.isFormChanged();
+  }
+
   get project(): Project | undefined {
     return this.projectService.loadedProject();
   }
@@ -79,6 +83,14 @@ export class EditProjectComponent {
     );
   }
 
+  get startDateIsInvalid() {
+    return (
+      this.form.controls.dates.get('startDate')?.dirty &&
+      this.form.controls.dates.get('startDate')?.touched &&
+      this.form.controls.dates.get('startDate')?.invalid
+    );
+  }
+
   get endDateIsInvalid() {
     return (
       (this.form.controls.dates.get('endDate')?.dirty &&
@@ -92,7 +104,7 @@ export class EditProjectComponent {
     this.dialogRef.close();
   }
 
-  hasFormChanged(): boolean {
+  private isFormChanged(): boolean {
     if (!this.project) return false;
 
     return (
@@ -125,7 +137,7 @@ export class EditProjectComponent {
       return;
     }
 
-    if (!this.hasFormChanged()) {
+    if (!this.isFormChanged()) {
       this.closeDialog();
       return;
     }

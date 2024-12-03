@@ -5,6 +5,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 import {
   Priority,
@@ -19,7 +21,7 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 @Component({
   selector: 'app-edit-task',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatIconModule],
   templateUrl: './edit-task.component.html',
   styleUrl: './edit-task.component.css',
 })
@@ -28,7 +30,8 @@ export class EditTaskComponent implements OnInit {
 
   constructor(
     private taskService: TaskService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private dialogRef: MatDialogRef<EditTaskComponent>
   ) {}
 
   form = new FormGroup({
@@ -88,6 +91,14 @@ export class EditTaskComponent implements OnInit {
     );
   }
 
+  get dueDateIsInvalid() {
+    return (
+      this.form.controls['dueDate'].dirty &&
+      this.form.controls['dueDate'].touched &&
+      this.form.controls['dueDate'].invalid
+    );
+  }
+
   private isFormChanged(): boolean {
     if (!this.task) return false;
 
@@ -108,6 +119,10 @@ export class EditTaskComponent implements OnInit {
       priority: this.task.priority,
       dueDate: this.task.dueDate,
     });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 
   onReset(): void {

@@ -28,7 +28,6 @@
       </p>
       }
     </div>
-
     <div class="grid grid-cols-3 gap-2 col-span-2">
       <label for="description">Description</label>
       <input
@@ -44,18 +43,19 @@
       </p>
       }
     </div>
-
     <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
       <label for="startDate">Start date</label>
       <input type="date" id="startDate" formControlName="startDate" />
+      @if (startDateIsInvalid) {
+      <p class="text-red-500 text-sm col-span-3">Start date is required.</p>
+      }
     </div>
-
     <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
       <label for="endDate">End date</label>
       <input type="date" id="endDate" formControlName="endDate" />
       @if (endDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        End date cannot be earlier than the start date.
+        End date is required and cannot be earlier than the start date.
       </p>
       }
     </div>
@@ -68,8 +68,9 @@
         <p class="text-xs">Reset</p>
       </button>
       <button
+        [disabled]="disabled"
         (click)="onSubmit()"
-        class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100"
+        class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100 disabled:bg-gray-500 disabled:cursor-not-allowed"
       >
         <p class="text-xs">Save Changes</p>
       </button>

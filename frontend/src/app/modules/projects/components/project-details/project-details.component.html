@@ -1,0 +1,114 @@
+@if (project) {
+<div class="flex flex-col text-gray-400 gap-3">
+  <div class="flex flex-row justify-between items-center">
+    <h2 class="text-2xl font-semibold text-gray-100">
+      {{ project.name }}
+    </h2>
+    @if (isOwner) {
+    <div class="flex items-center mr-4 gap-2">
+      <button
+        class="bg-sky-300 text-slate-900 hover:bg-sky-400 transition-all p-1 flex justify-center items-center rounded-full"
+        (click)="handleEdit()"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+      @if (project.status !== ProjectStatus.Completed) {
+      <button
+        class="bg-green-300 text-slate-900 hover:bg-green-400 transition-all p-1 flex justify-center items-center rounded-full"
+        (click)="handleComplete()"
+      >
+        <mat-icon>done</mat-icon>
+      </button>
+      }
+      <button
+        class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-1 flex justify-center items-center rounded-full"
+        (click)="handleDelete()"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+  <div class="flex flex-col gap-2">
+    <p>{{ project.description }}</p>
+    <div
+      class="grid grid-cols-2 gap-2 sm:items-center sm:justify-center lg:w-2/3"
+    >
+      <p class="flex items-center">
+        <mat-icon class="text-base">person</mat-icon>
+        <span>Project leader</span>
+      </p>
+      <div class="text-slate-300">
+        {{ project.owner.firstName }} {{ project.owner.lastName }}
+      </div>
+      <p class="flex items-center col-span-2 sm:col-span-1">
+        <mat-icon class="text-base">group</mat-icon>
+        <span>Members</span>
+      </p>
+      <div class="flex items-center col-span-2 sm:col-span-1 mx-auto sm:mx-0">
+        <ul class="flex gap-1 justify-center items-center">
+          @for (member of project.members.slice(0,5); track member.username) {
+          <li
+            class="p-0.5 bg-slate-300 hover:bg-slate-400 text-slate-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
+            [routerLink]="['/users', member.username]"
+          >
+            {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
+          </li>
+          } @if (project.members.length > 5) {
+          <p
+            class="p-0.5 bg-slate-300 hover:bg-slate-400 text-slate-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
+            (click)="showAllMembers(true)"
+          >
+            +{{ project.members.length - 5 }}
+          </p>
+          } @if (project.status !== ProjectStatus.Completed && isOwner) {
+          <div class="flex ml-1.5 gap-0.5 bg-sky-950 rounded-full p-0.5">
+            <button
+              class="flex justify-center items-center"
+              (click)="showAllMembers(false)"
+            >
+              <mat-icon
+                class="text-base text-sky-600 hover:text-sky-700 transition-all"
+                >edit</mat-icon
+              >
+            </button>
+            <button
+              (click)="openSearchDialog()"
+              class="flex justify-center items-center"
+            >
+              <mat-icon
+                class="text-base text-sky-200 hover:text-sky-300 transition-all"
+                >add</mat-icon
+              >
+            </button>
+          </div>
+          }
+        </ul>
+      </div>
+      <p class="flex items-center">
+        <mat-icon class="text-base">task_alt</mat-icon>
+        <span>Status</span>
+      </p>
+      <div
+        class="rounded-full flex items-center justify-center text-slate-900 font-semibold text-sm px-2 py-1 mr-auto"
+        [ngClass]="{
+            'bg-sky-500': project.status === ProjectStatus.Completed,
+            'bg-orange-400': project.status === ProjectStatus.InProgress,
+          }"
+      >
+        {{ mapProjectStatus() }}
+      </div>
+      <p class="flex items-center">
+        <mat-icon class="text-base">schedule</mat-icon>
+        <span>Start date</span>
+      </p>
+      <div class="text-slate-300">{{ project.startDate | date }}</div>
+      <p class="flex items-center">
+        <mat-icon class="text-base">alarm</mat-icon>
+        <span>End date</span>
+      </p>
+      <div class="text-slate-300">{{ project.endDate | date }}</div>
+    </div>
+  </div>
+</div>
+}

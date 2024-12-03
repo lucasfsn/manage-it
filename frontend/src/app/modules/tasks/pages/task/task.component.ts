@@ -7,6 +7,7 @@ import {
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -17,6 +18,7 @@ import { ChatComponent } from '../../../../shared/components/chat/chat.component
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { EditTaskComponent } from '../../components/edit-task/edit-task.component';
 import { TaskAssigneesComponent } from '../../components/task-assignees/task-assignees.component';
+import { TaskDetailsComponent } from '../../components/task-details/task-details.component';
 
 @Component({
   selector: 'app-task',
@@ -27,7 +29,7 @@ import { TaskAssigneesComponent } from '../../components/task-assignees/task-ass
     TaskAssigneesComponent,
     MatIconModule,
     CommonModule,
-    EditTaskComponent,
+    TaskDetailsComponent,
   ],
   templateUrl: './task.component.html',
   styleUrl: './task.component.css',
@@ -59,7 +61,8 @@ export class TaskComponent {
     private loadingService: LoadingService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private dialog: MatDialog
   ) {}
 
   get task(): Task | undefined {
@@ -81,12 +84,33 @@ export class TaskComponent {
   }
 
   handleDelete() {
+    const confirmDelete = confirm('Are you sure you want to delete this task?');
+
+    if (!confirmDelete) return;
+
     this.taskService.deleteTask().subscribe({
       error: (err) => {
         this.toastrService.error(err.message);
       },
       complete: () => {
         this.router.navigate(['/projects', this.task?.projectId]);
+        this.toastrService.success('Task has been deleted');
+      },
+    });
+  }
+
+  handleEdit() {
+    const taskId = this.route.snapshot.paramMap.get('taskId');
+
+    if (!taskId) {
+      return;
+    }
+
+    this.dialog.open(EditTaskComponent, {
+      width: '600px',
+      backdropClass: 'dialog-backdrop',
+      data: {
+        project: this.task,
       },
     });
   }

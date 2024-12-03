@@ -1,18 +1,21 @@
 <div class="flex flex-col gap-3 text-gray-500">
   <div class="flex gap-2 ml-auto bg-slate-950 px-3 py-1 rounded-full">
+    @if (members.length !== 0) {
     <mat-icon
       class="cursor-pointer hover:text-sky-500 transition-all"
       [ngClass]="{ 'text-sky-500': showAssignees }"
       (click)="toggleShowAssignees()"
       >manage_accounts</mat-icon
     >
+    }
     <mat-icon
       class="cursor-pointer hover:text-sky-500 transition-all"
-      [ngClass]="{ 'text-sky-500': !showAssignees }"
+      [ngClass]="{ 'text-sky-500': !showAssignees || members.length === 0 }"
       (click)="toggleShowAddAssignee()"
       >person_add</mat-icon
     >
   </div>
+  @if (members.length !== 0) {
   <div class="flex flex-col gap-3">
     <div
       class="flex py-1 px-3 gap-2 items-center bg-slate-950 lg:mr-auto rounded-full border-slate-800 overflow-hidden placeholder-slate-400 text-sky-500"
@@ -66,7 +69,11 @@
       ></mat-paginator>
     </div>
   </div>
-  <div [@toggleDiv]="!showAssignees ? 'show' : 'hide'" class="px-3">
+  }
+  <div
+    [@toggleDiv]="!showAssignees || members.length === 0 ? 'show' : 'hide'"
+    class="px-3"
+  >
     <app-search-add-to-task (onClick)="handleAdd($event)" />
   </div>
 </div>
