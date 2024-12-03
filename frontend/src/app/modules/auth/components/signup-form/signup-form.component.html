@@ -91,22 +91,18 @@
     </div>
     <div class="flex justify-between">
       <button
-        class="bg-gray-500 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-gray-600 transition-all rounded-full"
+        class="bg-gray-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-gray-700 transition-all rounded-full"
         (click)="onReset()"
       >
         Reset
       </button>
       <button
-        class="bg-sky-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full"
+        [disabled]="this.form.invalid"
+        class="bg-sky-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full disabled:cursor-not-allowed disabled:bg-gray-500"
       >
         Sign up
       </button>
     </div>
-    <!-- @if (form.dirty && form.touched && form.invalid) {
-    <p class="text-red-500 text-sm text-center mt-4">
-      Invalid values. Please check your input data
-    </p>
-    } -->
   </div>
   <a routerLink="/auth/login" class="text-xs text-sky-400 text-center"
     >Already have an account? Log in</a

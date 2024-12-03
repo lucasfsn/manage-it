@@ -45,7 +45,7 @@ export class TaskDetailsComponent {
       backdropClass: 'dialog-backdrop',
       data: {
         isOnlyShow,
-        members: this.task?.members,
+        isOnProject: false,
       },
     });
   }

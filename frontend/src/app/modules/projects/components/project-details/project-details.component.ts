@@ -117,7 +117,7 @@ export class ProjectDetailsComponent {
       backdropClass: 'dialog-backdrop',
       data: {
         isOnlyShow,
-        members: this.project?.members,
+        isOnProject: true,
       },
     });
   }

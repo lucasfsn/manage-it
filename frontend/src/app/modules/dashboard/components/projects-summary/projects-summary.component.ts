@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { ProjectStatus } from '../../../../features/dto/project.model';
+import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { ProjectService } from '../../../../features/services/project.service';
 import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 
@@ -40,6 +40,10 @@ export class ProjectsSummaryComponent implements OnInit {
       },
     },
   };
+
+  get projects(): Project[] {
+    return this.projectService.loadedProjects() || [];
+  }
 
   updateChart() {
     const projects = this.projectService.loadedProjects();

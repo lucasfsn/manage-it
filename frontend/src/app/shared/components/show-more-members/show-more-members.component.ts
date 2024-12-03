@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../features/dto/project.model';
 import { ProjectService } from '../../../features/services/project.service';
+import { TaskService } from '../../../features/services/task.service';
 
 @Component({
   selector: 'app-show-more-members',
@@ -15,13 +16,20 @@ import { ProjectService } from '../../../features/services/project.service';
 })
 export class ShowMoreMembersComponent {
   isOnlyShow = inject<{ isOnlyShow: boolean }>(MAT_DIALOG_DATA).isOnlyShow;
-  members = inject<{ members: User[] }>(MAT_DIALOG_DATA).members;
+  isOnProject = inject<{ isOnProject: boolean }>(MAT_DIALOG_DATA).isOnProject;
 
   constructor(
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
     private projectService: ProjectService,
+    private taskService: TaskService,
     private toastrService: ToastrService
   ) {}
+
+  get members(): User[] | undefined {
+    return this.isOnProject
+      ? this.projectService.loadedProject()?.members
+      : this.taskService.loadedTask()?.members;
+  }
 
   get projectOwner() {
     return this.projectService.loadedProject()?.owner;

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MomentModule } from 'ngx-moment';
 import { Notification } from '../../../../features/dto/notification.model';
@@ -12,12 +12,16 @@ import { NotificationService } from '../../../../features/services/notification.
   styleUrl: './notifications-list.component.css',
 })
 export class NotificationsListComponent {
-  @Input() notifications: Notification[] = [];
-
   constructor(
     private notificationService: NotificationService,
     private router: Router
   ) {}
+
+  get notifications(): Notification[] {
+    return this.notificationService
+      .loadedNotifications()
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }
 
   markAsReadAndOpen(notification: Notification) {
     const { id, projectId, taskId } = notification;

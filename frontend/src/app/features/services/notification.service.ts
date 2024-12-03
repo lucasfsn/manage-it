@@ -1,32 +1,30 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { delay, of, tap } from 'rxjs';
-import { dummyNotifications } from '../../dummy-data';
+import { catchError, tap, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { Notification } from '../dto/notification.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private toastrService: ToastrService) {}
+  constructor(private http: HttpClient) {}
 
   private notifications = signal<Notification[]>([]);
 
   loadedNotifications = this.notifications.asReadonly();
 
-  getNotifications(userId: string) {
-    return of(dummyNotifications).pipe(
-      delay(200),
-      tap({
-        next: (notifications) => {
-          this.notifications.set(notifications);
-        },
-        error: (error) => {
-          this.toastrService.error('Something went wrong.');
-          console.error("Couldn't fetch notifications.", error);
-        },
-      })
-    );
+  getNotifications() {
+    return this.http
+      .get<Notification[]>(`${environment.apiUrl}/notifications`)
+      .pipe(
+        tap((res: Notification[]) => {
+          this.notifications.set(res);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err.error);
+        })
+      );
   }
 
   markAsRead(notificationId: string) {
@@ -36,18 +34,16 @@ export class NotificationService {
       (notification) => notification.id !== notificationId
     );
 
-    return of(dummyNotifications).pipe(
-      delay(500),
-      tap({
-        next: () => {
-          this.notifications.set(updatedNotifications);
-        },
-        error: () => {
+    this.notifications.set(updatedNotifications);
+
+    return this.http
+      .delete<null>(`${environment.apiUrl}/notifications/${notificationId}`)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
           this.notifications.set(prevNotifications);
-          this.toastrService.error('Something went wrong.');
-        },
-      })
-    );
+          return throwError(() => err.error);
+        })
+      );
   }
 
   markAllAsRead() {
@@ -55,13 +51,10 @@ export class NotificationService {
 
     this.notifications.set([]);
 
-    return of(dummyNotifications).pipe(
-      delay(500),
-      tap({
-        error: () => {
-          this.notifications.set(prevNotifications);
-          this.toastrService.error('Something went wrong.');
-        },
+    return this.http.delete<null>(`${environment.apiUrl}/notifications`).pipe(
+      catchError((err: HttpErrorResponse) => {
+        this.notifications.set(prevNotifications);
+        return throwError(() => err.error);
       })
     );
   }
