@@ -4,11 +4,11 @@
 
 #### Baza danych z samymi tabelami i relacjami:
 
-`docker pull kacperholowaty/manageit_psql_database_tables_only:v2.0`
+`docker pull kacperholowaty/manageit_psql_database_tables_only:latest`
 
 #### Baza danych z przykładowymi danymi:
 
-`docker pull kacperholowaty/manageit_psql_database:v2.0`
+`docker pull kacperholowaty/manageit_psql_database:latest`
 
 ### 2. Uruchomienie kontenera Docker z bazą danych PostgreSQL
 
