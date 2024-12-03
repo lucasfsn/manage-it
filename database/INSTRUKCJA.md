@@ -15,13 +15,13 @@
 #### Tylko tabele i relacje:
 
 ```
-docker run --name manageit_database -d -p 5432:5432 kacperholowaty/manageit_psql_database_tables_only:v2.0
+docker run --name manageit_database -d -p 5432:5432 kacperholowaty/manageit_psql_database_tables_only:latest
 ```
 
 #### Tabele i relacje wraz z przykładowymi danymi:
 
 ```
-docker run --name manageit_database -d -p 5432:5432 kacperholowaty/manageit_psql_database:v2.0
+docker run --name manageit_database -d -p 5432:5432 kacperholowaty/manageit_psql_database:latest
 ```
 
 ### 3. Zarządzanie bazą danych
