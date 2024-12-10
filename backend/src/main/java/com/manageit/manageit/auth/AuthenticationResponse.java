@@ -1,6 +1,6 @@
 package com.manageit.manageit.auth;
 
-import com.manageit.manageit.user.AuthenticatedUserResponse;
+import com.manageit.manageit.dto.user.AuthenticatedUserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

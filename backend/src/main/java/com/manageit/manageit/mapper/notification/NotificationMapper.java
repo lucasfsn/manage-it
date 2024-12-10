@@ -18,8 +18,8 @@ public class NotificationMapper {
                 .user(basicUserMapper.toBasicUserDto(notification.getSender()))
                 .message(notification.getMessage())
                 .date(notification.getCreatedAt())
-                .projectId(notification.getAssignedProject().getId())
-                .taskId(notification.getTask() != null ? notification.getTask().getId() : null)
+                .projectId(notification.getProjectId())
+                .taskId(notification.getTaskId() != null ? notification.getTaskId() : null)
                 .build();
     }
 }

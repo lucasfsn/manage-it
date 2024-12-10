@@ -2,7 +2,7 @@ package com.manageit.manageit.mapper.user;
 
 import com.manageit.manageit.dto.user.UserResponseDto;
 import com.manageit.manageit.mapper.project.ProjectMapper;
-import com.manageit.manageit.user.AuthenticatedUserResponse;
+import com.manageit.manageit.dto.user.AuthenticatedUserResponse;
 import com.manageit.manageit.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,6 @@ public class UserMapper {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .username(user.getName())
-                .createdAt(user.getCreatedAt())
                 .projects(user.getProjects().stream().map(projectMapper::toUserProfileProjectDto).collect(Collectors.toList()))
                 .build();
     }
@@ -43,7 +42,6 @@ public class UserMapper {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .username(user.getName())
-                .createdAt(user.getCreatedAt())
                 .projects(user.getProjects().stream().map(projectMapper::toUserProfileProjectDto).collect(Collectors.toList()))
                 .build();
     }

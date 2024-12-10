@@ -9,10 +9,9 @@ import com.manageit.manageit.mapper.project.ProjectMapper;
 import com.manageit.manageit.project.Project;
 import com.manageit.manageit.project.ProjectStatus;
 import com.manageit.manageit.repository.ProjectRepository;
-import com.manageit.manageit.repository.UserRepository;
-import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +23,26 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProjectService {
 
-    private final JwtService jwtService;
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
-    private final UserRepository userRepository;
     private final NotificationService notificationService;
+    private final UserService userService;
+
+
+    public Project getProjectById(UUID projectId) {
+        return projectRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
+    }
+
+    public void validateUserIsProjectOwner(User user, Project project) {
+        if (!project.getOwner().getId().equals(user.getId())) {
+            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
+        }
+    }
 
     public List<ProjectDto> getProjects(String token) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        return projectRepository.findByMembers_Username(username)
+        User user = userService.getUserByToken(token);
+        return projectRepository.findByMembers_Username(user.getName())
                 .map(projects -> projects.stream()
                         .map(projectMapper::toProjectDto)
                         .toList())
@@ -40,14 +50,12 @@ public class ProjectService {
     }
 
     public ProjectDto getProject(UUID id) {
-        return projectRepository.findById(id)
-                .map(projectMapper::toProjectDto)
-                .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + id));
+        Project project = getProjectById(id);
+        return projectMapper.toProjectDto(project);
     }
 
     public ProjectDto createProject(String token, CreateProjectRequest createProjectRequest) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User owner = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        User owner = userService.getUserByToken(token);
         Project project = Project.builder()
                 .owner(owner)
                 .name(createProjectRequest.getName())
@@ -55,7 +63,6 @@ public class ProjectService {
                 .status(ProjectStatus.IN_PROGRESS)
                 .startDate(createProjectRequest.getStartDate())
                 .endDate(createProjectRequest.getEndDate())
-                .createdAt(LocalDateTime.now())
                 .members(List.of(owner))
                 .tasks(List.of())
                 .build();
@@ -65,23 +72,18 @@ public class ProjectService {
     }
 
     public void deleteProject(String token, UUID projectId) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-        if (!project.getOwner().getId().equals(user.getId())) {
-            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
-        }
+        User user = userService.getUserByToken(token);
+        Project project = getProjectById(projectId);
+        validateUserIsProjectOwner(user, project);
         projectRepository.delete(project);
     }
 
+    @Transactional
     public void updateProject(String token, UUID projectId, UpdateProjectRequest request) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User owner = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
+        User owner = userService.getUserByToken(token);
+        Project project = getProjectById(projectId);
         String message;
-        if (!project.getOwner().getId().equals(owner.getId())) {
-            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
-        }
+        validateUserIsProjectOwner(owner, project);
         if (request.getStatus() != null) {
             project.setStatus(request.getStatus());
             message = "has marked the project " + project.getName() + "as completed";
@@ -106,19 +108,16 @@ public class ProjectService {
                 project.getMembers(),
                 owner,
                 message,
-                project,
+                project.getId(),
                 null
         );
     }
 
     public void addUserToProject(String token, UUID projectId, BasicUserDto request) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-        if (!project.getOwner().getId().equals(user.getId())) {
-            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
-        }
-        User userToAdd = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        User user = userService.getUserByToken(token);
+        Project project = getProjectById(projectId);
+        validateUserIsProjectOwner(user, project);
+        User userToAdd = userService.getUserByUsername(request.getUsername());
         if (!project.getMembers().contains(userToAdd)) {
             project.getMembers().add(userToAdd);
             project.setUpdatedAt(LocalDateTime.now());
@@ -127,24 +126,23 @@ public class ProjectService {
                     project.getMembers(),
                     userToAdd,
                     "has joined the project " + project.getName(),
-                    project,
+                    project.getId(),
                     null
             );
         }
     }
 
+    @Transactional
     public void removeUserFromProject(String token, UUID projectId, BasicUserDto request) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-        if (!project.getOwner().getId().equals(user.getId())) {
-            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
+        User owner = userService.getUserByToken(token);
+        Project project = getProjectById(projectId);
+        validateUserIsProjectOwner(owner, project);
+        if (project.getOwner().getName().equals(request.getUsername())) {
+            throw new IllegalArgumentException("Project owner cannot remove themselves from the project.");
         }
-        User userToRemove = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        User userToRemove = userService.getUserByUsername(request.getUsername());
         if (project.getMembers().contains(userToRemove)) {
-            project.getTasks().forEach(task -> {
-                task.getUsers().remove(userToRemove);
-            });
+            project.getTasks().forEach(task -> task.getUsers().remove(userToRemove));
             project.getMembers().remove(userToRemove);
             project.setUpdatedAt(LocalDateTime.now());
             projectRepository.save(project);
@@ -152,7 +150,7 @@ public class ProjectService {
                     project.getMembers(),
                     userToRemove,
                     "has left the project " + project.getName(),
-                    project,
+                    project.getId(),
                     null
             );
         } else {

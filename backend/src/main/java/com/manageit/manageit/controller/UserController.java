@@ -2,7 +2,7 @@ package com.manageit.manageit.controller;
 
 import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.dto.user.UserResponseDto;
-import com.manageit.manageit.user.UpdateUserRequest;
+import com.manageit.manageit.dto.user.UpdateUserRequest;
 import com.manageit.manageit.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,6 @@
-package com.manageit.manageit.user;
+package com.manageit.manageit.dto.user;
 
-import com.manageit.manageit.project.Project;
 import lombok.*;
-
-import java.time.LocalDateTime;
-import java.util.Set;
 
 @Getter
 @Setter

@@ -1,7 +1,6 @@
 package com.manageit.manageit.service;
 
 
-import com.manageit.manageit.dto.project.ProjectDto;
 import com.manageit.manageit.dto.task.CreateTaskRequest;
 import com.manageit.manageit.dto.task.TaskDto;
 import com.manageit.manageit.dto.task.TaskMetadataDto;
@@ -31,19 +30,21 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectService projectService;
-    private final JwtService jwtService;
     private final TaskMapper taskMapper;
-    private final UserRepository userRepository;
-    private final ProjectRepository projectRepository;
     private final NotificationService notificationService;
+    private final UserService userService;
+
+    public Task getTaskById(UUID id) {
+        return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + id));
+    }
 
     public TaskDto getTask(String token, UUID projectId, UUID taskId) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        ProjectDto project = projectService.getProject(projectId);
-        if (project.getMembers().stream().noneMatch(member -> member.getUsername().equals(username))) {
-            throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
+        User user = userService.getUserByToken(token);
+        Project project = projectService.getProjectById(projectId);
+        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
+            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
         }
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
+        Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
@@ -51,13 +52,10 @@ public class TaskService {
     }
 
     public TaskMetadataDto createAndAddTaskToProject(String token, UUID projectId, CreateTaskRequest createTaskRequest) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User owner = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(username))) {
-            throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
+        User owner = userService.getUserByToken(token);
+        Project project = projectService.getProjectById(projectId);
+        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(owner.getName()))) {
+            throw new UnauthorizedProjectAccessException("User " + owner.getName() + " is not member of project");
         }
         Task task = Task.builder()
                 .project(project)
@@ -73,8 +71,8 @@ public class TaskService {
                 project.getMembers(),
                 owner,
                 "has created task in " + project.getName(),
-                project,
-                task
+                projectId,
+                task.getId()
         );
         return taskMapper.toTaskMetadataDto(task);
     }
@@ -83,16 +81,12 @@ public class TaskService {
     // orphanRemoval użyj pewnie no i wtedy usuwanie elementu z listy powinno zadzialać
     // nie rozumiem czemu Project dziala a ProjectDto juz nie
     public void deleteTask(String token, UUID taskId, UUID projectId) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(username))) {
-            throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
+        User user = userService.getUserByToken(token);
+        Project project = projectService.getProjectById(projectId);
+        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
+            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
         }
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
+        Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
@@ -100,22 +94,17 @@ public class TaskService {
                 project.getMembers(),
                 user,
                 "has removed task in " + project.getName(),
-                project,
-                task
+                project.getId(),
+                task.getId()
         );
         taskRepository.delete(task);
     }
 
     public void updateTask(String token, UUID taskId, UUID projectId, UpdateTaskRequest request) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User updater = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-
-        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(username))) {
-            throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
+        User updater = userService.getUserByToken(token);
+        Project project = projectService.getProjectById(projectId);
+        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(updater.getName()))) {
+            throw new UnauthorizedProjectAccessException("User " + updater.getName() + " is not member of project");
         }
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
         if (!project.getId().equals(task.getProject().getId())) {
@@ -139,23 +128,22 @@ public class TaskService {
                 project.getMembers(),
                 updater,
                 "has modified task in " + project.getName(),
-                project,
-                task
+                project.getId(),
+                task.getId()
         );
      }
 
     public void addUserToProject(String token, UUID taskId, UUID projectId, BasicUserDto request) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-        User userToAdd = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
-        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(username))) {
-            throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
+        User user = userService.getUserByToken(token);
+        Project project = projectService.getProjectById(projectId);
+        User userToAdd = userService.getUserByUsername(request.getUsername());
+        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
+            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
         }
         if (!project.getMembers().contains(userToAdd)) {
             throw new UnauthorizedProjectAccessException("User " + userToAdd.getName() + " is not member of project");
         }
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
+        Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
@@ -167,24 +155,23 @@ public class TaskService {
                     project.getMembers(),
                     userToAdd,
                     "has been added to task in " + project.getName(),
-                    project,
-                    task
+                    project.getId(),
+                    task.getId()
             );
         }
     }
 
     public void removeUserFromTask(String token, UUID taskId, UUID projectId, BasicUserDto request) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
-        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(username))) {
-            throw new UnauthorizedProjectAccessException("User " + username + " is not member of project");
+        User user = userService.getUserByToken(token);
+        Project project = projectService.getProjectById(projectId);
+        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
+            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
         }
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
+        Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
-        User userToRemove = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        User userToRemove = userService.getUserByUsername(request.getUsername());
         if (task.getUsers().contains(userToRemove)) {
             task.getUsers().remove(userToRemove);
             task.setUpdatedAt(LocalDateTime.now());
@@ -193,8 +180,8 @@ public class TaskService {
                     project.getMembers(),
                     userToRemove,
                     "has been removed to task in " + project.getName(),
-                    project,
-                    task
+                    project.getId(),
+                    task.getId()
             );
         }
     }

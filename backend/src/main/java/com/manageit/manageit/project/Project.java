@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
@@ -47,8 +48,9 @@ public class Project {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private ProjectStatus status;
+    private ProjectStatus status ;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

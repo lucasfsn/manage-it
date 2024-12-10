@@ -1,7 +1,5 @@
 package com.manageit.manageit.notification;
 
-import com.manageit.manageit.project.Project;
-import com.manageit.manageit.task.Task;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,9 +19,9 @@ public class Notification {
     @Column(name = "notification_id", nullable = false, updatable = false)
     private UUID notificationId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "assigned_project_id", nullable = false)
-    private Project assignedProject;
+    private UUID projectId;
+
+    private UUID taskId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "receiver_id", nullable = false)
@@ -32,10 +30,6 @@ public class Notification {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasks_task_id")
-    private Task task;
 
     @Column(name = "message", nullable = false, columnDefinition = "TEXT")
     private String message;

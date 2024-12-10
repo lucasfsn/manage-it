@@ -7,8 +7,8 @@ import com.manageit.manageit.mapper.user.BasicUserMapper;
 import com.manageit.manageit.mapper.user.UserMapper;
 import com.manageit.manageit.repository.UserRepository;
 import com.manageit.manageit.security.JwtService;
-import com.manageit.manageit.user.AuthenticatedUserResponse;
-import com.manageit.manageit.user.UpdateUserRequest;
+import com.manageit.manageit.dto.user.AuthenticatedUserResponse;
+import com.manageit.manageit.dto.user.UpdateUserRequest;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,30 +28,32 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final BasicUserMapper basicUserMapper;
 
-    public AuthenticatedUserResponse findByToken(String token) {
+    public User getUserByToken(String token) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        return userRepository.findByUsername(username)
-                .map(userMapper::toAuthenticatedUserResponse)
-                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        return getUserByUsername(username);
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+    }
+
+    public AuthenticatedUserResponse findByToken(String token) {
+        User user = getUserByToken(token);
+        return userMapper.toAuthenticatedUserResponse(user);
     }
 
     public UserResponseDto findByUsername(String token, String username) {
         String requestUsername = jwtService.extractUsername(token.replace("Bearer ", ""));
+        User user = getUserByUsername(username);
         if (requestUsername.equals(username)) {
-            return userRepository.findByUsername(username)
-                    .map(userMapper::toUserResponse)
-                    .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+            return userMapper.toUserResponse(user);
         }
-        return userRepository.findByUsername(username)
-                .map(userMapper::toUserResponseWithoutEmail)
-                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
+        return userMapper.toUserResponseWithoutEmail(user);
     }
 
 
     public void updateUser(String token, UpdateUserRequest updatedUser) {
-        String tokenUsername = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User user = userRepository.findByUsername(tokenUsername)
-                .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + tokenUsername));
+        User user = getUserByToken(token);
         if (updatedUser.getFirstName() != null) {
             user.setFirstName(updatedUser.getFirstName());
         }

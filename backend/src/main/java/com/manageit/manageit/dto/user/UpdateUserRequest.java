@@ -1,4 +1,4 @@
-package com.manageit.manageit.user;
+package com.manageit.manageit.dto.user;
 
 
 import jakarta.validation.constraints.*;
