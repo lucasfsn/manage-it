@@ -19,8 +19,10 @@ public class Notification {
     @Column(name = "notification_id", nullable = false, updatable = false)
     private UUID notificationId;
 
+    @Column(name = "assigned_project_id")
     private UUID projectId;
 
+    @Column(name = "tasks_task_id")
     private UUID taskId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

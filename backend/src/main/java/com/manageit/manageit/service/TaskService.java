@@ -10,10 +10,7 @@ import com.manageit.manageit.exception.TaskNotInProjectException;
 import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
 import com.manageit.manageit.mapper.task.TaskMapper;
 import com.manageit.manageit.project.Project;
-import com.manageit.manageit.repository.ProjectRepository;
 import com.manageit.manageit.repository.TaskRepository;
-import com.manageit.manageit.repository.UserRepository;
-import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.task.Task;
 import com.manageit.manageit.user.User;
 import jakarta.persistence.EntityNotFoundException;
@@ -77,9 +74,6 @@ public class TaskService {
         return taskMapper.toTaskMetadataDto(task);
     }
 
-    // spróbuj może przerobić tak, że nie pobierać taska z repozytorium tylko z projektu i tam usuwac, pzdr nara essa
-    // orphanRemoval użyj pewnie no i wtedy usuwanie elementu z listy powinno zadzialać
-    // nie rozumiem czemu Project dziala a ProjectDto juz nie
     public void deleteTask(String token, UUID taskId, UUID projectId) {
         User user = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
@@ -93,7 +87,7 @@ public class TaskService {
         notificationService.createAndSendNotification(
                 project.getMembers(),
                 user,
-                "has removed task in " + project.getName(),
+                "has removed task from " + project.getName(),
                 project.getId(),
                 task.getId()
         );
