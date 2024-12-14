@@ -15,7 +15,7 @@ public class MessageMapper {
     public MessageDto toMessageDto(Message message) {
         return MessageDto.builder()
                 .id(message.getId())
-                .user(basicUserMapper.toBasicUserDto(message.getUser()))
+                .sender(basicUserMapper.toBasicUserDto(message.getUser()))
                 .content(message.getContent())
                 .createdAt(message.getCreatedAt().toString())
                 .build();
