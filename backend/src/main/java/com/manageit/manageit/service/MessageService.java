@@ -31,7 +31,6 @@ public class MessageService {
                 .chat(chat)
                 .user(userService.getUserByToken(token))
                 .message(messageDto.getMessage())
-                .createdAt(messageDto.getCreatedAt())
                 .build();
         messageRepository.save(message);
         return messageDto;
@@ -43,7 +42,6 @@ public class MessageService {
                 .chat(chat)
                 .user(userService.getUserByToken(token))
                 .message(messageDto.getMessage())
-                .createdAt(messageDto.getCreatedAt())
                 .build();
         messageRepository.save(message);
         return messageDto;

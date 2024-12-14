@@ -1,6 +1,7 @@
 package com.manageit.manageit.controller;
 
 import com.manageit.manageit.dto.message.MessageDto;
+import com.manageit.manageit.dto.message.WebSocketRequestMessage;
 import com.manageit.manageit.model.chat.Chat;
 import com.manageit.manageit.service.ChatService;
 import com.manageit.manageit.service.MessageService;
@@ -29,22 +30,20 @@ public class ChatController {
     @SendTo("/topic/projects/{projectId}/chat")
     public MessageDto sendProjectMessage(
             @DestinationVariable UUID projectId,
-            @RequestHeader("Authorization") String token,
-            @Payload MessageDto message
+            @Payload WebSocketRequestMessage message
     ) {
-        return messageService.saveMessageToProjectChat(projectId, token, message);
+        return messageService.saveMessageToProjectChat(projectId, message.getToken(), message);
     }
 
     @MessageMapping("/tasks/{taskId}/chat/send")
     @SendTo("/topic/tasks/{taskId}/chat")
     public MessageDto sendTaskMessage(
             @DestinationVariable UUID taskId,
-            @RequestHeader("Authorization") String token,
             @Payload MessageDto message
 //            SimpMessageHeaderAccessor headerAccessor
     ) {
 //        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", message.getUser().getUsername());
-        return messageService.saveMessageToTaskChat(taskId, token, message);
+        return messageService.saveMessageToTaskChat(taskId, "token", message);
     }
 
 

@@ -17,7 +17,6 @@ public class MessageMapper {
                 .user(basicUserMapper.toBasicUserDto(message.getUser()))
                 .chatId(message.getChat().getId())
                 .message(message.getMessage())
-                .createdAt(message.getCreatedAt())
                 .build();
     }
 }
