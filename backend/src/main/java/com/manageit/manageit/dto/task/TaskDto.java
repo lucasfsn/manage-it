@@ -1,8 +1,8 @@
 package com.manageit.manageit.dto.task;
 
 import com.manageit.manageit.dto.user.BasicUserDto;
-import com.manageit.manageit.task.TaskPriority;
-import com.manageit.manageit.task.TaskStatus;
+import com.manageit.manageit.model.task.TaskPriority;
+import com.manageit.manageit.model.task.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

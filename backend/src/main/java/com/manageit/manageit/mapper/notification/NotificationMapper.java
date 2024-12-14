@@ -2,7 +2,7 @@ package com.manageit.manageit.mapper.notification;
 
 import com.manageit.manageit.dto.notification.NotificationDto;
 import com.manageit.manageit.mapper.user.BasicUserMapper;
-import com.manageit.manageit.notification.Notification;
+import com.manageit.manageit.model.notification.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

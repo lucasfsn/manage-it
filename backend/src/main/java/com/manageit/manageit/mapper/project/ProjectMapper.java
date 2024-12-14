@@ -2,10 +2,10 @@ package com.manageit.manageit.mapper.project;
 
 import com.manageit.manageit.dto.project.UserProfileProjectDto;
 import com.manageit.manageit.mapper.user.BasicUserMapper;
-import com.manageit.manageit.project.Project;
+import com.manageit.manageit.model.project.Project;
 import com.manageit.manageit.dto.project.ProjectDto;
 import com.manageit.manageit.mapper.task.TaskMapper;
-import com.manageit.manageit.task.TaskStatus;
+import com.manageit.manageit.model.task.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;

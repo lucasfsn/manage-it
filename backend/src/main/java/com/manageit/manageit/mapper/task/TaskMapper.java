@@ -2,7 +2,7 @@ package com.manageit.manageit.mapper.task;
 
 import com.manageit.manageit.dto.task.TaskDto;
 import com.manageit.manageit.mapper.user.BasicUserMapper;
-import com.manageit.manageit.task.Task;
+import com.manageit.manageit.model.task.Task;
 import com.manageit.manageit.dto.task.TaskMetadataDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

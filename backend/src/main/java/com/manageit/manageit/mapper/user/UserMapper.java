@@ -3,7 +3,7 @@ package com.manageit.manageit.mapper.user;
 import com.manageit.manageit.dto.user.UserResponseDto;
 import com.manageit.manageit.mapper.project.ProjectMapper;
 import com.manageit.manageit.dto.user.AuthenticatedUserResponse;
-import com.manageit.manageit.user.User;
+import com.manageit.manageit.model.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

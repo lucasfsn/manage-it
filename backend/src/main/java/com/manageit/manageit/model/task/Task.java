@@ -1,7 +1,7 @@
-package com.manageit.manageit.task;
+package com.manageit.manageit.model.task;
 
-import com.manageit.manageit.project.Project;
-import com.manageit.manageit.user.User;
+import com.manageit.manageit.model.project.Project;
+import com.manageit.manageit.model.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

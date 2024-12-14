@@ -1,8 +1,8 @@
 package com.manageit.manageit.dto.task;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.manageit.manageit.task.TaskPriority;
-import com.manageit.manageit.task.TaskStatus;
+import com.manageit.manageit.model.task.TaskPriority;
+import com.manageit.manageit.model.task.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

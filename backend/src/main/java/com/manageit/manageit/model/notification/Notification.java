@@ -1,6 +1,6 @@
-package com.manageit.manageit.notification;
+package com.manageit.manageit.model.notification;
 
-import com.manageit.manageit.user.User;
+import com.manageit.manageit.model.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 

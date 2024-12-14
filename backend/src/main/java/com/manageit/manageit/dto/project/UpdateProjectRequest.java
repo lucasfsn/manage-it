@@ -2,7 +2,7 @@ package com.manageit.manageit.dto.project;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.manageit.manageit.project.ProjectStatus;
+import com.manageit.manageit.model.project.ProjectStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

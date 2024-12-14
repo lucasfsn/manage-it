@@ -6,10 +6,10 @@ import com.manageit.manageit.dto.project.UpdateProjectRequest;
 import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
 import com.manageit.manageit.mapper.project.ProjectMapper;
-import com.manageit.manageit.project.Project;
-import com.manageit.manageit.project.ProjectStatus;
+import com.manageit.manageit.model.project.Project;
+import com.manageit.manageit.model.project.ProjectStatus;
 import com.manageit.manageit.repository.ProjectRepository;
-import com.manageit.manageit.user.User;
+import com.manageit.manageit.model.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -113,6 +113,7 @@ public class ProjectService {
         );
     }
 
+    @Transactional
     public void addUserToProject(String token, UUID projectId, BasicUserDto request) {
         User user = userService.getUserByToken(token);
         Project project = getProjectById(projectId);

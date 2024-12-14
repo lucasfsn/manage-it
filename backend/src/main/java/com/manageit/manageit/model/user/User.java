@@ -1,9 +1,8 @@
-package com.manageit.manageit.user;
+package com.manageit.manageit.model.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.manageit.manageit.project.Project;
+import com.manageit.manageit.model.project.Project;
 import com.manageit.manageit.role.Role;
-import com.manageit.manageit.task.Task;
+import com.manageit.manageit.model.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

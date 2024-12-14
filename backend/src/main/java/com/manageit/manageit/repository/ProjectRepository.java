@@ -1,6 +1,6 @@
 package com.manageit.manageit.repository;
 
-import com.manageit.manageit.project.Project;
+import com.manageit.manageit.model.project.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

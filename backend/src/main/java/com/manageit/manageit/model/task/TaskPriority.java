@@ -1,4 +1,4 @@
-package com.manageit.manageit.task;
+package com.manageit.manageit.model.task;
 
 public enum TaskPriority {
     LOW, MEDIUM, HIGH

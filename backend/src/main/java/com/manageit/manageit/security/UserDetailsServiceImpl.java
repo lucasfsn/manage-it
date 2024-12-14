@@ -1,6 +1,6 @@
 package com.manageit.manageit.security;
 
-import com.manageit.manageit.user.User;
+import com.manageit.manageit.model.user.User;
 import com.manageit.manageit.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

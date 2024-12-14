@@ -1,7 +1,7 @@
 package com.manageit.manageit.dto.project;
 
 import com.manageit.manageit.dto.user.BasicUserDto;
-import com.manageit.manageit.project.ProjectStatus;
+import com.manageit.manageit.model.project.ProjectStatus;
 import com.manageit.manageit.dto.task.TaskMetadataDto;
 import lombok.*;
 

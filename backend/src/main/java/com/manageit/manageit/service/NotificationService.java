@@ -2,9 +2,9 @@ package com.manageit.manageit.service;
 
 import com.manageit.manageit.dto.notification.NotificationDto;
 import com.manageit.manageit.mapper.notification.NotificationMapper;
-import com.manageit.manageit.notification.Notification;
+import com.manageit.manageit.model.notification.Notification;
 import com.manageit.manageit.repository.NotificationRepository;
-import com.manageit.manageit.user.User;
+import com.manageit.manageit.model.user.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
