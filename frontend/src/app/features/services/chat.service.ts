@@ -27,10 +27,9 @@ export class ChatService {
     private taskService: TaskService
   ) {
     this.stompClient = new Client({
-      brokerURL: environment.socketUrl,
-      debug: (str) => {
-        console.log(str);
-      },
+      brokerURL: `${environment.socketUrl}?token=${encodeURIComponent(
+        `Bearer ${localStorage.getItem('JWT_TOKEN')!}`
+      )}`,
     });
 
     this.setup();
@@ -138,6 +137,13 @@ export class ChatService {
           ]);
         });
       }
+    };
+
+    this.stompClient.onWebSocketClose = () => {
+      this.isConnected = false;
+      setTimeout(() => {
+        this.stompClient.activate();
+      }, 100);
     };
 
     this.stompClient.activate();
