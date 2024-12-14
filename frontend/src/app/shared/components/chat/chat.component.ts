@@ -11,6 +11,7 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   signal,
   ViewChild,
@@ -21,9 +22,9 @@ import { ActivatedRoute } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { UserCredentials } from '../../../features/dto/auth.model';
-import { Message, MessageSend } from '../../../features/dto/message.model';
+import { Message } from '../../../features/dto/chat.model';
 import { AuthService } from '../../../features/services/auth.service';
-import { MessageService } from '../../../features/services/message.service';
+import { ChatService } from '../../../features/services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -57,24 +58,30 @@ import { MessageService } from '../../../features/services/message.service';
     ]),
   ],
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @Input() isTaskChat: boolean = false;
   @Input() customPosition: string = '';
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   constructor(
     private authService: AuthService,
-    private messageService: MessageService,
+    private chatService: ChatService,
     private route: ActivatedRoute
   ) {}
 
-  protected message: string = '';
-  protected showEmojiPicker: boolean = false;
-  protected isLoading = signal(false);
+  message: string = '';
+  showEmojiPicker: boolean = false;
+  isLoading = signal(false);
+
+  get messages(): Message[] {
+    return this.isTaskChat
+      ? this.chatService.loadedTaskMessages()
+      : this.chatService.loadedProjectMessages();
+  }
 
   onTypeMessage(event: Event) {
     this.showEmojiPicker = false;
-    const inputEl = event.target as HTMLInputElement;
-    this.message = inputEl.value;
+    this.message = (event.target as HTMLInputElement).value;
   }
 
   addEmoji(event: EmojiEvent): void {
@@ -85,10 +92,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  get messages(): Message[] {
-    return this.messageService.loadedMessages();
-  }
-
   get currentUser(): UserCredentials | null {
     return this.authService.loadedUser();
   }
@@ -97,22 +100,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     const projectId = this.route.snapshot.paramMap.get('projectId');
     const taskId = this.route.snapshot.paramMap.get('taskId');
 
-    if (!projectId || !this.message.trim() || !this.currentUser) {
-      return;
+    if (!projectId || !this.message.trim()) return;
+
+    if (taskId) {
+      this.chatService.sendTaskMessage(taskId, this.message);
+    } else {
+      this.chatService.sendProjectMessage(projectId, this.message);
     }
 
-    const newMessage: MessageSend = {
-      content: this.message,
-      sender: {
-        firstName: this.currentUser.firstName,
-        lastName: this.currentUser.lastName,
-        username: this.currentUser.username,
-      },
-      projectId,
-      taskId: taskId || undefined,
-    };
-
-    this.messageService.sendMessage(newMessage);
     this.message = '';
   }
 
@@ -120,13 +115,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     const projectId = this.route.snapshot.paramMap.get('projectId');
     const taskId = this.route.snapshot.paramMap.get('taskId');
 
-    if (!projectId) {
-      return;
-    }
+    if (!projectId) return;
 
     if (taskId) {
       this.isLoading.set(true);
-      this.messageService.getTaskMessages(taskId).subscribe({
+      this.chatService.getTaskChatHistory(projectId, taskId).subscribe({
         error: () => {
           this.isLoading.set(false);
         },
@@ -134,23 +127,25 @@ export class ChatComponent implements OnInit, AfterViewChecked {
           this.isLoading.set(false);
         },
       });
-
-      return;
+    } else {
+      this.isLoading.set(true);
+      this.chatService.getProjectChatHistory(projectId).subscribe({
+        error: () => {
+          this.isLoading.set(false);
+        },
+        complete: () => {
+          this.isLoading.set(false);
+        },
+      });
     }
-
-    this.isLoading.set(true);
-    this.messageService.getProjectMessages(projectId).subscribe({
-      error: () => {
-        this.isLoading.set(false);
-      },
-      complete: () => {
-        this.isLoading.set(false);
-      },
-    });
   }
 
   ngOnInit(): void {
     this.loadMessages();
+  }
+
+  ngOnDestroy(): void {
+    this.chatService.deactivate();
   }
 
   ngAfterViewChecked(): void {
@@ -158,7 +153,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.messageContainer.nativeElement.scrollTop =
         this.messageContainer.nativeElement.scrollHeight;
     } catch (err) {
-      console.error('Scroll to bottom failed:', err);
+      console.error(err);
     }
   }
 }
