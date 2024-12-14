@@ -22,6 +22,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+//    private final UserDetailsService userDetailsService;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Override
@@ -34,7 +35,10 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authHeader == null && request.getQueryString() != null && request.getQueryString().startsWith("token=Bearer")) {
+            authHeader = request.getQueryString().replace("token=Bearer%20", "Bearer ");
+        }
         final String jwt;
         final String username;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

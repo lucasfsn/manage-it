@@ -14,6 +14,7 @@ import com.manageit.manageit.repository.TaskRepository;
 import com.manageit.manageit.model.task.Task;
 import com.manageit.manageit.model.user.User;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class TaskService {
     private final TaskMapper taskMapper;
     private final NotificationService notificationService;
     private final UserService userService;
+    private final ChatService chatService;
 
     public Task getTaskById(UUID id) {
         return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + id));
@@ -48,6 +50,7 @@ public class TaskService {
         return taskMapper.toTaskDto(task);
     }
 
+    @Transactional
     public TaskMetadataDto createAndAddTaskToProject(String token, UUID projectId, CreateTaskRequest createTaskRequest) {
         User owner = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
@@ -63,7 +66,7 @@ public class TaskService {
                 .createdAt(LocalDateTime.now())
                 .users(List.of())
                 .build();
-        taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
         notificationService.createAndSendNotification(
                 project.getMembers(),
                 owner,
@@ -71,6 +74,7 @@ public class TaskService {
                 projectId,
                 task.getId()
         );
+        chatService.saveChat(project, savedTask);
         return taskMapper.toTaskMetadataDto(task);
     }
 

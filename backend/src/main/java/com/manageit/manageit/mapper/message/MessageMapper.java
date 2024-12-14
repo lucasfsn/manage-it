@@ -14,9 +14,10 @@ public class MessageMapper {
 
     public MessageDto toMessageDto(Message message) {
         return MessageDto.builder()
+                .id(message.getId())
                 .user(basicUserMapper.toBasicUserDto(message.getUser()))
-                .chatId(message.getChat().getId())
-                .message(message.getMessage())
+                .content(message.getContent())
+                .createdAt(message.getCreatedAt().toString())
                 .build();
     }
 }

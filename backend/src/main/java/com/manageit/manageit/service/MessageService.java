@@ -8,6 +8,7 @@ import com.manageit.manageit.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,26 +26,28 @@ public class MessageService {
         return chat.getMessages().stream().map(messageMapper::toMessageDto).toList();
     }
 
-    public MessageDto saveMessageToProjectChat(UUID projectId, String token, MessageDto messageDto) {
-        Chat chat = chatService.getChatByProjectId(projectId);
+    public MessageDto saveMessageToProjectChat(UUID projectId, String token, String content) {
+        Chat chat = chatService.getChatByProjectIdAndTaskId(projectId, null);
         Message message = Message.builder()
                 .chat(chat)
                 .user(userService.getUserByToken(token))
-                .message(messageDto.getMessage())
+                .content(content)
+                .createdAt(LocalDateTime.now())
                 .build();
         messageRepository.save(message);
-        return messageDto;
+        return messageMapper.toMessageDto(message);
     }
 
-    public MessageDto saveMessageToTaskChat(UUID taskId, String token, MessageDto messageDto) {
+    public MessageDto saveMessageToTaskChat(UUID taskId, String token, String content) {
         Chat chat = chatService.getChatByTaskId(taskId);
         Message message = Message.builder()
                 .chat(chat)
                 .user(userService.getUserByToken(token))
-                .message(messageDto.getMessage())
+                .content(content)
+                .createdAt(LocalDateTime.now())
                 .build();
         messageRepository.save(message);
-        return messageDto;
+        return messageMapper.toMessageDto(message);
     }
 
 }

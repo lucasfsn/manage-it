@@ -14,6 +14,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,34 +26,44 @@ public class ChatController {
     private final ChatService chatService;
     private final MessageService messageService;
 
-    @MessageMapping("/projects/{projectId}/chat/send")
-    @SendTo("/topic/projects/{projectId}/chat")
+    @MessageMapping("/projects/{projectId}")
+    @SendTo("/join/projects/{projectId}")
     public MessageDto sendProjectMessage(
             @DestinationVariable UUID projectId,
-            @Payload WebSocketRequestMessage message
+            @Payload WebSocketRequestMessage requset
     ) {
-        return messageService.saveMessageToProjectChat(projectId, message.getToken(), message);
+        return messageService.saveMessageToProjectChat(projectId, requset.getToken(), requset.getContent());
     }
 
-    @MessageMapping("/tasks/{taskId}/chat/send")
-    @SendTo("/topic/tasks/{taskId}/chat")
+    @MessageMapping("/tasks/{taskId}")
+    @SendTo("/join/tasks/{taskId}")
     public MessageDto sendTaskMessage(
             @DestinationVariable UUID taskId,
-            @Payload MessageDto message
+            @Payload WebSocketRequestMessage requset
 //            SimpMessageHeaderAccessor headerAccessor
     ) {
 //        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", message.getUser().getUsername());
-        return messageService.saveMessageToTaskChat(taskId, "token", message);
+        return messageService.saveMessageToTaskChat(taskId, requset.getToken(), requset.getContent());
     }
 
 
 
 
-    @GetMapping("/chat/{chatId}/messages")
+    @GetMapping("/chat/projects/{projectId}")
     public ResponseEntity<List<MessageDto>> getChatMessages(
-        @PathVariable UUID chatId
+        @PathVariable UUID projectId
     ) {
-        Chat chat = chatService.getChatById(chatId);
+        Chat chat = chatService.getChatByProjectIdAndTaskId(projectId, null);
+        return ResponseEntity.ok(messageService.getMessagesByChat(chat));
+    }
+
+    @GetMapping("/chat/projects/{projectId}/tasks/{taskId}")
+    public ResponseEntity<List<MessageDto>> getChatMessages(
+        @PathVariable UUID projectId,
+        @PathVariable UUID taskId
+    ) {
+        Chat chat = chatService.getChatByProjectIdAndTaskId(projectId, taskId);
+        System.out.println(chat);
         return ResponseEntity.ok(messageService.getMessagesByChat(chat));
     }
 }

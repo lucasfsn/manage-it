@@ -1,5 +1,6 @@
 package com.manageit.manageit.dto.message;
 
+import com.manageit.manageit.dto.user.BasicUserDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -7,7 +8,8 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
-public class WebSocketRequestMessage extends MessageDto{
+
+public class WebSocketRequestMessage{
     private String token;
+    private String content;
 }

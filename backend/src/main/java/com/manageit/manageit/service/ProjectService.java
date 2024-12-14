@@ -27,6 +27,7 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
     private final NotificationService notificationService;
     private final UserService userService;
+    private final ChatService chatService;
 
 
     public Project getProjectById(UUID projectId) {
@@ -54,6 +55,7 @@ public class ProjectService {
         return projectMapper.toProjectDto(project);
     }
 
+    @Transactional
     public ProjectDto createProject(String token, CreateProjectRequest createProjectRequest) {
         User owner = userService.getUserByToken(token);
         Project project = Project.builder()
@@ -66,7 +68,8 @@ public class ProjectService {
                 .members(List.of(owner))
                 .tasks(List.of())
                 .build();
-        projectRepository.save(project);
+        Project newProject = projectRepository.save(project);
+        chatService.saveChat(newProject);
         return projectMapper.toProjectDto(project);
 
     }

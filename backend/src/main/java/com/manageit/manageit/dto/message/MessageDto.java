@@ -15,8 +15,10 @@ import java.util.UUID;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MessageDto {
+    private UUID id;
+    private String createdAt;
     private BasicUserDto user;
-    private UUID chatId;
-    private String message;
+    private String content;
 }

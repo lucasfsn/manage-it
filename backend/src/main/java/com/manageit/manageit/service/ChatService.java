@@ -32,10 +32,17 @@ public class ChatService {
         return chatRepository.findByProjectId(projectId).orElseThrow(() -> new EntityNotFoundException("Chat not found"));
     }
 
+    public Chat getChatByProjectIdAndTaskId(
+            UUID projectId, UUID taskId
+    ) {
+        return  chatRepository.findByProjectIdAndTaskId(projectId, taskId).orElseThrow(() -> new EntityNotFoundException("Chat not found"));
+    }
+
     public Chat saveChat(Project project, Task task) {
-        if (task != null) {
-            return chatRepository.save(Chat.builder().project(project).task(task).build());
-        }
+        return chatRepository.save(Chat.builder().project(project).task(task).build());
+    }
+
+    public Chat saveChat(Project project) {
         return chatRepository.save(Chat.builder().project(project).build());
     }
 }

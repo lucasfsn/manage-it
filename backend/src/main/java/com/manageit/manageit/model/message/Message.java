@@ -35,7 +35,7 @@ public class Message {
     private Chat chat;
 
     @Column(name = "message", nullable = false, columnDefinition = "TEXT")
-    private String message;
+    private String content;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface ChatRepository extends JpaRepository<Chat, UUID> {
     Optional<Chat> findByProjectId(UUID projectId);
     Optional<Chat> findByTaskId(UUID taskId);
+    Optional<Chat> findByProjectIdAndTaskId(UUID projectId, UUID taskId);
 }
