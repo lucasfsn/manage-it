@@ -1,8 +1,9 @@
 <ul class="flex flex-col gap-3">
   @for (notification of notifications; track notification.id) {
   <li
-    class="flex gap-3 items-center cursor-pointer mr-auto hover:bg-slate-950 px-5 py-1 rounded-full hover:bg-opacity-25"
+    class="flex gap-3 items-center cursor-pointer mr-auto hover:bg-slate-950 px-5 py-1 rounded-full hover:bg-opacity-25 focus:bg-slate-950"
     (click)="markAsReadAndOpen(notification)"
+    tabindex="0"
   >
     <div
       class="bg-sky-500 rounded-full flex justify-center items-center w-[35px] h-[35px] aspect-square font-semibold text-slate-950"

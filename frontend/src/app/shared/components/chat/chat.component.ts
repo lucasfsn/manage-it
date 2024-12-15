@@ -59,7 +59,7 @@ import { ChatService } from '../../../features/services/chat.service';
   ],
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
-  @Input() isTaskChat: boolean = false;
+  @Input() public isTaskChat = false;
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   constructor(
@@ -68,34 +68,34 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     private route: ActivatedRoute
   ) {}
 
-  message: string = '';
-  showEmojiPicker: boolean = false;
-  isLoading = signal(false);
+  protected message = '';
+  protected showEmojiPicker = false;
+  protected isLoading = signal(false);
 
-  get messages(): Message[] {
+  protected get messages(): Message[] {
     return this.isTaskChat
       ? this.chatService.loadedTaskMessages()
       : this.chatService.loadedProjectMessages();
   }
 
-  onTypeMessage(event: Event) {
+  protected onTypeMessage(event: Event): void {
     this.showEmojiPicker = false;
     this.message = (event.target as HTMLInputElement).value;
   }
 
-  addEmoji(event: EmojiEvent): void {
+  protected addEmoji(event: EmojiEvent): void {
     this.message += event.emoji.native;
   }
 
-  toggleEmojiPicker(): void {
+  protected toggleEmojiPicker(): void {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  get currentUser(): UserCredentials | null {
+  protected get currentUser(): UserCredentials | null {
     return this.authService.loadedUser();
   }
 
-  sendMessage(): void {
+  protected sendMessage(): void {
     const projectId = this.route.snapshot.paramMap.get('projectId');
     const taskId = this.route.snapshot.paramMap.get('taskId');
 
@@ -139,15 +139,15 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadMessages();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.chatService.deactivate();
   }
 
-  ngAfterViewChecked(): void {
+  public ngAfterViewChecked(): void {
     this.messageContainer.nativeElement.scrollTop =
       this.messageContainer.nativeElement.scrollHeight;
   }

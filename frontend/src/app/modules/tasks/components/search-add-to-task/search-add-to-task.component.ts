@@ -15,9 +15,9 @@ import { UserService } from '../../../../features/services/user.service';
   styleUrl: './search-add-to-task.component.css',
 })
 export class SearchAddToTaskComponent {
-  @Output() onClick = new EventEmitter<User>();
-  form = new FormControl<string>('');
-  searchResults: User[] = [];
+  @Output() public userAdd = new EventEmitter<User>();
+  protected form = new FormControl<string>('');
+  protected searchResults: User[] = [];
 
   constructor(
     private authService: AuthService,
@@ -26,11 +26,11 @@ export class SearchAddToTaskComponent {
     private taskService: TaskService
   ) {}
 
-  get members(): User[] {
+  protected get members(): User[] {
     return this.taskService.loadedTask()?.members ?? [];
   }
 
-  onSearch(): void {
+  protected onSearch(): void {
     const projectId =
       this.route.snapshot.paramMap.get('projectId') ?? undefined;
     const taskId = this.route.snapshot.paramMap.get('taskId') ?? undefined;
@@ -39,6 +39,7 @@ export class SearchAddToTaskComponent {
 
     if (!query || query.length < 2) {
       this.searchResults = [];
+
       return;
     }
 
@@ -52,17 +53,17 @@ export class SearchAddToTaskComponent {
     });
   }
 
-  handleAdd(user: User): void {
-    this.onClick.emit(user);
+  protected handleAdd(user: User): void {
+    this.userAdd.emit(user);
     this.form.setValue('');
     this.searchResults = [];
   }
 
-  isAlreadyIn(username: string): boolean {
+  protected isAlreadyIn(username: string): boolean {
     return this.members.some((u) => u.username === username);
   }
 
-  isLoggedInUser(username: string): boolean {
+  protected isLoggedInUser(username: string): boolean {
     return this.authService.getLoggedInUsername() === username;
   }
 }

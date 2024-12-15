@@ -15,12 +15,11 @@ import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 export class ProjectsSummaryComponent implements OnInit {
   constructor(private projectService: ProjectService) {}
 
-  activeProjectsCount = 0;
-
-  progressChartData: ChartData<'doughnut'> = {
+  protected activeProjectsCount = 0;
+  protected progressChartData: ChartData<'doughnut'> = {
     labels: [
-      projectStatusMapper(ProjectStatus.Completed),
-      projectStatusMapper(ProjectStatus.InProgress),
+      projectStatusMapper(ProjectStatus.COMPLETED),
+      projectStatusMapper(ProjectStatus.IN_PROGRESS),
     ],
     datasets: [
       {
@@ -30,31 +29,30 @@ export class ProjectsSummaryComponent implements OnInit {
       },
     ],
   };
-  progressChartOptions: ChartOptions<'doughnut'> = {
+  protected progressChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
     plugins: {
       legend: {
         position: 'top',
         align: 'center',
-        onClick: () => {},
       },
     },
   };
 
-  get projects(): Project[] {
+  protected get projects(): Project[] {
     return this.projectService.loadedProjects() || [];
   }
 
-  updateChart() {
+  protected updateChart(): void {
     const projects = this.projectService.loadedProjects();
 
     if (!projects) return;
 
     const inProgress = projects.filter(
-      (p) => p.status === ProjectStatus.InProgress
+      (p) => p.status === ProjectStatus.IN_PROGRESS
     ).length;
     const completed = projects.filter(
-      (p) => p.status === ProjectStatus.Completed
+      (p) => p.status === ProjectStatus.COMPLETED
     ).length;
 
     this.activeProjectsCount = inProgress;
@@ -62,7 +60,7 @@ export class ProjectsSummaryComponent implements OnInit {
     this.progressChartData.datasets[0].data = [completed, inProgress];
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.updateChart();
   }
 }

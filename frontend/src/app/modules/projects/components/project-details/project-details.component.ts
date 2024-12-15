@@ -29,27 +29,27 @@ export class ProjectDetailsComponent {
     private router: Router
   ) {}
 
-  get project(): Project | undefined {
+  protected get project(): Project | undefined {
     return this.projectService.loadedProject();
   }
 
-  get ProjectStatus(): typeof ProjectStatus {
+  protected get ProjectStatus(): typeof ProjectStatus {
     return ProjectStatus;
   }
 
-  get isOwner(): boolean {
+  protected get isOwner(): boolean {
     return (
       this.project?.owner.username === this.authService.getLoggedInUsername()
     );
   }
 
-  handleGoBack() {
+  protected handleGoBack(): void {
     if (!this.project) return;
 
     this.router.navigate(['/projects']);
   }
 
-  handleDelete() {
+  protected handleDelete(): void {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
     if (!projectId) {
@@ -73,7 +73,7 @@ export class ProjectDetailsComponent {
     });
   }
 
-  handleComplete() {
+  protected handleComplete(): void {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
     if (!projectId) {
@@ -95,7 +95,7 @@ export class ProjectDetailsComponent {
     });
   }
 
-  handleEdit() {
+  protected handleEdit(): void {
     const projectId = this.route.snapshot.paramMap.get('projectId');
 
     if (!projectId) {
@@ -111,7 +111,7 @@ export class ProjectDetailsComponent {
     });
   }
 
-  showAllMembers(isOnlyShow: boolean): void {
+  protected showAllMembers(isOnlyShow: boolean): void {
     this.dialog.open(ShowMoreMembersComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
@@ -122,7 +122,7 @@ export class ProjectDetailsComponent {
     });
   }
 
-  openSearchDialog(): void {
+  protected openSearchDialog(): void {
     if (!this.project) return;
 
     this.dialog.open(SearchComponent, {
@@ -135,9 +135,9 @@ export class ProjectDetailsComponent {
     });
   }
 
-  mapProjectStatus(): string {
+  protected mapProjectStatus(): string {
     return projectStatusMapper(
-      this.project?.status ?? ProjectStatus.InProgress
+      this.project?.status ?? ProjectStatus.IN_PROGRESS
     );
   }
 }

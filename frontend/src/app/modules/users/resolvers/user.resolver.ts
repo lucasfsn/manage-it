@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { AuthService } from '../../../features/services/auth.service';
 
-export const userResolver: ResolveFn<void> = (route, state) => {
+export const userResolver: ResolveFn<void> = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 

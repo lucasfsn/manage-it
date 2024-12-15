@@ -42,15 +42,15 @@ export class SideBarComponent implements OnInit {
 
   constructor(private dialog: MatDialog, private authService: AuthService) {}
 
-  get username(): string | null {
+  protected get username(): string | null {
     return this.authService.getLoggedInUsername();
   }
 
-  toggleSidebar() {
+  protected toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  openSearchDialog(): void {
+  protected openSearchDialog(): void {
     this.dialog.open(SearchComponent, {
       width: '600px',
       panelClass: 'search-dialog',
@@ -58,21 +58,17 @@ export class SideBarComponent implements OnInit {
     });
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
+  @HostListener('window:resize')
+  protected onResize(): void {
     this.checkScreenSize();
   }
 
-  checkScreenSize() {
+  protected checkScreenSize(): void {
     const screenWidth = window.innerWidth;
-    if (screenWidth < 1280) {
-      this.isCollapsed = true;
-    } else {
-      this.isCollapsed = false;
-    }
+    this.isCollapsed = screenWidth < 1280;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.checkScreenSize();
   }
 }

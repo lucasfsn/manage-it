@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, of, tap, throwError } from 'rxjs';
+import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   AuthResponse,
@@ -17,11 +17,11 @@ export class AuthService {
   private readonly JWT_TOKEN = 'JWT_TOKEN';
   private currentUser = signal<UserCredentials | null>(null);
 
-  loadedUser = this.currentUser.asReadonly();
+  public loadedUser = this.currentUser.asReadonly();
 
   constructor(private router: Router, private http: HttpClient) {}
 
-  register(user: RegisterCredentials) {
+  public register(user: RegisterCredentials): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${environment.apiUrl}/auth/register`, user)
       .pipe(
@@ -39,7 +39,7 @@ export class AuthService {
       );
   }
 
-  login(user: LoginCredentials) {
+  public login(user: LoginCredentials): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${environment.apiUrl}/auth/authenticate`, user)
       .pipe(
@@ -57,16 +57,16 @@ export class AuthService {
       );
   }
 
-  logout() {
+  public logout(): void {
     localStorage.removeItem(this.JWT_TOKEN);
     this.router.navigate(['/']);
   }
 
-  isAuthenticated(): boolean {
+  public isAuthenticated(): boolean {
     return !!localStorage.getItem(this.JWT_TOKEN);
   }
 
-  getUserByToken() {
+  public getUserByToken(): Observable<UserCredentials> {
     const currentUser = this.currentUser();
 
     if (currentUser) return of(currentUser);
@@ -79,21 +79,23 @@ export class AuthService {
         }),
         catchError((err: HttpErrorResponse) => {
           this.logout();
+
           return throwError(() => err.error);
         })
       );
   }
 
-  getLoggedInUsername(): string | null {
+  public getLoggedInUsername(): string | null {
     const currentUser = this.currentUser();
 
     if (currentUser) return currentUser.username;
 
     this.logout();
+
     return null;
   }
 
-  private storeJwtToken(jwt: string) {
+  private storeJwtToken(jwt: string): void {
     localStorage.setItem(this.JWT_TOKEN, jwt);
   }
 }

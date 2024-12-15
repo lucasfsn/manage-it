@@ -11,7 +11,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Task, TaskStatus } from '../../../../features/dto/project.model';
+import {
+  Project,
+  Task,
+  TaskStatus,
+} from '../../../../features/dto/project.model';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
@@ -40,19 +44,19 @@ export class TasksComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  public completedTasks: Task[] = [];
-  public inProgressTasks: Task[] = [];
-  public notStartedTasks: Task[] = [];
+  protected completedTasks: Task[] = [];
+  protected inProgressTasks: Task[] = [];
+  protected notStartedTasks: Task[] = [];
 
-  get project() {
+  protected get project(): Project | undefined {
     return this.projectService.loadedProject();
   }
 
-  get TaskStatus(): typeof TaskStatus {
+  protected get TaskStatus(): typeof TaskStatus {
     return TaskStatus;
   }
 
-  drop(event: CdkDragDrop<Task[]>) {
+  protected drop(event: CdkDragDrop<Task[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -79,15 +83,15 @@ export class TasksComponent implements OnInit {
   private getNewStatus(containerId: string): TaskStatus {
     switch (containerId) {
       case 'completed':
-        return TaskStatus.Completed;
+        return TaskStatus.COMPLETED;
       case 'inProgress':
-        return TaskStatus.InProgress;
+        return TaskStatus.IN_PROGRESS;
       default:
-        return TaskStatus.NotStarted;
+        return TaskStatus.NOT_STARTED;
     }
   }
 
-  openAddCardDialog(selectedStatus: TaskStatus): void {
+  protected openAddCardDialog(selectedStatus: TaskStatus): void {
     if (!this.project) return;
 
     this.dialog.open(CreateTaskComponent, {
@@ -99,7 +103,7 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  handleMoveTask(task: Task, prevStatus: TaskStatus) {
+  protected handleMoveTask(task: Task, prevStatus: TaskStatus): void {
     this.taskService.moveProjectTask(task).subscribe({
       error: (err) => {
         this.toastrService.error(err.message);
@@ -108,19 +112,19 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  private restoreTaskState(task: Task, prevStatus: TaskStatus) {
+  private restoreTaskState(task: Task, prevStatus: TaskStatus): void {
     switch (task.status) {
-      case TaskStatus.Completed:
+      case TaskStatus.COMPLETED:
         this.completedTasks = this.completedTasks.filter(
           (t) => t.id !== task.id
         );
         break;
-      case TaskStatus.InProgress:
+      case TaskStatus.IN_PROGRESS:
         this.inProgressTasks = this.inProgressTasks.filter(
           (t) => t.id !== task.id
         );
         break;
-      case TaskStatus.NotStarted:
+      case TaskStatus.NOT_STARTED:
         this.notStartedTasks = this.notStartedTasks.filter(
           (t) => t.id !== task.id
         );
@@ -128,29 +132,29 @@ export class TasksComponent implements OnInit {
     }
 
     switch (prevStatus) {
-      case TaskStatus.Completed:
+      case TaskStatus.COMPLETED:
         this.completedTasks.push(task);
         break;
-      case TaskStatus.InProgress:
+      case TaskStatus.IN_PROGRESS:
         this.inProgressTasks.push(task);
         break;
-      case TaskStatus.NotStarted:
+      case TaskStatus.NOT_STARTED:
         this.notStartedTasks.push(task);
         break;
     }
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     if (!this.project) return;
 
     this.completedTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.Completed
+      (task) => task.status === TaskStatus.COMPLETED
     );
     this.inProgressTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.InProgress
+      (task) => task.status === TaskStatus.IN_PROGRESS
     );
     this.notStartedTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.NotStarted
+      (task) => task.status === TaskStatus.NOT_STARTED
     );
   }
 }

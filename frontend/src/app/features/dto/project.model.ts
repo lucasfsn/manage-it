@@ -5,15 +5,15 @@ export interface User {
 }
 
 export enum Priority {
-  Low = 'LOW',
-  Medium = 'MEDIUM',
-  High = 'HIGH',
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH',
 }
 
 export enum TaskStatus {
-  NotStarted = 'NOT_STARTED',
-  InProgress = 'IN_PROGRESS',
-  Completed = 'COMPLETED',
+  NOT_STARTED = 'NOT_STARTED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
 }
 
 export interface Task {
@@ -34,8 +34,8 @@ export interface TaskData {
 }
 
 export enum ProjectStatus {
-  InProgress = 'IN_PROGRESS',
-  Completed = 'COMPLETED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
 }
 
 export interface Project {

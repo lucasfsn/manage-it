@@ -13,9 +13,9 @@ import { ProjectService } from '../../../../features/services/project.service';
   styleUrl: './projects-list.component.css',
 })
 export class ProjectsListComponent implements OnInit {
-  public sortedProjects: Project[] | undefined;
-  sortCriteria: string = 'name';
-  sortOrder: string = 'ascending';
+  protected sortedProjects: Project[] | undefined;
+  protected sortCriteria = 'name';
+  protected sortOrder = 'ascending';
 
   constructor(
     private route: ActivatedRoute,
@@ -24,15 +24,15 @@ export class ProjectsListComponent implements OnInit {
     private projectService: ProjectService
   ) {}
 
-  get projects(): Project[] | undefined {
+  protected get projects(): Project[] | undefined {
     return this.projectService.loadedProjects();
   }
 
-  get ProjectStatus(): typeof ProjectStatus {
+  protected get ProjectStatus(): typeof ProjectStatus {
     return ProjectStatus;
   }
 
-  sortProjects() {
+  protected sortProjects(): void {
     if (!this.projects) return;
 
     this.sortedProjects = [...this.projects].sort((a, b) => {
@@ -54,13 +54,14 @@ export class ProjectsListComponent implements OnInit {
             new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
           break;
       }
+
       return this.sortOrder === 'ascending' ? comparison : -comparison;
     });
 
     this.updateQueryParams();
   }
 
-  updateQueryParams() {
+  protected updateQueryParams(): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
@@ -71,7 +72,7 @@ export class ProjectsListComponent implements OnInit {
     });
   }
 
-  onSortChange(event: Event, type: 'criteria' | 'order') {
+  protected onSortChange(event: Event, type: 'criteria' | 'order'): void {
     const el = event.target as HTMLSelectElement;
     if (type === 'criteria') {
       this.sortCriteria = el.value;
@@ -83,18 +84,18 @@ export class ProjectsListComponent implements OnInit {
     this.sortProjects();
   }
 
-  isInProject(project: Project): boolean {
+  protected isInProject(project: Project): boolean {
     return project.members.some(
       (member) => member.username === this.authService.getLoggedInUsername()
     );
   }
 
-  private statusPriority: { [key in ProjectStatus]: number } = {
-    [ProjectStatus.InProgress]: 1,
-    [ProjectStatus.Completed]: 2,
+  private statusPriority: Record<ProjectStatus, number> = {
+    [ProjectStatus.IN_PROGRESS]: 1,
+    [ProjectStatus.COMPLETED]: 2,
   };
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.sortCriteria = params['sort'] || 'name';
       this.sortOrder = params['order'] || 'ascending';

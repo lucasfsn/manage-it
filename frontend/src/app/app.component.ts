@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
           while (child?.firstChild) {
             child = child.firstChild;
           }
+
           return child?.snapshot.data['title'] || '';
         })
       )

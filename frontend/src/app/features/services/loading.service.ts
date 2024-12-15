@@ -6,13 +6,13 @@ import { Injectable, signal } from '@angular/core';
 export class LoadingService {
   private loading = signal<boolean>(false);
 
-  isLoading = this.loading.asReadonly();
+  public isLoading = this.loading.asReadonly();
 
-  loadingOn() {
+  public loadingOn(): void {
     this.loading.set(true);
   }
 
-  loadingOff() {
+  public loadingOff(): void {
     this.loading.set(false);
   }
 }

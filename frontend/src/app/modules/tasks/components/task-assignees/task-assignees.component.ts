@@ -60,14 +60,15 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
   ],
 })
 export class TaskAssigneesComponent implements OnInit {
-  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
   private destroyRef = inject(DestroyRef);
-  public filteredUsers: User[] = [];
-  public paginatedUsers: User[] = [];
-  public searchControl = new FormControl('');
-  public currentPage = 0;
-  public pageSize = 5;
-  public showAssignees = true;
+  @ViewChild('searchInput')
+  protected searchInput!: ElementRef<HTMLInputElement>;
+  protected filteredUsers: User[] = [];
+  protected paginatedUsers: User[] = [];
+  protected searchControl = new FormControl('');
+  protected currentPage = 0;
+  protected pageSize = 5;
+  protected showAssignees = true;
 
   constructor(
     private taskService: TaskService,
@@ -75,15 +76,15 @@ export class TaskAssigneesComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  get isLoading(): boolean {
+  protected get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
 
-  get members(): User[] {
+  protected get members(): User[] {
     return this.taskService.loadedTask()?.members || [];
   }
 
-  handleAdd(user: User): void {
+  protected handleAdd(user: User): void {
     this.taskService.addToTask(user).subscribe({
       error: (error) => {
         this.toastrService.error(error?.message);
@@ -98,7 +99,7 @@ export class TaskAssigneesComponent implements OnInit {
     this.refreshUsersIn();
   }
 
-  handleRemove(user: User): void {
+  protected handleRemove(user: User): void {
     this.taskService.removeFromTask(user).subscribe({
       error: (error) => {
         this.toastrService.error(error?.message);
@@ -108,19 +109,19 @@ export class TaskAssigneesComponent implements OnInit {
     this.refreshUsersIn();
   }
 
-  toggleShowAssignees(): void {
+  protected toggleShowAssignees(): void {
     this.showAssignees = true;
   }
 
-  toggleShowAddAssignee(): void {
+  protected toggleShowAddAssignee(): void {
     this.showAssignees = false;
   }
 
-  focusSearchInput(): void {
+  protected focusSearchInput(): void {
     this.searchInput.nativeElement.focus();
   }
 
-  filterUsers() {
+  protected filterUsers(): void {
     const searchTerm = this.searchControl.value?.toLowerCase() || '';
 
     this.filteredUsers = this.members.filter(
@@ -132,7 +133,7 @@ export class TaskAssigneesComponent implements OnInit {
     this.updatePaginatedUsers();
   }
 
-  pageChanged(event: PageEvent) {
+  protected pageChanged(event: PageEvent): void {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
     this.updatePaginatedUsers();
@@ -149,7 +150,7 @@ export class TaskAssigneesComponent implements OnInit {
     this.updatePaginatedUsers();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.refreshUsersIn();
     const subscription = this.searchControl.valueChanges.subscribe(() => {
       this.filterUsers();

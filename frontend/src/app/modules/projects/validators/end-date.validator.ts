@@ -1,7 +1,7 @@
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 export function endDateValidator(startDate: string, endDate: string) {
-  return (control: AbstractControl) => {
+  return (control: AbstractControl): ValidationErrors | null => {
     const startDateValue = control.get(startDate)?.value;
     const endDateValue = control.get(endDate)?.value;
 

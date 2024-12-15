@@ -32,8 +32,8 @@ import { EditProfileFormComponent } from '../../components/edit-profile/edit-pro
   styleUrl: './user.component.css',
 })
 export class UserComponent implements OnInit {
-  commonProjects: UserProject[] = [];
-  addToProject: boolean = false;
+  protected commonProjects: UserProject[] = [];
+  protected addToProject = false;
 
   constructor(
     private loadingService: LoadingService,
@@ -46,23 +46,23 @@ export class UserComponent implements OnInit {
     private titleService: Title
   ) {}
 
-  get ProjectStatus(): typeof ProjectStatus {
+  protected get ProjectStatus(): typeof ProjectStatus {
     return ProjectStatus;
   }
 
-  get user(): User | undefined {
+  protected get user(): User | undefined {
     return this.userService.loadedUser();
   }
 
-  get isLoading(): boolean {
+  protected get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
 
-  isLoggedInUser(username: string): boolean {
+  protected isLoggedInUser(username: string): boolean {
     return this.authService.getLoggedInUsername() === username;
   }
 
-  openEditProfileDialog(): void {
+  protected openEditProfileDialog(): void {
     this.dialog.open(EditProfileFormComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
@@ -96,7 +96,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const routeType = this.route.snapshot.data['routeType'];
 
     if (routeType === 'addToProject') this.addToProject = true;

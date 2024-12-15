@@ -49,7 +49,7 @@
   </ul>
   <button
     class="self-start flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-full py-2"
-    (click)="openAddCardDialog(TaskStatus.Completed)"
+    (click)="openAddCardDialog(TaskStatus.COMPLETED)"
   >
     <mat-icon class="text-base">add</mat-icon>
     Add another card
@@ -106,7 +106,7 @@
   </ul>
   <button
     class="self-start flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-full py-2"
-    (click)="openAddCardDialog(TaskStatus.InProgress)"
+    (click)="openAddCardDialog(TaskStatus.IN_PROGRESS)"
   >
     <mat-icon class="text-base">add</mat-icon>
     Add another card
@@ -163,7 +163,7 @@
   </ul>
   <button
     class="self-start flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-full py-2"
-    (click)="openAddCardDialog(TaskStatus.NotStarted)"
+    (click)="openAddCardDialog(TaskStatus.NOT_STARTED)"
   >
     <mat-icon class="text-base">add</mat-icon>
     Add another card

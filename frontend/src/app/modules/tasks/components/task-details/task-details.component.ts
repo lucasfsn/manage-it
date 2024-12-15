@@ -25,21 +25,21 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 export class TaskDetailsComponent {
   constructor(private taskService: TaskService, private dialog: MatDialog) {}
 
-  get TaskStatus(): typeof TaskStatus {
+  protected get TaskStatus(): typeof TaskStatus {
     return TaskStatus;
   }
 
-  get task(): Task | undefined {
+  protected get task(): Task | undefined {
     return this.taskService.loadedTask();
   }
 
-  mapTaskStatus(): string {
+  protected mapTaskStatus(): string {
     if (!this.task) return '';
 
     return taskStatusMapper(this.task.status);
   }
 
-  showAllMembers(isOnlyShow: boolean): void {
+  protected showAllMembers(isOnlyShow: boolean): void {
     this.dialog.open(ShowMoreMembersComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',

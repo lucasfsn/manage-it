@@ -30,11 +30,12 @@ import { UserService } from '../../../features/services/user.service';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent {
-  @ViewChild('searchInput') searchInput!: ElementRef;
-  form = new FormControl<string>('');
-  searchResults: User[] = [];
+  @ViewChild('searchInput') protected searchInput!: ElementRef;
+  protected form = new FormControl<string>('');
+  protected searchResults: User[] = [];
 
-  projectId = inject<{ projectId: string }>(MAT_DIALOG_DATA)?.projectId;
+  protected projectId = inject<{ projectId: string }>(MAT_DIALOG_DATA)
+    ?.projectId;
 
   constructor(
     private dialogRef: MatDialogRef<SearchComponent>,
@@ -43,21 +44,22 @@ export class SearchComponent {
     private userService: UserService
   ) {}
 
-  closeDialog(): void {
+  protected closeDialog(): void {
     if (this.projectId) this.projectService.allowAccessToAddToProject = true;
 
     this.dialogRef.close();
   }
 
-  focusInput(): void {
+  protected focusInput(): void {
     this.searchInput.nativeElement.focus();
   }
 
-  onSearch(): void {
+  protected onSearch(): void {
     const query = this.form.value?.toLowerCase();
 
     if (!query || query.length < 2) {
       this.searchResults = [];
+
       return;
     }
 
@@ -71,7 +73,7 @@ export class SearchComponent {
     });
   }
 
-  isLoggedInUser(username: string): boolean {
+  protected isLoggedInUser(username: string): boolean {
     return this.authService.getLoggedInUsername() === username;
   }
 }

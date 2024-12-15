@@ -2,24 +2,20 @@ import { ProjectStatus, TaskStatus } from '../../features/dto/project.model';
 
 export function projectStatusMapper(status: ProjectStatus): string {
   switch (status) {
-    case ProjectStatus.InProgress:
+    case ProjectStatus.IN_PROGRESS:
       return 'In Progress';
-    case ProjectStatus.Completed:
+    case ProjectStatus.COMPLETED:
       return 'Completed';
-    default:
-      return 'In Progress';
   }
 }
 
 export function taskStatusMapper(status: TaskStatus): string {
   switch (status) {
-    case TaskStatus.InProgress:
+    case TaskStatus.IN_PROGRESS:
       return 'In Progress';
-    case TaskStatus.Completed:
+    case TaskStatus.COMPLETED:
       return 'Done';
-    case TaskStatus.NotStarted:
+    case TaskStatus.NOT_STARTED:
       return 'Upcoming';
-    default:
-      return 'In Progress';
   }
 }

@@ -20,7 +20,7 @@ import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
-function tokenGetter() {
+function tokenGetter(): string | null {
   return localStorage.getItem('JWT_TOKEN');
 }
 

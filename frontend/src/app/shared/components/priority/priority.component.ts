@@ -11,14 +11,14 @@ import { priorityMapper } from '../../utils/priority-mapper';
   styleUrl: './priority.component.css',
 })
 export class PriorityComponent {
-  @Input() priority!: Priority;
-  @Input() textSize? = 'text-xs';
+  @Input() public priority!: Priority;
+  @Input() public textSize? = 'text-xs';
 
-  get Priority(): typeof Priority {
+  protected get Priority(): typeof Priority {
     return Priority;
   }
 
-  mapPriority(priority: Priority): string {
+  protected mapPriority(priority: Priority): string {
     return priorityMapper(priority);
   }
 }

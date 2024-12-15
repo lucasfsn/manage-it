@@ -23,11 +23,11 @@ export class ProjectsComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-  get isLoading(): boolean {
+  protected get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
 
-  openCreateProjectDialog(): void {
+  protected openCreateProjectDialog(): void {
     this.dialog.open(CreateProjectComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
@@ -50,7 +50,7 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadProjects();
   }
 }

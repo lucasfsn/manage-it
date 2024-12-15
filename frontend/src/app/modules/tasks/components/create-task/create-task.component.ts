@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -21,19 +20,7 @@ import {
 import { LoadingService } from '../../../../features/services/loading.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { priorityMapper } from '../../../../shared/utils/priority-mapper';
-
-function dueDateValidator(control: AbstractControl) {
-  const selectedDate = new Date(control.value);
-  const today = new Date();
-  selectedDate.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
-
-  if (selectedDate >= today) return null;
-
-  return {
-    invalidDate: true,
-  };
-}
+import { dueDateValidator } from '../../validators/due-date.validator';
 
 @Component({
   selector: 'app-create-task',
@@ -43,8 +30,9 @@ function dueDateValidator(control: AbstractControl) {
   styleUrl: './create-task.component.css',
 })
 export class CreateTaskComponent {
-  selectedStatus = inject<{ selectedStatus: TaskStatus }>(MAT_DIALOG_DATA)
-    .selectedStatus;
+  protected selectedStatus = inject<{ selectedStatus: TaskStatus }>(
+    MAT_DIALOG_DATA
+  ).selectedStatus;
 
   constructor(
     private loadingService: LoadingService,
@@ -53,19 +41,19 @@ export class CreateTaskComponent {
     private dialog: MatDialog
   ) {}
 
-  get TaskStatus(): typeof TaskStatus {
+  protected get TaskStatus(): typeof TaskStatus {
     return TaskStatus;
   }
 
-  get priorities(): Priority[] {
+  protected get priorities(): Priority[] {
     return Object.values(Priority);
   }
 
-  getToday(): string {
+  protected getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
 
-  form = new FormGroup({
+  protected form = new FormGroup({
     description: new FormControl<string>('', {
       validators: [
         Validators.required,
@@ -76,12 +64,12 @@ export class CreateTaskComponent {
     dueDate: new FormControl<string>(this.getToday(), {
       validators: [Validators.required, dueDateValidator],
     }),
-    priority: new FormControl<Priority>(Priority.Low, {
+    priority: new FormControl<Priority>(Priority.LOW, {
       validators: [Validators.required],
     }),
   });
 
-  get descriptionIsInvalid() {
+  protected get descriptionIsInvalid(): boolean {
     return (
       this.form.controls.description.dirty &&
       this.form.controls.description.touched &&
@@ -89,7 +77,7 @@ export class CreateTaskComponent {
     );
   }
 
-  get dueDateIsInvalid() {
+  protected get dueDateIsInvalid(): boolean {
     return (
       this.form.controls.dueDate.dirty &&
       this.form.controls.dueDate.touched &&
@@ -97,7 +85,7 @@ export class CreateTaskComponent {
     );
   }
 
-  get priorityIsInvalid() {
+  protected get priorityIsInvalid(): boolean {
     return (
       this.form.controls.priority.dirty &&
       this.form.controls.priority.touched &&
@@ -105,29 +93,27 @@ export class CreateTaskComponent {
     );
   }
 
-  get isLoading(): boolean {
+  protected get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
 
-  closeDialog(): void {
+  protected closeDialog(): void {
     this.dialog.closeAll();
   }
 
-  mapPriority(priority: Priority): string {
+  protected mapPriority(priority: Priority): string {
     return priorityMapper(priority);
   }
 
-  onReset(): void {
+  protected onReset(): void {
     this.form.reset({
-      priority: Priority.Low,
+      priority: Priority.LOW,
       dueDate: this.getToday(),
     });
   }
 
-  onSubmit(): void {
-    if (this.form.invalid) {
-      return;
-    }
+  protected onSubmit(): void {
+    if (this.form.invalid) return;
 
     const newTask: TaskData = {
       status: this.selectedStatus,

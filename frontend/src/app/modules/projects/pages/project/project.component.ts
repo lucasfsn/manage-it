@@ -50,7 +50,7 @@ import { ProjectDetailsComponent } from '../../components/project-details/projec
   ],
 })
 export class ProjectComponent implements OnInit {
-  public showChat = signal<boolean>(false);
+  protected showChat = signal<boolean>(false);
 
   constructor(
     private projectService: ProjectService,
@@ -59,11 +59,11 @@ export class ProjectComponent implements OnInit {
     private router: Router
   ) {}
 
-  get isLoading(): boolean {
+  protected get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
 
-  toggleChat() {
+  protected toggleChat(): void {
     this.showChat.set(!this.showChat());
   }
 
@@ -72,6 +72,7 @@ export class ProjectComponent implements OnInit {
 
     if (!projectId) {
       this.router.navigate(['/projects']);
+
       return;
     }
 
@@ -87,7 +88,7 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadProject();
   }
 }

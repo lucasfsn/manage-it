@@ -10,5 +10,5 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './spinner.component.css',
 })
 export class SpinnerComponent {
-  @Input() relative: boolean = false;
+  @Input() public relative = false;
 }

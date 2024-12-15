@@ -2,13 +2,11 @@ import { Priority } from '../../features/dto/project.model';
 
 export function priorityMapper(priority: Priority): string {
   switch (priority) {
-    case Priority.Low:
+    case Priority.LOW:
       return 'Low';
-    case Priority.Medium:
+    case Priority.MEDIUM:
       return 'Medium';
-    case Priority.High:
+    case Priority.HIGH:
       return 'High';
-    default:
-      return 'In Progress';
   }
 }

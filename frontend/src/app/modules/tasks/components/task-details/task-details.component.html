@@ -15,9 +15,9 @@
         <div
           class="rounded-full text-gray-900 font-semibold text-sm px-2 py-1 text-center mr-auto"
           [ngClass]="{
-            'bg-sky-400': task.status === TaskStatus.Completed,
-            'bg-orange-400': task.status === TaskStatus.InProgress,
-            'bg-rose-400': task.status === TaskStatus.NotStarted
+            'bg-sky-400': task.status === TaskStatus.COMPLETED,
+            'bg-orange-400': task.status === TaskStatus.IN_PROGRESS,
+            'bg-rose-400': task.status === TaskStatus.NOT_STARTED
           }"
         >
           {{ mapTaskStatus() }}
@@ -45,8 +45,9 @@
           </li>
           } @if (task.members.length > 4) {
           <p
-            class="p-0.5 bg-sky-500 hover:bg-sky-600 text-sky-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
+            class="p-0.5 bg-sky-500 hover:bg-sky-600 focus:bg-sky-600 text-sky-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
             (click)="showAllMembers(true)"
+            tabindex="0"
           >
             +{{ task.members.length - 4 }}
           </p>

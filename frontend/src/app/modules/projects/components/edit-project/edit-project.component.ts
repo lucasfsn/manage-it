@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -23,7 +23,7 @@ import { endDateValidator } from '../../validators/end-date.validator';
   templateUrl: './edit-project.component.html',
   styleUrl: './edit-project.component.css',
 })
-export class EditProjectComponent {
+export class EditProjectComponent implements OnInit {
   constructor(
     private loadingService: LoadingService,
     private projectService: ProjectService,
@@ -31,7 +31,7 @@ export class EditProjectComponent {
     private toastrService: ToastrService
   ) {}
 
-  form = new FormGroup({
+  protected form = new FormGroup({
     name: new FormControl<string>('', {
       validators: [
         Validators.required,
@@ -59,15 +59,15 @@ export class EditProjectComponent {
     ),
   });
 
-  get disabled(): boolean {
+  protected get disabled(): boolean {
     return this.form.invalid || !this.isFormChanged();
   }
 
-  get project(): Project | undefined {
+  protected get project(): Project | undefined {
     return this.projectService.loadedProject();
   }
 
-  get nameIsInvalid() {
+  protected get nameIsInvalid(): boolean {
     return (
       this.form.controls['name'].dirty &&
       this.form.controls['name'].touched &&
@@ -75,7 +75,7 @@ export class EditProjectComponent {
     );
   }
 
-  get descriptionIsInvalid() {
+  protected get descriptionIsInvalid(): boolean {
     return (
       this.form.controls['description'].dirty &&
       this.form.controls['description'].touched &&
@@ -83,15 +83,15 @@ export class EditProjectComponent {
     );
   }
 
-  get startDateIsInvalid() {
-    return (
+  protected get startDateIsInvalid(): boolean {
+    return !!(
       this.form.controls.dates.get('startDate')?.dirty &&
       this.form.controls.dates.get('startDate')?.touched &&
       this.form.controls.dates.get('startDate')?.invalid
     );
   }
 
-  get endDateIsInvalid() {
+  protected get endDateIsInvalid(): boolean {
     return (
       (this.form.controls.dates.get('endDate')?.dirty &&
         this.form.controls.dates.get('endDate')?.touched &&
@@ -100,7 +100,7 @@ export class EditProjectComponent {
     );
   }
 
-  closeDialog(): void {
+  protected closeDialog(): void {
     this.dialogRef.close();
   }
 
@@ -115,7 +115,7 @@ export class EditProjectComponent {
     );
   }
 
-  private fillFormWithDefaultValues() {
+  private fillFormWithDefaultValues(): void {
     if (!this.project) return;
 
     this.form.patchValue({
@@ -128,28 +128,14 @@ export class EditProjectComponent {
     });
   }
 
-  onReset() {
+  protected onReset(): void {
     this.fillFormWithDefaultValues();
   }
 
-  onSubmit() {
-    if (this.form.invalid || !this.project) {
-      return;
-    }
+  protected onSubmit(): void {
+    if (this.form.invalid || !this.project || !this.isFormChanged()) return;
 
-    if (!this.isFormChanged()) {
-      this.closeDialog();
-      return;
-    }
-
-    const projectData: ProjectRequest = {
-      name: this.form.value.name!,
-      description: this.form.value.description!,
-      startDate: this.form.value.dates?.startDate!,
-      endDate: this.form.value.dates?.endDate!,
-    };
-
-    this.closeDialog();
+    const projectData: ProjectRequest = this.getProjectData();
 
     this.loadingService.loadingOn();
     this.projectService.updateProject(this.project.id, projectData).subscribe({
@@ -164,7 +150,16 @@ export class EditProjectComponent {
     });
   }
 
-  ngOnInit(): void {
+  private getProjectData(): ProjectRequest {
+    return {
+      name: this.form.value.name ?? '',
+      description: this.form.value.description ?? '',
+      startDate: this.form.value.dates?.startDate ?? '',
+      endDate: this.form.value.dates?.endDate ?? '',
+    };
+  }
+
+  public ngOnInit(): void {
     this.fillFormWithDefaultValues();
   }
 }

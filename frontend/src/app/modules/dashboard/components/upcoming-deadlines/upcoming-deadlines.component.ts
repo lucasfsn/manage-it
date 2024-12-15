@@ -18,17 +18,17 @@ export class UpcomingDeadlinesComponent {
     private projectService: ProjectService
   ) {}
 
-  get projects(): Project[] | undefined {
+  protected get projects(): Project[] | undefined {
     return this.projectService
       .loadedProjects()
       ?.filter(
         (project) =>
           this.isUpcomingDeadline(project.endDate) &&
-          project.status !== ProjectStatus.Completed
+          project.status !== ProjectStatus.COMPLETED
       );
   }
 
-  sortedProjectsByEndDate(): Project[] {
+  protected sortedProjectsByEndDate(): Project[] {
     const projects = this.projects;
 
     if (!projects) return [];
@@ -40,8 +40,8 @@ export class UpcomingDeadlinesComponent {
       );
   }
 
-  getDeadlineClass(endDate: string, status: ProjectStatus): string {
-    if (status === ProjectStatus.Completed) {
+  protected getDeadlineClass(endDate: string, status: ProjectStatus): string {
+    if (status === ProjectStatus.COMPLETED) {
       return 'text-sky-500';
     }
 
@@ -49,33 +49,32 @@ export class UpcomingDeadlinesComponent {
 
     if (daysLeft <= 3) {
       return 'text-red-500';
-    } else if (daysLeft <= 7) {
-      return 'text-yellow-500';
-    } else {
-      return 'text-green-500';
     }
+
+    if (daysLeft <= 7) {
+      return 'text-yellow-500';
+    }
+
+    return 'text-green-500';
   }
 
-  getDeadlineMessage(endDate: string, status: ProjectStatus): string {
-    if (status === ProjectStatus.Completed) return 'Completed';
+  protected getDeadlineMessage(endDate: string, status: ProjectStatus): string {
+    if (status === ProjectStatus.COMPLETED) return 'Completed';
 
     const daysLeft = this.calculateDaysLeft(endDate);
 
-    if (daysLeft === 1) {
-      return '1 day left';
-    } else {
-      return `${daysLeft} days left`;
-    }
+    return daysLeft === 1 ? '1 day left' : `${daysLeft} days left`;
   }
 
-  calculateDaysLeft(endDate: string): number {
+  protected calculateDaysLeft(endDate: string): number {
     const currentDate = new Date();
     const end = new Date(endDate);
     const timeDiff = end.getTime() - currentDate.getTime();
+
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
   }
 
-  isInProject(project: Project): boolean {
+  protected isInProject(project: Project): boolean {
     return project.members.some(
       (member) => member.username === this.authService.getLoggedInUsername()
     );
@@ -83,6 +82,7 @@ export class UpcomingDeadlinesComponent {
 
   private isUpcomingDeadline(endDate: string): boolean {
     const daysLeft = this.calculateDaysLeft(endDate);
+
     return daysLeft > 0 && daysLeft <= 30;
   }
 }

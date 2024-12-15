@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -23,18 +23,18 @@ import {
   templateUrl: './edit-profile-form.component.html',
   styleUrl: './edit-profile-form.component.css',
 })
-export class EditProfileFormComponent {
+export class EditProfileFormComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
     private userService: UserService,
     private toastrService: ToastrService
   ) {}
 
-  get userData(): User | undefined {
+  protected get userData(): User | undefined {
     return this.userService.loadedUser();
   }
 
-  form = new FormGroup({
+  protected form = new FormGroup({
     firstName: new FormControl<string>('', {
       validators: [
         Validators.minLength(2),
@@ -67,11 +67,11 @@ export class EditProfileFormComponent {
     ),
   });
 
-  get disabled(): boolean {
+  protected get disabled(): boolean {
     return this.form.invalid || !this.isFormChanged();
   }
 
-  get firstNameIsInvalid() {
+  protected get firstNameIsInvalid(): boolean {
     return (
       this.form.controls.firstName.dirty &&
       this.form.controls.firstName.touched &&
@@ -79,7 +79,7 @@ export class EditProfileFormComponent {
     );
   }
 
-  get lastNameIsInvalid() {
+  protected get lastNameIsInvalid(): boolean {
     return (
       this.form.controls.lastName.dirty &&
       this.form.controls.lastName.touched &&
@@ -87,7 +87,7 @@ export class EditProfileFormComponent {
     );
   }
 
-  get emailIsInvalid() {
+  protected get emailIsInvalid(): boolean {
     return (
       this.form.controls.email.dirty &&
       this.form.controls.email.touched &&
@@ -95,8 +95,8 @@ export class EditProfileFormComponent {
     );
   }
 
-  get passwordIsInvalid() {
-    return (
+  protected get passwordIsInvalid(): boolean {
+    return !!(
       this.form.controls.passwords.get('password')?.value &&
       this.form.controls.passwords.get('password')?.dirty &&
       this.form.controls.passwords.get('password')?.touched &&
@@ -104,11 +104,11 @@ export class EditProfileFormComponent {
     );
   }
 
-  get passwordsDoNotMatch() {
+  protected get passwordsDoNotMatch(): boolean {
     return this.form.controls.passwords.hasError('equalValues');
   }
 
-  get firstNameErrors() {
+  protected get firstNameErrors(): string | null {
     const control = this.form.controls.firstName;
     if (control.errors) {
       if (control.errors['minlength']) {
@@ -121,10 +121,11 @@ export class EditProfileFormComponent {
         return 'First name cannot contain numbers and special characters.';
       }
     }
+
     return null;
   }
 
-  get lastNameErrors() {
+  protected get lastNameErrors(): string | null {
     const control = this.form.controls.lastName;
     if (control.errors) {
       if (control.errors['minlength']) {
@@ -137,38 +138,41 @@ export class EditProfileFormComponent {
         return 'Last name cannot contain numbers and special characters.';
       }
     }
+
     return null;
   }
 
-  get emailErrors() {
+  protected get emailErrors(): string | null {
     const control = this.form.controls.email;
     if (control.errors) {
       if (control.errors['email']) {
         return 'Email is not valid.';
       }
     }
+
     return null;
   }
 
-  get passwordErrors() {
+  protected get passwordErrors(): string | null {
     const control = this.form.controls.passwords.get('password');
     if (control?.errors) {
       if (control.errors['invalidPassword']) {
         return 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.';
       }
     }
+
     return null;
   }
 
-  closeDialog(): void {
+  protected closeDialog(): void {
     this.dialogRef.close();
   }
 
-  onReset() {
+  protected onReset(): void {
     this.fillFormWithDefaultValues();
   }
 
-  onSubmit() {
+  protected onSubmit(): void {
     if (this.form.invalid || !this.userData) return;
 
     const updatedUserData: UpdateUser = {
@@ -190,10 +194,10 @@ export class EditProfileFormComponent {
     this.closeDialog();
   }
 
-  private isFormChanged() {
+  private isFormChanged(): boolean {
     if (!this.userData) return false;
 
-    return (
+    return !!(
       this.form.value.firstName !== this.userData.firstName ||
       this.form.value.lastName !== this.userData.lastName ||
       this.form.value.email !== this.userData.email ||
@@ -201,7 +205,7 @@ export class EditProfileFormComponent {
     );
   }
 
-  private fillFormWithDefaultValues() {
+  private fillFormWithDefaultValues(): void {
     if (!this.userData) return;
 
     this.form.patchValue({
@@ -215,7 +219,7 @@ export class EditProfileFormComponent {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fillFormWithDefaultValues();
   }
 }

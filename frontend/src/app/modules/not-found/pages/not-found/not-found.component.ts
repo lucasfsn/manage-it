@@ -10,7 +10,7 @@ import { AuthService } from '../../../../features/services/auth.service';
   styleUrl: './not-found.component.css',
 })
 export class NotFoundComponent {
-  isAuthenticated: boolean;
+  protected isAuthenticated: boolean;
 
   constructor(private authService: AuthService) {
     this.isAuthenticated = this.authService.isAuthenticated();

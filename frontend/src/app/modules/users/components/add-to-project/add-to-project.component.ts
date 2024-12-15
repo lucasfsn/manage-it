@@ -12,8 +12,8 @@ import { ProjectService } from '../../../../features/services/project.service';
   styleUrl: './add-to-project.component.css',
 })
 export class AddToProjectComponent implements OnInit {
-  @Input() user: User | undefined;
-  projectId: string | null = null;
+  @Input() public user: User | undefined;
+  protected projectId: string | null = null;
 
   constructor(
     private projectService: ProjectService,
@@ -22,7 +22,7 @@ export class AddToProjectComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  handleAdd(): void {
+  protected handleAdd(): void {
     if (!this.user || !this.projectId) return;
 
     this.projectService.addToProject(this.projectId, this.user).subscribe({
@@ -38,7 +38,7 @@ export class AddToProjectComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.projectId = this.route.snapshot.paramMap.get('projectId');
   }
 }

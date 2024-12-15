@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  get isLoading(): boolean {
+  protected get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
   private loadProjects(): void {
@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadProjects();
   }
 }

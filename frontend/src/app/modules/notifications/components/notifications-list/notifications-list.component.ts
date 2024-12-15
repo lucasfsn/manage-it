@@ -17,13 +17,13 @@ export class NotificationsListComponent {
     private router: Router
   ) {}
 
-  get notifications(): Notification[] {
+  protected get notifications(): Notification[] {
     return this.notificationService
       .loadedNotifications()
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }
 
-  markAsReadAndOpen(notification: Notification) {
+  protected markAsReadAndOpen(notification: Notification): void {
     const { id, projectId, taskId } = notification;
 
     if (taskId) {

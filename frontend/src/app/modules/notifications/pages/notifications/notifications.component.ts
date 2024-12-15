@@ -18,17 +18,17 @@ export class NotificationsComponent implements OnInit {
     private notificationService: NotificationService
   ) {}
 
-  markAllAsRead(): void {
+  protected markAllAsRead(): void {
     this.notificationService.markAllAsRead().subscribe();
   }
 
-  get notifications(): Notification[] {
+  protected get notifications(): Notification[] {
     return this.notificationService
       .loadedNotifications()
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }
 
-  get isLoading(): boolean {
+  protected get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
 
@@ -44,7 +44,7 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadNotifications();
   }
 }

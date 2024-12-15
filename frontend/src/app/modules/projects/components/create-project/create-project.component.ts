@@ -35,7 +35,7 @@ export class CreateProjectComponent {
     private toastrService: ToastrService
   ) {}
 
-  form = new FormGroup({
+  protected form = new FormGroup({
     name: new FormControl<string>('', {
       validators: [
         Validators.required,
@@ -65,7 +65,7 @@ export class CreateProjectComponent {
     ),
   });
 
-  get nameIsInvalid() {
+  protected get nameIsInvalid(): boolean {
     return (
       this.form.controls.name.dirty &&
       this.form.controls.name.touched &&
@@ -73,7 +73,7 @@ export class CreateProjectComponent {
     );
   }
 
-  get descriptionIsInvalid() {
+  protected get descriptionIsInvalid(): boolean {
     return (
       this.form.controls.description.dirty &&
       this.form.controls.description.touched &&
@@ -81,15 +81,15 @@ export class CreateProjectComponent {
     );
   }
 
-  get startDateIsInvalid() {
-    return (
+  protected get startDateIsInvalid(): boolean {
+    return !!(
       this.form.controls.dates.get('startDate')?.dirty &&
       this.form.controls.dates.get('startDate')?.touched &&
       this.form.controls.dates.get('startDate')?.invalid
     );
   }
 
-  get endDateIsInvalid() {
+  protected get endDateIsInvalid(): boolean {
     return (
       (this.form.controls.dates.get('endDate')?.dirty &&
         this.form.controls.dates.get('endDate')?.touched &&
@@ -98,15 +98,15 @@ export class CreateProjectComponent {
     );
   }
 
-  getToday(): string {
+  protected getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
 
-  closeDialog(): void {
+  protected closeDialog(): void {
     this.dialogRef.close();
   }
 
-  onReset(): void {
+  protected onReset(): void {
     this.form.reset({
       dates: {
         startDate: this.getToday(),
@@ -115,16 +115,16 @@ export class CreateProjectComponent {
     });
   }
 
-  onSubmit(): void {
+  protected onSubmit(): void {
     if (this.form.invalid) {
       return;
     }
 
     const projectData: ProjectRequest = {
-      name: this.form.value.name!,
-      description: this.form.value.description!,
-      startDate: this.form.value.dates?.startDate!,
-      endDate: this.form.value.dates?.endDate!,
+      name: this.form.value.name ?? '',
+      description: this.form.value.description ?? '',
+      startDate: this.form.value.dates?.startDate ?? '',
+      endDate: this.form.value.dates?.endDate ?? '',
     };
 
     this.projectService.createProject(projectData).subscribe({

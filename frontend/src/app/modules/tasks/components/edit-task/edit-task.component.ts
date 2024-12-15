@@ -26,7 +26,7 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
   styleUrl: './edit-task.component.css',
 })
 export class EditTaskComponent implements OnInit {
-  isLoading: boolean = false;
+  protected isLoading = false;
 
   constructor(
     private taskService: TaskService,
@@ -34,16 +34,16 @@ export class EditTaskComponent implements OnInit {
     private dialogRef: MatDialogRef<EditTaskComponent>
   ) {}
 
-  form = new FormGroup({
+  protected form = new FormGroup({
     description: new FormControl<string>('', [
       Validators.minLength(2),
       Validators.maxLength(120),
       Validators.required,
     ]),
-    status: new FormControl<TaskStatus>(TaskStatus.NotStarted, {
+    status: new FormControl<TaskStatus>(TaskStatus.NOT_STARTED, {
       validators: [Validators.required],
     }),
-    priority: new FormControl<Priority>(Priority.Low, {
+    priority: new FormControl<Priority>(Priority.LOW, {
       validators: [Validators.required],
     }),
     dueDate: new FormControl<string>('', {
@@ -51,39 +51,39 @@ export class EditTaskComponent implements OnInit {
     }),
   });
 
-  get disabled(): boolean {
+  protected get disabled(): boolean {
     return this.form.invalid || !this.isFormChanged() || this.isLoading;
   }
 
-  get task(): Task | undefined {
+  protected get task(): Task | undefined {
     return this.taskService.loadedTask();
   }
 
-  get Priority(): typeof Priority {
+  protected get Priority(): typeof Priority {
     return Priority;
   }
 
-  get TaskStatus(): typeof TaskStatus {
+  protected get TaskStatus(): typeof TaskStatus {
     return TaskStatus;
   }
 
-  get priorities(): Priority[] {
+  protected get priorities(): Priority[] {
     return Object.values(Priority);
   }
 
-  get statuses(): TaskStatus[] {
+  protected get statuses(): TaskStatus[] {
     return Object.values(TaskStatus);
   }
 
-  mapTaskStatus(taskStatus: TaskStatus): string {
+  protected mapTaskStatus(taskStatus: TaskStatus): string {
     return taskStatusMapper(taskStatus);
   }
 
-  mapPriority(priority: Priority): string {
+  protected mapPriority(priority: Priority): string {
     return priorityMapper(priority);
   }
 
-  get descriptionIsInvalid() {
+  protected get descriptionIsInvalid(): boolean {
     return (
       this.form.controls['description'].dirty &&
       this.form.controls['description'].touched &&
@@ -91,7 +91,7 @@ export class EditTaskComponent implements OnInit {
     );
   }
 
-  get dueDateIsInvalid() {
+  protected get dueDateIsInvalid(): boolean {
     return (
       this.form.controls['dueDate'].dirty &&
       this.form.controls['dueDate'].touched &&
@@ -110,7 +110,7 @@ export class EditTaskComponent implements OnInit {
     );
   }
 
-  private fillFormWithDefaultValues() {
+  private fillFormWithDefaultValues(): void {
     if (!this.task) return;
 
     this.form.patchValue({
@@ -121,15 +121,15 @@ export class EditTaskComponent implements OnInit {
     });
   }
 
-  closeDialog(): void {
+  protected closeDialog(): void {
     this.dialogRef.close();
   }
 
-  onReset(): void {
+  protected onReset(): void {
     this.fillFormWithDefaultValues();
   }
 
-  onSubmit() {
+  protected onSubmit(): void {
     if (this.form.invalid) return;
 
     const updatedTask: TaskData = {
@@ -155,7 +155,7 @@ export class EditTaskComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fillFormWithDefaultValues();
   }
 }

@@ -4,7 +4,8 @@ li {
   border-radius: 0.5rem;
 }
 
-li:hover {
+li:hover,
+li:focus {
   background-color: #f5f5f5;
   transition: all 0.3s;
   color: #0ea5e9;

@@ -15,12 +15,12 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 export class TasksSummaryComponent implements OnInit {
   constructor(private projectService: ProjectService) {}
 
-  barChartData: ChartData<'bar'> = {
+  protected barChartData: ChartData<'bar'> = {
     labels: [],
     datasets: [],
   };
 
-  barChartOptions: ChartOptions<'bar'> = {
+  protected barChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     plugins: {
       legend: {
@@ -29,15 +29,15 @@ export class TasksSummaryComponent implements OnInit {
     },
   };
 
-  updateChartData(): void {
+  protected updateChartData(): void {
     const projects = this.projectService.loadedProjects();
 
     if (!projects) return;
 
-    const taskStatusCounts: { [key in TaskStatus]: number } = {
-      [TaskStatus.NotStarted]: 0,
-      [TaskStatus.InProgress]: 0,
-      [TaskStatus.Completed]: 0,
+    const taskStatusCounts: Record<TaskStatus, number> = {
+      [TaskStatus.NOT_STARTED]: 0,
+      [TaskStatus.IN_PROGRESS]: 0,
+      [TaskStatus.COMPLETED]: 0,
     };
 
     projects.forEach((project) => {
@@ -69,7 +69,7 @@ export class TasksSummaryComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.updateChartData();
   }
 }

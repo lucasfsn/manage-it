@@ -1,6 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 
-export function startDateValidator(
+export function dueDateValidator(
   control: AbstractControl
 ): Record<string, boolean> | null {
   const selectedDate = new Date(control.value);

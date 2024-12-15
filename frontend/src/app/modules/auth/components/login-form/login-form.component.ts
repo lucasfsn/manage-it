@@ -27,7 +27,7 @@ export class LoginFormComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  form = new FormGroup({
+  protected form = new FormGroup({
     email: new FormControl<string>(this.initialValue, {
       validators: [Validators.required, Validators.email],
     }),
@@ -40,7 +40,7 @@ export class LoginFormComponent implements OnInit {
     }),
   });
 
-  get emailIsInvalid() {
+  protected get emailIsInvalid(): boolean {
     return (
       this.form.controls.email.dirty &&
       this.form.controls.email.touched &&
@@ -48,7 +48,7 @@ export class LoginFormComponent implements OnInit {
     );
   }
 
-  get passwordIsInvalid() {
+  protected get passwordIsInvalid(): boolean {
     return (
       this.form.controls.password.dirty &&
       this.form.controls.password.touched &&
@@ -56,7 +56,7 @@ export class LoginFormComponent implements OnInit {
     );
   }
 
-  get passwordErrors() {
+  protected get passwordErrors(): string | null {
     const control = this.form.controls.password;
     if (control?.errors) {
       if (control.errors['required']) {
@@ -66,10 +66,11 @@ export class LoginFormComponent implements OnInit {
         return 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.';
       }
     }
+
     return null;
   }
 
-  onSubmit() {
+  protected onSubmit(): void {
     if (this.form.invalid) {
       return;
     }
@@ -87,7 +88,7 @@ export class LoginFormComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     const savedLoginForm = window.localStorage.getItem('saved-login-form');
 
     if (savedLoginForm) {

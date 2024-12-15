@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Notification } from '../dto/notification.model';
 
@@ -12,9 +12,9 @@ export class NotificationService {
 
   private notifications = signal<Notification[]>([]);
 
-  loadedNotifications = this.notifications.asReadonly();
+  public loadedNotifications = this.notifications.asReadonly();
 
-  getNotifications() {
+  public getNotifications(): Observable<Notification[]> {
     return this.http
       .get<Notification[]>(`${environment.apiUrl}/notifications`)
       .pipe(
@@ -27,7 +27,7 @@ export class NotificationService {
       );
   }
 
-  markAsRead(notificationId: string) {
+  public markAsRead(notificationId: string): Observable<null> {
     const prevNotifications = this.notifications() || [];
 
     const updatedNotifications = this.notifications().filter(
@@ -41,12 +41,13 @@ export class NotificationService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.notifications.set(prevNotifications);
+
           return throwError(() => err.error);
         })
       );
   }
 
-  markAllAsRead() {
+  public markAllAsRead(): Observable<null> {
     const prevNotifications = this.notifications() || [];
 
     this.notifications.set([]);
@@ -54,6 +55,7 @@ export class NotificationService {
     return this.http.delete<null>(`${environment.apiUrl}/notifications`).pipe(
       catchError((err: HttpErrorResponse) => {
         this.notifications.set(prevNotifications);
+
         return throwError(() => err.error);
       })
     );

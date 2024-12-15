@@ -1,18 +1,18 @@
-@if (priority === Priority.Low) {
+@if (priority === Priority.LOW) {
 <div
   class="bg-yellow-200 text-gray-900 rounded-full px-2.5 py-0.5 flex items-center justify-center font-semibold {{
     textSize
   }}"
 >
-  {{ mapPriority(Priority.Low) }}
+  {{ mapPriority(Priority.LOW) }}
 </div>
-} @else if (priority === Priority.Medium) {
+} @else if (priority === Priority.MEDIUM) {
 <div
   class="bg-orange-500 text-gray-900 rounded-full px-2.5 py-0.5 flex items-center justify-center font-semibold {{
     textSize
   }}"
 >
-  {{ mapPriority(Priority.Medium) }}
+  {{ mapPriority(Priority.MEDIUM) }}
 </div>
 } @else {
 <div
@@ -20,6 +20,6 @@
     textSize
   }}"
 >
-  {{ mapPriority(Priority.High) }}
+  {{ mapPriority(Priority.HIGH) }}
 </div>
 }

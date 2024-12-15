@@ -25,11 +25,11 @@ export class HeaderComponent {
     private toastr: ToastrService
   ) {}
 
-  get isLoggedIn(): boolean {
+  protected get isLoggedIn(): boolean {
     return this.authService.isAuthenticated();
   }
 
-  logout(): void {
+  protected logout(): void {
     this.authService.logout();
     this.toastr.success('Logged out successfully!');
   }

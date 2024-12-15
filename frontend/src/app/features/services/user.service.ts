@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { UpdateUser, User } from '../dto/user.model';
 
@@ -10,11 +10,11 @@ import { UpdateUser, User } from '../dto/user.model';
 export class UserService {
   private user = signal<User | undefined>(undefined);
 
-  loadedUser = this.user.asReadonly();
+  public loadedUser = this.user.asReadonly();
 
   constructor(private http: HttpClient) {}
 
-  getUserByUsername(username: string) {
+  public getUserByUsername(username: string): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/users/${username}`).pipe(
       tap((res: User) => {
         this.user.set(res);
@@ -25,7 +25,7 @@ export class UserService {
     );
   }
 
-  updateUserData(updatedData: UpdateUser) {
+  public updateUserData(updatedData: UpdateUser): Observable<null> {
     const prevData = this.user();
 
     if (!prevData) return throwError(() => 'User not found');
@@ -39,12 +39,17 @@ export class UserService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.user.set(prevData);
+
           return throwError(() => err.error);
         })
       );
   }
 
-  searchUsers(pattern: string, projectId?: string, taskId?: string) {
+  public searchUsers(
+    pattern: string,
+    projectId?: string,
+    taskId?: string
+  ): Observable<User[]> {
     let url = `${environment.apiUrl}/users/search?pattern=${pattern}${
       projectId ? `&projectId=${projectId}` : ''
     }`;

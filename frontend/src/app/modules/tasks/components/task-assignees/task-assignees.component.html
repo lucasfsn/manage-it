@@ -21,6 +21,7 @@
       class="flex py-1 px-3 gap-2 items-center bg-slate-950 lg:mr-auto rounded-full border-slate-800 overflow-hidden placeholder-slate-400 text-sky-500"
       [ngClass]="{ hidden: !showAssignees }"
       (click)="focusSearchInput()"
+      tabindex="0"
     >
       <mat-icon>search</mat-icon>
       <input
@@ -74,6 +75,6 @@
     [@toggleDiv]="!showAssignees || members.length === 0 ? 'show' : 'hide'"
     class="px-3"
   >
-    <app-search-add-to-task (onClick)="handleAdd($event)" />
+    <app-search-add-to-task (userAdd)="handleAdd($event)" />
   </div>
 </div>

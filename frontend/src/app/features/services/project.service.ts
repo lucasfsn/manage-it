@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, map, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   Project,
@@ -20,10 +20,10 @@ export class ProjectService {
   private projects = signal<Project[] | undefined>(undefined);
   private project = signal<Project | undefined>(undefined);
 
-  loadedProjects = this.projects.asReadonly();
-  loadedProject = this.project.asReadonly();
+  public loadedProjects = this.projects.asReadonly();
+  public loadedProject = this.project.asReadonly();
 
-  getProjects() {
+  public getProjects(): Observable<Project[]> {
     return this.http.get<Project[]>(`${environment.apiUrl}/projects`).pipe(
       tap((res: Project[]) => {
         this.projects.set(res);
@@ -34,7 +34,7 @@ export class ProjectService {
     );
   }
 
-  createProject(project: ProjectRequest) {
+  public createProject(project: ProjectRequest): Observable<string> {
     return this.http
       .post<Project>(`${environment.apiUrl}/projects`, project)
       .pipe(
@@ -52,7 +52,7 @@ export class ProjectService {
       );
   }
 
-  getProject(projectId: string) {
+  public getProject(projectId: string): Observable<Project> {
     return this.http
       .get<Project>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
@@ -65,7 +65,7 @@ export class ProjectService {
       );
   }
 
-  deleteProject(projectId: string) {
+  public deleteProject(projectId: string): Observable<null> {
     return this.http
       .delete<null>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
@@ -86,7 +86,10 @@ export class ProjectService {
       );
   }
 
-  updateProject(projectId: string, updatedProject: ProjectRequest) {
+  public updateProject(
+    projectId: string,
+    updatedProject: ProjectRequest
+  ): Observable<null> {
     const prevProject = this.project();
 
     if (!prevProject)
@@ -104,12 +107,13 @@ export class ProjectService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.project.set(prevProject);
+
           return throwError(() => err.error);
         })
       );
   }
 
-  completeProject() {
+  public completeProject(): Observable<null> {
     const prevProject = this.project();
 
     if (!prevProject)
@@ -117,23 +121,24 @@ export class ProjectService {
         () => new Error('Something went wrong. Project not found')
       );
 
-    const updatedProject = { ...prevProject, status: ProjectStatus.Completed };
+    const updatedProject = { ...prevProject, status: ProjectStatus.COMPLETED };
 
     this.project.set(updatedProject);
 
     return this.http
       .patch<null>(`${environment.apiUrl}/projects/${prevProject.id}`, {
-        status: ProjectStatus.Completed,
+        status: ProjectStatus.COMPLETED,
       })
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.project.set(prevProject);
+
           return throwError(() => err.error);
         })
       );
   }
 
-  addToProject(projectId: string, user: User) {
+  public addToProject(projectId: string, user: User): Observable<null> {
     return this.http
       .patch<null>(`${environment.apiUrl}/projects/${projectId}/user/add`, user)
       .pipe(
@@ -142,12 +147,13 @@ export class ProjectService {
         }),
         catchError((err: HttpErrorResponse) => {
           this.allowAccessToAddToProject = false;
+
           return throwError(() => err.error);
         })
       );
   }
 
-  removeFromProject(user: User) {
+  public removeFromProject(user: User): Observable<null> {
     const prevProject = this.project();
 
     if (!prevProject)
@@ -169,20 +175,21 @@ export class ProjectService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.project.set(prevProject);
+
           return throwError(() => err.error);
         })
       );
   }
 
-  setProject(project: Project) {
+  public setProject(project: Project): void {
     this.project.set(project);
   }
 
-  get allowAccessToAddToProject(): boolean {
+  public get allowAccessToAddToProject(): boolean {
     return this.allowAccess;
   }
 
-  set allowAccessToAddToProject(value: boolean) {
+  public set allowAccessToAddToProject(value: boolean) {
     this.allowAccess = value;
   }
 }

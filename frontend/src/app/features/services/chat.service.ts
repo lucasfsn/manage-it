@@ -18,8 +18,8 @@ export class ChatService {
   private projectMessages = signal<Message[]>([]);
   private taskMessages = signal<Message[]>([]);
 
-  loadedProjectMessages = this.projectMessages.asReadonly();
-  loadedTaskMessages = this.taskMessages.asReadonly();
+  public loadedProjectMessages = this.projectMessages.asReadonly();
+  public loadedTaskMessages = this.taskMessages.asReadonly();
 
   constructor(
     private httpClient: HttpClient,
@@ -35,7 +35,7 @@ export class ChatService {
     this.setup();
   }
 
-  sendProjectMessage(projectId: string, message: string) {
+  public sendProjectMessage(projectId: string, message: string): void {
     const token = localStorage.getItem('JWT_TOKEN');
 
     if (!token) return;
@@ -48,7 +48,7 @@ export class ChatService {
     this.sendMessage(`/send/projects/${projectId}`, messageToSend);
   }
 
-  sendTaskMessage(taskId: string, message: string) {
+  public sendTaskMessage(taskId: string, message: string): void {
     const token = localStorage.getItem('JWT_TOKEN');
 
     if (!token) return;
@@ -61,7 +61,7 @@ export class ChatService {
     this.sendMessage(`/send/tasks/${taskId}`, messageToSend);
   }
 
-  getProjectChatHistory(projectId: string): Observable<Message[]> {
+  public getProjectChatHistory(projectId: string): Observable<Message[]> {
     return this.httpClient
       .get<Message[]>(`${environment.apiUrl}/chat/projects/${projectId}`)
       .pipe(
@@ -71,7 +71,10 @@ export class ChatService {
       );
   }
 
-  getTaskChatHistory(projectId: string, taskId: string): Observable<Message[]> {
+  public getTaskChatHistory(
+    projectId: string,
+    taskId: string
+  ): Observable<Message[]> {
     return this.httpClient
       .get<Message[]>(
         `${environment.apiUrl}/chat/projects/${projectId}/tasks/${taskId}`
@@ -83,14 +86,14 @@ export class ChatService {
       );
   }
 
-  deactivate(): void {
+  public deactivate(): void {
     if (this.stompClient) {
       this.stompClient.deactivate();
       this.isConnected = false;
     }
   }
 
-  private sendMessage(destination: string, message: any) {
+  private sendMessage(destination: string, message: MessageSend): void {
     const body = JSON.stringify(message);
     if (this.isConnected) {
       this.stompClient.publish({ destination, body });
@@ -99,8 +102,8 @@ export class ChatService {
     }
   }
 
-  private setup() {
-    this.stompClient.onConnect = (frame) => {
+  private setup(): void {
+    this.stompClient.onConnect = () => {
       this.isConnected = true;
 
       while (this.messageQueue.length > 0) {

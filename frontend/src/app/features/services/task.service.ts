@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Task, TaskData, User } from '../dto/project.model';
 import { ProjectService } from './project.service';
@@ -16,9 +16,9 @@ export class TaskService {
 
   private task = signal<Task | undefined>(undefined);
 
-  loadedTask = this.task.asReadonly();
+  public loadedTask = this.task.asReadonly();
 
-  createTask(task: TaskData) {
+  public createTask(task: TaskData): Observable<Task> {
     const project = this.projectService.loadedProject();
 
     if (!project)
@@ -38,12 +38,13 @@ export class TaskService {
         }),
         catchError((err: HttpErrorResponse) => {
           this.projectService.setProject(project);
+
           return throwError(() => err.error);
         })
       );
   }
 
-  getTask(projectId: string, taskId: string) {
+  public getTask(projectId: string, taskId: string): Observable<Task> {
     return this.http
       .get<Task>(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
       .pipe(
@@ -56,7 +57,7 @@ export class TaskService {
       );
   }
 
-  moveProjectTask(updatedTask: Task) {
+  public moveProjectTask(updatedTask: Task): Observable<null> {
     const project = this.projectService.loadedProject();
     const prevTask = this.task();
 
@@ -85,12 +86,13 @@ export class TaskService {
         catchError((err: HttpErrorResponse) => {
           this.projectService.setProject(project);
           this.task.set(prevTask);
+
           return throwError(() => err.error);
         })
       );
   }
 
-  deleteTask() {
+  public deleteTask(): Observable<null> {
     const projectId = this.task()?.projectId;
     const taskId = this.task()?.id;
 
@@ -102,14 +104,13 @@ export class TaskService {
         `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`
       )
       .pipe(
-        tap(() => {}),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
         })
       );
   }
 
-  updateTask(updatedTask: TaskData) {
+  public updateTask(updatedTask: TaskData): Observable<null> {
     const prevTask = this.task();
 
     if (!prevTask)
@@ -127,12 +128,13 @@ export class TaskService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.task.set(prevTask);
+
           return throwError(() => err.error);
         })
       );
   }
 
-  addToTask(user: User) {
+  public addToTask(user: User): Observable<null> {
     const prevTask = this.task();
 
     if (!prevTask)
@@ -156,12 +158,13 @@ export class TaskService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.task.set(prevTask);
+
           return throwError(() => err.error);
         })
       );
   }
 
-  removeFromTask(user: User) {
+  public removeFromTask(user: User): Observable<null> {
     const prevTask = this.task();
 
     if (!prevTask)
@@ -185,6 +188,7 @@ export class TaskService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.task.set(prevTask);
+
           return throwError(() => err.error);
         })
       );

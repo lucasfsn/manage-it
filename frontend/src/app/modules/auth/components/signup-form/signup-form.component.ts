@@ -29,7 +29,7 @@ export class SignupFormComponent {
     private toastrService: ToastrService
   ) {}
 
-  form = new FormGroup({
+  protected form = new FormGroup({
     firstName: new FormControl<string>('', {
       validators: [
         Validators.required,
@@ -80,7 +80,7 @@ export class SignupFormComponent {
     ),
   });
 
-  get firstNameIsInvalid() {
+  protected get firstNameIsInvalid(): boolean {
     return (
       this.form.controls.firstName.dirty &&
       this.form.controls.firstName.touched &&
@@ -88,7 +88,7 @@ export class SignupFormComponent {
     );
   }
 
-  get lastNameIsInvalid() {
+  protected get lastNameIsInvalid(): boolean {
     return (
       this.form.controls.lastName.dirty &&
       this.form.controls.lastName.touched &&
@@ -96,7 +96,7 @@ export class SignupFormComponent {
     );
   }
 
-  get usernameIsInvalid() {
+  protected get usernameIsInvalid(): boolean {
     return (
       this.form.controls.username.dirty &&
       this.form.controls.username.touched &&
@@ -104,7 +104,7 @@ export class SignupFormComponent {
     );
   }
 
-  get emailIsInvalid() {
+  protected get emailIsInvalid(): boolean {
     return (
       this.form.controls.email.dirty &&
       this.form.controls.email.touched &&
@@ -112,19 +112,19 @@ export class SignupFormComponent {
     );
   }
 
-  get passwordIsInvalid() {
-    return (
+  protected get passwordIsInvalid(): boolean {
+    return !!(
       this.form.controls.passwords.get('password')?.dirty &&
       this.form.controls.passwords.get('password')?.touched &&
       this.form.controls.passwords.get('password')?.invalid
     );
   }
 
-  get passwordsDoNotMatch() {
+  protected get passwordsDoNotMatch(): boolean {
     return this.form.controls.passwords.hasError('equalValues');
   }
 
-  get firstNameErrors() {
+  protected get firstNameErrors(): string | null {
     const control = this.form.controls.firstName;
     if (control.errors) {
       if (control.errors['required']) {
@@ -140,10 +140,11 @@ export class SignupFormComponent {
         return 'First name cannot contain numbers and special characters.';
       }
     }
+
     return null;
   }
 
-  get lastNameErrors() {
+  protected get lastNameErrors(): string | null {
     const control = this.form.controls.lastName;
     if (control.errors) {
       if (control.errors['required']) {
@@ -159,10 +160,11 @@ export class SignupFormComponent {
         return 'Last name cannot contain numbers and special characters.';
       }
     }
+
     return null;
   }
 
-  get usernameErrors() {
+  protected get usernameErrors(): string | null {
     const control = this.form.controls.username;
     if (control.errors) {
       if (control.errors['required']) {
@@ -178,10 +180,11 @@ export class SignupFormComponent {
         return 'Username cannot contain numbers and special characters.';
       }
     }
+
     return null;
   }
 
-  get emailErrors() {
+  protected get emailErrors(): string | null {
     const control = this.form.controls.email;
     if (control.errors) {
       if (control.errors['required']) {
@@ -191,10 +194,11 @@ export class SignupFormComponent {
         return 'Email is not valid.';
       }
     }
+
     return null;
   }
 
-  get passwordErrors() {
+  protected get passwordErrors(): string | null {
     const control = this.form.controls.passwords.get('password');
     if (control?.errors) {
       if (control.errors['required']) {
@@ -204,10 +208,11 @@ export class SignupFormComponent {
         return 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.';
       }
     }
+
     return null;
   }
 
-  onSubmit() {
+  protected onSubmit(): void {
     if (this.form.invalid) {
       return;
     }
@@ -230,7 +235,7 @@ export class SignupFormComponent {
     });
   }
 
-  onReset() {
+  protected onReset(): void {
     this.form.reset();
   }
 }

@@ -15,8 +15,10 @@ import { TaskService } from '../../../features/services/task.service';
   styleUrl: './show-more-members.component.css',
 })
 export class ShowMoreMembersComponent {
-  isOnlyShow = inject<{ isOnlyShow: boolean }>(MAT_DIALOG_DATA).isOnlyShow;
-  isOnProject = inject<{ isOnProject: boolean }>(MAT_DIALOG_DATA).isOnProject;
+  protected isOnlyShow = inject<{ isOnlyShow: boolean }>(MAT_DIALOG_DATA)
+    .isOnlyShow;
+  protected isOnProject = inject<{ isOnProject: boolean }>(MAT_DIALOG_DATA)
+    .isOnProject;
 
   constructor(
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
@@ -25,17 +27,17 @@ export class ShowMoreMembersComponent {
     private toastrService: ToastrService
   ) {}
 
-  get members(): User[] | undefined {
+  protected get members(): User[] | undefined {
     return this.isOnProject
       ? this.projectService.loadedProject()?.members
       : this.taskService.loadedTask()?.members;
   }
 
-  get projectOwner() {
+  protected get projectOwner(): User | undefined {
     return this.projectService.loadedProject()?.owner;
   }
 
-  handleRemove(user: User): void {
+  protected handleRemove(user: User): void {
     this.projectService.removeFromProject(user).subscribe({
       error: (error) => {
         this.toastrService.error(error.message);
@@ -48,7 +50,7 @@ export class ShowMoreMembersComponent {
     });
   }
 
-  onClose(): void {
+  protected onClose(): void {
     this.dialogRef.close();
   }
 }

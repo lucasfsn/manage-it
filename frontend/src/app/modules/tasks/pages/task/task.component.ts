@@ -6,7 +6,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -53,8 +53,8 @@ import { TaskDetailsComponent } from '../../components/task-details/task-details
     ]),
   ],
 })
-export class TaskComponent {
-  public showChat = signal<boolean>(false);
+export class TaskComponent implements OnInit {
+  protected showChat = signal<boolean>(false);
 
   constructor(
     private taskService: TaskService,
@@ -65,25 +65,25 @@ export class TaskComponent {
     private dialog: MatDialog
   ) {}
 
-  get task(): Task | undefined {
+  protected get task(): Task | undefined {
     return this.taskService.loadedTask();
   }
 
-  get isLoading(): boolean {
+  protected get isLoading(): boolean {
     return this.loadingService.isLoading();
   }
 
-  toggleChat() {
+  protected toggleChat(): void {
     this.showChat.set(!this.showChat());
   }
 
-  handleGoBack() {
+  protected handleGoBack(): void {
     if (!this.task) return;
 
     this.router.navigate(['/projects', this.task.projectId]);
   }
 
-  handleDelete() {
+  protected handleDelete(): void {
     const confirmDelete = confirm('Are you sure you want to delete this task?');
 
     if (!confirmDelete) return;
@@ -99,7 +99,7 @@ export class TaskComponent {
     });
   }
 
-  handleEdit() {
+  protected handleEdit(): void {
     const taskId = this.route.snapshot.paramMap.get('taskId');
 
     if (!taskId) {
@@ -121,6 +121,7 @@ export class TaskComponent {
 
     if (!projectId || !taskId) {
       this.router.navigate(['/projects']);
+
       return;
     }
 
@@ -137,7 +138,7 @@ export class TaskComponent {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadTaskData();
   }
 }

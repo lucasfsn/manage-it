@@ -17,13 +17,13 @@ export class OngoingProjectsComponent {
     private projectService: ProjectService
   ) {}
 
-  get projects(): Project[] | undefined {
+  protected get projects(): Project[] | undefined {
     return this.projectService
       .loadedProjects()
-      ?.filter((project) => project.status === ProjectStatus.InProgress);
+      ?.filter((project) => project.status === ProjectStatus.IN_PROGRESS);
   }
 
-  isInProject(project: Project): boolean {
+  protected isInProject(project: Project): boolean {
     return project.members.some(
       (member) => member.username === this.authService.getLoggedInUsername()
     );
