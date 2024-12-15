@@ -16,6 +16,18 @@ import {
   passwordValidator,
 } from '../../validators';
 
+interface PasswordsForm {
+  password: FormControl<string | null>;
+  confirmPassword: FormControl<string | null>;
+}
+
+interface EditProfileForm {
+  firstName: FormControl<string | null>;
+  lastName: FormControl<string | null>;
+  email: FormControl<string | null>;
+  passwords: FormGroup<PasswordsForm>;
+}
+
 @Component({
   selector: 'app-edit-profile-form',
   standalone: true,
@@ -34,30 +46,30 @@ export class EditProfileFormComponent implements OnInit {
     return this.userService.loadedUser();
   }
 
-  protected form = new FormGroup({
-    firstName: new FormControl<string>('', {
+  protected form: FormGroup<EditProfileForm> = new FormGroup<EditProfileForm>({
+    firstName: new FormControl('', {
       validators: [
         Validators.minLength(2),
         Validators.maxLength(50),
         nameValidator,
       ],
     }),
-    lastName: new FormControl<string>('', {
+    lastName: new FormControl('', {
       validators: [
         Validators.minLength(2),
         Validators.maxLength(50),
         nameValidator,
       ],
     }),
-    email: new FormControl<string>('', {
+    email: new FormControl('', {
       validators: [Validators.email],
     }),
-    passwords: new FormGroup(
+    passwords: new FormGroup<PasswordsForm>(
       {
-        password: new FormControl<string>('', {
+        password: new FormControl('', {
           validators: [passwordValidator],
         }),
-        confirmPassword: new FormControl<string>('', {
+        confirmPassword: new FormControl('', {
           validators: [passwordValidator],
         }),
       },

@@ -16,6 +16,17 @@ import { LoadingService } from '../../../../features/services/loading.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { endDateValidator } from '../../validators/end-date.validator';
 
+interface DatesForm {
+  startDate: FormControl<string | null>;
+  endDate: FormControl<string | null>;
+}
+
+interface EditProjectForm {
+  name: FormControl<string | null>;
+  description: FormControl<string | null>;
+  dates: FormGroup<DatesForm>;
+}
+
 @Component({
   selector: 'app-edit-project',
   standalone: true,
@@ -31,27 +42,27 @@ export class EditProjectComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  protected form = new FormGroup({
-    name: new FormControl<string>('', {
+  protected form: FormGroup<EditProjectForm> = new FormGroup<EditProjectForm>({
+    name: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
       ],
     }),
-    description: new FormControl<string>('', {
+    description: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(120),
       ],
     }),
-    dates: new FormGroup(
+    dates: new FormGroup<DatesForm>(
       {
-        startDate: new FormControl<string>('', {
+        startDate: new FormControl('', {
           validators: [Validators.required],
         }),
-        endDate: new FormControl<string>('', {
+        endDate: new FormControl('', {
           validators: [Validators.required],
         }),
       },

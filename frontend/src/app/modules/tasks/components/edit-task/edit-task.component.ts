@@ -18,6 +18,13 @@ import { TaskService } from '../../../../features/services/task.service';
 import { priorityMapper } from '../../../../shared/utils/priority-mapper';
 import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 
+interface EditTaskForm {
+  description: FormControl<string | null>;
+  status: FormControl<TaskStatus | null>;
+  priority: FormControl<Priority | null>;
+  dueDate: FormControl<string | null>;
+}
+
 @Component({
   selector: 'app-edit-task',
   standalone: true,
@@ -34,19 +41,19 @@ export class EditTaskComponent implements OnInit {
     private dialogRef: MatDialogRef<EditTaskComponent>
   ) {}
 
-  protected form = new FormGroup({
-    description: new FormControl<string>('', [
+  protected form: FormGroup<EditTaskForm> = new FormGroup<EditTaskForm>({
+    description: new FormControl('', [
       Validators.minLength(2),
       Validators.maxLength(120),
       Validators.required,
     ]),
-    status: new FormControl<TaskStatus>(TaskStatus.NOT_STARTED, {
+    status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED, {
       validators: [Validators.required],
     }),
-    priority: new FormControl<Priority>(Priority.LOW, {
+    priority: new FormControl<Priority | null>(Priority.LOW, {
       validators: [Validators.required],
     }),
-    dueDate: new FormControl<string>('', {
+    dueDate: new FormControl('', {
       validators: [Validators.required],
     }),
   });

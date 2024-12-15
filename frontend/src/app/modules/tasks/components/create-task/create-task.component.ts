@@ -22,6 +22,12 @@ import { TaskService } from '../../../../features/services/task.service';
 import { priorityMapper } from '../../../../shared/utils/priority-mapper';
 import { dueDateValidator } from '../../validators/due-date.validator';
 
+interface CreateTaskForm {
+  description: FormControl<string | null>;
+  dueDate: FormControl<string | null>;
+  priority: FormControl<Priority | null>;
+}
+
 @Component({
   selector: 'app-create-task',
   standalone: true,
@@ -53,18 +59,18 @@ export class CreateTaskComponent {
     return new Date().toISOString().split('T')[0];
   }
 
-  protected form = new FormGroup({
-    description: new FormControl<string>('', {
+  protected form: FormGroup<CreateTaskForm> = new FormGroup<CreateTaskForm>({
+    description: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(120),
       ],
     }),
-    dueDate: new FormControl<string>(this.getToday(), {
+    dueDate: new FormControl(this.getToday(), {
       validators: [Validators.required, dueDateValidator],
     }),
-    priority: new FormControl<Priority>(Priority.LOW, {
+    priority: new FormControl<Priority | null>(Priority.LOW, {
       validators: [Validators.required],
     }),
   });

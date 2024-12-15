@@ -1,0 +1,60 @@
+<div class="flex gap-4">
+  <button mat-icon-button [matMenuTriggerFor]="filterMenu">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+  <div class="flex items-center bg-slate-900 rounded-full px-2 py-1 gap-1">
+    <label for="filterOwner" class="flex items-center">
+      <mat-icon>search</mat-icon>
+    </label>
+    <input
+      id="filterOwner"
+      type="text"
+      placeholder="Filter by project name"
+      class="focus:outline-none focus:ring-0 bg-transparent"
+      [(ngModel)]="filterProjectName"
+      (input)="handleChange()"
+    />
+  </div>
+</div>
+
+<mat-menu #filterMenu="matMenu">
+  <div
+    class="flex flex-col gap-2 p-3 bg-slate-900"
+    matMenuContent
+    (click)="$event.stopPropagation()"
+    tabindex="0"
+  >
+    <p class="text-base">Filters</p>
+    <div class="flex flex-col gap-4 bg-transparent p-2 rounded-md">
+      <div class="flex flex-col gap-1">
+        <p class="text-sm text-center">Status</p>
+        <mat-radio-group [(ngModel)]="filterStatus" class="flex flex-col">
+          <mat-radio-button [value]="undefined">All</mat-radio-button>
+          @for (status of projectStatuses; track status) {
+          <mat-radio-button [value]="status">{{
+            mapStatus(status)
+          }}</mat-radio-button>
+          }
+        </mat-radio-group>
+      </div>
+      <mat-checkbox
+        (click)="$event.stopPropagation()"
+        [(ngModel)]="filterOwnedByCurrentUser"
+      >
+        <span class="text-sm">Only owned by me</span>
+      </mat-checkbox>
+    </div>
+    <div class="flex justify-end gap-1">
+      <button mat-button (click)="handleClear()" class="px-2 py-1">
+        Clear
+      </button>
+      <button
+        mat-button
+        (click)="handleChange()"
+        class="px-2 py-1 bg-slate-950 rounded-md hover:bg-opacity-80 hover:text-slate-200 transition-all text-slate-200"
+      >
+        Apply
+      </button>
+    </div>
+  </div>
+</mat-menu>

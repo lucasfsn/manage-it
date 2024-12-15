@@ -1,0 +1,32 @@
+<div class="flex flex-col self-end text-sm gap-2 sm:flex-row">
+  <div class="flex gap-1.5 items-center text-gray-400">
+    <label for="sort">Sort by:</label>
+    <select
+      id="sort"
+      class="bg-slate-900 px-2 py-1 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+      (change)="onSortCriteriaChange($event)"
+      [(ngModel)]="sortCriteria"
+    >
+      @for (criteria of sortCriterias; track criteria) {
+      <option [value]="criteria">
+        {{ mapCriteria(criteria) }}
+      </option>
+      }
+    </select>
+  </div>
+  <div class="flex gap-1.5 items-center text-gray-400">
+    <label for="order">Order:</label>
+    <select
+      id="order"
+      class="bg-slate-900 px-2 py-1 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+      (change)="onSortOrderChange($event)"
+      [(ngModel)]="sortOrder"
+    >
+      @for (order of sortOrders; track order) {
+      <option [value]="order">
+        {{ mapOrder(order) }}
+      </option>
+      }
+    </select>
+  </div>
+</div>

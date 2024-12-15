@@ -15,6 +15,17 @@ import { ProjectService } from '../../../../features/services/project.service';
 import { endDateValidator } from '../../validators/end-date.validator';
 import { startDateValidator } from '../../validators/start-date.validator';
 
+interface DatesForm {
+  startDate: FormControl<string | null>;
+  endDate: FormControl<string | null>;
+}
+
+interface CreateProjectForm {
+  name: FormControl<string | null>;
+  description: FormControl<string | null>;
+  dates: FormGroup<DatesForm>;
+}
+
 @Component({
   selector: 'app-create-project',
   standalone: true,
@@ -35,35 +46,36 @@ export class CreateProjectComponent {
     private toastrService: ToastrService
   ) {}
 
-  protected form = new FormGroup({
-    name: new FormControl<string>('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50),
-      ],
-    }),
-    description: new FormControl<string>('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(120),
-      ],
-    }),
-    dates: new FormGroup(
-      {
-        startDate: new FormControl<string>(this.getToday(), {
-          validators: [Validators.required, startDateValidator],
-        }),
-        endDate: new FormControl<string>(this.getToday(), {
-          validators: [Validators.required],
-        }),
-      },
-      {
-        validators: [endDateValidator('startDate', 'endDate')],
-      }
-    ),
-  });
+  protected form: FormGroup<CreateProjectForm> =
+    new FormGroup<CreateProjectForm>({
+      name: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      }),
+      description: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(120),
+        ],
+      }),
+      dates: new FormGroup<DatesForm>(
+        {
+          startDate: new FormControl(this.getToday(), {
+            validators: [Validators.required, startDateValidator],
+          }),
+          endDate: new FormControl(this.getToday(), {
+            validators: [Validators.required],
+          }),
+        },
+        {
+          validators: [endDateValidator('startDate', 'endDate')],
+        }
+      ),
+    });
 
   protected get nameIsInvalid(): boolean {
     return (

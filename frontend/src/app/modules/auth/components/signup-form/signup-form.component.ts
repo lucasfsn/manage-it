@@ -16,6 +16,19 @@ import {
   usernameValidator,
 } from '../../validators';
 
+interface PasswordsForm {
+  password: FormControl<string | null>;
+  confirmPassword: FormControl<string | null>;
+}
+
+interface SignupForm {
+  firstName: FormControl<string | null>;
+  lastName: FormControl<string | null>;
+  username: FormControl<string | null>;
+  email: FormControl<string | null>;
+  passwords: FormGroup<PasswordsForm>;
+}
+
 @Component({
   selector: 'app-signup-form',
   standalone: true,
@@ -29,8 +42,8 @@ export class SignupFormComponent {
     private toastrService: ToastrService
   ) {}
 
-  protected form = new FormGroup({
-    firstName: new FormControl<string>('', {
+  protected form: FormGroup<SignupForm> = new FormGroup<SignupForm>({
+    firstName: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
@@ -38,7 +51,7 @@ export class SignupFormComponent {
         nameValidator,
       ],
     }),
-    lastName: new FormControl<string>('', {
+    lastName: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(2),
@@ -46,7 +59,7 @@ export class SignupFormComponent {
         nameValidator,
       ],
     }),
-    username: new FormControl<string>('', {
+    username: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(8),
@@ -54,19 +67,19 @@ export class SignupFormComponent {
         usernameValidator,
       ],
     }),
-    email: new FormControl<string>('', {
+    email: new FormControl('', {
       validators: [Validators.required, Validators.email],
     }),
-    passwords: new FormGroup(
+    passwords: new FormGroup<PasswordsForm>(
       {
-        password: new FormControl<string>('', {
+        password: new FormControl('', {
           validators: [
             Validators.required,
             Validators.minLength(8),
             passwordValidator,
           ],
         }),
-        confirmPassword: new FormControl<string>('', {
+        confirmPassword: new FormControl('', {
           validators: [
             Validators.required,
             Validators.minLength(8),

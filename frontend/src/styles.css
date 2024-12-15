@@ -70,3 +70,7 @@ button {
   background: rgb(8 47 73 / var(--tw-bg-opacity));
   border-radius: 5px;
 }
+
+.mat-mdc-menu-content {
+  padding: 0 !important;
+}

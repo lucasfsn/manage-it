@@ -1,21 +1,43 @@
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { ProjectService } from '../../../../features/services/project.service';
+import { ProjectFilters } from '../../models/project-filter.model';
+import {
+  ProjectsSort,
+  SortCriteria,
+  SortOrder,
+} from '../../models/project-sort.model';
+import { FilterProjectsComponent } from '../filter-projects/filter-projects.component';
+import { SortProjectsComponent } from '../sort-projects/sort-projects.component';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
-  imports: [RouterLink, DecimalPipe, DatePipe, CommonModule],
+  imports: [
+    RouterLink,
+    DecimalPipe,
+    DatePipe,
+    CommonModule,
+    FormsModule,
+    FilterProjectsComponent,
+    SortProjectsComponent,
+  ],
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.css',
 })
 export class ProjectsListComponent implements OnInit {
-  protected sortedProjects: Project[] | undefined;
-  protected sortCriteria = 'name';
-  protected sortOrder = 'ascending';
+  protected sortedAndFilteredProjects: Project[] | undefined;
+
+  protected sortCriteria: SortCriteria = SortCriteria.NAME;
+  protected sortOrder: SortOrder = SortOrder.ASCENDING;
+
+  protected filterName = '';
+  protected filterStatus: ProjectStatus | undefined;
+  protected filterOwnedByCurrentUser = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,30 +55,33 @@ export class ProjectsListComponent implements OnInit {
   }
 
   protected sortProjects(): void {
-    if (!this.projects) return;
+    if (!this.sortedAndFilteredProjects) return;
 
-    this.sortedProjects = [...this.projects].sort((a, b) => {
-      let comparison = 0;
-      switch (this.sortCriteria) {
-        case 'name':
-          comparison = a.name.localeCompare(b.name);
-          break;
-        case 'status':
-          comparison =
-            this.statusPriority[a.status] - this.statusPriority[b.status];
-          break;
-        case 'startDate':
-          comparison =
-            new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-          break;
-        case 'endDate':
-          comparison =
-            new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
-          break;
+    this.sortedAndFilteredProjects = [...this.sortedAndFilteredProjects].sort(
+      (a, b) => {
+        let comparison = 0;
+        switch (this.sortCriteria) {
+          case SortCriteria.NAME:
+            comparison = a.name.localeCompare(b.name);
+            break;
+          case SortCriteria.START_DATE:
+            comparison =
+              new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+            break;
+          case SortCriteria.END_DATE:
+            comparison =
+              new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+            break;
+          case SortCriteria.COMPLETED_TASKS:
+            comparison = a.completedTasks - b.completedTasks;
+            break;
+        }
+
+        return this.sortOrder === SortOrder.ASCENDING
+          ? comparison
+          : -comparison;
       }
-
-      return this.sortOrder === 'ascending' ? comparison : -comparison;
-    });
+    );
 
     this.updateQueryParams();
   }
@@ -72,33 +97,42 @@ export class ProjectsListComponent implements OnInit {
     });
   }
 
-  protected onSortChange(event: Event, type: 'criteria' | 'order'): void {
-    const el = event.target as HTMLSelectElement;
-    if (type === 'criteria') {
-      this.sortCriteria = el.value;
-      this.sortOrder = 'ascending';
-    } else {
-      this.sortOrder = el.value;
-    }
-
+  protected onSortChange(sort: ProjectsSort): void {
+    this.sortCriteria = sort.criteria;
+    this.sortOrder = sort.order;
     this.sortProjects();
   }
 
-  protected isInProject(project: Project): boolean {
-    return project.members.some(
-      (member) => member.username === this.authService.getLoggedInUsername()
-    );
+  private filterProjects(): Project[] | undefined {
+    if (!this.projects) return;
+
+    return this.projects.filter((project) => {
+      const matchesName =
+        !this.filterName ||
+        project.name.toLowerCase().includes(this.filterName.toLowerCase());
+      const matchesStatus =
+        !this.filterStatus || project.status === this.filterStatus;
+      const matchesOwner =
+        !this.filterOwnedByCurrentUser ||
+        project.owner.username === this.authService.getLoggedInUsername();
+
+      return matchesName && matchesStatus && matchesOwner;
+    });
   }
 
-  private statusPriority: Record<ProjectStatus, number> = {
-    [ProjectStatus.IN_PROGRESS]: 1,
-    [ProjectStatus.COMPLETED]: 2,
-  };
+  protected onFilterChange(filters: ProjectFilters): void {
+    this.filterName = filters.name;
+    this.filterStatus = filters.status;
+    this.filterOwnedByCurrentUser = filters.ownedByCurrentUser;
+    this.sortedAndFilteredProjects = this.filterProjects();
+    this.sortProjects();
+  }
 
   public ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.sortCriteria = params['sort'] || 'name';
-      this.sortOrder = params['order'] || 'ascending';
+      this.sortCriteria = (params['sort'] as SortCriteria) || SortCriteria.NAME;
+      this.sortOrder = (params['order'] as SortOrder) || SortOrder.ASCENDING;
+      this.sortedAndFilteredProjects = this.filterProjects();
       this.sortProjects();
     });
   }

@@ -11,6 +11,11 @@ import { debounceTime } from 'rxjs';
 import { AuthService } from '../../../../features/services/auth.service';
 import { passwordValidator } from '../../validators';
 
+interface LoginForm {
+  email: FormControl<string | null>;
+  password: FormControl<string | null>;
+}
+
 @Component({
   selector: 'app-login-form',
   standalone: true,
@@ -27,11 +32,11 @@ export class LoginFormComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  protected form = new FormGroup({
-    email: new FormControl<string>(this.initialValue, {
+  protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>({
+    email: new FormControl(this.initialValue, {
       validators: [Validators.required, Validators.email],
     }),
-    password: new FormControl<string>('', {
+    password: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(8),

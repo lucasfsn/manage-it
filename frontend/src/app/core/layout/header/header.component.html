@@ -42,7 +42,7 @@
     <button class="block sm:hidden" [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
     </button>
-    <mat-menu #menu="matMenu" class="bg-blue-600">
+    <mat-menu #menu="matMenu">
       @if (isLoggedIn) {
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
