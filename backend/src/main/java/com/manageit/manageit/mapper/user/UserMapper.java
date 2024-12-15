@@ -33,6 +33,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .username(user.getName())
                 .projects(user.getProjects().stream().map(projectMapper::toUserProfileProjectDto).collect(Collectors.toList()))
+                .createdAt(user.getCreatedAt())
                 .build();
     }
 
@@ -43,6 +44,7 @@ public class UserMapper {
                 .lastName(user.getLastName())
                 .username(user.getName())
                 .projects(user.getProjects().stream().map(projectMapper::toUserProfileProjectDto).collect(Collectors.toList()))
+                .createdAt(user.getCreatedAt())
                 .build();
     }
 }

@@ -5,6 +5,7 @@ import com.manageit.manageit.dto.project.UserProfileProjectDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -16,4 +17,5 @@ import java.util.List;
 public class UserResponseDto extends BasicUserDto {
     private String email;
     private List<UserProfileProjectDto> projects;
+    private LocalDateTime createdAt;
 }

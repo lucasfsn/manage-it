@@ -40,9 +40,7 @@ public class ChatController {
     public MessageDto sendTaskMessage(
             @DestinationVariable UUID taskId,
             @Payload WebSocketRequestMessage requset
-//            SimpMessageHeaderAccessor headerAccessor
     ) {
-//        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", message.getUser().getUsername());
         return messageService.saveMessageToTaskChat(taskId, requset.getToken(), requset.getContent());
     }
 
@@ -63,7 +61,6 @@ public class ChatController {
         @PathVariable UUID taskId
     ) {
         Chat chat = chatService.getChatByProjectIdAndTaskId(projectId, taskId);
-        System.out.println(chat);
         return ResponseEntity.ok(messageService.getMessagesByChat(chat));
     }
 }
