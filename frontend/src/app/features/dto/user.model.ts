@@ -10,13 +10,13 @@ export interface User {
 }
 
 export interface UpdateUser {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password?: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly email: string;
+  readonly password?: string;
 }
 
 export interface SearchUserRequest {
-  pattern: string;
-  projectId?: string;
+  readonly pattern: string;
+  readonly projectId?: string;
 }

@@ -7,19 +7,19 @@ export interface UserCredentials {
 }
 
 export interface LoginCredentials {
-  email: string;
-  password: string;
+  readonly email: string;
+  readonly password: string;
 }
 
 export interface RegisterCredentials {
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+  readonly username: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly email: string;
+  readonly password: string;
 }
 
 export interface AuthResponse {
-  token: string;
-  user: UserCredentials;
+  readonly token: string;
+  readonly user: UserCredentials;
 }

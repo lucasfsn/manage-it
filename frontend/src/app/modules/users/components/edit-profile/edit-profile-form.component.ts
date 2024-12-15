@@ -175,11 +175,10 @@ export class EditProfileFormComponent {
       firstName: this.form.value.firstName!,
       lastName: this.form.value.lastName!,
       email: this.form.value.email!,
+      ...(this.form.value.passwords?.password && {
+        password: this.form.value.passwords.password,
+      }),
     };
-
-    if (this.form.value.passwords?.password) {
-      updatedUserData.password = this.form.value.passwords.password;
-    }
 
     if (!this.isFormChanged()) return;
 
@@ -209,6 +208,10 @@ export class EditProfileFormComponent {
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
       email: this.userData.email,
+      passwords: {
+        password: '',
+        confirmPassword: '',
+      },
     });
   }
 

@@ -40,8 +40,5 @@
   </mat-icon>
 </button>
 @if (showChat()) {
-<app-chat
-  @chatAnimation
-  [customPosition]="'fixed bottom-20 right-4 h-[600px] w-[300px] lg:w-[400px]'"
-/>
+<app-chat @chatAnimation [isTaskChat]="true" />
 }}

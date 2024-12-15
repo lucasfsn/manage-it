@@ -8,6 +8,6 @@ export interface Message {
 }
 
 export interface MessageSend {
-  content: string;
-  token: string;
+  readonly content: string;
+  readonly token: string;
 }

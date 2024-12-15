@@ -60,7 +60,6 @@ import { ChatService } from '../../../features/services/chat.service';
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() isTaskChat: boolean = false;
-  @Input() customPosition: string = '';
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   constructor(
@@ -149,11 +148,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    try {
-      this.messageContainer.nativeElement.scrollTop =
-        this.messageContainer.nativeElement.scrollHeight;
-    } catch (err) {
-      console.error(err);
-    }
+    this.messageContainer.nativeElement.scrollTop =
+      this.messageContainer.nativeElement.scrollHeight;
   }
 }

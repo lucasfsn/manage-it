@@ -27,10 +27,10 @@ export interface Task {
 }
 
 export interface TaskData {
-  description: string;
-  status: TaskStatus;
-  priority: Priority;
-  dueDate: string;
+  readonly description: string;
+  readonly status: TaskStatus;
+  readonly priority: Priority;
+  readonly dueDate: string;
 }
 
 export enum ProjectStatus {
@@ -61,8 +61,8 @@ export interface UserProject {
 }
 
 export interface ProjectRequest {
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
+  readonly name: string;
+  readonly description: string;
+  readonly startDate: string;
+  readonly endDate: string;
 }
