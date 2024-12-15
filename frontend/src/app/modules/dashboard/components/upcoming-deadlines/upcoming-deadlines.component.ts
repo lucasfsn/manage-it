@@ -10,7 +10,7 @@ import { ProjectService } from '../../../../features/services/project.service';
   standalone: true,
   imports: [DatePipe, CommonModule, RouterLink],
   templateUrl: './upcoming-deadlines.component.html',
-  styleUrl: './upcoming-deadlines.component.css',
+  styleUrl: './upcoming-deadlines.component.scss',
 })
 export class UpcomingDeadlinesComponent {
   constructor(

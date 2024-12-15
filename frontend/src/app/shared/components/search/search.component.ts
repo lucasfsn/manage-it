@@ -27,7 +27,7 @@ import { UserService } from '../../../features/services/user.service';
     RouterLink,
   ],
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css'],
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent {
   @ViewChild('searchInput') protected searchInput!: ElementRef;

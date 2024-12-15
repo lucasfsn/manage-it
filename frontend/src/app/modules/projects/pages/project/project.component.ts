@@ -28,7 +28,7 @@ import { ProjectDetailsComponent } from '../../components/project-details/projec
     ProjectDetailsComponent,
   ],
   templateUrl: './project.component.html',
-  styleUrl: './project.component.css',
+  styleUrl: './project.component.scss',
   animations: [
     trigger('chatAnimation', [
       state(

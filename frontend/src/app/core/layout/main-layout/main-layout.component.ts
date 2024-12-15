@@ -9,7 +9,7 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
   standalone: true,
   imports: [SideBarComponent, RouterOutlet, SpinnerComponent],
   templateUrl: './main-layout.component.html',
-  styleUrl: './main-layout.component.css',
+  styleUrl: './main-layout.component.scss',
 })
 export class MainLayoutComponent implements OnInit {
   protected isLoading = signal(false);

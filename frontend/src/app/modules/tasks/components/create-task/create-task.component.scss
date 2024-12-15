@@ -7,16 +7,14 @@ select {
   margin-right: auto;
   color-scheme: dark;
   grid-column: span 2 / span 2;
-}
 
-input:focus,
-select:focus {
-  outline: none;
-}
+  &:focus {
+    outline: none;
+  }
 
-input::placeholder,
-select::placeholder {
-  color: #64748b;
+  &::placeholder {
+    color: #64748b;
+  }
 }
 
 label {

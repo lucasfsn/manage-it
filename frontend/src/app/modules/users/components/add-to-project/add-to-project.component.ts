@@ -9,7 +9,7 @@ import { ProjectService } from '../../../../features/services/project.service';
   standalone: true,
   imports: [],
   templateUrl: './add-to-project.component.html',
-  styleUrl: './add-to-project.component.css',
+  styleUrl: './add-to-project.component.scss',
 })
 export class AddToProjectComponent implements OnInit {
   @Input() public user: User | undefined;

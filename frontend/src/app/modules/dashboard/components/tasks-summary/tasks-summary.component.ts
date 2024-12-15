@@ -10,7 +10,7 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
   standalone: true,
   imports: [BaseChartDirective],
   templateUrl: './tasks-summary.component.html',
-  styleUrl: './tasks-summary.component.css',
+  styleUrl: './tasks-summary.component.scss',
 })
 export class TasksSummaryComponent implements OnInit {
   constructor(private projectService: ProjectService) {}

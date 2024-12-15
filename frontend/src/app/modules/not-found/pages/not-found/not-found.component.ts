@@ -7,7 +7,7 @@ import { AuthService } from '../../../../features/services/auth.service';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './not-found.component.html',
-  styleUrl: './not-found.component.css',
+  styleUrl: './not-found.component.scss',
 })
 export class NotFoundComponent {
   protected isAuthenticated: boolean;

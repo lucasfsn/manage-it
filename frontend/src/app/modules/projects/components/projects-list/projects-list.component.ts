@@ -27,7 +27,7 @@ import { SortProjectsComponent } from '../sort-projects/sort-projects.component'
     SortProjectsComponent,
   ],
   templateUrl: './projects-list.component.html',
-  styleUrl: './projects-list.component.css',
+  styleUrl: './projects-list.component.scss',
 })
 export class ProjectsListComponent implements OnInit {
   protected sortedAndFilteredProjects: Project[] | undefined;

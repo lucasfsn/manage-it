@@ -21,7 +21,7 @@ import { ProjectFilters } from '../../models/project-filter.model';
     MatCheckboxModule,
   ],
   templateUrl: './filter-projects.component.html',
-  styleUrl: './filter-projects.component.css',
+  styleUrl: './filter-projects.component.scss',
 })
 export class FilterProjectsComponent {
   @Output() public filterChange = new EventEmitter<ProjectFilters>();

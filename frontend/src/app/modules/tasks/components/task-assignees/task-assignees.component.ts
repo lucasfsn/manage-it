@@ -36,7 +36,7 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
     CommonModule,
   ],
   templateUrl: './task-assignees.component.html',
-  styleUrl: './task-assignees.component.css',
+  styleUrl: './task-assignees.component.scss',
   animations: [
     trigger('toggleDiv', [
       state(

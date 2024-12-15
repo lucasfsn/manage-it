@@ -1,0 +1,17 @@
+li {
+  padding: 0.75rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+
+  &:hover,
+  &:focus {
+    background-color: #f5f5f5;
+    transition: all 0.3s;
+    color: #0ea5e9;
+    background-color: #101625;
+  }
+}
+
+.active-link {
+  color: #0ea5e9;
+}

@@ -30,7 +30,7 @@ interface EditTaskForm {
   standalone: true,
   imports: [ReactiveFormsModule, MatIconModule],
   templateUrl: './edit-task.component.html',
-  styleUrl: './edit-task.component.css',
+  styleUrl: './edit-task.component.scss',
 })
 export class EditTaskComponent implements OnInit {
   protected isLoading = false;

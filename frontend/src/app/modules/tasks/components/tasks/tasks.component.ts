@@ -34,7 +34,7 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
     RouterLink,
   ],
   templateUrl: './tasks.component.html',
-  styleUrl: './tasks.component.css',
+  styleUrl: './tasks.component.scss',
 })
 export class TasksComponent implements OnInit {
   constructor(

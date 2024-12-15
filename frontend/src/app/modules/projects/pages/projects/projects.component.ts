@@ -13,7 +13,7 @@ import { ProjectsListComponent } from '../../components/projects-list/projects-l
   standalone: true,
   imports: [ProjectsListComponent, SpinnerComponent, MatIconModule],
   templateUrl: './projects.component.html',
-  styleUrl: './projects.component.css',
+  styleUrl: './projects.component.scss',
 })
 export class ProjectsComponent implements OnInit {
   constructor(

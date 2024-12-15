@@ -8,7 +8,7 @@ import { priorityMapper } from '../../utils/priority-mapper';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './priority.component.html',
-  styleUrl: './priority.component.css',
+  styleUrl: './priority.component.scss',
 })
 export class PriorityComponent {
   @Input() public priority!: Priority;

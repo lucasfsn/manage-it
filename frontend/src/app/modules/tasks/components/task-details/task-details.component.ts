@@ -20,7 +20,7 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
     PriorityComponent,
   ],
   templateUrl: './task-details.component.html',
-  styleUrl: './task-details.component.css',
+  styleUrl: './task-details.component.scss',
 })
 export class TaskDetailsComponent {
   constructor(private taskService: TaskService, private dialog: MatDialog) {}

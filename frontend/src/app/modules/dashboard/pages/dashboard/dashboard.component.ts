@@ -20,7 +20,7 @@ import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/
     TasksSummaryComponent,
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
   constructor(

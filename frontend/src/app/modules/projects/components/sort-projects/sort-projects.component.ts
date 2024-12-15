@@ -15,7 +15,7 @@ import {
   standalone: true,
   imports: [FormsModule],
   templateUrl: './sort-projects.component.html',
-  styleUrl: './sort-projects.component.css',
+  styleUrl: './sort-projects.component.scss',
 })
 export class SortProjectsComponent {
   @Input() public sortCriteria: SortCriteria = SortCriteria.NAME;

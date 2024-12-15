@@ -21,7 +21,7 @@ interface LoginForm {
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login-form.component.html',
-  styleUrl: './login-form.component.css',
+  styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent implements OnInit {
   private destroyRef = inject(DestroyRef);

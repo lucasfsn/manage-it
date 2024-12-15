@@ -33,7 +33,7 @@ interface EditProfileForm {
   standalone: true,
   imports: [ReactiveFormsModule, MatIconModule],
   templateUrl: './edit-profile-form.component.html',
-  styleUrl: './edit-profile-form.component.css',
+  styleUrl: './edit-profile-form.component.scss',
 })
 export class EditProfileFormComponent implements OnInit {
   constructor(

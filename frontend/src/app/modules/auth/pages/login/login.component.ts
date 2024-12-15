@@ -5,7 +5,7 @@ import { LoginFormComponent } from '../../components/login-form/login-form.compo
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrl: './login.component.scss',
   imports: [LoginFormComponent],
 })
 export class LoginComponent {}

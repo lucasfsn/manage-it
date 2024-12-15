@@ -37,7 +37,7 @@ import { ChatService } from '../../../features/services/chat.service';
     DatePipe,
   ],
   templateUrl: './chat.component.html',
-  styleUrl: './chat.component.css',
+  styleUrl: './chat.component.scss',
   animations: [
     trigger('buttonAnimation', [
       state(

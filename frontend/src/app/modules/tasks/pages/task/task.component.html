@@ -1,4 +1,6 @@
-@if (task) {
+@if (confirmModal$ | async) {
+<app-confirm-modal />
+} @if (task) {
 <div class="flex flex-col gap-10 w-full">
   <div class="flex flex-col-reverse gap-2 items-end">
     <button

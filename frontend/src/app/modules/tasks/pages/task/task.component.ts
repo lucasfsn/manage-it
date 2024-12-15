@@ -11,10 +11,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
 import { Task } from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
+import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { EditTaskComponent } from '../../components/edit-task/edit-task.component';
 import { TaskAssigneesComponent } from '../../components/task-assignees/task-assignees.component';
@@ -30,9 +33,10 @@ import { TaskDetailsComponent } from '../../components/task-details/task-details
     MatIconModule,
     CommonModule,
     TaskDetailsComponent,
+    ConfirmModalComponent,
   ],
   templateUrl: './task.component.html',
-  styleUrl: './task.component.css',
+  styleUrl: './task.component.scss',
   animations: [
     trigger('chatAnimation', [
       state(
@@ -62,8 +66,13 @@ export class TaskComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastrService: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private confirmModalService: ConfirmModalService
   ) {}
+
+  protected get confirmModal$(): Observable<boolean> {
+    return this.confirmModalService.isOpen();
+  }
 
   protected get task(): Task | undefined {
     return this.taskService.loadedTask();
@@ -84,18 +93,24 @@ export class TaskComponent implements OnInit {
   }
 
   protected handleDelete(): void {
-    const confirmDelete = confirm('Are you sure you want to delete this task?');
+    if (!this.task) return;
 
-    if (!confirmDelete) return;
+    const confirmation$ = this.confirmModalService.confirm(
+      'Are you sure you want to delete this task?'
+    );
 
-    this.taskService.deleteTask().subscribe({
-      error: (err) => {
-        this.toastrService.error(err.message);
-      },
-      complete: () => {
-        this.router.navigate(['/projects', this.task?.projectId]);
-        this.toastrService.success('Task has been deleted');
-      },
+    confirmation$.subscribe((confirmed) => {
+      if (!confirmed) return;
+
+      this.taskService.deleteTask().subscribe({
+        error: (err) => {
+          this.toastrService.error(err.message);
+        },
+        complete: () => {
+          this.router.navigate(['/projects', this.task?.projectId]);
+          this.toastrService.success('Task has been deleted');
+        },
+      });
     });
   }
 

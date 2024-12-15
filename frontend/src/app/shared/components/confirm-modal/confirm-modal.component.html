@@ -1,0 +1,38 @@
+<div
+  class="fixed flex items-center justify-center top-0 right-0 w-full h-full bg-slate-950/5 backdrop-blur-sm"
+  (click)="onCancel()"
+  tabindex="0"
+>
+  <div
+    class="bg-slate-950 p-6 rounded-lg shadow-2xl text-slate-100 flex flex-col gap-6 w-[80dvw] max-w-[500px]"
+    (click)="$event.stopPropagation()"
+    tabindex="0"
+  >
+    <div class="flex flex-col gap-2">
+      <p class="text-sm sm:text-base text-gray-300">{{ message }}</p>
+      <div
+        class="flex flex-col bg-orange-100 border-l-orange-500 border-l-4 py-1 px-2 text-red-500 text-sm"
+      >
+        <div class="flex gap-1 items-center font-bold">
+          <mat-icon>warning</mat-icon>
+          <span>Warning</span>
+        </div>
+        <p>This operation is irreversible.</p>
+      </div>
+    </div>
+    <div class="flex gap-2 justify-between text-sm sm:text-base">
+      <button
+        (click)="onCancel()"
+        class="px-2 py-0.5 sm:px-4 sm:py-1 bg-slate-900 flex justify-center items-center rounded-lg text-slate-300 hover:bg-opacity-90 transition-colors"
+      >
+        No
+      </button>
+      <button
+        (click)="onConfirm()"
+        class="px-2 py-0.5 sm:px-4 sm:py-1 bg-sky-500 flex justify-center items-center rounded-lg text-slate-950 hover:bg-opacity-90 transition-colors"
+      >
+        Yes
+      </button>
+    </div>
+  </div>
+</div>

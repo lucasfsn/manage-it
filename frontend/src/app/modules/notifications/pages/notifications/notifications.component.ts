@@ -10,7 +10,7 @@ import { NotificationsListComponent } from '../../components/notifications-list/
   standalone: true,
   imports: [SpinnerComponent, NotificationsListComponent],
   templateUrl: './notifications.component.html',
-  styleUrl: './notifications.component.css',
+  styleUrl: './notifications.component.scss',
 })
 export class NotificationsComponent implements OnInit {
   constructor(

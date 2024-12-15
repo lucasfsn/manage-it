@@ -1,0 +1,21 @@
+input,
+select {
+  background-color: #0f172a;
+  border: none;
+  color: #94a3b8;
+  margin-right: auto;
+  color-scheme: dark;
+  grid-column: span 2 / span 2;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #64748b;
+  }
+
+  &[type="date"] {
+    grid-column: span 1 / span 1;
+  }
+}

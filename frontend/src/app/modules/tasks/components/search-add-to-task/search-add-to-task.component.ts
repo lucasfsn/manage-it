@@ -12,7 +12,7 @@ import { UserService } from '../../../../features/services/user.service';
   standalone: true,
   imports: [MatIconModule, ReactiveFormsModule],
   templateUrl: './search-add-to-task.component.html',
-  styleUrl: './search-add-to-task.component.css',
+  styleUrl: './search-add-to-task.component.scss',
 })
 export class SearchAddToTaskComponent {
   @Output() public userAdd = new EventEmitter<User>();

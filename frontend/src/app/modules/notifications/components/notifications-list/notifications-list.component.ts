@@ -9,7 +9,7 @@ import { NotificationService } from '../../../../features/services/notification.
   standalone: true,
   imports: [MomentModule],
   templateUrl: './notifications-list.component.html',
-  styleUrl: './notifications-list.component.css',
+  styleUrl: './notifications-list.component.scss',
 })
 export class NotificationsListComponent {
   constructor(

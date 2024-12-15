@@ -33,7 +33,7 @@ interface CreateTaskForm {
   standalone: true,
   imports: [MatIconModule, ReactiveFormsModule, MatDialogModule],
   templateUrl: './create-task.component.html',
-  styleUrl: './create-task.component.css',
+  styleUrl: './create-task.component.scss',
 })
 export class CreateTaskComponent {
   protected selectedStatus = inject<{ selectedStatus: TaskStatus }>(

@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.icon-transition {
+  transition: transform 0.3s ease-in-out;
+}
+
+.icon-rotate {
+  transform: rotate(180deg);
+}

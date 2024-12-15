@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  background-color: #1e293b;
+}
+
+.search-results li {
+  &:first-child {
+    border-top: 1px solid #475569;
+  }
+
+  &:last-child {
+    border-bottom: 1px solid #475569;
+  }
+
+  &:hover {
+    background-color: #25324781;
+  }
+}

@@ -33,7 +33,7 @@ interface SignupForm {
   selector: 'app-signup-form',
   standalone: true,
   templateUrl: './signup-form.component.html',
-  styleUrl: './signup-form.component.css',
+  styleUrl: './signup-form.component.scss',
   imports: [ReactiveFormsModule, RouterLink],
 })
 export class SignupFormComponent {

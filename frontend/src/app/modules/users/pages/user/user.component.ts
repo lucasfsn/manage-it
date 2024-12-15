@@ -29,7 +29,7 @@ import { EditProfileFormComponent } from '../../components/edit-profile/edit-pro
     AddToProjectComponent,
   ],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.css',
+  styleUrl: './user.component.scss',
 })
 export class UserComponent implements OnInit {
   protected commonProjects: UserProject[] = [];

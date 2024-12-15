@@ -17,7 +17,7 @@ import { AuthService } from '../../../features/services/auth.service';
     MatIconModule,
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css',
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   constructor(

@@ -35,7 +35,7 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
     ]),
   ],
   templateUrl: './side-bar.component.html',
-  styleUrl: './side-bar.component.css',
+  styleUrl: './side-bar.component.scss',
 })
 export class SideBarComponent implements OnInit {
   public isCollapsed = false;

@@ -12,7 +12,7 @@ import { TaskService } from '../../../features/services/task.service';
   standalone: true,
   imports: [RouterLink, MatIconModule],
   templateUrl: './show-more-members.component.html',
-  styleUrl: './show-more-members.component.css',
+  styleUrl: './show-more-members.component.scss',
 })
 export class ShowMoreMembersComponent {
   protected isOnlyShow = inject<{ isOnlyShow: boolean }>(MAT_DIALOG_DATA)

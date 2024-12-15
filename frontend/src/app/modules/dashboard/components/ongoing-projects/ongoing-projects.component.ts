@@ -9,7 +9,7 @@ import { ProjectService } from '../../../../features/services/project.service';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './ongoing-projects.component.html',
-  styleUrl: './ongoing-projects.component.css',
+  styleUrl: './ongoing-projects.component.scss',
 })
 export class OngoingProjectsComponent {
   constructor(

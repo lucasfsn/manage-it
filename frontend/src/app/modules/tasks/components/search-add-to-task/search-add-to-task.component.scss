@@ -1,0 +1,11 @@
+:host {
+  width: 100%;
+}
+
+.person-search {
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #212d41;
+  }
+}

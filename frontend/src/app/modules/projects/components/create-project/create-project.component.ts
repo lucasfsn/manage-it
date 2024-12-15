@@ -36,7 +36,7 @@ interface CreateProjectForm {
     ReactiveFormsModule,
   ],
   templateUrl: './create-project.component.html',
-  styleUrl: './create-project.component.css',
+  styleUrl: './create-project.component.scss',
 })
 export class CreateProjectComponent {
   constructor(

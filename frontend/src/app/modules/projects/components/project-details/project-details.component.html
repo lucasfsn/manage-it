@@ -1,4 +1,6 @@
-@if (project) {
+@if (confirmModal$ | async) {
+<app-confirm-modal />
+} @if (project) {
 <div class="flex flex-col text-gray-400 gap-3">
   <div class="flex flex-row justify-between items-center self-end">
     <div class="flex flex-col-reverse gap-2 items-end mr-4">
