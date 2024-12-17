@@ -32,9 +32,10 @@ public class ProjectController {
 
     @GetMapping("{projectId}")
     public ResponseEntity<ProjectDto> getProject(
-            @PathVariable UUID projectId
+            @PathVariable UUID projectId,
+            @RequestHeader("Authorization") String token
     ) {
-        return ResponseEntity.ok(projectService.getProject(projectId));
+        return ResponseEntity.ok(projectService.getProject(projectId, token));
     }
 
     @PostMapping

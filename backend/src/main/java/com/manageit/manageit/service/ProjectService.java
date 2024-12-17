@@ -50,8 +50,12 @@ public class ProjectService {
                 .orElseThrow(() -> new EntityNotFoundException("No projects found"));
     }
 
-    public ProjectDto getProject(UUID id) {
+    public ProjectDto getProject(UUID id, String token) {
+        User user = userService.getUserByToken(token);
         Project project = getProjectById(id);
+        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
+            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
+        }
         return projectMapper.toProjectDto(project);
     }
 
