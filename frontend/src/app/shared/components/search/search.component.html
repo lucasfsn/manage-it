@@ -1,22 +1,26 @@
 <mat-dialog-content>
-  <mat-icon class="cursor-text text-slate-300" (click)="focusInput()"
-    >search</mat-icon
-  >
-  <mat-form-field>
+  <div class="flex items-center gap-2">
+    <label for="searchInput" class="flex items-center">
+      <mat-icon
+        class="flex justify-center items-center cursor-text text-slate-300"
+        >search</mat-icon
+      >
+    </label>
     <input
-      matInput
+      class="bg-transparent border-none focus:outline-none w-full"
       placeholder="Type to search"
       [formControl]="form"
       (input)="onSearch()"
       #searchInput
+      id="searchInput"
     />
-  </mat-form-field>
-  <button
-    (click)="closeDialog()"
-    class="px-1.5 py-1 bg-slate-500 flex justify-center items-center rounded-md text-slate-300"
-  >
-    <p class="text-xs">close</p>
-  </button>
+    <button
+      (click)="closeDialog()"
+      class="px-1.5 py-1 bg-slate-500 flex justify-center items-center rounded-md text-slate-300"
+    >
+      <p class="text-xs">close</p>
+    </button>
+  </div>
 </mat-dialog-content>
 @if (searchResults.length > 0) {
 <ul class="flex flex-col pb-4 divide-y divide-slate-600 search-results">
