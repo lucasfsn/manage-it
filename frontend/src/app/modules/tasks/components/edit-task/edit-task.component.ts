@@ -35,7 +35,7 @@ interface EditTaskForm {
 export class EditTaskComponent implements OnInit {
   protected isLoading = false;
 
-  constructor(
+  public constructor(
     private taskService: TaskService,
     private toastrService: ToastrService,
     private dialogRef: MatDialogRef<EditTaskComponent>

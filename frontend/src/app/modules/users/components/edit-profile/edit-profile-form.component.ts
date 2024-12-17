@@ -36,7 +36,7 @@ interface EditProfileForm {
   styleUrl: './edit-profile-form.component.scss',
 })
 export class EditProfileFormComponent implements OnInit {
-  constructor(
+  public constructor(
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
     private userService: UserService,
     private toastrService: ToastrService

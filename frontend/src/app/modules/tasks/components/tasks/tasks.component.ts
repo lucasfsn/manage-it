@@ -37,7 +37,7 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
   styleUrl: './tasks.component.scss',
 })
 export class TasksComponent implements OnInit {
-  constructor(
+  public constructor(
     private dialog: MatDialog,
     private projectService: ProjectService,
     private taskService: TaskService,

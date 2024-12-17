@@ -9,7 +9,9 @@ import { CommonModule, DatePipe } from '@angular/common';
 import {
   AfterViewChecked,
   Component,
+  DestroyRef,
   ElementRef,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -59,10 +61,14 @@ import { ChatService } from '../../../features/services/chat.service';
   ],
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
+  private projectId: string | null = null;
+  private taskId: string | null = null;
+  private destroyRef = inject(DestroyRef);
+
   @Input() public isTaskChat = false;
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
-  constructor(
+  public constructor(
     private authService: AuthService,
     private chatService: ChatService,
     private route: ActivatedRoute
@@ -96,39 +102,34 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   protected sendMessage(): void {
-    const projectId = this.route.snapshot.paramMap.get('projectId');
-    const taskId = this.route.snapshot.paramMap.get('taskId');
+    if (!this.projectId || !this.message.trim()) return;
 
-    if (!projectId || !this.message.trim()) return;
-
-    if (taskId) {
-      this.chatService.sendTaskMessage(taskId, this.message);
+    if (this.taskId) {
+      this.chatService.sendTaskMessage(this.taskId, this.message);
     } else {
-      this.chatService.sendProjectMessage(projectId, this.message);
+      this.chatService.sendProjectMessage(this.projectId, this.message);
     }
 
     this.message = '';
   }
 
   private loadMessages(): void {
-    const projectId = this.route.snapshot.paramMap.get('projectId');
-    const taskId = this.route.snapshot.paramMap.get('taskId');
+    if (!this.projectId) return;
 
-    if (!projectId) return;
-
-    if (taskId) {
-      this.isLoading.set(true);
-      this.chatService.getTaskChatHistory(projectId, taskId).subscribe({
-        error: () => {
-          this.isLoading.set(false);
-        },
-        complete: () => {
-          this.isLoading.set(false);
-        },
-      });
+    this.isLoading.set(true);
+    if (this.taskId) {
+      this.chatService
+        .getTaskChatHistory(this.projectId, this.taskId)
+        .subscribe({
+          error: () => {
+            this.isLoading.set(false);
+          },
+          complete: () => {
+            this.isLoading.set(false);
+          },
+        });
     } else {
-      this.isLoading.set(true);
-      this.chatService.getProjectChatHistory(projectId).subscribe({
+      this.chatService.getProjectChatHistory(this.projectId).subscribe({
         error: () => {
           this.isLoading.set(false);
         },
@@ -140,7 +141,16 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngOnInit(): void {
-    this.loadMessages();
+    const subscription = this.route.paramMap.subscribe((params) => {
+      this.projectId = params.get('projectId');
+      this.taskId = params.get('taskId');
+
+      this.loadMessages();
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
   public ngOnDestroy(): void {
@@ -148,7 +158,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public ngAfterViewChecked(): void {
-    this.messageContainer.nativeElement.scrollTop =
-      this.messageContainer.nativeElement.scrollHeight;
+    const el = this.messageContainer.nativeElement as HTMLElement;
+    el.scrollTop = el.scrollHeight;
   }
 }

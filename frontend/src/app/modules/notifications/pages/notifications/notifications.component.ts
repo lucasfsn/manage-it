@@ -13,7 +13,7 @@ import { NotificationsListComponent } from '../../components/notifications-list/
   styleUrl: './notifications.component.scss',
 })
 export class NotificationsComponent implements OnInit {
-  constructor(
+  public constructor(
     private loadingService: LoadingService,
     private notificationService: NotificationService
   ) {}

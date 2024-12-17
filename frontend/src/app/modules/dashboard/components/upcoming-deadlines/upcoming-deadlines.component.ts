@@ -13,7 +13,7 @@ import { ProjectService } from '../../../../features/services/project.service';
   styleUrl: './upcoming-deadlines.component.scss',
 })
 export class UpcomingDeadlinesComponent {
-  constructor(
+  public constructor(
     private authService: AuthService,
     private projectService: ProjectService
   ) {}

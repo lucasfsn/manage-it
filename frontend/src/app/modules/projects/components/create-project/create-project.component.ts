@@ -39,7 +39,7 @@ interface CreateProjectForm {
   styleUrl: './create-project.component.scss',
 })
 export class CreateProjectComponent {
-  constructor(
+  public constructor(
     private projectService: ProjectService,
     private dialogRef: MatDialogRef<CreateProjectComponent>,
     private router: Router,

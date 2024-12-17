@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 export function endDateValidator(startDate: string, endDate: string) {

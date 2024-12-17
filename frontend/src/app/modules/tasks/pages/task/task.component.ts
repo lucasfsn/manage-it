@@ -6,7 +6,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -58,9 +58,10 @@ import { TaskDetailsComponent } from '../../components/task-details/task-details
   ],
 })
 export class TaskComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
   protected showChat = signal<boolean>(false);
 
-  constructor(
+  public constructor(
     private taskService: TaskService,
     private loadingService: LoadingService,
     private route: ActivatedRoute,
@@ -115,25 +116,15 @@ export class TaskComponent implements OnInit {
   }
 
   protected handleEdit(): void {
-    const taskId = this.route.snapshot.paramMap.get('taskId');
-
-    if (!taskId) {
-      return;
-    }
+    if (!this.task) return;
 
     this.dialog.open(EditTaskComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
-      data: {
-        project: this.task,
-      },
     });
   }
 
-  private loadTaskData(): void {
-    const projectId = this.route.snapshot.paramMap.get('projectId');
-    const taskId = this.route.snapshot.paramMap.get('taskId');
-
+  private loadTaskData(projectId: string | null, taskId: string | null): void {
     if (!projectId || !taskId) {
       this.router.navigate(['/projects']);
 
@@ -154,6 +145,12 @@ export class TaskComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.loadTaskData();
+    const subscription = this.route.paramMap.subscribe((params) => {
+      const taskId = params.get('taskId');
+      const projectId = params.get('projectId');
+      this.loadTaskData(projectId, taskId);
+    });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }

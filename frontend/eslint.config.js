@@ -6,6 +6,11 @@ const angular = require("angular-eslint");
 module.exports = tseslint.config(
   {
     files: ["**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
+    },
     extends: [
       eslint.configs.recommended,
       ...tseslint.configs.recommended,
@@ -14,12 +19,28 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      "@angular-eslint/directive-selector": [
+      "arrow-parens": ["error", "always"],
+      complexity: ["error", 8],
+      indent: [
+        "error",
+        2,
+        {
+          SwitchCase: 1,
+        },
+      ],
+      // "no-console": "error",
+      "no-else-return": "error",
+      "no-nested-ternary": "error",
+      // "no-param-reassign": "error",
+      "max-depth": ["error", 2],
+      "max-nested-callbacks": ["error", 3],
+      "newline-before-return": "error",
+      "prefer-const": "error",
+      semi: ["error", "always"],
+      "@angular-eslint/component-class-suffix": [
         "error",
         {
-          type: "attribute",
-          prefix: "app",
-          style: "camelCase",
+          suffixes: ["Component", "Page"],
         },
       ],
       "@angular-eslint/component-selector": [
@@ -30,39 +51,20 @@ module.exports = tseslint.config(
           style: "kebab-case",
         },
       ],
-      "@typescript-eslint/explicit-function-return-type": [
-        "error",
-        {
-          allowExpressions: true,
-          allowHigherOrderFunctions: true,
-        },
-      ],
-      "@typescript-eslint/no-useless-constructor": "error",
-      "@typescript-eslint/no-useless-empty-export": "warn",
-      "@typescript-eslint/prefer-as-const": "error",
-      "@typescript-eslint/prefer-for-of": "error",
-      "@typescript-eslint/prefer-literal-enum-member": "error",
-      "arrow-parens": ["error", "always"],
-      complexity: ["error", 8],
-      "no-else-return": "error",
-      "no-nested-ternary": "error",
-      "no-param-reassign": "error",
-      "max-depth": ["error", 2],
-      "max-nested-callbacks": ["error", 3],
-      "newline-before-return": "error",
-      "prefer-const": "error",
-      "@angular-eslint/component-class-suffix": [
-        "error",
-        {
-          suffixes: ["Component", "Page"],
-        },
-      ],
       "@angular-eslint/contextual-decorator": "error",
       "@angular-eslint/contextual-lifecycle": "error",
       "@angular-eslint/directive-class-suffix": [
         "error",
         {
           suffixes: ["Directive"],
+        },
+      ],
+      "@angular-eslint/directive-selector": [
+        "error",
+        {
+          type: "attribute",
+          prefix: "app",
+          style: "camelCase",
         },
       ],
       "@angular-eslint/no-attribute-decorator": "off",
@@ -85,20 +87,20 @@ module.exports = tseslint.config(
           default: "array",
         },
       ],
+      "@typescript-eslint/await-thenable": "error",
       "@typescript-eslint/ban-ts-comment": "error",
       "@typescript-eslint/ban-tslint-comment": "error",
       "@typescript-eslint/class-literal-property-style": ["error", "fields"],
       "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
       "@typescript-eslint/default-param-last": "error",
-      "@typescript-eslint/explicit-member-accessibility": [
+      "@typescript-eslint/explicit-function-return-type": [
         "error",
         {
-          accessibility: "explicit",
-          overrides: {
-            constructors: "no-public",
-          },
+          allowExpressions: true,
+          allowHigherOrderFunctions: true,
         },
       ],
+      "@typescript-eslint/explicit-member-accessibility": "error",
       "@typescript-eslint/explicit-module-boundary-types": [
         "error",
         {
@@ -144,11 +146,41 @@ module.exports = tseslint.config(
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/no-var-requires": "error",
+      "@typescript-eslint/no-unnecessary-condition": "error",
+      "@typescript-eslint/no-unsafe-assignment": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
           argsIgnorePattern: "^_",
           ignoreRestSiblings: true,
+        },
+      ],
+      "@typescript-eslint/no-useless-constructor": "error",
+      "@typescript-eslint/no-useless-empty-export": "warn",
+      "@typescript-eslint/prefer-as-const": "error",
+      "@typescript-eslint/prefer-for-of": "error",
+      "@typescript-eslint/prefer-includes": "error",
+      "@typescript-eslint/prefer-literal-enum-member": "error",
+      "@typescript-eslint/prefer-return-this-type": "error",
+      "@typescript-eslint/prefer-string-starts-ends-with": "error",
+      "@typescript-eslint/promise-function-async": [
+        "error",
+        {
+          checkArrowFunctions: false,
+        },
+      ],
+      "@typescript-eslint/require-array-sort-compare": "error",
+      "@typescript-eslint/typedef": [
+        "error",
+        {
+          // "arrowParameter": true,
+          // "variableDeclaration": true,
+          // "memberVariableDeclaration": true,
+          arrayDestructuring: false,
+          parameter: true,
+          propertyDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+          // "objectDestructuring": true
         },
       ],
     },
@@ -159,8 +191,6 @@ module.exports = tseslint.config(
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
     ],
-    rules: {
-      "@angular-eslint/template/click-events-have-key-events": "off",
-    },
+    rules: {},
   }
 );

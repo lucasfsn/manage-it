@@ -23,7 +23,7 @@ import { UpcomingDeadlinesComponent } from '../../components/upcoming-deadlines/
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-  constructor(
+  public constructor(
     private loadingService: LoadingService,
     private toastrService: ToastrService,
     private projectService: ProjectService,

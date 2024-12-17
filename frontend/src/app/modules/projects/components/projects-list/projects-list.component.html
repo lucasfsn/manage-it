@@ -14,7 +14,7 @@
 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5 overflow-hidden px-4">
   @for (project of sortedAndFilteredProjects; track project.id) {
   <div
-    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-opacity-95 transition-all hover:scale-[101%] gap-4 justify-between"
+    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-opacity-70 transition-all gap-4 justify-between"
     routerLink="/projects/{{ project.id }}"
   >
     <div class="flex flex-col gap-2 h-full justify-between">

@@ -65,13 +65,13 @@
             {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
           </li>
           } @if (project.members.length > 5) {
-          <p
+          <button
             class="p-0.5 bg-slate-300 hover:bg-slate-400 text-slate-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm focus:bg-slate-400"
             (click)="showAllMembers(true)"
             tabindex="0"
           >
             +{{ project.members.length - 5 }}
-          </p>
+          </button>
           } @if (project.status !== ProjectStatus.COMPLETED && isOwner) {
           <div class="flex ml-1.5 gap-0.5 bg-sky-950 rounded-full p-0.5">
             <button

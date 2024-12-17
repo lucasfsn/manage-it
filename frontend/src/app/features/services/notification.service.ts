@@ -8,7 +8,7 @@ import { Notification } from '../dto/notification.model';
   providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private http: HttpClient) {}
+  public constructor(private http: HttpClient) {}
 
   private notifications = signal<Notification[]>([]);
 
@@ -28,7 +28,7 @@ export class NotificationService {
   }
 
   public markAsRead(notificationId: string): Observable<null> {
-    const prevNotifications = this.notifications() || [];
+    const prevNotifications = this.notifications();
 
     const updatedNotifications = this.notifications().filter(
       (notification) => notification.id !== notificationId
@@ -48,7 +48,7 @@ export class NotificationService {
   }
 
   public markAllAsRead(): Observable<null> {
-    const prevNotifications = this.notifications() || [];
+    const prevNotifications = this.notifications();
 
     this.notifications.set([]);
 

@@ -10,18 +10,15 @@
     <mat-icon>{{ isCollapsed ? "chevron_right" : "chevron_left" }}</mat-icon>
   </button>
   <div class="flex lg:flex-col lg:divide-y divide-slate-500">
-    <ul class="py-1">
-      <li
-        class="flex flex-row gap-2 text-center"
-        (click)="openSearchDialog()"
-        tabindex="0"
-      >
-        <mat-icon>search</mat-icon>
-        @if (!isCollapsed) {
-        <p>Search...</p>
-        }
-      </li>
-    </ul>
+    <button
+      class="py-1 flex flex-row gap-2 text-center sidebar-item"
+      (click)="openSearchDialog()"
+    >
+      <mat-icon>search</mat-icon>
+      @if (!isCollapsed) {
+      <p>Search...</p>
+      }
+    </button>
     <ul class="py-1 flex lg:flex-col">
       <li
         class="flex flex-row gap-2"

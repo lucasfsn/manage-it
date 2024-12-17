@@ -12,7 +12,7 @@ import { ProjectService } from '../../../../features/services/project.service';
   styleUrl: './ongoing-projects.component.scss',
 })
 export class OngoingProjectsComponent {
-  constructor(
+  public constructor(
     private authService: AuthService,
     private projectService: ProjectService
   ) {}

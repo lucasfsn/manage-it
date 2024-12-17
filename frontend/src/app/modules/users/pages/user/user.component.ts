@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Title } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ import { UserService } from '../../../../features/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { AddToProjectComponent } from '../../components/add-to-project/add-to-project.component';
 import { EditProfileFormComponent } from '../../components/edit-profile/edit-profile-form.component';
+import { UserProfileRouteData } from '../../users.routes';
 
 @Component({
   selector: 'app-user',
@@ -32,10 +33,11 @@ import { EditProfileFormComponent } from '../../components/edit-profile/edit-pro
   styleUrl: './user.component.scss',
 })
 export class UserComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
   protected commonProjects: UserProject[] = [];
   protected addToProject = false;
 
-  constructor(
+  public constructor(
     private loadingService: LoadingService,
     private userService: UserService,
     private route: ActivatedRoute,
@@ -80,10 +82,9 @@ export class UserComponent implements OnInit {
     this.loadingService.loadingOn();
     this.userService.getUserByUsername(username).subscribe({
       next: (user) => {
-        this.commonProjects =
-          user?.projects.filter((project) =>
-            project.members.find((member) => member.username === username)
-          ) || [];
+        this.commonProjects = user.projects.filter((project) =>
+          project.members.find((member) => member.username === username)
+        );
       },
       error: (error) => {
         this.toastrService.error(error.message);
@@ -97,16 +98,17 @@ export class UserComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const routeType = this.route.snapshot.data['routeType'];
+    const { routeType } = this.route.snapshot.data as UserProfileRouteData;
 
     if (routeType === 'addToProject') this.addToProject = true;
 
-    this.route.paramMap.subscribe((params) => {
+    const subscription = this.route.paramMap.subscribe((params) => {
       const username = params.get('username');
-      if (username)
-        this.titleService.setTitle(`${username}'s Profile | ManageIt`);
+      if (username) this.titleService.setTitle(`${username} | ManageIt`);
 
       this.loadUserData(params);
     });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }

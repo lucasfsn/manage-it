@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmModalService } from '../../../core/services/confirm-modal.service';
 
@@ -10,7 +10,9 @@ import { ConfirmModalService } from '../../../core/services/confirm-modal.servic
   styleUrl: './confirm-modal.component.scss',
 })
 export class ConfirmModalComponent {
-  constructor(private confirmModalService: ConfirmModalService) {}
+  @ViewChild('modal') protected modal?: ElementRef;
+
+  public constructor(private confirmModalService: ConfirmModalService) {}
 
   protected get message(): string {
     return this.confirmModalService.getMessage();
@@ -22,5 +24,11 @@ export class ConfirmModalComponent {
 
   protected onCancel(): void {
     this.confirmModalService.handleClick(false);
+  }
+
+  @HostListener('document:click', ['$event.target'])
+  public onBackdropClick(target: HTMLElement): void {
+    if (this.modal && !this.modal.nativeElement.contains(target))
+      this.onCancel();
   }
 }

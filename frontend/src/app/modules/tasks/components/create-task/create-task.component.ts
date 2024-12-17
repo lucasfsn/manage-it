@@ -40,7 +40,7 @@ export class CreateTaskComponent {
     MAT_DIALOG_DATA
   ).selectedStatus;
 
-  constructor(
+  public constructor(
     private loadingService: LoadingService,
     private taskService: TaskService,
     private toastrService: ToastrService,

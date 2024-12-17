@@ -70,7 +70,7 @@ export class TaskAssigneesComponent implements OnInit {
   protected pageSize = 5;
   protected showAssignees = true;
 
-  constructor(
+  public constructor(
     private taskService: TaskService,
     private loadingService: LoadingService,
     private toastrService: ToastrService

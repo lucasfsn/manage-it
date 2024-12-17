@@ -1,28 +1,15 @@
 import { Routes } from '@angular/router';
-import { addToProjectGuard } from './core/guards/add-to-project.guard';
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
-import { LoginComponent } from './modules/auth/pages/login/login.component';
-import { SignupComponent } from './modules/auth/pages/signup/signup.component';
-import { DashboardComponent } from './modules/dashboard/pages/dashboard/dashboard.component';
 import { HomeComponent } from './modules/home/pages/home/home.component';
-import { NotFoundComponent } from './modules/not-found/pages/not-found/not-found.component';
-import { NotificationsComponent } from './modules/notifications/pages/notifications/notifications.component';
-import { ProjectComponent } from './modules/projects/pages/project/project.component';
-import { ProjectsComponent } from './modules/projects/pages/projects/projects.component';
-import { TaskComponent } from './modules/tasks/pages/task/task.component';
-import { UserComponent } from './modules/users/pages/user/user.component';
-import { userResolver } from './modules/users/resolvers/user.resolver';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     canActivate: [guestGuard],
-    data: {
-      title: 'Manage Your Projects',
-    },
+    title: 'Manage Your Projects | ManageIt',
   },
   {
     path: 'home',
@@ -31,12 +18,10 @@ export const routes: Routes = [
     canActivate: [guestGuard],
   },
   {
-    path: 'auth/login',
-    component: LoginComponent,
+    path: 'auth',
     canActivate: [guestGuard],
-    data: {
-      title: 'Login',
-    },
+    loadChildren: () =>
+      import('./modules/auth/auth.routes').then((r) => r.AUTH_ROUTES),
   },
   {
     path: '',
@@ -45,74 +30,37 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: DashboardComponent,
-        data: {
-          title: 'Dashboard',
-        },
+        loadChildren: () =>
+          import('./modules/dashboard/dashboard.routes').then(
+            (r) => r.DASHBOARD_ROUTES
+          ),
       },
       {
         path: 'notifications',
-        component: NotificationsComponent,
-        data: {
-          title: 'Notifications',
-        },
+        loadChildren: () =>
+          import('./modules/notifications/notifications.routes').then(
+            (r) => r.NOTIFICATIONS_ROUTES
+          ),
       },
       {
         path: 'projects',
-        component: ProjectsComponent,
-        data: {
-          title: 'Projects',
-        },
-      },
-      {
-        path: 'projects/:projectId',
-        component: ProjectComponent,
-        data: {
-          title: 'Project Details',
-        },
-      },
-      {
-        path: 'projects/:projectId/tasks/:taskId',
-        component: TaskComponent,
-        data: {
-          title: 'Task Details',
-        },
+        loadChildren: () =>
+          import('./modules/projects/projects.routes').then(
+            (r) => r.PROJECTS_ROUTES
+          ),
       },
       {
         path: 'users',
-        resolve: {
-          user: userResolver,
-        },
-        component: UserComponent,
-      },
-      {
-        path: 'users/:username',
-        component: UserComponent,
-        data: {
-          title: 'Profile',
-          routeType: 'profile',
-        },
-      },
-      {
-        path: 'users/:username/projects/:projectId/add',
-        component: UserComponent,
-        canActivate: [addToProjectGuard],
-        data: {
-          title: 'Add To Project',
-          routeType: 'addToProject',
-        },
+        loadChildren: () =>
+          import('./modules/users/users.routes').then((r) => r.USERS_ROUTES),
       },
     ],
   },
   {
-    path: 'auth/signup',
-    component: SignupComponent,
-    canActivate: [guestGuard],
-    data: { title: 'Sign Up' },
-  },
-  {
     path: '**',
-    component: NotFoundComponent,
-    data: { title: 'Page Not Found' },
+    loadChildren: () =>
+      import('./modules/not-found/not-found.routes').then(
+        (r) => r.NOT_FOUND_ROUTES
+      ),
   },
 ];

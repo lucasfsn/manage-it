@@ -13,7 +13,7 @@ import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
   styleUrl: './projects-summary.component.scss',
 })
 export class ProjectsSummaryComponent implements OnInit {
-  constructor(private projectService: ProjectService) {}
+  public constructor(private projectService: ProjectService) {}
 
   protected activeProjectsCount = 0;
   protected progressChartData: ChartData<'doughnut'> = {

@@ -12,7 +12,7 @@ export class UserService {
 
   public loadedUser = this.user.asReadonly();
 
-  constructor(private http: HttpClient) {}
+  public constructor(private http: HttpClient) {}
 
   public getUserByUsername(username: string): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/users/${username}`).pipe(

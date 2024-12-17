@@ -13,7 +13,7 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
   styleUrl: './tasks-summary.component.scss',
 })
 export class TasksSummaryComponent implements OnInit {
-  constructor(private projectService: ProjectService) {}
+  public constructor(private projectService: ProjectService) {}
 
   protected barChartData: ChartData<'bar'> = {
     labels: [],

@@ -19,17 +19,21 @@
   <div class="flex flex-col gap-3">
     <div
       class="flex py-1 px-3 gap-2 items-center bg-slate-950 lg:mr-auto rounded-full border-slate-800 overflow-hidden placeholder-slate-400 text-sky-500"
-      [ngClass]="{ hidden: !showAssignees }"
-      (click)="focusSearchInput()"
-      tabindex="0"
     >
-      <mat-icon>search</mat-icon>
+      <label
+        class="flex justify-center items-center"
+        [ngClass]="{ hidden: !showAssignees }"
+        for="searchInput"
+      >
+        <mat-icon>search</mat-icon>
+      </label>
       <input
         type="text"
         [formControl]="searchControl"
         placeholder="Search users"
         class="focus:outline-none focus:ring-0 bg-slate-950 placeholder:text-sky-900 text-sky-500"
         #searchInput
+        id="searchInput"
       />
     </div>
     <div
@@ -40,7 +44,7 @@
         @for (user of paginatedUsers; track user.username) {
         <li class="flex justify-between items-center p-2 gap-1 text-slate-400">
           <div
-            class="flex gap-2 cursor-pointer"
+            class="flex gap-2 cursor-pointer focus:outline-none"
             routerLink="/users/{{ user.username }}"
           >
             <div
@@ -54,7 +58,7 @@
             </p>
           </div>
           <button
-            class="bg-gray-500 text-sky-950 flex justify-center items-center rounded-full p-0.5 hover:bg-gray-600 transition-all"
+            class="bg-gray-500 text-sky-950 flex justify-center items-center rounded-full p-0.5 hover:bg-gray-600 focus:ring-2 focus:ring-sky-950 focus:outline-none transition-all"
             (click)="handleRemove(user)"
           >
             <mat-icon class="text-base">person_remove</mat-icon>

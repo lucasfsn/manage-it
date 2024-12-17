@@ -13,7 +13,7 @@ import {
   providedIn: 'root',
 })
 export class ProjectService {
-  constructor(private http: HttpClient) {}
+  public constructor(private http: HttpClient) {}
 
   private allowAccess = false;
 

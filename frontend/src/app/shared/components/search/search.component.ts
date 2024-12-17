@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -8,7 +8,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { User } from '../../../features/dto/project.model';
 import { AuthService } from '../../../features/services/auth.service';
 import { ProjectService } from '../../../features/services/project.service';
@@ -24,7 +24,6 @@ import { UserService } from '../../../features/services/user.service';
     FormsModule,
     MatDialogContent,
     MatIconModule,
-    RouterLink,
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
@@ -34,20 +33,36 @@ export class SearchComponent {
   protected form = new FormControl<string>('');
   protected searchResults: User[] = [];
 
-  protected projectId = inject<{ projectId: string }>(MAT_DIALOG_DATA)
-    ?.projectId;
-
-  constructor(
+  public constructor(
     private dialogRef: MatDialogRef<SearchComponent>,
     private authService: AuthService,
     private projectService: ProjectService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router,
+    @Inject(MAT_DIALOG_DATA) protected data?: { projectId?: string }
   ) {}
 
   protected closeDialog(): void {
-    if (this.projectId) this.projectService.allowAccessToAddToProject = true;
+    if (this.data?.projectId)
+      this.projectService.allowAccessToAddToProject = true;
 
     this.dialogRef.close();
+  }
+
+  protected handleClick(username: string): void {
+    if (this.data?.projectId) {
+      this.router.navigate([
+        '/users',
+        username,
+        'projects',
+        this.data.projectId,
+        'add',
+      ]);
+    } else {
+      this.router.navigate(['/users', username]);
+    }
+
+    this.closeDialog();
   }
 
   protected focusInput(): void {
@@ -63,7 +78,7 @@ export class SearchComponent {
       return;
     }
 
-    this.userService.searchUsers(query, this.projectId).subscribe({
+    this.userService.searchUsers(query, this.data?.projectId).subscribe({
       next: (res) => {
         this.searchResults = res;
       },

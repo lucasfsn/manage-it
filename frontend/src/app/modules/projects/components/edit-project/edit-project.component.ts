@@ -35,7 +35,7 @@ interface EditProjectForm {
   styleUrl: './edit-project.component.scss',
 })
 export class EditProjectComponent implements OnInit {
-  constructor(
+  public constructor(
     private loadingService: LoadingService,
     private projectService: ProjectService,
     private dialogRef: MatDialogRef<EditProjectComponent>,
@@ -122,7 +122,7 @@ export class EditProjectComponent implements OnInit {
       this.form.value.name !== this.project.name ||
       this.form.value.description !== this.project.description ||
       this.form.value.dates?.startDate !== this.project.startDate ||
-      this.form.value.dates?.endDate !== this.project.endDate
+      this.form.value.dates.endDate !== this.project.endDate
     );
   }
 

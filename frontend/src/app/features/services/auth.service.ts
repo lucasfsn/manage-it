@@ -19,7 +19,7 @@ export class AuthService {
 
   public loadedUser = this.currentUser.asReadonly();
 
-  constructor(private router: Router, private http: HttpClient) {}
+  public constructor(private router: Router, private http: HttpClient) {}
 
   public register(user: RegisterCredentials): Observable<AuthResponse> {
     return this.http

@@ -16,7 +16,7 @@ import { ProjectsListComponent } from '../../components/projects-list/projects-l
   styleUrl: './projects.component.scss',
 })
 export class ProjectsComponent implements OnInit {
-  constructor(
+  public constructor(
     private loadingService: LoadingService,
     private projectService: ProjectService,
     private authService: AuthService,

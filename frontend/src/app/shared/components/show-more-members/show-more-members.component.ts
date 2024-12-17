@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../features/dto/project.model';
 import { ProjectService } from '../../../features/services/project.service';
@@ -10,7 +10,7 @@ import { TaskService } from '../../../features/services/task.service';
 @Component({
   selector: 'app-show-more-members',
   standalone: true,
-  imports: [RouterLink, MatIconModule],
+  imports: [MatIconModule],
   templateUrl: './show-more-members.component.html',
   styleUrl: './show-more-members.component.scss',
 })
@@ -20,11 +20,12 @@ export class ShowMoreMembersComponent {
   protected isOnProject = inject<{ isOnProject: boolean }>(MAT_DIALOG_DATA)
     .isOnProject;
 
-  constructor(
+  public constructor(
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
     private projectService: ProjectService,
     private taskService: TaskService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private router: Router
   ) {}
 
   protected get members(): User[] | undefined {
@@ -51,6 +52,11 @@ export class ShowMoreMembersComponent {
   }
 
   protected onClose(): void {
+    this.dialogRef.close();
+  }
+
+  protected handleNavigateToProfile(user: User): void {
+    this.router.navigate(['/users', user.username]);
     this.dialogRef.close();
   }
 }

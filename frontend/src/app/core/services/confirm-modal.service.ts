@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class ConfirmModalService {
     this.message = message;
     this.isOpen$.next(true);
 
-    return this.confirmation$.asObservable();
+    return this.confirmation$.asObservable().pipe(take(1));
   }
 
   public getMessage(): string {

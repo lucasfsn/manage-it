@@ -13,7 +13,8 @@
     border-bottom: 1px solid #475569;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: #25324781;
   }
 }

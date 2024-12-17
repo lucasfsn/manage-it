@@ -1,7 +1,7 @@
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { ProjectService } from '../../../../features/services/project.service';
@@ -13,6 +13,11 @@ import {
 } from '../../models/project-sort.model';
 import { FilterProjectsComponent } from '../filter-projects/filter-projects.component';
 import { SortProjectsComponent } from '../sort-projects/sort-projects.component';
+
+interface ProjectsParams extends Params {
+  sort?: SortCriteria;
+  order?: SortOrder;
+}
 
 @Component({
   selector: 'app-projects-list',
@@ -39,7 +44,7 @@ export class ProjectsListComponent implements OnInit {
   protected filterStatus: ProjectStatus | undefined;
   protected filterOwnedByCurrentUser = false;
 
-  constructor(
+  public constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
@@ -129,9 +134,9 @@ export class ProjectsListComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.sortCriteria = (params['sort'] as SortCriteria) || SortCriteria.NAME;
-      this.sortOrder = (params['order'] as SortOrder) || SortOrder.ASCENDING;
+    this.route.queryParams.subscribe((params: ProjectsParams) => {
+      this.sortCriteria = params.sort || SortCriteria.NAME;
+      this.sortOrder = params.order || SortOrder.ASCENDING;
       this.sortedAndFilteredProjects = this.filterProjects();
       this.sortProjects();
     });

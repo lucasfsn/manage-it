@@ -19,7 +19,7 @@ export class SearchAddToTaskComponent {
   protected form = new FormControl<string>('');
   protected searchResults: User[] = [];
 
-  constructor(
+  public constructor(
     private authService: AuthService,
     private userService: UserService,
     private route: ActivatedRoute,
@@ -31,13 +31,12 @@ export class SearchAddToTaskComponent {
   }
 
   protected onSearch(): void {
-    const projectId =
-      this.route.snapshot.paramMap.get('projectId') ?? undefined;
-    const taskId = this.route.snapshot.paramMap.get('taskId') ?? undefined;
+    const projectId = this.taskService.loadedTask()?.projectId;
+    const taskId = this.taskService.loadedTask()?.id;
 
     const query = this.form.value?.toLowerCase();
 
-    if (!query || query.length < 2) {
+    if (!projectId || !taskId || !query || query.length < 2) {
       this.searchResults = [];
 
       return;

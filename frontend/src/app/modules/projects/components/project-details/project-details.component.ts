@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
@@ -23,12 +23,11 @@ import { EditProjectComponent } from '../edit-project/edit-project.component';
   styleUrl: './project-details.component.scss',
 })
 export class ProjectDetailsComponent {
-  constructor(
+  public constructor(
     private dialog: MatDialog,
     private authService: AuthService,
     private projectService: ProjectService,
     private toastrService: ToastrService,
-    private route: ActivatedRoute,
     private router: Router,
     private confirmModalService: ConfirmModalService
   ) {}
@@ -58,11 +57,9 @@ export class ProjectDetailsComponent {
   }
 
   protected handleDelete(): void {
-    const projectId = this.route.snapshot.paramMap.get('projectId');
+    const projectId = this.project?.id;
 
-    if (!projectId) {
-      return;
-    }
+    if (!projectId) return;
 
     const confirmation$ = this.confirmModalService.confirm(
       'Are you sure you want to delete this project?'
@@ -84,11 +81,9 @@ export class ProjectDetailsComponent {
   }
 
   protected handleComplete(): void {
-    const projectId = this.route.snapshot.paramMap.get('projectId');
+    const projectId = this.project?.id;
 
-    if (!projectId) {
-      return;
-    }
+    if (!projectId) return;
 
     const confirmation$ = this.confirmModalService.confirm(
       'Are you sure you want to mark this project as completed?'
@@ -106,18 +101,13 @@ export class ProjectDetailsComponent {
   }
 
   protected handleEdit(): void {
-    const projectId = this.route.snapshot.paramMap.get('projectId');
+    const projectId = this.project?.id;
 
-    if (!projectId) {
-      return;
-    }
+    if (!projectId) return;
 
     this.dialog.open(EditProjectComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
-      data: {
-        project: this.project,
-      },
     });
   }
 

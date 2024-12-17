@@ -12,7 +12,7 @@ import { NotificationService } from '../../../../features/services/notification.
   styleUrl: './notifications-list.component.scss',
 })
 export class NotificationsListComponent {
-  constructor(
+  public constructor(
     private notificationService: NotificationService,
     private router: Router
   ) {}

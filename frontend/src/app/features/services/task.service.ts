@@ -9,7 +9,7 @@ import { ProjectService } from './project.service';
   providedIn: 'root',
 })
 export class TaskService {
-  constructor(
+  public constructor(
     private http: HttpClient,
     private projectService: ProjectService
   ) {}
@@ -49,6 +49,7 @@ export class TaskService {
       .get<Task>(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
       .pipe(
         tap((res: Task) => {
+          console.log(res);
           this.task.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
@@ -142,9 +143,7 @@ export class TaskService {
         () => new Error('Something went wrong. Task not found')
       );
 
-    const updatedTaskMembers = prevTask?.members
-      ? [...prevTask.members, user]
-      : [user];
+    const updatedTaskMembers = [...prevTask.members, user];
 
     const updatedTask = { ...prevTask, members: updatedTaskMembers };
 

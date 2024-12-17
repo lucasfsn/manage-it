@@ -23,7 +23,10 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
   styleUrl: './task-details.component.scss',
 })
 export class TaskDetailsComponent {
-  constructor(private taskService: TaskService, private dialog: MatDialog) {}
+  public constructor(
+    private taskService: TaskService,
+    private dialog: MatDialog
+  ) {}
 
   protected get TaskStatus(): typeof TaskStatus {
     return TaskStatus;

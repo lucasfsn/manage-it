@@ -14,7 +14,7 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
 export class MainLayoutComponent implements OnInit {
   protected isLoading = signal(false);
 
-  constructor(private authService: AuthService) {}
+  public constructor(private authService: AuthService) {}
 
   public ngOnInit(): void {
     if (!this.authService.isAuthenticated()) return;

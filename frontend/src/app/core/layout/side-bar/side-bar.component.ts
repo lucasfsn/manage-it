@@ -40,7 +40,10 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
 export class SideBarComponent implements OnInit {
   public isCollapsed = false;
 
-  constructor(private dialog: MatDialog, private authService: AuthService) {}
+  public constructor(
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {}
 
   protected get username(): string | null {
     return this.authService.getLoggedInUsername();

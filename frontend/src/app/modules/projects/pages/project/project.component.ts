@@ -6,7 +6,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingService } from '../../../../features/services/loading.service';
@@ -50,9 +50,10 @@ import { ProjectDetailsComponent } from '../../components/project-details/projec
   ],
 })
 export class ProjectComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
   protected showChat = signal<boolean>(false);
 
-  constructor(
+  public constructor(
     private projectService: ProjectService,
     private loadingService: LoadingService,
     private route: ActivatedRoute,
@@ -67,9 +68,7 @@ export class ProjectComponent implements OnInit {
     this.showChat.set(!this.showChat());
   }
 
-  private loadProject(): void {
-    const projectId = this.route.snapshot.paramMap.get('projectId');
-
+  private loadProject(projectId: string | null): void {
     if (!projectId) {
       this.router.navigate(['/projects']);
 
@@ -89,6 +88,11 @@ export class ProjectComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.loadProject();
+    const subscription = this.route.paramMap.subscribe((params) => {
+      const projectId = params.get('projectId');
+      this.loadProject(projectId);
+    });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }

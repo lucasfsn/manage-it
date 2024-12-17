@@ -1,12 +1,12 @@
 <div
   class="fixed flex items-center justify-center top-0 right-0 w-full h-full bg-slate-950/5 backdrop-blur-sm"
-  (click)="onCancel()"
-  tabindex="0"
+  tabindex="-1"
+  aria-hidden="true"
 >
   <div
     class="bg-slate-950 p-6 rounded-lg shadow-2xl text-slate-100 flex flex-col gap-6 w-[80dvw] max-w-[500px]"
-    (click)="$event.stopPropagation()"
     tabindex="0"
+    #modal
   >
     <div class="flex flex-col gap-2">
       <p class="text-sm sm:text-base text-gray-300">{{ message }}</p>
@@ -23,13 +23,13 @@
     <div class="flex gap-2 justify-between text-sm sm:text-base">
       <button
         (click)="onCancel()"
-        class="px-2 py-0.5 sm:px-4 sm:py-1 bg-slate-900 flex justify-center items-center rounded-lg text-slate-300 hover:bg-opacity-90 transition-colors"
+        class="px-2 py-0.5 sm:px-4 sm:py-1 bg-slate-900 flex justify-center items-center rounded-lg text-slate-300 hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-600"
       >
         No
       </button>
       <button
         (click)="onConfirm()"
-        class="px-2 py-0.5 sm:px-4 sm:py-1 bg-sky-500 flex justify-center items-center rounded-lg text-slate-950 hover:bg-opacity-90 transition-colors"
+        class="px-2 py-0.5 sm:px-4 sm:py-1 bg-sky-500 flex justify-center items-center rounded-lg text-slate-950 hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-700"
       >
         Yes
       </button>

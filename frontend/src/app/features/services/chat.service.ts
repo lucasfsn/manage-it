@@ -21,7 +21,7 @@ export class ChatService {
   public loadedProjectMessages = this.projectMessages.asReadonly();
   public loadedTaskMessages = this.taskMessages.asReadonly();
 
-  constructor(
+  public constructor(
     private httpClient: HttpClient,
     private projectService: ProjectService,
     private taskService: TaskService
@@ -87,10 +87,8 @@ export class ChatService {
   }
 
   public deactivate(): void {
-    if (this.stompClient) {
-      this.stompClient.deactivate();
-      this.isConnected = false;
-    }
+    this.stompClient.deactivate();
+    this.isConnected = false;
   }
 
   private sendMessage(destination: string, message: MessageSend): void {
@@ -123,7 +121,7 @@ export class ChatService {
         this.stompClient.subscribe(
           `/join/projects/${projectId}`,
           (res: IMessage) => {
-            const newMessage: Message = JSON.parse(res.body);
+            const newMessage: Message = JSON.parse(res.body) as Message;
             this.projectMessages.update((messages: Message[]) => [
               ...messages,
               newMessage,
@@ -133,7 +131,7 @@ export class ChatService {
       }
       if (taskId) {
         this.stompClient.subscribe(`/join/tasks/${taskId}`, (res: IMessage) => {
-          const newMessage: Message = JSON.parse(res.body);
+          const newMessage: Message = JSON.parse(res.body) as Message;
           this.taskMessages.update((messages: Message[]) => [
             ...messages,
             newMessage,

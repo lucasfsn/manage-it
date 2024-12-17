@@ -25,15 +25,14 @@ interface LoginForm {
 })
 export class LoginFormComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
-  private initialValue = '';
 
-  constructor(
+  public constructor(
     private authService: AuthService,
     private toastrService: ToastrService
   ) {}
 
   protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>({
-    email: new FormControl(this.initialValue, {
+    email: new FormControl('', {
       validators: [Validators.required, Validators.email],
     }),
     password: new FormControl('', {
@@ -63,7 +62,7 @@ export class LoginFormComponent implements OnInit {
 
   protected get passwordErrors(): string | null {
     const control = this.form.controls.password;
-    if (control?.errors) {
+    if (control.errors) {
       if (control.errors['required']) {
         return 'Password is required.';
       }
@@ -97,9 +96,8 @@ export class LoginFormComponent implements OnInit {
     const savedLoginForm = window.localStorage.getItem('saved-login-form');
 
     if (savedLoginForm) {
-      const loadedData = JSON.parse(savedLoginForm);
-      this.initialValue = loadedData.email;
-      this.form.controls.email.setValue(this.initialValue);
+      const loadedData = JSON.parse(savedLoginForm) as { email: string | null };
+      this.form.controls.email.setValue(loadedData.email);
     }
 
     const subscription = this.form.valueChanges

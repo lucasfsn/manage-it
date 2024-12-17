@@ -20,7 +20,7 @@ import { AuthService } from '../../../features/services/auth.service';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  constructor(
+  public constructor(
     private authService: AuthService,
     private toastr: ToastrService
   ) {}

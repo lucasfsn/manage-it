@@ -36,14 +36,22 @@
         }
       </div>
       <div class="flex flex-col gap-2">
-        <input
-          type="text"
-          id="user-name"
-          name="user-name"
-          formControlName="username"
-          placeholder="Enter your username"
-          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
-        />
+        <div class="relative">
+          <input
+            type="text"
+            id="user-name"
+            name="user-name"
+            formControlName="username"
+            placeholder="Enter your username"
+            class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+          />
+          <span
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-600 flex justify-center items-center"
+            matTooltip="Username is permanent and cannot be changed later"
+          >
+            <mat-icon>lock</mat-icon>
+          </span>
+        </div>
         @if (usernameIsInvalid) {
         <p class="text-red-500 text-sm">{{ usernameErrors }}</p>
         }
@@ -76,7 +84,7 @@
             type="password"
             name="confirm-password"
             formControlName="confirmPassword"
-            placeholder="Confirm your password"
+            placeholder="Confirm password"
             class="w-1/2 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
           />
         </div>

@@ -5,6 +5,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterCredentials } from '../../../../features/dto/auth.model';
@@ -34,10 +36,10 @@ interface SignupForm {
   standalone: true,
   templateUrl: './signup-form.component.html',
   styleUrl: './signup-form.component.scss',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, MatIconModule, MatTooltipModule],
 })
 export class SignupFormComponent {
-  constructor(
+  public constructor(
     private authService: AuthService,
     private toastrService: ToastrService
   ) {}

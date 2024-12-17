@@ -3,6 +3,8 @@
   <li
     class="flex gap-3 items-center cursor-pointer mr-auto hover:bg-slate-950 px-5 py-1 rounded-full hover:bg-opacity-25 focus:bg-slate-950"
     (click)="markAsReadAndOpen(notification)"
+    (keydown.enter)="markAsReadAndOpen(notification)"
+    (keydown.space)="markAsReadAndOpen(notification)"
     tabindex="0"
   >
     <div

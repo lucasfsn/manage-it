@@ -14,7 +14,10 @@
         {{ isOnlyShow ? "All members" : "Manage members" }}
       </p>
     </div>
-    <button (click)="onClose()">
+    <button
+      (click)="onClose()"
+      class="focus:outline-none focus:text-opacity-90"
+    >
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -22,27 +25,26 @@
     <ul class="flex flex-col gap-1 overflow-y-scroll max-h-[400px] px-1">
       @for (member of members; track member.username) {
       <li
-        class="flex justify-between items-center p-2 hover:bg-slate-700 rounded-full cursor-pointer transition-colors"
+        class="flex justify-between items-center p-2 hover:bg-slate-700 focus:outline-none focus:bg-slate-700 rounded-full cursor-pointer transition-colors"
+        (click)="handleNavigateToProfile(member)"
+        (keydown.enter)="handleNavigateToProfile(member)"
+        (keydown.space)="handleNavigateToProfile(member)"
+        tabindex="0"
       >
-        <div
-          class="flex gap-1 items-center flex-grow"
-          [routerLink]="['/users', member.username]"
-          (click)="onClose()"
-          tabindex="0"
-        >
-          <div
+        <p class="flex gap-1 items-center flex-grow">
+          <span
             class="flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full mr-3"
           >
             {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
-          </div>
+          </span>
           <span class="text-slate-100"
             >{{ member.firstName }} {{ member.lastName }}</span
           >
-        </div>
+        </p>
         @if (!isOnlyShow && !(projectOwner?.username === member.username)) {
         <button
-          class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-0.5 flex justify-center items-center rounded-full"
-          (click)="handleRemove(member)"
+          class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-0.5 flex justify-center items-center rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
+          (click)="handleRemove(member); $event.stopPropagation()"
         >
           <mat-icon>delete</mat-icon>
         </button>
