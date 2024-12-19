@@ -9,7 +9,7 @@
     <input
       id="filterOwner"
       type="text"
-      placeholder="Filter by project name"
+      [placeholder]="'projects.filter.INPUT_PLACEHOLDER' | translate"
       class="focus:outline-none focus:ring-0 bg-transparent"
       [(ngModel)]="filterProjectName"
       (input)="handleChange()"
@@ -19,16 +19,22 @@
 
 <mat-menu #filterMenu="matMenu">
   <div class="flex flex-col gap-2 px-3 bg-slate-900" matMenuContent>
-    <p class="text-base">Filters</p>
+    <p class="text-base">
+      {{ "projects.filter.MENU_TITLE" | translate }}
+    </p>
     <div class="flex flex-col gap-4 bg-transparent p-2 rounded-md">
       <div class="flex flex-col gap-1">
-        <p class="text-sm text-center">Status</p>
+        <p class="text-sm text-center">
+          {{ "projects.filter.MENU_STATUS_TEXT" | translate }}
+        </p>
         <mat-radio-group
           [(ngModel)]="filterStatus"
           class="flex flex-col"
           (click)="$event.stopPropagation()"
         >
-          <mat-radio-button [value]="undefined">All</mat-radio-button>
+          <mat-radio-button [value]="undefined">{{
+            "projects.filter.ALL_FILTER" | translate
+          }}</mat-radio-button>
           @for (status of projectStatuses; track status) {
           <mat-radio-button [value]="status">{{
             mapStatus(status)
@@ -40,7 +46,9 @@
         [(ngModel)]="filterOwnedByCurrentUser"
         (click)="$event.stopPropagation()"
       >
-        <span class="text-sm">Only owned by me</span>
+        <span class="text-sm">{{
+          "projects.filter.ONLY_LOGGED_USER_PROJECTS" | translate
+        }}</span>
       </mat-checkbox>
     </div>
     <div class="flex justify-end gap-1">
@@ -49,14 +57,14 @@
         (click)="handleClear(); $event.stopPropagation()"
         class="px-2 py-1"
       >
-        Clear
+        {{ "projects.filter.CLEAR_BUTTON" | translate }}
       </button>
       <button
         mat-button
         (click)="handleChange(); $event.stopPropagation()"
         class="px-2 py-1 bg-slate-950 rounded-md hover:bg-opacity-80 hover:text-slate-200 transition-all text-slate-200"
       >
-        Apply
+        {{ "projects.filter.APPLY_BUTTON" | translate }}
       </button>
     </div>
   </div>

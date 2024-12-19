@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 import { UpdateUser, User } from '../../../../features/dto/user.model';
 import { UserService } from '../../../../features/services/user.service';
 
+import { TranslateModule } from '@ngx-translate/core';
+import { TranslationService } from '../../../../features/services/translation.service';
 import {
   equalValues,
   nameValidator,
@@ -32,7 +34,7 @@ interface EditProfileForm {
 @Component({
   selector: 'app-edit-profile-form',
   standalone: true,
-  imports: [ReactiveFormsModule, MatIconModule],
+  imports: [ReactiveFormsModule, MatIconModule, TranslateModule],
   templateUrl: './edit-profile-form.component.html',
   styleUrl: './edit-profile-form.component.scss',
 })
@@ -40,7 +42,8 @@ export class EditProfileFormComponent implements OnInit {
   public constructor(
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
     private userService: UserService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private translationService: TranslationService
   ) {}
 
   protected get userData(): User | undefined {
@@ -50,6 +53,7 @@ export class EditProfileFormComponent implements OnInit {
   protected form: FormGroup<EditProfileForm> = new FormGroup<EditProfileForm>({
     firstName: new FormControl('', {
       validators: [
+        Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
         nameValidator,
@@ -57,13 +61,14 @@ export class EditProfileFormComponent implements OnInit {
     }),
     lastName: new FormControl('', {
       validators: [
+        Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
         nameValidator,
       ],
     }),
     email: new FormControl('', {
-      validators: [Validators.email],
+      validators: [Validators.required, Validators.email],
     }),
     passwords: new FormGroup<PasswordsForm>(
       {
@@ -124,14 +129,33 @@ export class EditProfileFormComponent implements OnInit {
   protected get firstNameErrors(): string | null {
     const control = this.form.controls.firstName;
     if (control.errors) {
+      if (control.errors['required']) {
+        return this.translationService.translate(
+          'user.editForm.FIRST_NAME_REQUIRED'
+        );
+      }
       if (control.errors['minlength']) {
-        return `First name must be at least ${control.errors['minlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'user.editForm.FIRST_NAME_MIN_LENGTH_BEFORE'
+        )} ${
+          control.errors['minlength'].requiredLength
+        } ${this.translationService.translate(
+          'user.editForm.FIRST_NAME_MIN_LENGTH_AFTER'
+        )}`;
       }
       if (control.errors['maxlength']) {
-        return `First name cannot be more than ${control.errors['maxlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'user.editForm.FIRST_NAME_MAX_LENGTH_BEFORE'
+        )} ${
+          control.errors['maxlength'].requiredLength
+        } ${this.translationService.translate(
+          'user.editForm.FIRST_NAME_MAX_LENGTH_AFTER'
+        )}`;
       }
       if (control.errors['invalidName']) {
-        return 'First name cannot contain numbers and special characters.';
+        return this.translationService.translate(
+          'user.editForm.FIRST_NAME_INVALID'
+        );
       }
     }
 
@@ -141,14 +165,33 @@ export class EditProfileFormComponent implements OnInit {
   protected get lastNameErrors(): string | null {
     const control = this.form.controls.lastName;
     if (control.errors) {
+      if (control.errors['required']) {
+        return this.translationService.translate(
+          'user.editForm.LAST_NAME_REQUIRED'
+        );
+      }
       if (control.errors['minlength']) {
-        return `Last name must be at least ${control.errors['minlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'user.editForm.LAST_NAME_MIN_LENGTH_BEFORE'
+        )} ${
+          control.errors['minlength'].requiredLength
+        } ${this.translationService.translate(
+          'user.editForm.LAST_NAME_MIN_LENGTH_AFTER'
+        )}`;
       }
       if (control.errors['maxlength']) {
-        return `Last name cannot be more than ${control.errors['maxlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'user.editForm.LAST_NAME_MAX_LENGTH_BEFORE'
+        )} ${
+          control.errors['maxlength'].requiredLength
+        } ${this.translationService.translate(
+          'user.editForm.LAST_NAME_MAX_LENGTH_AFTER'
+        )}`;
       }
       if (control.errors['invalidName']) {
-        return 'Last name cannot contain numbers and special characters.';
+        return this.translationService.translate(
+          'user.editForm.LAST_NAME_INVALID'
+        );
       }
     }
 
@@ -158,8 +201,13 @@ export class EditProfileFormComponent implements OnInit {
   protected get emailErrors(): string | null {
     const control = this.form.controls.email;
     if (control.errors) {
+      if (control.errors['required']) {
+        return this.translationService.translate(
+          'user.editForm.EMAIL_REQUIRED'
+        );
+      }
       if (control.errors['email']) {
-        return 'Email is not valid.';
+        return this.translationService.translate('user.editForm.EMAIL_INVALID');
       }
     }
 
@@ -170,7 +218,9 @@ export class EditProfileFormComponent implements OnInit {
     const control = this.form.controls.passwords.get('password');
     if (control?.errors) {
       if (control.errors['invalidPassword']) {
-        return 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.';
+        return this.translationService.translate(
+          'user.editForm.PASSWORD_INVALID'
+        );
       }
     }
 

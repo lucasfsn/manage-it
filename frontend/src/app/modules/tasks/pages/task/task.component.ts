@@ -14,6 +14,7 @@ import { ConfirmModalService } from '../../../../core/services/confirm-modal.ser
 import { ProjectStatus, Task } from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { TaskService } from '../../../../features/services/task.service';
+import { TranslationService } from '../../../../features/services/translation.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
@@ -67,7 +68,8 @@ export class TaskComponent implements OnInit {
     private router: Router,
     private toastrService: ToastrService,
     private dialog: MatDialog,
-    private confirmModalService: ConfirmModalService
+    private confirmModalService: ConfirmModalService,
+    private translationService: TranslationService
   ) {}
 
   protected get ProjectStatus(): typeof ProjectStatus {
@@ -112,7 +114,9 @@ export class TaskComponent implements OnInit {
         },
         complete: () => {
           this.router.navigate(['/projects', this.task?.projectId]);
-          this.toastrService.success('Task has been deleted');
+          this.toastrService.success(
+            this.translationService.translate('toast.success.TASK_DELETED')
+          );
         },
       });
     });

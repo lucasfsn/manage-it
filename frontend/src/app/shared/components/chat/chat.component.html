@@ -2,7 +2,7 @@
   class="bg-slate-950 text-white shadow-lg flex flex-col rounded-2xl overflow-hidden fixed bottom-20 right-4 h-full max-h-[600px] w-[300px] lg:w-[400px]"
 >
   <div class="p-4 border-none chat-title text-center">
-    <h2 class="text-lg font-semibold">Messages</h2>
+    <h2 class="text-lg font-semibold">{{ "chat.TITLE" | translate }}</h2>
   </div>
   <div
     class="flex flex-col gap-3 p-4 relative flex-grow justify-between overflow-hidden"
@@ -13,13 +13,13 @@
     >
       @for (message of messages; track message.id) {
       <div class="flex flex-col gap-1 max-w-[250px] lg:max-w-[350px]">
-        <div class="flex gap-2">
+        <div class="flex gap-2 items-center">
           <div
             class="flex items-center justify-center w-[30px] h-[30px] aspect-square rounded-full bg-sky-950 text-white text-xs font-semibold"
           >
             {{ message.sender.firstName[0] }}{{ message.sender.lastName[0] }}
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-end gap-2">
             @if (message.sender.username === currentUser?.username) {
             <span class="text-sky-600 text-sm font-semibold">You</span>
             } @else {
@@ -29,7 +29,7 @@
             >
             }
             <span class="text-gray-500 text-xs">{{
-              message.createdAt | date : "EEEE h:mm a"
+              message.createdAt | customDate : "medium"
             }}</span>
           </div>
         </div>
@@ -64,7 +64,7 @@
             borderRadius: ' 0.5rem'
           }"
           [i18n]="{
-              search: 'Search emoji...',
+              search: 'Emoji...',
             }"
           (emojiClick)="addEmoji($event)"
         ></emoji-mart>
@@ -72,7 +72,7 @@
       }
       <input
         type="text"
-        [placeholder]="isLoading() ? 'Loading...' : 'Message...'"
+        [placeholder]="'chat.INPUT_PLACEHOLDER' | translate"
         class="flex-1 bg-transparent text-sm focus:outline-none placeholder:text-gray-500 disabled:cursor-not-allowed"
         (input)="onTypeMessage($event)"
         [(ngModel)]="message"

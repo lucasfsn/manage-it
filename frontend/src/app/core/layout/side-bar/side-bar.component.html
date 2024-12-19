@@ -17,7 +17,7 @@
     >
       <mat-icon>search</mat-icon>
       @if (!isCollapsed) {
-      <p>Search...</p>
+      <p>{{ "sidebar.SEARCH" | translate }}</p>
       }
     </button>
     <ul class="flex lg:flex-col">
@@ -28,7 +28,7 @@
       >
         <mat-icon>space_dashboard</mat-icon>
         @if (!isCollapsed) {
-        <p>Dashboard</p>
+        <p>{{ "sidebar.DASHBOARD" | translate }}</p>
         }
       </li>
       <li
@@ -38,7 +38,7 @@
       >
         <mat-icon>folder_open</mat-icon>
         @if (!isCollapsed) {
-        <p>Projects</p>
+        <p>{{ "sidebar.PROJECTS" | translate }}</p>
         }
       </li>
       <li
@@ -48,7 +48,7 @@
       >
         <mat-icon>notifications</mat-icon>
         @if (!isCollapsed) {
-        <p>Notifications</p>
+        <p>{{ "sidebar.NOTIFICATIONS" | translate }}</p>
         }
       </li>
     </ul>
@@ -60,7 +60,7 @@
       >
         <mat-icon>account_circle</mat-icon>
         @if (!isCollapsed) {
-        <p>Profile</p>
+        <p>{{ "sidebar.PROFILE" | translate }}</p>
         }
       </li>
     </ul>

@@ -5,8 +5,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
+import { TranslateModule } from '@ngx-translate/core';
 import { ProjectStatus } from '../../../../features/dto/project.model';
-import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectFilters } from '../../models/project-filter.model';
 
 @Component({
@@ -19,12 +20,15 @@ import { ProjectFilters } from '../../models/project-filter.model';
     MatRadioModule,
     MatMenuModule,
     MatCheckboxModule,
+    TranslateModule,
   ],
   templateUrl: './filter-projects.component.html',
   styleUrl: './filter-projects.component.scss',
 })
 export class FilterProjectsComponent {
   @Output() public filterChange = new EventEmitter<ProjectFilters>();
+
+  public constructor(private mappersService: MappersService) {}
 
   protected filterProjectName = '';
   protected filterStatus: ProjectStatus | undefined;
@@ -53,7 +57,7 @@ export class FilterProjectsComponent {
   }
 
   protected mapStatus(status: ProjectStatus): string {
-    return projectStatusMapper(status);
+    return this.mappersService.projectStatusMapper(status);
   }
 
   protected get projectStatuses(): ProjectStatus[] {

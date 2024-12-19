@@ -9,9 +9,11 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectRequest } from '../../../../features/dto/project.model';
 import { ProjectService } from '../../../../features/services/project.service';
+import { TranslationService } from '../../../../features/services/translation.service';
 import {
   endDateValidator,
   startDateValidator,
@@ -36,6 +38,7 @@ interface CreateProjectForm {
     MatDialogModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    TranslateModule,
   ],
   templateUrl: './create-project.component.html',
   styleUrl: './create-project.component.scss',
@@ -45,7 +48,8 @@ export class CreateProjectComponent {
     private projectService: ProjectService,
     private dialogRef: MatDialogRef<CreateProjectComponent>,
     private router: Router,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private translationService: TranslationService
   ) {}
 
   protected form: FormGroup<CreateProjectForm> =
@@ -149,7 +153,9 @@ export class CreateProjectComponent {
         this.toastrService.error(err.error.message);
       },
       complete: () => {
-        this.toastrService.success('Project has been created');
+        this.toastrService.success(
+          this.translationService.translate('toast.success.PROJECT_CREATED')
+        );
       },
     });
 

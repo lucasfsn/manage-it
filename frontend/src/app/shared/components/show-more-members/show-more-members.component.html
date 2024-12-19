@@ -11,7 +11,11 @@
         }
       </div>
       <p class="font-semibold">
-        {{ isOnlyShow ? "All members" : "Manage members" }}
+        @if (isOnlyShow) {
+        {{ "showMoreMembers.ALL_TEXT" | translate }}
+        } @else {
+        {{ "showMoreMembers.MANAGE_TEXT" | translate }}
+        }
       </p>
     </div>
     <button

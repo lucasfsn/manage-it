@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Priority } from '../../../features/dto/project.model';
-import { priorityMapper } from '../../utils/priority-mapper';
+import { MappersService } from '../../../features/services/mappers.service';
 
 @Component({
   selector: 'app-priority',
@@ -13,11 +13,13 @@ export class PriorityComponent {
   @Input() public priority!: Priority;
   @Input() public textSize? = 'text-xs';
 
+  public constructor(private mappersService: MappersService) {}
+
   protected get Priority(): typeof Priority {
     return Priority;
   }
 
   protected mapPriority(priority: Priority): string {
-    return priorityMapper(priority);
+    return this.mappersService.priorityMapper(priority);
   }
 }

@@ -8,7 +8,7 @@
     </label>
     <input
       class="bg-transparent border-none focus:outline-none w-full"
-      placeholder="Type to search"
+      [placeholder]="'searchModal.PLACEHOLDER' | translate"
       [formControl]="form"
       (input)="onSearch()"
       #searchInput
@@ -18,7 +18,7 @@
       (click)="closeDialog()"
       class="px-1.5 py-1 bg-slate-500 flex justify-center items-center rounded-md text-slate-300"
     >
-      <p class="text-xs">close</p>
+      <p class="text-xs">{{ "searchModal.CLOSE_BUTTON" | translate }}</p>
     </button>
   </div>
 </mat-dialog-content>
@@ -34,7 +34,9 @@
   >
     {{ result.firstName }} {{ result.lastName }}
     @if (isLoggedInUser(result.username)) {
-    <span class="text-slate-600">(You)</span>
+    <span class="text-slate-600">{{
+      "searchModal.CURRENT_USER_AS_RESULT" | translate
+    }}</span>
     }
   </li>
   }

@@ -6,7 +6,7 @@
       >
         <mat-icon>create_new_folder</mat-icon>
       </div>
-      <p class="font-semibold">Create Project</p>
+      <p class="font-semibold">{{ "project.createForm.TITLE" | translate }}</p>
     </div>
     <button (click)="closeDialog()">
       <mat-icon>close</mat-icon>
@@ -14,39 +14,44 @@
   </div>
   <form [formGroup]="form" class="grid grid-cols-2 gap-2 bg-slate-900 p-2">
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="name">Title</label>
+      <label for="name">{{
+        "project.createForm.NAME_LABEL" | translate
+      }}</label>
       <input
         id="name"
         type="text"
         formControlName="name"
-        placeholder="Enter project title"
+        [placeholder]="'project.createForm.NAME_PLACEHOLDER' | translate"
         class="w-full"
       />
       @if (nameIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        Project name must contain between 2 and 50 characters.
+        {{ "project.createForm.NAME_INVALID" | translate }}
       </p>
       }
     </div>
 
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="description">Description</label>
+      <label for="description">{{
+        "project.createForm.DESCRIPTION_LABEL" | translate
+      }}</label>
       <input
         type="text"
         id="description"
         formControlName="description"
-        placeholder="Enter project description"
+        [placeholder]="'project.createForm.DESCRIPTION_PLACEHOLDER' | translate"
         class="w-full"
       />
       @if (descriptionIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        Project description must contain between 2 and 120 characters.
+        {{ "project.createForm.DESCRIPTION_INVALID" | translate }}
       </p>
       }
     </div>
-
     <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
-      <label for="startDate">Start date</label>
+      <label for="startDate">{{
+        "project.createForm.START_DATE_LABEL" | translate
+      }}</label>
       <input
         type="date"
         id="startDate"
@@ -55,13 +60,15 @@
       />
       @if (startDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        Start date must be at least today.
+        {{ "project.createForm.START_DATE_INVALID" | translate }}
       </p>
       }
     </div>
 
     <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
-      <label for="endDate">End date</label>
+      <label for="endDate">{{
+        "project.createForm.END_DATE_LABEL" | translate
+      }}</label>
       <input
         type="date"
         id="endDate"
@@ -70,7 +77,7 @@
       />
       @if (endDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        End date cannot be earlier than the start date.
+        {{ "project.createForm.END_DATE_INVALID" | translate }}
       </p>
       }
     </div>
@@ -80,13 +87,17 @@
         (click)="onReset()"
         class="px-4 py-2 bg-slate-900 flex justify-center items-center rounded-md text-slate-300"
       >
-        <p class="text-xs">Reset</p>
+        <p class="text-xs">
+          {{ "project.createForm.RESET_BUTTON" | translate }}
+        </p>
       </button>
       <button
         (click)="onSubmit()"
         class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100"
       >
-        <p class="text-xs">Create Project</p>
+        <p class="text-xs">
+          {{ "project.createForm.CREATE_BUTTON" | translate }}
+        </p>
       </button>
     </div>
   </form>

@@ -17,10 +17,12 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { TaskService } from '../../../../features/services/task.service';
+import { TranslationService } from '../../../../features/services/translation.service';
 import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-task.component';
 
 @Component({
@@ -32,6 +34,7 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
     RouterLink,
     ReactiveFormsModule,
     SearchAddToTaskComponent,
+    TranslateModule,
   ],
   templateUrl: './task-assignees.component.html',
   styleUrl: './task-assignees.component.scss',
@@ -71,7 +74,8 @@ export class TaskAssigneesComponent implements OnInit {
   public constructor(
     private taskService: TaskService,
     private loadingService: LoadingService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private translationService: TranslationService
   ) {}
 
   protected get members(): User[] {
@@ -91,7 +95,11 @@ export class TaskAssigneesComponent implements OnInit {
       complete: () => {
         this.loadingService.loadingOff();
         this.toastrService.success(
-          `${user.firstName} ${user.lastName} has been added to task`
+          `${user.firstName} ${
+            user.lastName
+          } ${this.translationService.translate(
+            'toast.success.MEMBER_ADDED_TO_TASK'
+          )}`
         );
       },
     });
@@ -111,7 +119,11 @@ export class TaskAssigneesComponent implements OnInit {
       complete: () => {
         this.loadingService.loadingOff();
         this.toastrService.success(
-          `${user.firstName} ${user.lastName} has been removed from task`
+          `${user.firstName} ${
+            user.lastName
+          } ${this.translationService.translate(
+            'toast.success.MEMBER_ADDED_TO_TASK'
+          )}`
         );
       },
     });

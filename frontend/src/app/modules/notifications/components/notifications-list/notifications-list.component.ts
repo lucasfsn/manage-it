@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MomentModule } from 'ngx-moment';
 import { Notification } from '../../../../features/dto/notification.model';
 import { NotificationService } from '../../../../features/services/notification.service';
+import { TimeAgoPipe } from '../../../../shared/pipes/am-time-ago.pipe';
 
 @Component({
   selector: 'app-notifications-list',
   standalone: true,
-  imports: [MomentModule],
+  imports: [TimeAgoPipe],
   templateUrl: './notifications-list.component.html',
   styleUrl: './notifications-list.component.scss',
 })

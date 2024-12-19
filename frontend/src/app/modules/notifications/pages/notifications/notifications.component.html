@@ -4,7 +4,7 @@
 <div class="flex flex-col gap-6 w-2/3 mx-auto">
   <div class="flex justify-between">
     <h1 class="flex gap-2 text-xl font-semibold items-baseline">
-      <span>Notifications</span>
+      <span>{{ "notifications.TITLE" | translate }}</span>
       @if (notifications.length > 0) {
       <span
         class="flex justify-center items-center text-sm px-3 bg-sky-500 text-slate-950 rounded-lg"
@@ -17,14 +17,16 @@
       class="text-gray-400 text-sm hover:text-gray-500 transition-all"
       (click)="markAllAsRead()"
     >
-      Mark all as read
+      {{ "notifications.MARK_ALL_AS_READ" | translate }}
     </button>
     }
   </div>
   @if (notifications.length > 0) {
   <app-notifications-list />
   } @else {
-  <p class="text-gray-400">You are up to date</p>
+  <p class="text-gray-400">
+    {{ "notifications.NO_NOTIFICATIONS" | translate }}
+  </p>
   }
 </div>
 }

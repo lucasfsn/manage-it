@@ -1,9 +1,10 @@
-import { DatePipe, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import {
   ProjectStatus,
@@ -14,6 +15,7 @@ import { AuthService } from '../../../../features/services/auth.service';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { UserService } from '../../../../features/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
 import { AddToProjectComponent } from '../../components/add-to-project/add-to-project.component';
 import { EditProfileFormComponent } from '../../components/edit-profile/edit-profile-form.component';
 import { UserProfileRouteData } from '../../users.routes';
@@ -25,8 +27,9 @@ import { UserProfileRouteData } from '../../users.routes';
     SpinnerComponent,
     RouterLink,
     MatIconModule,
-    DatePipe,
+    CustomDatePipe,
     AddToProjectComponent,
+    TranslateModule,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',

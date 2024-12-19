@@ -26,7 +26,7 @@
       <div class="flex justify-between items-center gap-1">
         <span class="text-xs text-gray-400 flex items-center gap-1">
           <mat-icon class="text-base">schedule</mat-icon>
-          {{ task.dueDate | date : "mediumDate" }}</span
+          {{ task.dueDate | customDate }}</span
         >
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
@@ -54,7 +54,7 @@
     (click)="openAddCardDialog(TaskStatus.COMPLETED)"
   >
     <mat-icon class="text-base">add</mat-icon>
-    Add another card
+    {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
   </button>
   }
 </div>
@@ -86,7 +86,7 @@
       <div class="flex justify-between items-center gap-1">
         <span class="text-xs text-gray-400 flex items-center gap-1">
           <mat-icon class="text-base">schedule</mat-icon>
-          {{ task.dueDate | date : "mediumDate" }}</span
+          {{ task.dueDate | customDate }}</span
         >
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
@@ -114,7 +114,7 @@
     (click)="openAddCardDialog(TaskStatus.IN_PROGRESS)"
   >
     <mat-icon class="text-base">add</mat-icon>
-    Add another card
+    {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
   </button>
   }
 </div>
@@ -146,7 +146,7 @@
       <div class="flex justify-between items-center gap-1">
         <span class="text-xs text-gray-400 flex items-center gap-1">
           <mat-icon class="text-base">schedule</mat-icon>
-          {{ task.dueDate | date : "mediumDate" }}</span
+          {{ task.dueDate | customDate }}</span
         >
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
@@ -174,7 +174,7 @@
     (click)="openAddCardDialog(TaskStatus.NOT_STARTED)"
   >
     <mat-icon class="text-base">add</mat-icon>
-    Add another card
+    {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
   </button>
   }
 </div>

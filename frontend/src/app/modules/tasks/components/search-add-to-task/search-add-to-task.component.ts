@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { User } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { TaskService } from '../../../../features/services/task.service';
@@ -10,7 +10,7 @@ import { UserService } from '../../../../features/services/user.service';
 @Component({
   selector: 'app-search-add-to-task',
   standalone: true,
-  imports: [MatIconModule, ReactiveFormsModule],
+  imports: [MatIconModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './search-add-to-task.component.html',
   styleUrl: './search-add-to-task.component.scss',
 })
@@ -22,7 +22,6 @@ export class SearchAddToTaskComponent {
   public constructor(
     private authService: AuthService,
     private userService: UserService,
-    private route: ActivatedRoute,
     private taskService: TaskService
   ) {}
 
@@ -56,10 +55,6 @@ export class SearchAddToTaskComponent {
     this.userAdd.emit(user);
     this.form.setValue('');
     this.searchResults = [];
-  }
-
-  protected isAlreadyIn(username: string): boolean {
-    return this.members.some((u) => u.username === username);
   }
 
   protected isLoggedInUser(username: string): boolean {

@@ -5,11 +5,11 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   Project,
   ProjectStatus,
@@ -19,6 +19,7 @@ import {
 import { ProjectService } from '../../../../features/services/project.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
+import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
 import { CreateTaskComponent } from '../create-task/create-task.component';
 
 @Component({
@@ -26,11 +27,12 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
   standalone: true,
   imports: [
     MatIconModule,
-    DatePipe,
+    CustomDatePipe,
     CdkDropList,
     CdkDrag,
     PriorityComponent,
     RouterLink,
+    TranslateModule,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',

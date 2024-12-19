@@ -4,60 +4,84 @@
       <img src="logo.png" alt="ManageIt Logo" class="h-2/3" />
     </a>
   </div>
-  <nav class="h-full hidden sm:flex">
-    @if (isLoggedIn) {
-    <ul class="flex items-center space-x-4 text-zinc-300 h-full text-base px-4">
-      <li class="flex gap-2 divide-x divide-slate-600">
-        <button
-          class="font-bold hover:text-sky-500 transition-all flex flex-row items-center gap-1.5 pl-2"
-          (click)="logout()"
-        >
-          <mat-icon>logout</mat-icon>
-          <p>Log out</p>
+  <div class="flex gap-2 sm:gap-10 h-full items-center">
+    <div>
+      <button
+        [matMenuTriggerFor]="menu"
+        class="flex items-center justify-center"
+      >
+        <mat-icon>language</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        @for (language of languages; track language.code) {
+        <button mat-menu-item (click)="changeLanguage(language.code)">
+          <span [class.text-sky-500]="currentLanguage === language.code">{{
+            languageText(language.labelKey)
+          }}</span>
         </button>
-      </li>
-    </ul>
-    } @else {
-    <ul class="flex items-center space-x-4 text-zinc-300 h-full text-base">
-      <li>
-        <a
-          routerLink="/auth/login"
-          routerLinkActive="active-link"
-          class="font-bold hover:text-sky-500 transition-all"
-          >Log in</a
-        >
-      </li>
-      <li class="bg-slate-900 h-full flex items-center px-4">
-        <a
-          routerLink="/auth/signup"
-          routerLinkActive="active-link"
-          class="font-bold hover:text-sky-500 transition-all"
-          >Sign up for free</a
-        >
-      </li>
-    </ul>
-    }
-  </nav>
-  <div class="block sm:hidden px-2">
-    <button class="block sm:hidden" [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
+        }
+      </mat-menu>
+    </div>
+    <nav class="h-full hidden sm:flex">
       @if (isLoggedIn) {
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Log out</span>
-      </button>
+      <ul
+        class="flex items-center space-x-4 text-zinc-300 h-full text-base px-4"
+      >
+        <li class="flex gap-2 divide-x divide-slate-600">
+          <button
+            class="hover:text-sky-500 transition-all flex flex-row items-center gap-1.5"
+            (click)="logout()"
+          >
+            <mat-icon>logout</mat-icon>
+            <p>{{ "header.LOGOUT" | translate }}</p>
+          </button>
+        </li>
+      </ul>
       } @else {
-      <button mat-menu-item routerLink="/auth/login">
-        <mat-icon>login</mat-icon>
-        <span>Log in</span>
-      </button>
-      <button mat-menu-item routerLink="/auth/signup">
-        <mat-icon>person_add_alt</mat-icon>
-        <span>Sign up</span>
-      </button>
+      <ul class="flex items-center space-x-4 text-zinc-300 h-full text-base">
+        <li>
+          <a
+            routerLink="/auth/login"
+            routerLinkActive="active-link"
+            class="font-bold hover:text-sky-500 transition-all"
+            >{{ "header.LOGIN" | translate }}</a
+          >
+        </li>
+        <li class="bg-slate-900 h-full flex items-center px-4">
+          <a
+            routerLink="/auth/signup"
+            routerLinkActive="active-link"
+            class="font-bold hover:text-sky-500 transition-all"
+            >{{ "header.SIGN_UP_LONG" | translate }}</a
+          >
+        </li>
+      </ul>
       }
-    </mat-menu>
+    </nav>
+    <div class="block sm:hidden px-2">
+      <button
+        class="flex sm:hidden justify-center items-center"
+        [matMenuTriggerFor]="menu"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        @if (isLoggedIn) {
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>{{ "header.LOGOUT" | translate }}</span>
+        </button>
+        } @else {
+        <button mat-menu-item routerLink="/auth/login">
+          <mat-icon>login</mat-icon>
+          <span>{{ "header.LOGIN" | translate }}</span>
+        </button>
+        <button mat-menu-item routerLink="/auth/signup">
+          <mat-icon>person_add_alt</mat-icon>
+          <span>{{ "header.SIGN_UP_SHORT" | translate }}</span>
+        </button>
+        }
+      </mat-menu>
+    </div>
   </div>
 </header>

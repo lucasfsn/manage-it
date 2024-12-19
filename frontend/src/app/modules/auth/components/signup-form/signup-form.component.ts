@@ -8,9 +8,11 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterCredentials } from '../../../../features/dto/auth.model';
 import { AuthService } from '../../../../features/services/auth.service';
+import { TranslationService } from '../../../../features/services/translation.service';
 import {
   equalValues,
   nameValidator,
@@ -36,12 +38,19 @@ interface SignupForm {
   standalone: true,
   templateUrl: './signup-form.component.html',
   styleUrl: './signup-form.component.scss',
-  imports: [ReactiveFormsModule, RouterLink, MatIconModule, MatTooltipModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    MatIconModule,
+    MatTooltipModule,
+    TranslateModule,
+  ],
 })
 export class SignupFormComponent {
   public constructor(
     private authService: AuthService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private translationService: TranslationService
   ) {}
 
   protected form: FormGroup<SignupForm> = new FormGroup<SignupForm>({
@@ -143,16 +152,32 @@ export class SignupFormComponent {
     const control = this.form.controls.firstName;
     if (control.errors) {
       if (control.errors['required']) {
-        return 'First name is required.';
+        return this.translationService.translate(
+          'signupForm.FIRST_NAME_REQUIRED'
+        );
       }
       if (control.errors['minlength']) {
-        return `First name must be at least ${control.errors['minlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'signupForm.FIRST_NAME_MIN_LENGTH_BEFORE'
+        )} ${
+          control.errors['minlength'].requiredLength
+        } ${this.translationService.translate(
+          'signupForm.FIRST_NAME_MIN_LENGTH_AFTER'
+        )}`;
       }
       if (control.errors['maxlength']) {
-        return `First name cannot be more than ${control.errors['maxlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'signupForm.FIRST_NAME_MAX_LENGTH_BEFORE'
+        )} ${
+          control.errors['maxlength'].requiredLength
+        } ${this.translationService.translate(
+          'signupForm.FIRST_NAME_MAX_LENGTH_AFTER'
+        )}`;
       }
       if (control.errors['invalidName']) {
-        return 'First name cannot contain numbers and special characters.';
+        return this.translationService.translate(
+          'signupForm.FIRST_NAME_INVALID'
+        );
       }
     }
 
@@ -163,16 +188,32 @@ export class SignupFormComponent {
     const control = this.form.controls.lastName;
     if (control.errors) {
       if (control.errors['required']) {
-        return 'Last name is required.';
+        return this.translationService.translate(
+          'signupForm.LAST_NAME_REQUIRED'
+        );
       }
       if (control.errors['minlength']) {
-        return `Last name must be at least ${control.errors['minlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'signupForm.LAST_NAME_MIN_LENGTH_BEFORE'
+        )} ${
+          control.errors['minlength'].requiredLength
+        } ${this.translationService.translate(
+          'signupForm.LAST_NAME_MIN_LENGTH_AFTER'
+        )}`;
       }
       if (control.errors['maxlength']) {
-        return `Last name cannot be more than ${control.errors['maxlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'signupForm.LAST_NAME_MAX_LENGTH_BEFORE'
+        )} ${
+          control.errors['maxlength'].requiredLength
+        } ${this.translationService.translate(
+          'signupForm.LAST_NAME_MAX_LENGTH_AFTER'
+        )}`;
       }
       if (control.errors['invalidName']) {
-        return 'Last name cannot contain numbers and special characters.';
+        return this.translationService.translate(
+          'signupForm.LAST_NAME_INVALID'
+        );
       }
     }
 
@@ -183,16 +224,30 @@ export class SignupFormComponent {
     const control = this.form.controls.username;
     if (control.errors) {
       if (control.errors['required']) {
-        return 'Username is required.';
+        return this.translationService.translate(
+          'signupForm.USERNAME_REQUIRED'
+        );
       }
       if (control.errors['minlength']) {
-        return `Username must be at least ${control.errors['minlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'signupForm.USERNAME_MIN_LENGTH_BEFORE'
+        )} ${
+          control.errors['minlength'].requiredLength
+        } ${this.translationService.translate(
+          'signupForm.USERNAME_MIN_LENGTH_AFTER'
+        )}`;
       }
       if (control.errors['maxlength']) {
-        return `Username cannot be more than ${control.errors['maxlength'].requiredLength} characters long.`;
+        return `${this.translationService.translate(
+          'signupForm.USERNAME_MAX_LENGTH_BEFORE'
+        )} ${
+          control.errors['maxlength'].requiredLength
+        } ${this.translationService.translate(
+          'signupForm.USERNAME_MAX_LENGTH_AFTER'
+        )}`;
       }
-      if (control.errors['invalidName']) {
-        return 'Username cannot contain numbers and special characters.';
+      if (control.errors['invalidUsername']) {
+        return this.translationService.translate('signupForm.USERNAME_INVALID');
       }
     }
 
@@ -203,10 +258,10 @@ export class SignupFormComponent {
     const control = this.form.controls.email;
     if (control.errors) {
       if (control.errors['required']) {
-        return 'Email is required.';
+        return this.translationService.translate('signupForm.EMAIL_REQUIRED');
       }
       if (control.errors['email']) {
-        return 'Email is not valid.';
+        return this.translationService.translate('signupForm.EMAIL_INVALID');
       }
     }
 
@@ -217,10 +272,12 @@ export class SignupFormComponent {
     const control = this.form.controls.passwords.get('password');
     if (control?.errors) {
       if (control.errors['required']) {
-        return 'Password is required.';
+        return this.translationService.translate(
+          'signupForm.PASSWORD_REQUIRED'
+        );
       }
       if (control.errors['invalidPassword']) {
-        return 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.';
+        return this.translationService.translate('signupForm.PASSWORD_INVALID');
       }
     }
 
@@ -245,7 +302,9 @@ export class SignupFormComponent {
         this.toastrService.error(error.message);
       },
       complete: () => {
-        this.toastrService.success('Signed up successfully');
+        this.toastrService.success(
+          this.translationService.translate('toast.success.SIGNUP')
+        );
       },
     });
   }

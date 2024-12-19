@@ -1,40 +1,43 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
-import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
 
 @Component({
   selector: 'app-projects-summary',
   standalone: true,
-  imports: [BaseChartDirective],
+  imports: [BaseChartDirective, TranslateModule],
   templateUrl: './projects-summary.component.html',
   styleUrl: './projects-summary.component.scss',
 })
 export class ProjectsSummaryComponent implements OnInit {
-  public constructor(private projectService: ProjectService) {}
+  public constructor(
+    private projectService: ProjectService,
+    private mappersService: MappersService
+  ) {}
 
   protected activeProjectsCount = 0;
   protected progressChartData: ChartData<'doughnut'> = {
-    labels: [
-      projectStatusMapper(ProjectStatus.COMPLETED),
-      projectStatusMapper(ProjectStatus.IN_PROGRESS),
-    ],
+    labels: [],
     datasets: [
       {
-        data: [0, 0, 0],
+        data: [],
         backgroundColor: ['#0ea5e9', '#fb923c'],
         borderColor: '#e5e7eb',
       },
     ],
   };
+
   protected progressChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
     plugins: {
       legend: {
         position: 'top',
         align: 'center',
+        onClick: () => null,
       },
     },
   };
@@ -61,6 +64,11 @@ export class ProjectsSummaryComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.progressChartData.labels = [
+      this.mappersService.projectStatusMapper(ProjectStatus.COMPLETED),
+      this.mappersService.projectStatusMapper(ProjectStatus.IN_PROGRESS),
+    ];
+
     this.updateChart();
   }
 }

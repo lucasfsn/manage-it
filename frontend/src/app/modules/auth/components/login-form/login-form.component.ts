@@ -6,9 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
 import { AuthService } from '../../../../features/services/auth.service';
+import { TranslationService } from '../../../../features/services/translation.service';
 import { passwordValidator } from '../../../../shared/validators';
 
 interface LoginForm {
@@ -19,7 +21,7 @@ interface LoginForm {
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslateModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
 })
@@ -28,7 +30,8 @@ export class LoginFormComponent implements OnInit {
 
   public constructor(
     private authService: AuthService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private translationService: TranslationService
   ) {}
 
   protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>({
@@ -64,10 +67,10 @@ export class LoginFormComponent implements OnInit {
     const control = this.form.controls.password;
     if (control.errors) {
       if (control.errors['required']) {
-        return 'Password is required.';
+        return this.translationService.translate('loginForm.PASSWORD_REQUIRED');
       }
       if (control.errors['invalidPassword']) {
-        return 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.';
+        return this.translationService.translate('loginForm.PASSWORD_INVALID');
       }
     }
 
@@ -87,7 +90,9 @@ export class LoginFormComponent implements OnInit {
         this.toastrService.error(error.message);
       },
       complete: () => {
-        this.toastrService.success('Logged in successfully');
+        this.toastrService.success(
+          this.translationService.translate('toast.success.LOGIN')
+        );
       },
     });
   }

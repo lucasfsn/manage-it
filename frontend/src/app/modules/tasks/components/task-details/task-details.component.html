@@ -1,5 +1,5 @@
 @if (task) {
-<div class="flex flex-col text-gray-400 gap-5 lg:w-2/3">
+<div class="flex flex-col text-gray-400 gap-5">
   <div class="flex flex-row justify-between items-center">
     <h2 class="text-2xl font-semibold text-gray-300">
       {{ task.description }}
@@ -10,7 +10,7 @@
       <div class="grid grid-cols-2 grid-rows-2 gap-2">
         <p class="flex items-center">
           <mat-icon class="text-base">task_alt</mat-icon>
-          <span>Status</span>
+          <span>{{ "task.details.STATUS" | translate }}</span>
         </p>
         <div
           class="rounded-full text-gray-900 font-semibold text-sm px-2 py-1 text-center mr-auto"
@@ -22,18 +22,20 @@
         </div>
         <p class="flex items-center">
           <mat-icon class="text-base">calendar_today</mat-icon>
-          <span>Due date</span>
+          <span>{{ "task.details.DUE_DATE" | translate }}</span>
         </p>
-        <div class="text-slate-300">{{ task.dueDate | date }}</div>
+        <div class="text-slate-300">{{ task.dueDate | customDate }}</div>
       </div>
       <div class="grid grid-cols-2 grid-rows-2 gap-2">
         <p class="flex items-center">
           <mat-icon class="text-base">person</mat-icon>
-          <span>Assignees</span>
+          <span>{{ "task.details.ASSIGNEES" | translate }}</span>
         </p>
         <ul class="flex gap-1 items-center">
           @if (task.members.length === 0) {
-          <p class="text-slate-300">No assignees</p>
+          <p class="text-slate-300">
+            {{ "task.details.NO_ASSIGNEES" | translate }}
+          </p>
           } @for (member of task.members.slice(0,4); track member.username) {
           <li
             class="p-0.5 bg-sky-500 hover:bg-sky-600 text-sky-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
@@ -52,7 +54,7 @@
         </ul>
         <p class="flex items-center">
           <mat-icon class="text-base">priority_high</mat-icon>
-          <span>Priority</span>
+          <span>{{ "task.details.PRIORITY" | translate }}</span>
         </p>
         <div class="mr-auto">
           <app-priority textSize="text-sm" [priority]="task.priority" />

@@ -5,7 +5,6 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { DatePipe } from '@angular/common';
 import {
   AfterViewChecked,
   Component,
@@ -23,15 +22,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { TranslateModule } from '@ngx-translate/core';
 import { UserCredentials } from '../../../features/dto/auth.model';
 import { Message } from '../../../features/dto/chat.model';
 import { AuthService } from '../../../features/services/auth.service';
 import { ChatService } from '../../../features/services/chat.service';
+import { CustomDatePipe } from '../../pipes/custom-date.pipe';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [MatIconModule, PickerComponent, FormsModule, DatePipe],
+  imports: [
+    MatIconModule,
+    PickerComponent,
+    FormsModule,
+    CustomDatePipe,
+    TranslateModule,
+  ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
   animations: [

@@ -6,7 +6,7 @@
       >
         <mat-icon>edit_note</mat-icon>
       </div>
-      <p class="font-semibold">Edit Task</p>
+      <p class="font-semibold">{{ "task.editForm.TITLE" | translate }}</p>
     </div>
     <button (click)="closeDialog()">
       <mat-icon>close</mat-icon>
@@ -14,22 +14,26 @@
   </div>
   <form [formGroup]="form" class="grid grid-cols-2 gap-2 bg-slate-900 p-2">
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="description">Description</label>
+      <label for="description">{{
+        "task.editForm.DESCRIPTION_LABEL" | translate
+      }}</label>
       <input
         id="description"
         type="text"
         formControlName="description"
-        placeholder="Enter task description"
+        [placeholder]="'task.editForm.DESCRIPTION_PLACEHOLDER' | translate"
         class="w-full pl-0.5"
       />
       @if (descriptionIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        Description name must contain between 2 and 120 characters.
+        {{ "task.editForm.DESCRIPTION_INVALID" | translate }}
       </p>
       }
     </div>
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="dueDate">Due date</label>
+      <label for="dueDate">{{
+        "task.editForm.DUE_DATE_LABEL" | translate
+      }}</label>
       <input
         type="date"
         id="dueDate"
@@ -37,11 +41,13 @@
         class="w-full pl-0.5"
       />
       @if (dueDateIsInvalid) {
-      <p class="text-red-500 text-sm col-span-3">Due date is required.</p>
+      <p class="text-red-500 text-sm col-span-3">
+        {{ "task.editForm.DUE_DATE_INVALID" | translate }}
+      </p>
       }
     </div>
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="status">Status</label>
+      <label for="status">{{ "task.editForm.STATUS_LABEL" | translate }}</label>
       <select
         id="status"
         formControlName="status"
@@ -55,7 +61,9 @@
       </select>
     </div>
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="priority">Priority</label>
+      <label for="priority">{{
+        "task.editForm.PRIORITY_LABEL" | translate
+      }}</label>
       <select
         id="priority"
         formControlName="priority"
@@ -70,18 +78,24 @@
     </div>
     <div class="col-span-2 flex justify-end gap-2 mt-4">
       <button
-        [disabled]="disabled"
+        [disabled]="isLoading"
         (click)="onReset()"
         class="px-4 py-2 bg-slate-900 flex justify-center items-center rounded-md text-slate-300 disabled:cursor-not-allowed"
       >
-        <p class="text-xs">Reset</p>
+        <p class="text-xs">{{ "task.editForm.RESET_BUTTON" | translate }}</p>
       </button>
       <button
         [disabled]="disabled"
         (click)="onSubmit()"
         class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100 disabled:bg-gray-500 disabled:cursor-not-allowed"
       >
-        <p class="text-xs">{{ isLoading ? "Saving..." : "Save changes" }}</p>
+        <p class="text-xs">
+          @if (isLoading) {
+          {{ "task.editForm.LOADING_BUTTON" | translate }}
+          } @else {
+          {{ "task.editForm.SAVE_BUTTON" | translate }}
+          }
+        </p>
       </button>
     </div>
   </form>

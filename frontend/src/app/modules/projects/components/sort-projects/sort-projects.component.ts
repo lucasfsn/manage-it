@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  sortCriteriaMapper,
-  sortOrderMapper,
-} from '../../../../shared/utils/project-sort.mapper';
+import { TranslateModule } from '@ngx-translate/core';
+import { MappersService } from '../../../../features/services/mappers.service';
 import {
   ProjectsSort,
   SortCriteria,
@@ -13,7 +11,7 @@ import {
 @Component({
   selector: 'app-sort-projects',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TranslateModule],
   templateUrl: './sort-projects.component.html',
   styleUrl: './sort-projects.component.scss',
 })
@@ -21,6 +19,8 @@ export class SortProjectsComponent {
   @Input() public sortCriteria: SortCriteria = SortCriteria.NAME;
   @Input() public sortOrder: SortOrder = SortOrder.ASCENDING;
   @Output() public sortChange = new EventEmitter<ProjectsSort>();
+
+  public constructor(private mappersService: MappersService) {}
 
   protected onSortCriteriaChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
@@ -43,11 +43,11 @@ export class SortProjectsComponent {
   }
 
   protected mapOrder(order: SortOrder): string {
-    return sortOrderMapper(order);
+    return this.mappersService.sortOrderMapper(order);
   }
 
   protected mapCriteria(criteria: SortCriteria): string {
-    return sortCriteriaMapper(criteria);
+    return this.mappersService.sortCriteriaMapper(criteria);
   }
 
   private emitSortChange(): void {

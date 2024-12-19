@@ -1,0 +1,302 @@
+{
+  "loginForm": {
+    "EMAIL_PLACEHOLDER": "Enter your email",
+    "EMAIL_INVALID": "Please enter a valid email address.",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "PASSWORD_REQUIRED": "Password is required.",
+    "PASSWORD_INVALID": "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.",
+    "LOGIN_BUTTON": "Log in",
+    "CREATE_ACCOUNT": "Create an account"
+  },
+  "signupForm": {
+    "TITLE": "We just need a little bit of data from you to get started",
+    "FIRST_NAME_PLACEHOLDER": "Enter your first name",
+    "FIRST_NAME_REQUIRED": "First name is required.",
+    "FIRST_NAME_MIN_LENGTH_BEFORE": "First name must be at least",
+    "FIRST_NAME_MIN_LENGTH_AFTER": "characters long.",
+    "FIRST_NAME_MAX_LENGTH_BEFORE": "First name cannot be more than",
+    "FIRST_NAME_MAX_LENGTH_AFTER": "characters long.",
+    "FIRST_NAME_INVALID": "First name cannot contain numbers and special characters.",
+    "LAST_NAME_PLACEHOLDER": "Enter your last name",
+    "LAST_NAME_REQUIRED": "Last name is required.",
+    "LAST_NAME_MIN_LENGTH_BEFORE": "Last name must be at least",
+    "LAST_NAME_MIN_LENGTH_AFTER": "characters long.",
+    "LAST_NAME_MAX_LENGTH_BEFORE": "Last name cannot be more than",
+    "LAST_NAME_MAX_LENGTH_AFTER": "characters long.",
+    "LAST_NAME_INVALID": "Last name cannot contain numbers and special characters.",
+    "USERNAME_PLACEHOLDER": "Enter your username",
+    "USERNAME_REQUIRED": "Username is required.",
+    "USERNAME_TOOLTIP": "Username is permanent and cannot be changed later",
+    "USERNAME_MIN_LENGTH_BEFORE": "Username must be at least",
+    "USERNAME_MIN_LENGTH_AFTER": "characters long.",
+    "USERNAME_MAX_LENGTH_BEFORE": "Username cannot be more than",
+    "USERNAME_MAX_LENGTH_AFTER": "characters long.",
+    "USERNAME_INVALID": "Username cannot contain numbers and special characters.",
+    "EMAIL_PLACEHOLDER": "Enter your email",
+    "EMAIL_REQUIRED": "Email is required.",
+    "EMAIL_INVALID": "Please enter a valid email address.",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm password",
+    "PASSWORD_REQUIRED": "Password is required.",
+    "PASSWORD_INVALID": "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.",
+    "PASSWORDS_DO_NOT_MATCH": "Passwords do not match.",
+    "SIGN_UP_BUTTON": "Sign up",
+    "RESET_BUTTON": "Reset",
+    "ALREADY_HAVE_ACCOUNT": "Already have an account? Log in"
+  },
+  "header": {
+    "LOGIN": "Log in",
+    "SIGN_UP_LONG": "Sign up for free",
+    "SIGN_UP_SHORT": "Sign up",
+    "LOGOUT": "Log out",
+    "LANGUAGE_EN": "English",
+    "LANGUAGE_PL": "Polish"
+  },
+  "homepage": {
+    "TITLE": "Transform the Way You Work with Intuitive Project Management.",
+    "DESCRIPTION": "Discover a new level of productivity with our project management tool. Organize tasks, collaborate with your team, and track progress in real-time. Whether it's a small project or a large team, our intuitive interface and robust features will help you achieve your goals faster.",
+    "SIGN_UP_BUTTON": "Sign up - it's free!"
+  },
+  "sidebar": {
+    "SEARCH": "Search...",
+    "DASHBOARD": "Dashboard",
+    "PROJECTS": "Projects",
+    "NOTIFICATIONS": "Notifications",
+    "PROFILE": "Profile"
+  },
+  "dashboard": {
+    "ongoingProjects": {
+      "TITLE": "Ongoing projects",
+      "NO_PROJECTS": "No ongoing projects",
+      "COMPLETED_TASKS_TEXT": "Completed tasks:",
+      "NO_TASKS": "No tasks yet."
+    },
+    "upcomingDeadlines": {
+      "TITLE": "Upcoming deadlines",
+      "NO_DEADLINES": "No upcoming deadlines",
+      "DEADLINE_TEXT": "Deadline:",
+      "DAY_LEFT": "1 day left",
+      "DAYS_LEFT": "days left"
+    },
+    "projectsSummary": {
+      "TITLE": "Projects summary",
+      "ONGOING_PROJECTS_TEXT": "Ongoing projects:"
+    },
+    "tasksSummary": {
+      "TITLE": "Tasks summary"
+    }
+  },
+  "mappers": {
+    "projectStatus": {
+      "IN_PROGRESS": "In progress",
+      "COMPLETED": "Completed"
+    },
+    "taskStatus": {
+      "IN_PROGRESS": "In progress",
+      "COMPLETED": "Done",
+      "NOT_STARTED": "Upcoming"
+    },
+    "sortCriteria": {
+      "NAME": "Name",
+      "START_DATE": "Start date",
+      "END_DATE": "End date",
+      "COMPLETED_TASKS": "Completed Tasks"
+    },
+    "sortOrder": {
+      "ASCENDING": "Ascending",
+      "DESCENDING": "Descending"
+    },
+    "priority": {
+      "LOW": "Low",
+      "MEDIUM": "Medium",
+      "HIGH": "High"
+    }
+  },
+  "notifications": {
+    "TITLE": "Notifications",
+    "MARK_ALL_AS_READ": "Mark all as read",
+    "NO_NOTIFICATIONS": "You are up to date."
+  },
+  "notFound": {
+    "TITLE": "Page not found.",
+    "DESCRIPTION_LOGGED_IN": "This page may not exist or you may not have access to it. Please check the URL or go back to the",
+    "DESCRIPTION_LOGGED_IN_DASHBOARD_TEXT": "dashboard.",
+    "DESCRIPTION_GUEST": "This page may be private. You may be able to view it by",
+    "DESCRIPTION_GUEST_LOGIN_TEXT": "logging in."
+  },
+  "user": {
+    "profile": {
+      "JOINED_TEXT": "Joined",
+      "EDIT_BUTTON": "Edit profile",
+      "LOGGED_USER_TEXT": "Your Projects",
+      "NOT_LOGGED_USER_TEXT": "Common Projects",
+      "ADD_TO_PROJECT_BUTTON": "Add to Project"
+    },
+    "editForm": {
+      "FIRST_NAME_PLACEHOLDER": "Enter first name",
+      "LAST_NAME_PLACEHOLDER": "Enter last name",
+      "EMAIL_PLACEHOLDER": "Enter new email",
+      "PASSWORD_PLACEHOLDER": "Enter new password",
+      "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm password",
+      "SAVE_BUTTON": "Save",
+      "RESET_BUTTON": "Reset",
+      "FIRST_NAME_REQUIRED": "First name is required.",
+      "FIRST_NAME_MIN_LENGTH_BEFORE": "First name must be at least",
+      "FIRST_NAME_MIN_LENGTH_AFTER": "characters long.",
+      "FIRST_NAME_MAX_LENGTH_BEFORE": "First name cannot be more than",
+      "FIRST_NAME_MAX_LENGTH_AFTER": "characters long.",
+      "FIRST_NAME_INVALID": "First name cannot contain numbers and special characters.",
+      "LAST_NAME_REQUIRED": "Last name is required.",
+      "LAST_NAME_MIN_LENGTH_BEFORE": "Last name must be at least",
+      "LAST_NAME_MIN_LENGTH_AFTER": "characters long.",
+      "LAST_NAME_MAX_LENGTH_BEFORE": "Last name cannot be more than",
+      "LAST_NAME_MAX_LENGTH_AFTER": "characters long.",
+      "LAST_NAME_INVALID": "Last name cannot contain numbers and special characters.",
+      "EMAIL_REQUIRED": "Email is required.",
+      "EMAIL_INVALID": "Please enter a valid email address.",
+      "PASSWORD_INVALID": "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.",
+      "PASSWORDS_DO_NOT_MATCH": "Passwords do not match."
+    }
+  },
+  "projects": {
+    "list": {
+      "NO_PROJECTS": "No projects found.",
+      "START_DATE_TEXT": "Start date:",
+      "DEADLINE_TEXT": "Deadline:",
+      "NO_TASKS": "No tasks yet.",
+      "COMPLETED_PERCENTAGE_TEXT": "Completed"
+    },
+    "filter": {
+      "INPUT_PLACEHOLDER": "Filter by project name",
+      "MENU_TITLE": "Filters",
+      "MENU_STATUS_TEXT": "Status",
+      "ONLY_LOGGED_USER_PROJECTS": "Only managed by me",
+      "CLEAR_BUTTON": "Clear",
+      "APPLY_BUTTON": "Apply",
+      "ALL_FILTER": "All"
+    },
+    "sort": {
+      "SORT_CRITERIA_TEXT": "Sort by:",
+      "SORT_ORDER_TEXT": "Order:"
+    }
+  },
+  "project": {
+    "details": {
+      "LEADER": "Project leader",
+      "MEMBERS": "Members",
+      "STATUS": "Status",
+      "START_DATE": "Start date",
+      "END_DATE": "End date",
+      "DELETE_MESSAGE": "Are you sure you want to delete this project?",
+      "COMPLETE_MESSAGE": "Are you sure you want to mark this project as completed?"
+    },
+    "createForm": {
+      "TITLE": "Edit Project",
+      "NAME_LABEL": "Title",
+      "NAME_PLACEHOLDER": "Enter project title",
+      "NAME_INVALID": "Project title must be between 2 and 50 characters.",
+      "DESCRIPTION_LABEL": "Description",
+      "DESCRIPTION_PLACEHOLDER": "Enter project description",
+      "DESCRIPTION_INVALID": "Project description must be between 2 and 120 characters.",
+      "START_DATE_LABEL": "Start Date",
+      "START_DATE_INVALID": "Start date must be at least today.",
+      "END_DATE_LABEL": "End Date",
+      "END_DATE_INVALID": "End date cannot be earlier than the start date.",
+      "RESET_BUTTON": "Reset",
+      "CREATE_BUTTON": "Create Project"
+    },
+    "editForm": {
+      "TITLE": "Edit Project",
+      "NAME_LABEL": "Title",
+      "NAME_PLACEHOLDER": "Enter project title",
+      "NAME_INVALID": "Project title must be between 2 and 50 characters.",
+      "DESCRIPTION_LABEL": "Description",
+      "DESCRIPTION_PLACEHOLDER": "Enter project description",
+      "DESCRIPTION_INVALID": "Project description must be between 2 and 120 characters.",
+      "START_DATE_LABEL": "Start Date",
+      "START_DATE_INVALID": "Start date is required.",
+      "END_DATE_LABEL": "End Date",
+      "END_DATE_INVALID": "End date cannot be earlier than the start date.",
+      "RESET_BUTTON": "Reset",
+      "SAVE_BUTTON": "Save changes",
+      "LOADING_BUTTON": "Saving..."
+    }
+  },
+  "showMoreMembers": {
+    "ALL_TEXT": "All members",
+    "MANAGE_TEXT": "Manage members"
+  },
+  "searchModal": {
+    "CLOSE_BUTTON": "close",
+    "PLACEHOLDER": "Type to search...",
+    "CURRENT_USER_AS_RESULT": "(You)"
+  },
+  "chat": {
+    "TITLE": "Messages",
+    "INPUT_PLACEHOLDER": "Message..."
+  },
+  "confirmModal": {
+    "CONFIRM_BUTTON": "Yes",
+    "CANCEL_BUTTON": "No",
+    "WARNING_LABEL": "Warning",
+    "WARNING_MESSAGE": "This operation is irreversible."
+  },
+  "task": {
+    "details": {
+      "STATUS": "Status",
+      "DUE_DATE": "Due date",
+      "PRIORITY": "Priority",
+      "ASSIGNEES": "Assignees",
+      "NO_ASSIGNEES": "No assignees",
+      "ASSIGNEE_INPUT_PLACEHOLDER": "Search users"
+    },
+    "drag-and-drop": {
+      "ADD_BUTTON": "Add another task"
+    },
+    "createForm": {
+      "TITLE": "Add Task",
+      "DESCRIPTION_LABEL": "Description",
+      "DESCRIPTION_PLACEHOLDER": "Enter task description",
+      "DESCRIPTION_INVALID": "Task description must contain between 2 and 120 characters.",
+      "DUE_DATE_LABEL": "Due Date",
+      "DUE_DATE_INVALID": "Due date must be at least today.",
+      "PRIORITY_LABEL": "Priority",
+      "PRIORITY_SELECT": "Select priority",
+      "RESET_BUTTON": "Reset",
+      "ADD_BUTTON": "Add Task",
+      "LOADING_BUTTON": "Adding..."
+    },
+    "editForm": {
+      "TITLE": "Edit Task",
+      "DESCRIPTION_LABEL": "Description",
+      "DESCRIPTION_PLACEHOLDER": "Enter task description",
+      "DESCRIPTION_INVALID": "Task description must contain between 2 and 120 characters.",
+      "DUE_DATE_LABEL": "Due Date",
+      "DUE_DATE_INVALID": "Due date must be at least today.",
+      "PRIORITY_LABEL": "Priority",
+      "PRIORITY_SELECT": "Select priority",
+      "STATUS_LABEL": "Status",
+      "RESET_BUTTON": "Reset",
+      "SAVE_BUTTON": "Save changes",
+      "LOADING_BUTTON": "Saving..."
+    }
+  },
+  "toast": {
+    "success": {
+      "LOGOUT": "Logged out successfully",
+      "LOGIN": "Logged in successfully",
+      "SIGNUP": "Signed up successfully",
+      "TASK_ADDED": "Task has been created",
+      "TASK_UPDATED": "Task has been updated",
+      "TASK_DELETED": "Task has been deleted",
+      "MEMBER_ADDED_TO_TASK": "has been added to task",
+      "MEMBER_REMOVED_FROM_TASK": "has been removed from task",
+      "PROJECT_CREATED": "Project has been created",
+      "PROJECT_UPDATED": "Project has been updated",
+      "PROJECT_DELETED": "Project has been deleted",
+      "PROJECT_COMPLETED": "Project has been marked as completed",
+      "MEMBER_ADDED_TO_PROJECT": "has been added to project",
+      "MEMBER_REMOVED_FROM_PROJECT": "has been removed from project"
+    }
+  }
+}

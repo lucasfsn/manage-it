@@ -9,7 +9,9 @@
   />
 </div>
 @if (sortedAndFilteredProjects?.length === 0) {
-<p class="text-gray-400 text-center w-full">No projects found</p>
+<p class="text-gray-400 text-center w-full">
+  {{ "projects.list.NO_PROJECTS" | translate }}
+</p>
 }
 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5 overflow-hidden px-4">
   @for (project of sortedAndFilteredProjects; track project.id) {
@@ -36,15 +38,15 @@
         class="flex flex-col bg-slate-950 rounded-lg py-1 px-2 text-sm text-gray-400"
       >
         <p>
-          Start Date:
+          {{ "projects.list.START_DATE_TEXT" | translate }}
           <span class="text-sky-500">
-            {{ project.startDate | date }}
+            {{ project.startDate | customDate }}
           </span>
         </p>
         <p>
-          Deadline:
+          {{ "projects.list.DEADLINE_TEXT" | translate }}
           <span class="text-pink-500">
-            {{ project.endDate | date }}
+            {{ project.endDate | customDate }}
           </span>
         </p>
       </div>
@@ -61,11 +63,13 @@
         {{
           (project.completedTasks / project.totalTasks) * 100
             | number : "1.0-0"
-        }}% Completed
+        }}% {{ "projects.list.COMPLETED_PERCENTAGE_TEXT" | translate }}
       </span>
     </div>
     } @else {
-    <p class="text-gray-400 text-sm">No tasks yet.</p>
+    <p class="text-gray-400 text-sm">
+      {{ "projects.list.NO_TASKS" | translate }}
+    </p>
     }
   </div>
   }

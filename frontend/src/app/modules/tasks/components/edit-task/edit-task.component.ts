@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import {
   Priority,
@@ -14,9 +15,9 @@ import {
   TaskData,
   TaskStatus,
 } from '../../../../features/dto/project.model';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { TaskService } from '../../../../features/services/task.service';
-import { priorityMapper } from '../../../../shared/utils/priority-mapper';
-import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
+import { TranslationService } from '../../../../features/services/translation.service';
 
 interface EditTaskForm {
   description: FormControl<string | null>;
@@ -28,7 +29,7 @@ interface EditTaskForm {
 @Component({
   selector: 'app-edit-task',
   standalone: true,
-  imports: [ReactiveFormsModule, MatIconModule],
+  imports: [ReactiveFormsModule, MatIconModule, TranslateModule],
   templateUrl: './edit-task.component.html',
   styleUrl: './edit-task.component.scss',
 })
@@ -38,7 +39,9 @@ export class EditTaskComponent implements OnInit {
   public constructor(
     private taskService: TaskService,
     private toastrService: ToastrService,
-    private dialogRef: MatDialogRef<EditTaskComponent>
+    private dialogRef: MatDialogRef<EditTaskComponent>,
+    private mappersService: MappersService,
+    private translationService: TranslationService
   ) {}
 
   protected form: FormGroup<EditTaskForm> = new FormGroup<EditTaskForm>({
@@ -83,11 +86,11 @@ export class EditTaskComponent implements OnInit {
   }
 
   protected mapTaskStatus(taskStatus: TaskStatus): string {
-    return taskStatusMapper(taskStatus);
+    return this.mappersService.taskStatusMapper(taskStatus);
   }
 
   protected mapPriority(priority: Priority): string {
-    return priorityMapper(priority);
+    return this.mappersService.priorityMapper(priority);
   }
 
   protected get descriptionIsInvalid(): boolean {
@@ -153,12 +156,13 @@ export class EditTaskComponent implements OnInit {
 
     this.isLoading = true;
     this.taskService.updateTask(projectId, taskId, updatedTask).subscribe({
-      error: (err) => {
-        this.toastrService.error(err.message);
+      error: () => {
         this.isLoading = false;
       },
       complete: () => {
-        this.toastrService.success('Task has been updated');
+        this.toastrService.success(
+          this.translationService.translate('toast.success.TASK_UPDATED')
+        );
         this.isLoading = false;
         this.closeDialog();
       },

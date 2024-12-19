@@ -1,19 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { TaskStatus } from '../../../../features/dto/project.model';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
-import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 
 @Component({
   selector: 'app-tasks-summary',
   standalone: true,
-  imports: [BaseChartDirective],
+  imports: [BaseChartDirective, TranslateModule],
   templateUrl: './tasks-summary.component.html',
   styleUrl: './tasks-summary.component.scss',
 })
 export class TasksSummaryComponent implements OnInit {
-  public constructor(private projectService: ProjectService) {}
+  public constructor(
+    private projectService: ProjectService,
+    private mappersService: MappersService
+  ) {}
 
   protected barChartData: ChartData<'bar'> = {
     labels: [],
@@ -48,7 +52,7 @@ export class TasksSummaryComponent implements OnInit {
 
     this.barChartData = {
       labels: Object.keys(taskStatusCounts).map((status) =>
-        taskStatusMapper(status as TaskStatus)
+        this.mappersService.taskStatusMapper(status as TaskStatus)
       ),
       datasets: [
         {

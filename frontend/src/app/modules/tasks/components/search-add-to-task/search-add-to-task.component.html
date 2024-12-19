@@ -1,5 +1,5 @@
 <input
-  placeholder="Search users"
+  [placeholder]="'task.details.ASSIGNEE_INPUT_PLACEHOLDER' | translate"
   [formControl]="form"
   (input)="onSearch()"
   class="w-full py-1 px-3 border-none bg-slate-950 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-300 placeholder-slate-500"
@@ -14,19 +14,13 @@
       {{ result.firstName }} {{ result.lastName }}
       <span class="text-gray-500">({{ result.username }}) </span>
     </p>
-    @if (isAlreadyIn(result.username)) {
-    <span class="flex justify-center items-center cursor-not-allowed"
-      >Already in</span
-    >
-    } @else {
+
     <button
       class="flex items-center justify-center bg-slate-900 hover:text-slate-500 rounded-full text-slate-400 shadow-sm"
       (click)="handleAdd(result)"
     >
       <mat-icon>add</mat-icon>
     </button>
-
-    }
   </li>
   }
 </ul>

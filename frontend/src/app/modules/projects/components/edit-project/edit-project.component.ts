@@ -7,13 +7,14 @@ import {
 } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import {
   Project,
   ProjectRequest,
 } from '../../../../features/dto/project.model';
-import { LoadingService } from '../../../../features/services/loading.service';
 import { ProjectService } from '../../../../features/services/project.service';
+import { TranslationService } from '../../../../features/services/translation.service';
 import { endDateValidator } from '../../../../shared/validators';
 
 interface DatesForm {
@@ -30,7 +31,7 @@ interface EditProjectForm {
 @Component({
   selector: 'app-edit-project',
   standalone: true,
-  imports: [ReactiveFormsModule, MatIconModule],
+  imports: [ReactiveFormsModule, MatIconModule, TranslateModule],
   templateUrl: './edit-project.component.html',
   styleUrl: './edit-project.component.scss',
 })
@@ -38,10 +39,10 @@ export class EditProjectComponent implements OnInit {
   protected isLoading = false;
 
   public constructor(
-    private loadingService: LoadingService,
     private projectService: ProjectService,
     private dialogRef: MatDialogRef<EditProjectComponent>,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private translationService: TranslationService
   ) {}
 
   protected form: FormGroup<EditProjectForm> = new FormGroup<EditProjectForm>({
@@ -157,7 +158,9 @@ export class EditProjectComponent implements OnInit {
         this.isLoading = false;
       },
       complete: () => {
-        this.toastrService.success('Project has been updated');
+        this.toastrService.success(
+          this.translationService.translate('toast.success.PROJECT_UPDATED')
+        );
         this.isLoading = false;
         this.closeDialog();
       },

@@ -2,16 +2,18 @@ import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../features/dto/project.model';
 import { LoadingService } from '../../../features/services/loading.service';
 import { ProjectService } from '../../../features/services/project.service';
 import { TaskService } from '../../../features/services/task.service';
+import { TranslationService } from '../../../features/services/translation.service';
 
 @Component({
   selector: 'app-show-more-members',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, TranslateModule],
   templateUrl: './show-more-members.component.html',
   styleUrl: './show-more-members.component.scss',
 })
@@ -27,7 +29,8 @@ export class ShowMoreMembersComponent {
     private taskService: TaskService,
     private toastrService: ToastrService,
     private loadingService: LoadingService,
-    private router: Router
+    private router: Router,
+    private translationService: TranslationService
   ) {}
 
   protected get members(): User[] | undefined {
@@ -53,7 +56,11 @@ export class ShowMoreMembersComponent {
       complete: () => {
         this.loadingService.loadingOff();
         this.toastrService.success(
-          `${user.firstName} ${user.lastName} has been removed from project`
+          `${user.firstName} ${
+            user.lastName
+          } ${this.translationService.translate(
+            'toast.success.MEMBER_REMOVED_FROM_PROJECT'
+          )}`
         );
       },
     });

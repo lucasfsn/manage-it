@@ -9,13 +9,14 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../features/services/auth.service';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 
 @Component({
   selector: 'app-side-bar',
   standalone: true,
-  imports: [MatIconModule, RouterLink, RouterLinkActive],
+  imports: [MatIconModule, RouterLink, RouterLinkActive, TranslateModule],
   animations: [
     trigger('toggleMenu', [
       state(
@@ -27,7 +28,7 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
       state(
         'expanded',
         style({
-          width: '160px',
+          width: '180px',
         })
       ),
       transition('collapsed <=> expanded', [animate('300ms ease-in-out')]),

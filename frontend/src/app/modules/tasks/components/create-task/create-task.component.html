@@ -6,7 +6,7 @@
       >
         <mat-icon>add_task</mat-icon>
       </div>
-      <p class="font-semibold">Add Task</p>
+      <p class="font-semibold">{{ "task.createForm.TITLE" | translate }}</p>
     </div>
     <button (click)="closeDialog()">
       <mat-icon>close</mat-icon>
@@ -14,22 +14,26 @@
   </div>
   <form [formGroup]="form" class="grid grid-cols-2 gap-2 bg-slate-900 p-2">
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="description">Description</label>
+      <label for="description">{{
+        "task.createForm.DESCRIPTION_LABEL" | translate
+      }}</label>
       <input
         type="text"
         id="description"
         formControlName="description"
-        placeholder="Enter task description"
+        [placeholder]="'task.createForm.DESCRIPTION_PLACEHOLDER' | translate"
         class="w-full"
       />
       @if (descriptionIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        Project description must contain between 2 and 120 characters.
+        {{ "task.createForm.DESCRIPTION_INVALID" | translate }}
       </p>
       }
     </div>
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="startDate">Due date</label>
+      <label for="startDate">{{
+        "task.createForm.DUE_DATE_LABEL" | translate
+      }}</label>
       <input
         id="dueDate"
         type="date"
@@ -38,23 +42,24 @@
       />
       @if (dueDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        Due date must be at least today.
+        {{ "task.createForm.DUE_DATE_INVALID" | translate }}
       </p>
       }
     </div>
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="startDate">Priority</label>
+      <label for="startDate">{{
+        "task.createForm.PRIORITY_LABEL" | translate
+      }}</label>
       <select id="priority" formControlName="priority">
-        <option value="" disabled>Select priority</option>
+        <option value="" disabled>
+          {{ "task.createForm.PRIORITY_SELECT" | translate }}
+        </option>
         @for (priority of priorities; track priority) {
         <option [value]="priority">
           {{ mapPriority(priority) }}
         </option>
         }
       </select>
-      @if (priorityIsInvalid) {
-      <p class="text-red-500 text-sm col-span-3">Priority is required.</p>
-      }
     </div>
     <div class="col-span-2 flex justify-end gap-2 mt-4">
       <button
@@ -62,14 +67,20 @@
         (click)="onReset()"
         class="px-4 py-2 bg-slate-900 flex justify-center items-center rounded-md text-slate-300 disabled:cursor-not-allowed"
       >
-        <p class="text-xs">Reset</p>
+        <p class="text-xs">{{ "task.createForm.RESET_BUTTON" | translate }}</p>
       </button>
       <button
         (click)="onSubmit()"
         class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100 disabled:bg-gray-500 disabled:cursor-not-allowed"
         [disabled]="form.invalid || isLoading"
       >
-        <p class="text-xs">{{ isLoading ? "Creating..." : "Add task" }}</p>
+        <p class="text-xs">
+          @if (isLoading) {
+          {{ "task.createForm.LOADING_BUTTON" | translate }}
+          } @else {
+          {{ "task.createForm.ADD_BUTTON" | translate }}
+          }
+        </p>
       </button>
     </div>
   </form>

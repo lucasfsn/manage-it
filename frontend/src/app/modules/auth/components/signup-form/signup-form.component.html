@@ -6,7 +6,7 @@
 >
   <div class="flex flex-col gap-5 border-b pb-5 border-slate-500">
     <p class="text-center text-sm text-slate-300">
-      We just need a little bit of data from you to get started
+      {{ "signupForm.TITLE" | translate }}
     </p>
     <div class="flex flex-col gap-3">
       <div class="flex flex-col gap-2">
@@ -15,7 +15,7 @@
           id="first-name"
           name="first-name"
           formControlName="firstName"
-          placeholder="Enter your first name"
+          [placeholder]="'signupForm.FIRST_NAME_PLACEHOLDER' | translate"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (firstNameIsInvalid) {
@@ -28,7 +28,7 @@
           id="last-name"
           name="last-name"
           formControlName="lastName"
-          placeholder="Enter your last name"
+          [placeholder]="'signupForm.LAST_NAME_PLACEHOLDER' | translate"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (lastNameIsInvalid) {
@@ -42,12 +42,12 @@
             id="user-name"
             name="user-name"
             formControlName="username"
-            placeholder="Enter your username"
+            [placeholder]="'signupForm.USERNAME_PLACEHOLDER' | translate"
             class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
           />
           <span
             class="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-600 flex justify-center items-center"
-            matTooltip="Username is permanent and cannot be changed later"
+            [matTooltip]="'signupForm.USERNAME_TOOLTIP' | translate"
           >
             <mat-icon>lock</mat-icon>
           </span>
@@ -62,7 +62,7 @@
           type="email"
           name="email"
           formControlName="email"
-          placeholder="Enter your email"
+          [placeholder]="'signupForm.EMAIL_PLACEHOLDER' | translate"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (emailIsInvalid) {
@@ -76,7 +76,7 @@
             type="password"
             name="password"
             formControlName="password"
-            placeholder="Enter your password"
+            [placeholder]="'signupForm.PASSWORD_PLACEHOLDER' | translate"
             class="w-1/2 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
           />
           <input
@@ -84,7 +84,9 @@
             type="password"
             name="confirm-password"
             formControlName="confirmPassword"
-            placeholder="Confirm password"
+            [placeholder]="
+              'signupForm.CONFIRM_PASSWORD_PLACEHOLDER' | translate
+            "
             class="w-1/2 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
           />
         </div>
@@ -92,7 +94,9 @@
           @if (passwordIsInvalid) {
           <p class="text-red-500 text-sm">{{ passwordErrors }}</p>
           } @else if (!passwordIsInvalid && passwordsDoNotMatch) {
-          <p class="text-red-500 text-sm">Passwords do not match</p>
+          <p class="text-red-500 text-sm">
+            {{ "signupForm.PASSWORDS_DO_NOT_MATCH" | translate }}
+          </p>
           }
         </div>
       </div>
@@ -102,17 +106,17 @@
         class="bg-gray-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-gray-700 transition-all rounded-full"
         (click)="onReset()"
       >
-        Reset
+        {{ "signupForm.RESET_BUTTON" | translate }}
       </button>
       <button
         [disabled]="this.form.invalid"
         class="bg-sky-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full disabled:cursor-not-allowed disabled:bg-gray-500"
       >
-        Sign up
+        {{ "signupForm.SIGN_UP_BUTTON" | translate }}
       </button>
     </div>
   </div>
-  <a routerLink="/auth/login" class="text-xs text-sky-400 text-center"
-    >Already have an account? Log in</a
-  >
+  <a routerLink="/auth/login" class="text-xs text-sky-400 text-center">{{
+    "signupForm.ALREADY_HAVE_ACCOUNT" | translate
+  }}</a>
 </form>

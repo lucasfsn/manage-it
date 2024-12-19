@@ -11,11 +11,13 @@
           id="email"
           type="email"
           [formControl]="form.controls.email"
-          placeholder="Enter your email"
+          [placeholder]="'loginForm.EMAIL_PLACEHOLDER' | translate"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (emailIsInvalid) {
-        <p class="text-red-500 text-sm">Please enter a valid email address.</p>
+        <p class="text-red-500 text-sm">
+          {{ "loginForm.EMAIL_INVALID" | translate }}
+        </p>
         }
       </div>
       <div class="flex flex-col gap-2">
@@ -23,7 +25,7 @@
           id="password"
           type="password"
           formControlName="password"
-          placeholder="Enter your password"
+          [placeholder]="'loginForm.PASSWORD_PLACEHOLDER' | translate"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (passwordIsInvalid) {
@@ -38,12 +40,12 @@
           class="bg-sky-600 mx-auto text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full disabled:cursor-not-allowed disabled:bg-gray-500"
           type="submit"
         >
-          Log in
+          {{ "loginForm.LOGIN_BUTTON" | translate }}
         </button>
       </div>
     </div>
-    <a routerLink="/auth/signup" class="text-xs text-sky-400 text-center"
-      >Create an account</a
-    >
+    <a routerLink="/auth/signup" class="text-xs text-sky-400 text-center">{{
+      "loginForm.CREATE_ACCOUNT" | translate
+    }}</a>
   </div>
 </form>

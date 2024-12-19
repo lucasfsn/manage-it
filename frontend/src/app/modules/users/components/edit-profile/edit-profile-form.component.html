@@ -17,7 +17,7 @@
           id="first-name"
           name="first-name"
           formControlName="firstName"
-          placeholder="{{ userData?.firstName || 'Enter new first name' }}"
+          [placeholder]="'user.editForm.FIRST_NAME_PLACEHOLDER' | translate"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (firstNameIsInvalid) {
@@ -30,7 +30,7 @@
           id="last-name"
           name="last-name"
           formControlName="lastName"
-          placeholder="{{ userData?.lastName || 'Enter new last name' }}"
+          [placeholder]="'user.editForm.LAST_NAME_PLACEHOLDER' | translate"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (lastNameIsInvalid) {
@@ -43,7 +43,7 @@
           type="email"
           name="email"
           formControlName="email"
-          placeholder="{{ userData?.email || 'Enter new email' }}"
+          [placeholder]="'user.editForm.EMAIL_PLACEHOLDER' | translate"
           class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
         />
         @if (emailIsInvalid) {
@@ -57,7 +57,7 @@
             type="password"
             name="password"
             formControlName="password"
-            placeholder="Enter new password"
+            [placeholder]="'user.editForm.PASSWORD_PLACEHOLDER' | translate"
             class="w-1/2 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
           />
           <input
@@ -65,7 +65,9 @@
             type="password"
             name="confirm-password"
             formControlName="confirmPassword"
-            placeholder="Confirm password"
+            [placeholder]="
+              'user.editForm.CONFIRM_PASSWORD_PLACEHOLDER' | translate
+            "
             class="w-1/2 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
           />
         </div>
@@ -73,7 +75,9 @@
           @if (passwordIsInvalid) {
           <p class="text-red-500 text-sm">{{ passwordErrors }}</p>
           } @else if (!passwordIsInvalid && passwordsDoNotMatch) {
-          <p class="text-red-500 text-sm">Passwords do not match</p>
+          <p class="text-red-500 text-sm">
+            {{ "user.editForm.PASSWORDS_DO_NOT_MATCH" | translate }}
+          </p>
           }
         </div>
       </div>
@@ -83,14 +87,14 @@
         class="bg-gray-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-gray-700 transition-all rounded-full"
         (click)="onReset()"
       >
-        Reset
+        {{ "user.editForm.RESET_BUTTON" | translate }}
       </button>
       <button
         [disabled]="disabled"
         class="bg-sky-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full disabled:cursor-not-allowed disabled:bg-gray-500"
         (click)="onSubmit()"
       >
-        Edit
+        {{ "user.editForm.SAVE_BUTTON" | translate }}
       </button>
     </div>
   </div>

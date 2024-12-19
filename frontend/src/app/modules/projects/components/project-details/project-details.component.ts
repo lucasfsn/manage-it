@@ -1,24 +1,32 @@
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { LoadingService } from '../../../../features/services/loading.service';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
+import { TranslationService } from '../../../../features/services/translation.service';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
-import { projectStatusMapper } from '../../../../shared/utils/status-mapper';
+import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
 import { EditProjectComponent } from '../edit-project/edit-project.component';
 
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [RouterLink, MatIconModule, ConfirmModalComponent, DatePipe],
+  imports: [
+    RouterLink,
+    MatIconModule,
+    ConfirmModalComponent,
+    CustomDatePipe,
+    TranslateModule,
+  ],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss',
 })
@@ -30,7 +38,9 @@ export class ProjectDetailsComponent {
     private toastrService: ToastrService,
     private router: Router,
     private confirmModalService: ConfirmModalService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private translationService: TranslationService,
+    private mappersService: MappersService
   ) {}
 
   protected get isModalOpen(): boolean {
@@ -63,7 +73,7 @@ export class ProjectDetailsComponent {
     if (!projectId) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      'Are you sure you want to delete this project?'
+      this.translationService.translate('project.details.DELETE_MESSAGE')
     );
 
     confirmation$.subscribe((confirmed) => {
@@ -74,7 +84,9 @@ export class ProjectDetailsComponent {
           this.toastrService.error(err.message);
         },
         complete: () => {
-          this.toastrService.success('Project has been deleted');
+          this.toastrService.success(
+            this.translationService.translate('project.details.PROJECT_DELETED')
+          );
           this.router.navigate(['/projects']);
         },
       });
@@ -87,7 +99,7 @@ export class ProjectDetailsComponent {
     if (!project) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      'Are you sure you want to mark this project as completed?'
+      this.translationService.translate('project.details.COMPLETE_MESSAGE')
     );
 
     confirmation$.subscribe((confirmed) => {
@@ -100,7 +112,11 @@ export class ProjectDetailsComponent {
           this.loadingService.loadingOff();
         },
         complete: () => {
-          this.toastrService.success('Project has been marked as completed');
+          this.toastrService.success(
+            this.translationService.translate(
+              'project.details.PROJECT_COMPLETED'
+            )
+          );
           this.loadingService.loadingOff();
         },
       });
@@ -143,7 +159,7 @@ export class ProjectDetailsComponent {
   }
 
   protected mapProjectStatus(): string {
-    return projectStatusMapper(
+    return this.mappersService.projectStatusMapper(
       this.project?.status ?? ProjectStatus.IN_PROGRESS
     );
   }

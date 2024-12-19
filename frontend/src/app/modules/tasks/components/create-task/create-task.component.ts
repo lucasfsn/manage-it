@@ -12,6 +12,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import {
   Priority,
@@ -19,9 +20,10 @@ import {
   TaskData,
   TaskStatus,
 } from '../../../../features/dto/project.model';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TaskService } from '../../../../features/services/task.service';
-import { priorityMapper } from '../../../../shared/utils/priority-mapper';
+import { TranslationService } from '../../../../features/services/translation.service';
 import { dueDateValidator } from '../../../../shared/validators';
 
 interface CreateTaskForm {
@@ -33,7 +35,12 @@ interface CreateTaskForm {
 @Component({
   selector: 'app-create-task',
   standalone: true,
-  imports: [MatIconModule, ReactiveFormsModule, MatDialogModule],
+  imports: [
+    MatIconModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    TranslateModule,
+  ],
   templateUrl: './create-task.component.html',
   styleUrl: './create-task.component.scss',
 })
@@ -48,7 +55,9 @@ export class CreateTaskComponent {
     private toastrService: ToastrService,
     private projectService: ProjectService,
     private dialog: MatDialog,
-    private dialogRef: MatDialogRef<CreateTaskComponent>
+    private dialogRef: MatDialogRef<CreateTaskComponent>,
+    private mappersService: MappersService,
+    private translationService: TranslationService
   ) {}
 
   protected get TaskStatus(): typeof TaskStatus {
@@ -108,7 +117,7 @@ export class CreateTaskComponent {
   }
 
   protected mapPriority(priority: Priority): string {
-    return priorityMapper(priority);
+    return this.mappersService.priorityMapper(priority);
   }
 
   protected onReset(): void {
@@ -134,11 +143,12 @@ export class CreateTaskComponent {
       next: (newTask: Task) => {
         this.isLoading = false;
         this.dialogRef.close(newTask);
-        this.toastrService.success('Task has been created');
+        this.toastrService.success(
+          this.translationService.translate('toast.success.TASK_ADDED')
+        );
       },
-      error: (err) => {
+      error: () => {
         this.isLoading = false;
-        this.toastrService.error(err.message);
       },
     });
   }

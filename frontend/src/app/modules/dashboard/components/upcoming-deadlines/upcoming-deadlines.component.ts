@@ -1,21 +1,24 @@
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { ProjectService } from '../../../../features/services/project.service';
+import { TranslationService } from '../../../../features/services/translation.service';
+import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
 
 @Component({
   selector: 'app-upcoming-deadlines',
   standalone: true,
-  imports: [DatePipe, RouterLink],
+  imports: [CustomDatePipe, RouterLink, TranslateModule],
   templateUrl: './upcoming-deadlines.component.html',
   styleUrl: './upcoming-deadlines.component.scss',
 })
 export class UpcomingDeadlinesComponent {
   public constructor(
     private authService: AuthService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private translationService: TranslationService
   ) {}
 
   protected get projects(): Project[] | undefined {
@@ -63,7 +66,15 @@ export class UpcomingDeadlinesComponent {
 
     const daysLeft = this.calculateDaysLeft(endDate);
 
-    return daysLeft === 1 ? '1 day left' : `${daysLeft} days left`;
+    if (daysLeft === 1) {
+      return this.translationService.translate(
+        'dashboard.upcomingDeadlines.DAY_LEFT'
+      );
+    }
+
+    return `${daysLeft} ${this.translationService.translate(
+      'dashboard.upcomingDeadlines.DAYS_LEFT'
+    )}`;
   }
 
   protected calculateDaysLeft(endDate: string): number {
