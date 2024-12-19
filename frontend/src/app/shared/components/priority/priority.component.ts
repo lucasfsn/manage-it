@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Priority } from '../../../features/dto/project.model';
 import { priorityMapper } from '../../utils/priority-mapper';
@@ -6,7 +5,7 @@ import { priorityMapper } from '../../utils/priority-mapper';
 @Component({
   selector: 'app-priority',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './priority.component.html',
   styleUrl: './priority.component.scss',
 })

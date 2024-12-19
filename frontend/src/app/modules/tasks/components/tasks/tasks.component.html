@@ -3,7 +3,7 @@
   class="bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
 >
   <h3 class="text-gray-100 self-start">Done</h3>
-  <ul
+  <div
     cdkDropList
     #completedList="cdkDropList"
     [cdkDropListData]="completedTasks"
@@ -11,9 +11,10 @@
     id="completed"
     class="w-full flex flex-col gap-1 min-h-[10px]"
     (cdkDropListDropped)="drop($event)"
+    cdkDropListSortingDisabled
   >
     @for (task of completedTasks; track task.id) {
-    <li
+    <div
       class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none cursor-pointer flex flex-col gap-2 hover:border-slate-600"
       routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
       cdkDrag
@@ -44,9 +45,10 @@
         </div>
         }
       </div>
-    </li>
+    </div>
     }
-  </ul>
+  </div>
+  @if (project.status !== ProjectStatus.COMPLETED) {
   <button
     class="self-start flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-full py-2"
     (click)="openAddCardDialog(TaskStatus.COMPLETED)"
@@ -54,13 +56,14 @@
     <mat-icon class="text-base">add</mat-icon>
     Add another card
   </button>
+  }
 </div>
 
 <div
   class="bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
 >
   <h3 class="text-gray-100 self-start">In Progress</h3>
-  <ul
+  <div
     cdkDropList
     #inProgressList="cdkDropList"
     [cdkDropListData]="inProgressTasks"
@@ -68,9 +71,10 @@
     id="inProgress"
     class="w-full flex flex-col gap-1 min-h-[10px]"
     (cdkDropListDropped)="drop($event)"
+    cdkDropListSortingDisabled
   >
     @for (task of inProgressTasks; track task.id) {
-    <li
+    <div
       class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none cursor-pointer flex flex-col gap-2 hover:border-slate-600"
       routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
       cdkDrag
@@ -101,9 +105,10 @@
         </div>
         }
       </div>
-    </li>
+    </div>
     }
-  </ul>
+  </div>
+  @if (project.status !== ProjectStatus.COMPLETED) {
   <button
     class="self-start flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-full py-2"
     (click)="openAddCardDialog(TaskStatus.IN_PROGRESS)"
@@ -111,13 +116,14 @@
     <mat-icon class="text-base">add</mat-icon>
     Add another card
   </button>
+  }
 </div>
 
 <div
   class="bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
 >
   <h3 class="text-gray-100 self-start">Upcoming</h3>
-  <ul
+  <div
     cdkDropList
     #notStartedList="cdkDropList"
     [cdkDropListData]="notStartedTasks"
@@ -125,9 +131,10 @@
     id="notStarted"
     class="w-full flex flex-col gap-1 min-h-[10px]"
     (cdkDropListDropped)="drop($event)"
+    cdkDropListSortingDisabled
   >
     @for (task of notStartedTasks; track task.id) {
-    <li
+    <div
       class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none cursor-pointer flex flex-col gap-2 hover:border-slate-600"
       routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
       cdkDrag
@@ -158,9 +165,10 @@
         </div>
         }
       </div>
-    </li>
+    </div>
     }
-  </ul>
+  </div>
+  @if (project.status !== ProjectStatus.COMPLETED) {
   <button
     class="self-start flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-full py-2"
     (click)="openAddCardDialog(TaskStatus.NOT_STARTED)"
@@ -168,5 +176,6 @@
     <mat-icon class="text-base">add</mat-icon>
     Add another card
   </button>
+  }
 </div>
 }

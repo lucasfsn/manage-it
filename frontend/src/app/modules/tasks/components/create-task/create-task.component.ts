@@ -9,18 +9,20 @@ import {
   MAT_DIALOG_DATA,
   MatDialog,
   MatDialogModule,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 import {
   Priority,
+  Task,
   TaskData,
   TaskStatus,
 } from '../../../../features/dto/project.model';
-import { LoadingService } from '../../../../features/services/loading.service';
+import { ProjectService } from '../../../../features/services/project.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { priorityMapper } from '../../../../shared/utils/priority-mapper';
-import { dueDateValidator } from '../../validators/due-date.validator';
+import { dueDateValidator } from '../../../../shared/validators';
 
 interface CreateTaskForm {
   description: FormControl<string | null>;
@@ -36,15 +38,17 @@ interface CreateTaskForm {
   styleUrl: './create-task.component.scss',
 })
 export class CreateTaskComponent {
+  protected isLoading = false;
   protected selectedStatus = inject<{ selectedStatus: TaskStatus }>(
     MAT_DIALOG_DATA
   ).selectedStatus;
 
   public constructor(
-    private loadingService: LoadingService,
     private taskService: TaskService,
     private toastrService: ToastrService,
-    private dialog: MatDialog
+    private projectService: ProjectService,
+    private dialog: MatDialog,
+    private dialogRef: MatDialogRef<CreateTaskComponent>
   ) {}
 
   protected get TaskStatus(): typeof TaskStatus {
@@ -99,10 +103,6 @@ export class CreateTaskComponent {
     );
   }
 
-  protected get isLoading(): boolean {
-    return this.loadingService.isLoading();
-  }
-
   protected closeDialog(): void {
     this.dialog.closeAll();
   }
@@ -119,7 +119,8 @@ export class CreateTaskComponent {
   }
 
   protected onSubmit(): void {
-    if (this.form.invalid) return;
+    const project = this.projectService.loadedProject();
+    if (this.form.invalid || !project) return;
 
     const newTask: TaskData = {
       status: this.selectedStatus,
@@ -128,15 +129,16 @@ export class CreateTaskComponent {
       dueDate: this.form.value.dueDate!,
     };
 
-    this.loadingService.loadingOn();
-    this.taskService.createTask(newTask).subscribe({
-      error: (err) => {
-        this.loadingService.loadingOff();
-        this.toastrService.error(err.message);
+    this.isLoading = true;
+    this.taskService.createTask(project, newTask).subscribe({
+      next: (newTask: Task) => {
+        this.isLoading = false;
+        this.dialogRef.close(newTask);
+        this.toastrService.success('Task has been created');
       },
-      complete: () => {
-        this.closeDialog();
-        this.loadingService.loadingOff();
+      error: (err) => {
+        this.isLoading = false;
+        this.toastrService.error(err.message);
       },
     });
   }

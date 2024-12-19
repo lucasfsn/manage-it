@@ -137,7 +137,10 @@ export class EditTaskComponent implements OnInit {
   }
 
   protected onSubmit(): void {
-    if (this.form.invalid) return;
+    const projectId = this.task?.projectId;
+    const taskId = this.task?.id;
+
+    if (this.form.invalid || !projectId || !taskId) return;
 
     const updatedTask: TaskData = {
       description: this.form.value.description!,
@@ -149,7 +152,7 @@ export class EditTaskComponent implements OnInit {
     if (!this.isFormChanged()) return;
 
     this.isLoading = true;
-    this.taskService.updateTask(updatedTask).subscribe({
+    this.taskService.updateTask(projectId, taskId, updatedTask).subscribe({
       error: (err) => {
         this.toastrService.error(err.message);
         this.isLoading = false;

@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
@@ -8,7 +8,7 @@ import { ProjectService } from '../../../../features/services/project.service';
 @Component({
   selector: 'app-upcoming-deadlines',
   standalone: true,
-  imports: [DatePipe, CommonModule, RouterLink],
+  imports: [DatePipe, RouterLink],
   templateUrl: './upcoming-deadlines.component.html',
   styleUrl: './upcoming-deadlines.component.scss',
 })

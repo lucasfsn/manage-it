@@ -34,16 +34,14 @@ export class ProjectService {
     );
   }
 
-  public createProject(project: ProjectRequest): Observable<string> {
+  public createProject(newProject: ProjectRequest): Observable<string> {
     return this.http
-      .post<Project>(`${environment.apiUrl}/projects`, project)
+      .post<Project>(`${environment.apiUrl}/projects`, newProject)
       .pipe(
         tap((res: Project) => {
-          const prevProjects = this.projects();
+          const projects = this.projects();
 
-          if (!prevProjects) return;
-
-          this.projects.set([...prevProjects, res]);
+          this.projects.set([...(projects ?? []), res]);
         }),
         map((res: Project) => res.id),
         catchError((err: HttpErrorResponse) => {
@@ -69,17 +67,6 @@ export class ProjectService {
     return this.http
       .delete<null>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
-        tap(() => {
-          const prevProjects = this.projects();
-
-          if (!prevProjects) return;
-
-          const updatedProjects = prevProjects.filter(
-            (p) => p.id !== projectId
-          );
-
-          this.projects.set(updatedProjects);
-        }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
         })
@@ -90,48 +77,37 @@ export class ProjectService {
     projectId: string,
     updatedProject: ProjectRequest
   ): Observable<null> {
-    const prevProject = this.project();
-
-    if (!prevProject)
-      return throwError(
-        () => new Error('Something went wrong. Project not found')
-      );
-
-    this.project.set({ ...prevProject, ...updatedProject });
-
     return this.http
       .patch<null>(
         `${environment.apiUrl}/projects/${projectId}`,
         updatedProject
       )
       .pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.project.set(prevProject);
+        tap(() => {
+          // res: Project; // TODO:
 
+          const prevProject = this.project()!;
+
+          this.project.set({ ...prevProject, ...updatedProject });
+          // this.project.set(res)
+        }),
+        catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
         })
       );
   }
 
-  public completeProject(): Observable<null> {
-    const prevProject = this.project();
-
-    if (!prevProject)
-      return throwError(
-        () => new Error('Something went wrong. Project not found')
-      );
-
-    const updatedProject = { ...prevProject, status: ProjectStatus.COMPLETED };
-
-    this.project.set(updatedProject);
-
+  public completeProject(project: Project): Observable<null> {
     return this.http
-      .patch<null>(`${environment.apiUrl}/projects/${prevProject.id}`, {
+      .patch<null>(`${environment.apiUrl}/projects/${project.id}`, {
         status: ProjectStatus.COMPLETED,
       })
       .pipe(
+        tap(() => {
+          this.project.set({ ...project, status: ProjectStatus.COMPLETED });
+        }),
         catchError((err: HttpErrorResponse) => {
-          this.project.set(prevProject);
+          this.project.set(project);
 
           return throwError(() => err.error);
         })
@@ -153,29 +129,25 @@ export class ProjectService {
       );
   }
 
-  public removeFromProject(user: User): Observable<null> {
-    const prevProject = this.project();
-
-    if (!prevProject)
-      return throwError(
-        () => new Error('Something went wrong. Project not found')
-      );
-
-    const updatedProjectMembers = prevProject.members.filter(
-      (u) => u.username !== user.username
-    );
-
-    this.project.set({ ...prevProject, members: updatedProjectMembers });
-
+  public removeFromProject(user: User, projectId: string): Observable<null> {
     return this.http
       .patch<null>(
-        `${environment.apiUrl}/projects/${prevProject.id}/user/remove`,
+        `${environment.apiUrl}/projects/${projectId}/user/remove`,
         user
       )
       .pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.project.set(prevProject);
+        tap(() => {
+          // res: Project; // TODO:
 
+          const prevProject = this.project()!;
+          const updatedProjectMembers = prevProject.members.filter(
+            (u) => u.username !== user.username
+          );
+          this.project.set({ ...prevProject, members: updatedProjectMembers });
+
+          // this.project.set(res)
+        }),
+        catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
         })
       );

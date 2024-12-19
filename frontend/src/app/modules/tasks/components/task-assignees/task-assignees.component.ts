@@ -74,21 +74,22 @@ export class TaskAssigneesComponent implements OnInit {
     private toastrService: ToastrService
   ) {}
 
-  protected get isLoading(): boolean {
-    return this.loadingService.isLoading();
-  }
-
   protected get members(): User[] {
     return this.taskService.loadedTask()?.members || [];
   }
 
   protected handleAdd(user: User): void {
-    this.taskService.addToTask(user).subscribe({
+    const task = this.taskService.loadedTask();
+    if (!task) return;
+
+    this.loadingService.loadingOn();
+    this.taskService.addToTask(task.projectId, task.id, user).subscribe({
       error: (error) => {
-        this.toastrService.error(error?.message);
-        this.refreshUsersIn();
+        this.loadingService.loadingOff();
+        this.toastrService.error(error.message);
       },
       complete: () => {
+        this.loadingService.loadingOff();
         this.toastrService.success(
           `${user.firstName} ${user.lastName} has been added to task`
         );
@@ -98,10 +99,20 @@ export class TaskAssigneesComponent implements OnInit {
   }
 
   protected handleRemove(user: User): void {
-    this.taskService.removeFromTask(user).subscribe({
+    const task = this.taskService.loadedTask();
+    if (!task) return;
+
+    this.loadingService.loadingOn();
+    this.taskService.removeFromTask(task.projectId, task.id, user).subscribe({
       error: (error) => {
-        this.toastrService.error(error?.message);
-        this.refreshUsersIn();
+        this.loadingService.loadingOff();
+        this.toastrService.error(error.message);
+      },
+      complete: () => {
+        this.loadingService.loadingOff();
+        this.toastrService.success(
+          `${user.firstName} ${user.lastName} has been removed from task`
+        );
       },
     });
     this.refreshUsersIn();

@@ -14,7 +14,7 @@ import {
 } from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { ProjectService } from '../../../../features/services/project.service';
-import { endDateValidator } from '../../validators/end-date.validator';
+import { endDateValidator } from '../../../../shared/validators';
 
 interface DatesForm {
   startDate: FormControl<string | null>;
@@ -35,6 +35,8 @@ interface EditProjectForm {
   styleUrl: './edit-project.component.scss',
 })
 export class EditProjectComponent implements OnInit {
+  protected isLoading = false;
+
   public constructor(
     private loadingService: LoadingService,
     private projectService: ProjectService,
@@ -71,7 +73,7 @@ export class EditProjectComponent implements OnInit {
   });
 
   protected get disabled(): boolean {
-    return this.form.invalid || !this.isFormChanged();
+    return this.form.invalid || !this.isFormChanged() || this.isLoading;
   }
 
   protected get project(): Project | undefined {
@@ -148,15 +150,16 @@ export class EditProjectComponent implements OnInit {
 
     const projectData: ProjectRequest = this.getProjectData();
 
-    this.loadingService.loadingOn();
+    this.isLoading = true;
     this.projectService.updateProject(this.project.id, projectData).subscribe({
       error: (err) => {
         this.toastrService.error(err.message);
-        this.loadingService.loadingOff();
+        this.isLoading = false;
       },
       complete: () => {
         this.toastrService.success('Project has been updated');
-        this.loadingService.loadingOff();
+        this.isLoading = false;
+        this.closeDialog();
       },
     });
   }

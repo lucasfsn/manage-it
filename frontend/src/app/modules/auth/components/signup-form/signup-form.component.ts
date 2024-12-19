@@ -16,7 +16,7 @@ import {
   nameValidator,
   passwordValidator,
   usernameValidator,
-} from '../../validators';
+} from '../../../../shared/validators';
 
 interface PasswordsForm {
   password: FormControl<string | null>;

@@ -5,14 +5,14 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import {
   Project,
+  ProjectStatus,
   Task,
   TaskStatus,
 } from '../../../../features/dto/project.model';
@@ -25,7 +25,6 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
   selector: 'app-tasks',
   standalone: true,
   imports: [
-    CommonModule,
     MatIconModule,
     DatePipe,
     CdkDropList,
@@ -40,8 +39,7 @@ export class TasksComponent implements OnInit {
   public constructor(
     private dialog: MatDialog,
     private projectService: ProjectService,
-    private taskService: TaskService,
-    private toastrService: ToastrService
+    private taskService: TaskService
   ) {}
 
   protected completedTasks: Task[] = [];
@@ -54,6 +52,10 @@ export class TasksComponent implements OnInit {
 
   protected get TaskStatus(): typeof TaskStatus {
     return TaskStatus;
+  }
+
+  protected get ProjectStatus(): typeof ProjectStatus {
+    return ProjectStatus;
   }
 
   protected drop(event: CdkDragDrop<Task[]>): void {
@@ -94,19 +96,41 @@ export class TasksComponent implements OnInit {
   protected openAddCardDialog(selectedStatus: TaskStatus): void {
     if (!this.project) return;
 
-    this.dialog.open(CreateTaskComponent, {
-      width: '450px',
-      backdropClass: 'dialog-backdrop',
-      data: {
-        selectedStatus,
-      },
+    const dialogRef: MatDialogRef<CreateTaskComponent> = this.dialog.open(
+      CreateTaskComponent,
+      {
+        width: '450px',
+        backdropClass: 'dialog-backdrop',
+        data: {
+          selectedStatus,
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((newTask: Task | undefined) => {
+      if (newTask) this.addTaskToList(newTask);
     });
   }
 
+  private addTaskToList(task: Task): void {
+    switch (task.status) {
+      case TaskStatus.COMPLETED:
+        this.completedTasks.push(task);
+        break;
+      case TaskStatus.IN_PROGRESS:
+        this.inProgressTasks.push(task);
+        break;
+      case TaskStatus.NOT_STARTED:
+        this.notStartedTasks.push(task);
+        break;
+    }
+  }
+
   protected handleMoveTask(task: Task, prevStatus: TaskStatus): void {
-    this.taskService.moveProjectTask(task).subscribe({
-      error: (err) => {
-        this.toastrService.error(err.message);
+    if (!this.project) return;
+
+    this.taskService.moveProjectTask(this.project, task).subscribe({
+      error: () => {
         this.restoreTaskState(task, prevStatus);
       },
     });

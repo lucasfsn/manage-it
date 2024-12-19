@@ -79,3 +79,12 @@ button {
 .search-dialog .mat-mdc-dialog-surface {
   border-radius: 0.75rem;
 }
+
+#toast-container > .toast-success {
+  background-color: #0ea5e9;
+}
+
+#toast-container > .toast-error {
+  background-color: #831843;
+  color: #fbcfe8;
+}

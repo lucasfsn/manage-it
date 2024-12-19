@@ -45,7 +45,9 @@ export const appConfig: ApplicationConfig = {
       })
     ),
     provideAnimations(),
-    provideToastr(),
+    provideToastr({
+      timeOut: 2000,
+    }),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideCharts(withDefaultRegisterables()),
   ],

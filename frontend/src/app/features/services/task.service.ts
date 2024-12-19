@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Task, TaskData, User } from '../dto/project.model';
+import { Project, Task, TaskData, User } from '../dto/project.model';
 import { ProjectService } from './project.service';
 
 @Injectable({
@@ -18,14 +18,7 @@ export class TaskService {
 
   public loadedTask = this.task.asReadonly();
 
-  public createTask(task: TaskData): Observable<Task> {
-    const project = this.projectService.loadedProject();
-
-    if (!project)
-      return throwError(
-        () => new Error('Something went wrong. Project not found')
-      );
-
+  public createTask(project: Project, task: TaskData): Observable<Task> {
     return this.http
       .post<Task>(`${environment.apiUrl}/projects/${project.id}/tasks`, task)
       .pipe(
@@ -37,8 +30,6 @@ export class TaskService {
           this.projectService.setProject(updatedProject);
         }),
         catchError((err: HttpErrorResponse) => {
-          this.projectService.setProject(project);
-
           return throwError(() => err.error);
         })
       );
@@ -57,14 +48,11 @@ export class TaskService {
       );
   }
 
-  public moveProjectTask(updatedTask: Task): Observable<null> {
-    const project = this.projectService.loadedProject();
+  public moveProjectTask(
+    project: Project,
+    updatedTask: Task
+  ): Observable<null> {
     const prevTask = this.task();
-
-    if (!project)
-      return throwError(
-        () => new Error('Something went wrong. Project not found')
-      );
 
     const updatedProjectTasksList = project.tasks.map((t) =>
       t.id === updatedTask.id ? { ...t, status: updatedTask.status } : t
@@ -92,13 +80,7 @@ export class TaskService {
       );
   }
 
-  public deleteTask(): Observable<null> {
-    const projectId = this.task()?.projectId;
-    const taskId = this.task()?.id;
-
-    if (!projectId || !taskId)
-      return throwError(() => new Error('Something went wrong'));
-
+  public deleteTask(projectId: string, taskId: string): Observable<null> {
     return this.http
       .delete<null>(
         `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`
@@ -110,83 +92,82 @@ export class TaskService {
       );
   }
 
-  public updateTask(updatedTask: TaskData): Observable<null> {
-    const prevTask = this.task();
-
-    if (!prevTask)
-      return throwError(
-        () => new Error('Something went wrong. Task not found')
-      );
-
-    this.task.set({ ...prevTask, ...updatedTask });
-
+  public updateTask(
+    projectId: string,
+    taskId: string,
+    updatedTask: TaskData
+  ): Observable<null> {
     return this.http
       .patch<null>(
-        `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}`,
+        `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`,
         updatedTask
       )
       .pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.task.set(prevTask);
+        tap(() => {
+          // res: Task  // TODO:
 
+          const task = this.task()!;
+          this.task.set({ ...task, ...updatedTask });
+
+          // this.task.set(res)
+        }),
+        catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
         })
       );
   }
 
-  public addToTask(user: User): Observable<null> {
-    const prevTask = this.task();
-
-    if (!prevTask)
-      return throwError(
-        () => new Error('Something went wrong. Task not found')
-      );
-
-    const updatedTaskMembers = [...prevTask.members, user];
-
-    const updatedTask = { ...prevTask, members: updatedTaskMembers };
-
-    this.task.set(updatedTask);
-
+  public addToTask(
+    projectId: string,
+    taskId: string,
+    user: User
+  ): Observable<null> {
     return this.http
       .patch<null>(
-        `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}/user/add`,
+        `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/add`,
         user
       )
       .pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.task.set(prevTask);
+        tap(() => {
+          // res: Task  // TODO:
 
+          const task = this.task()!;
+          const updatedTaskMembers = [...task.members, user];
+          const updatedTask = { ...task, members: updatedTaskMembers };
+          this.task.set(updatedTask);
+
+          // this.task.set(res)
+        }),
+        catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
         })
       );
   }
 
-  public removeFromTask(user: User): Observable<null> {
-    const prevTask = this.task();
-
-    if (!prevTask)
-      return throwError(
-        () => new Error('Something went wrong. Task not found')
-      );
-
-    const updatedTaskMembers = prevTask.members.filter(
-      (u) => u.username !== user.username
-    );
-
-    const updatedTask = { ...prevTask, members: updatedTaskMembers };
-
-    this.task.set(updatedTask);
-
+  public removeFromTask(
+    projectId: string,
+    taskId: string,
+    user: User
+  ): Observable<null> {
     return this.http
       .patch<null>(
-        `${environment.apiUrl}/projects/${prevTask.projectId}/tasks/${prevTask.id}/user/remove`,
+        `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/remove`,
         user
       )
       .pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.task.set(prevTask);
+        tap(() => {
+          // res: Task  // TODO:
 
+          const task = this.task()!;
+          const updatedTaskMembers = task.members.filter(
+            (u) => u.username !== user.username
+          );
+          const updatedTask = { ...task, members: updatedTaskMembers };
+          this.task.set(updatedTask);
+
+          // this.task.set(res)
+        }),
+        catchError((err: HttpErrorResponse) => {
           return throwError(() => err.error);
         })
       );

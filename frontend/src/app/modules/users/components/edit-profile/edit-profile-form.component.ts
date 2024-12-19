@@ -10,11 +10,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 import { UpdateUser, User } from '../../../../features/dto/user.model';
 import { UserService } from '../../../../features/services/user.service';
+
 import {
   equalValues,
   nameValidator,
   passwordValidator,
-} from '../../validators';
+} from '../../../../shared/validators';
 
 interface PasswordsForm {
   password: FormControl<string | null>;

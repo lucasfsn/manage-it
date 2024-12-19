@@ -12,8 +12,10 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectRequest } from '../../../../features/dto/project.model';
 import { ProjectService } from '../../../../features/services/project.service';
-import { endDateValidator } from '../../validators/end-date.validator';
-import { startDateValidator } from '../../validators/start-date.validator';
+import {
+  endDateValidator,
+  startDateValidator,
+} from '../../../../shared/validators';
 
 interface DatesForm {
   startDate: FormControl<string | null>;

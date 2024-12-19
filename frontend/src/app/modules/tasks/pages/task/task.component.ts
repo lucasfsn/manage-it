@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
-import { Task } from '../../../../features/dto/project.model';
+import { ProjectStatus, Task } from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
@@ -57,6 +57,8 @@ import { TaskDetailsComponent } from '../../components/task-details/task-details
 export class TaskComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   protected showChat = signal<boolean>(false);
+  private projectId: string | null = null;
+  private taskId: string | null = null;
 
   public constructor(
     private taskService: TaskService,
@@ -67,6 +69,10 @@ export class TaskComponent implements OnInit {
     private dialog: MatDialog,
     private confirmModalService: ConfirmModalService
   ) {}
+
+  protected get ProjectStatus(): typeof ProjectStatus {
+    return ProjectStatus;
+  }
 
   protected get isModalOpen(): boolean {
     return this.confirmModalService.isOpen();
@@ -98,9 +104,9 @@ export class TaskComponent implements OnInit {
     );
 
     confirmation$.subscribe((confirmed) => {
-      if (!confirmed) return;
+      if (!confirmed || !this.projectId || !this.taskId) return;
 
-      this.taskService.deleteTask().subscribe({
+      this.taskService.deleteTask(this.projectId, this.taskId).subscribe({
         error: (err) => {
           this.toastrService.error(err.message);
         },
@@ -121,18 +127,18 @@ export class TaskComponent implements OnInit {
     });
   }
 
-  private loadTaskData(projectId: string | null, taskId: string | null): void {
-    if (!projectId || !taskId) {
+  private loadTaskData(): void {
+    if (!this.projectId || !this.taskId) {
       this.router.navigate(['/projects']);
 
       return;
     }
 
     this.loadingService.loadingOn();
-    this.taskService.getTask(projectId, taskId).subscribe({
+    this.taskService.getTask(this.projectId, this.taskId).subscribe({
       error: (err) => {
         this.toastrService.error(err.message);
-        this.router.navigate(['/projects', projectId]);
+        this.router.navigate(['/projects', this.projectId]);
         this.loadingService.loadingOff();
       },
       complete: () => {
@@ -143,9 +149,9 @@ export class TaskComponent implements OnInit {
 
   public ngOnInit(): void {
     const subscription = this.route.paramMap.subscribe((params) => {
-      const taskId = params.get('taskId');
-      const projectId = params.get('projectId');
-      this.loadTaskData(projectId, taskId);
+      this.projectId = params.get('projectId');
+      this.taskId = params.get('taskId');
+      this.loadTaskData();
     });
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe());

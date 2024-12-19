@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
+import { LoadingService } from '../../../../features/services/loading.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
@@ -28,7 +29,8 @@ export class ProjectDetailsComponent {
     private projectService: ProjectService,
     private toastrService: ToastrService,
     private router: Router,
-    private confirmModalService: ConfirmModalService
+    private confirmModalService: ConfirmModalService,
+    private loadingService: LoadingService
   ) {}
 
   protected get isModalOpen(): boolean {
@@ -80,9 +82,9 @@ export class ProjectDetailsComponent {
   }
 
   protected handleComplete(): void {
-    const projectId = this.project?.id;
+    const project = this.project;
 
-    if (!projectId) return;
+    if (!project) return;
 
     const confirmation$ = this.confirmModalService.confirm(
       'Are you sure you want to mark this project as completed?'
@@ -91,9 +93,15 @@ export class ProjectDetailsComponent {
     confirmation$.subscribe((confirmed) => {
       if (!confirmed) return;
 
-      this.projectService.completeProject().subscribe({
+      this.loadingService.loadingOn();
+      this.projectService.completeProject(project).subscribe({
         error: (err) => {
           this.toastrService.error(err.message);
+          this.loadingService.loadingOff();
+        },
+        complete: () => {
+          this.toastrService.success('Project has been marked as completed');
+          this.loadingService.loadingOff();
         },
       });
     });

@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../features/dto/project.model';
+import { LoadingService } from '../../../features/services/loading.service';
 import { ProjectService } from '../../../features/services/project.service';
 import { TaskService } from '../../../features/services/task.service';
 
@@ -25,6 +26,7 @@ export class ShowMoreMembersComponent {
     private projectService: ProjectService,
     private taskService: TaskService,
     private toastrService: ToastrService,
+    private loadingService: LoadingService,
     private router: Router
   ) {}
 
@@ -39,11 +41,17 @@ export class ShowMoreMembersComponent {
   }
 
   protected handleRemove(user: User): void {
-    this.projectService.removeFromProject(user).subscribe({
+    const projectId = this.projectService.loadedProject()?.id;
+    if (!projectId) return;
+
+    this.loadingService.loadingOn();
+    this.projectService.removeFromProject(user, projectId).subscribe({
       error: (error) => {
+        this.loadingService.loadingOff();
         this.toastrService.error(error.message);
       },
       complete: () => {
+        this.loadingService.loadingOff();
         this.toastrService.success(
           `${user.firstName} ${user.lastName} has been removed from project`
         );
