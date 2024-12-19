@@ -40,7 +40,7 @@ export class UpcomingDeadlinesComponent {
       );
   }
 
-  protected getDeadlineClass(endDate: string, status: ProjectStatus): string {
+  protected deadlineClass(endDate: string, status: ProjectStatus): string {
     if (status === ProjectStatus.COMPLETED) {
       return 'text-sky-500';
     }
@@ -58,7 +58,7 @@ export class UpcomingDeadlinesComponent {
     return 'text-green-500';
   }
 
-  protected getDeadlineMessage(endDate: string, status: ProjectStatus): string {
+  protected deadlineMessage(endDate: string, status: ProjectStatus): string {
     if (status === ProjectStatus.COMPLETED) return 'Completed';
 
     const daysLeft = this.calculateDaysLeft(endDate);

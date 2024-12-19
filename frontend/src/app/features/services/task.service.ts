@@ -49,7 +49,6 @@ export class TaskService {
       .get<Task>(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
       .pipe(
         tap((res: Task) => {
-          console.log(res);
           this.task.set(res);
         }),
         catchError((err: HttpErrorResponse) => {

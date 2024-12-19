@@ -5,7 +5,6 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { CommonModule } from '@angular/common';
 import {
   Component,
   DestroyRef,
@@ -33,7 +32,6 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
     RouterLink,
     ReactiveFormsModule,
     SearchAddToTaskComponent,
-    CommonModule,
   ],
   templateUrl: './task-assignees.component.html',
   styleUrl: './task-assignees.component.scss',

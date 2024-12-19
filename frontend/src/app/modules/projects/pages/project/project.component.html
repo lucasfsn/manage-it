@@ -10,7 +10,7 @@
   class="fixed bottom-4 right-4 rounded-full bg-sky-500 h-10 flex items-center justify-center aspect-square transition-all cursor-pointer shadow-sm text-white hover:scale-105"
   (click)="toggleChat()"
 >
-  <mat-icon class="icon-transition" [ngClass]="{ 'icon-rotate': showChat() }">
+  <mat-icon class="transition-transform" [class.rotate-180]="showChat()">
     @if (showChat()) { keyboard_arrow_up } @else { chat }
   </mat-icon>
 </button>

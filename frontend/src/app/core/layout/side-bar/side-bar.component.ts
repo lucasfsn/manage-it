@@ -5,7 +5,6 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +15,7 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
 @Component({
   selector: 'app-side-bar',
   standalone: true,
-  imports: [MatIconModule, CommonModule, RouterLink, RouterLinkActive],
+  imports: [MatIconModule, RouterLink, RouterLinkActive],
   animations: [
     trigger('toggleMenu', [
       state(

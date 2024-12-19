@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
@@ -26,7 +26,6 @@ interface ProjectsParams extends Params {
     RouterLink,
     DecimalPipe,
     DatePipe,
-    CommonModule,
     FormsModule,
     FilterProjectsComponent,
     SortProjectsComponent,

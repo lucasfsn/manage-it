@@ -55,10 +55,10 @@
               {{ project.name }}
               <span
                 class="rounded-full h-[15px] aspect-square"
-                [ngClass]="{
-              'bg-sky-500': project.status === ProjectStatus.COMPLETED,
-              'bg-orange-400': project.status === ProjectStatus.IN_PROGRESS,
-            }"
+                [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
+                [class.bg-orange-400]="
+                  project.status === ProjectStatus.IN_PROGRESS
+                "
               >
               </span>
             </h3>

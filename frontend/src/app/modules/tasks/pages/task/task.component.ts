@@ -5,13 +5,11 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
 import { Task } from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
@@ -31,7 +29,6 @@ import { TaskDetailsComponent } from '../../components/task-details/task-details
     ChatComponent,
     TaskAssigneesComponent,
     MatIconModule,
-    CommonModule,
     TaskDetailsComponent,
     ConfirmModalComponent,
   ],
@@ -71,7 +68,7 @@ export class TaskComponent implements OnInit {
     private confirmModalService: ConfirmModalService
   ) {}
 
-  protected get confirmModal$(): Observable<boolean> {
+  protected get isModalOpen(): boolean {
     return this.confirmModalService.isOpen();
   }
 

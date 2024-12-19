@@ -5,7 +5,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {
   AfterViewChecked,
   Component,
@@ -31,13 +31,7 @@ import { ChatService } from '../../../features/services/chat.service';
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [
-    MatIconModule,
-    PickerComponent,
-    FormsModule,
-    CommonModule,
-    DatePipe,
-  ],
+  imports: [MatIconModule, PickerComponent, FormsModule, DatePipe],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
   animations: [

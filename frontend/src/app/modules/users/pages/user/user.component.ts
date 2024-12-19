@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,7 +24,6 @@ import { UserProfileRouteData } from '../../users.routes';
   imports: [
     SpinnerComponent,
     RouterLink,
-    CommonModule,
     MatIconModule,
     DatePipe,
     AddToProjectComponent,

@@ -5,7 +5,6 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +22,6 @@ import { ProjectDetailsComponent } from '../../components/project-details/projec
     SpinnerComponent,
     MatIconModule,
     TasksComponent,
-    CommonModule,
     ChatComponent,
     ProjectDetailsComponent,
   ],

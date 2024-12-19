@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable, Subject, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -7,11 +7,13 @@ import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
 export class ConfirmModalService {
   private confirmation$ = new Subject<boolean>();
   private message = '';
-  private isOpen$ = new BehaviorSubject<boolean>(false);
+  private isModalOpen = signal<boolean>(false);
+
+  public isOpen = this.isModalOpen.asReadonly();
 
   public confirm(message: string): Observable<boolean> {
     this.message = message;
-    this.isOpen$.next(true);
+    this.isModalOpen.set(true);
 
     return this.confirmation$.asObservable().pipe(take(1));
   }
@@ -22,10 +24,6 @@ export class ConfirmModalService {
 
   public handleClick(confirmed: boolean): void {
     this.confirmation$.next(confirmed);
-    this.isOpen$.next(false);
-  }
-
-  public isOpen(): Observable<boolean> {
-    return this.isOpen$.asObservable();
+    this.isModalOpen.set(false);
   }
 }

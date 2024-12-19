@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
@@ -18,7 +17,7 @@ import { EditProjectComponent } from '../edit-project/edit-project.component';
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatIconModule, ConfirmModalComponent],
+  imports: [RouterLink, MatIconModule, ConfirmModalComponent, DatePipe],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss',
 })
@@ -32,7 +31,7 @@ export class ProjectDetailsComponent {
     private confirmModalService: ConfirmModalService
   ) {}
 
-  protected get confirmModal$(): Observable<boolean> {
+  protected get isModalOpen(): boolean {
     return this.confirmModalService.isOpen();
   }
 

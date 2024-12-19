@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,13 +12,7 @@ import { taskStatusMapper } from '../../../../shared/utils/status-mapper';
 @Component({
   selector: 'app-task-details',
   standalone: true,
-  imports: [
-    MatIconModule,
-    RouterLink,
-    CommonModule,
-    DatePipe,
-    PriorityComponent,
-  ],
+  imports: [MatIconModule, RouterLink, DatePipe, PriorityComponent],
   templateUrl: './task-details.component.html',
   styleUrl: './task-details.component.scss',
 })

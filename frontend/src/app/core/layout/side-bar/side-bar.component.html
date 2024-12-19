@@ -5,13 +5,14 @@
   <button
     (click)="toggleSidebar()"
     class="bg-sky-500 rounded-full items-center justify-center hover:bg-sky-600 transition-all hidden xl:flex p-0.5"
-    [ngClass]="{ 'self-end': !isCollapsed, 'self-center': isCollapsed }"
+    [class.self-center]="isCollapsed"
+    [class.self-end]="!isCollapsed"
   >
     <mat-icon>{{ isCollapsed ? "chevron_right" : "chevron_left" }}</mat-icon>
   </button>
   <div class="flex lg:flex-col lg:divide-y divide-slate-500">
     <button
-      class="flex flex-row gap-2 text-center justify-center sidebar-item"
+      class="flex flex-row gap-2 text-center sidebar-item"
       (click)="openSearchDialog()"
     >
       <mat-icon>search</mat-icon>

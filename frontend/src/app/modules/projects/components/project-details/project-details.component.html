@@ -1,4 +1,4 @@
-@if (confirmModal$ | async) {
+@if (isModalOpen) {
 <app-confirm-modal />
 } @if (project) {
 <div class="flex flex-col text-gray-400 gap-3">
@@ -102,11 +102,10 @@
       </p>
       <div
         class="rounded-full flex items-center justify-center text-slate-900 font-semibold text-sm px-2 py-1 mr-auto"
-        [ngClass]="{
-            'bg-sky-500': project.status === ProjectStatus.COMPLETED,
-            'bg-orange-400': project.status === ProjectStatus.IN_PROGRESS,
-          }"
+        [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
+        [class.bg-orange-400]="project.status === ProjectStatus.IN_PROGRESS"
       >
+        >
         {{ mapProjectStatus() }}
       </div>
       <p class="flex items-center">
