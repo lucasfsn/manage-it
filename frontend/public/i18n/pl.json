@@ -289,14 +289,14 @@
       "TASK_ADDED": "Zadanie zostało dodane",
       "TASK_UPDATED": "Zadanie zostało zaktualizowane",
       "TASK_DELETED": "Zadanie zostało usunięte",
-      "MEMBER_ADDED_TO_TASK": "został dodany do zadania",
-      "MEMBER_REMOVED_FROM_TASK": "został usunięty z zadania",
+      "MEMBER_ADDED_TO_TASK": "został dodany(a) do zadania",
+      "MEMBER_REMOVED_FROM_TASK": "został usunięty(a) z zadania",
       "PROJECT_CREATED": "Projekt został utworzony",
       "PROJECT_UPDATED": "Projekt został zaktualizowany",
       "PROJECT_DELETED": "Projekt został usunięty",
       "PROJECT_COMPLETED": "Projekt został oznaczony jako ukończony",
-      "MEMBER_ADDED_TO_PROJECT": "został dodany do projektu",
-      "MEMBER_REMOVED_FROM_PROJECT": "został usunięty z projektu"
+      "MEMBER_ADDED_TO_PROJECT": "został dodany(a) do projektu",
+      "MEMBER_REMOVED_FROM_PROJECT": "został usunięty(a) z projektu"
     }
   }
 }

@@ -5,13 +5,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../features/services/auth.service';
+import { TranslationService } from '../../../features/services/translation.service';
 import {
   Language,
   LanguageCode,
   LanguageLabelKey,
-} from '../../../features/dto/translation.model';
-import { AuthService } from '../../../features/services/auth.service';
-import { TranslationService } from '../../../features/services/translation.service';
+} from '../../../language.config';
 
 @Component({
   selector: 'app-header',

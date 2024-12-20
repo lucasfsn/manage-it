@@ -111,12 +111,12 @@
         <mat-icon class="text-base">schedule</mat-icon>
         <span>{{ "project.details.START_DATE" | translate }}</span>
       </p>
-      <div class="text-slate-300">{{ project.startDate | customDate }}</div>
+      <div class="text-slate-300">{{ project.startDate | date }}</div>
       <p class="flex items-center">
         <mat-icon class="text-base">alarm</mat-icon>
         <span>{{ "project.details.END_DATE" | translate }}</span>
       </p>
-      <div class="text-slate-300">{{ project.endDate | customDate }}</div>
+      <div class="text-slate-300">{{ project.endDate | date }}</div>
     </div>
   </div>
 </div>

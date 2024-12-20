@@ -5,8 +5,12 @@ import {
   PipeTransform,
 } from '@angular/core';
 import { formatDistanceToNow } from 'date-fns';
-import { enUS, pl } from 'date-fns/locale';
 import { TranslationService } from '../../features/services/translation.service';
+import {
+  DATE_FNS_LOCALES,
+  LanguageCode,
+  LANGUAGES,
+} from '../../language.config';
 
 @Pipe({
   name: 'timeAgo',
@@ -32,8 +36,13 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
   public transform(value: Date | string | number | null): string | null {
     if (!value) return null;
 
-    const locale =
-      this.translationService.currentSetLanguage?.code === 'en' ? enUS : pl;
+    const currentLanguage = LANGUAGES.find(
+      (lang) => lang.code === this.translationService.currentSetLanguage?.code
+    );
+
+    const locale = currentLanguage
+      ? DATE_FNS_LOCALES[currentLanguage.code]
+      : DATE_FNS_LOCALES[LanguageCode.EN];
 
     return formatDistanceToNow(new Date(value), { addSuffix: true, locale });
   }

@@ -1,12 +1,14 @@
 import { registerLocaleData } from '@angular/common';
-import localeEn from '@angular/common/locales/en';
-import localePl from '@angular/common/locales/pl';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { appConfig } from './app/app.config';
+import { ANGULAR_LOCALES, LANGUAGES } from './app/language.config';
 
-registerLocaleData(localePl);
-registerLocaleData(localeEn);
+LANGUAGES.forEach((language) => {
+  ANGULAR_LOCALES[language.code]().then((locale) => {
+    registerLocaleData(locale);
+  });
+});
 
 bootstrapApplication(AppComponent, appConfig).catch((err) =>
   console.error(err)

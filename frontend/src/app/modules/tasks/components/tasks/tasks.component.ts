@@ -19,7 +19,7 @@ import {
 import { ProjectService } from '../../../../features/services/project.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
-import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
+import { DatePipe } from '../../../../shared/pipes/date.pipe';
 import { CreateTaskComponent } from '../create-task/create-task.component';
 
 @Component({
@@ -27,7 +27,7 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
   standalone: true,
   imports: [
     MatIconModule,
-    CustomDatePipe,
+    DatePipe,
     CdkDropList,
     CdkDrag,
     PriorityComponent,

@@ -26,7 +26,7 @@
       <div class="flex justify-between items-center gap-1">
         <span class="text-xs text-gray-400 flex items-center gap-1">
           <mat-icon class="text-base">schedule</mat-icon>
-          {{ task.dueDate | customDate }}</span
+          {{ task.dueDate | date }}</span
         >
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
@@ -86,7 +86,7 @@
       <div class="flex justify-between items-center gap-1">
         <span class="text-xs text-gray-400 flex items-center gap-1">
           <mat-icon class="text-base">schedule</mat-icon>
-          {{ task.dueDate | customDate }}</span
+          {{ task.dueDate | date }}</span
         >
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
@@ -146,7 +146,7 @@
       <div class="flex justify-between items-center gap-1">
         <span class="text-xs text-gray-400 flex items-center gap-1">
           <mat-icon class="text-base">schedule</mat-icon>
-          {{ task.dueDate | customDate }}</span
+          {{ task.dueDate | date }}</span
         >
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">

@@ -5,12 +5,12 @@ import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TranslationService } from '../../../../features/services/translation.service';
-import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
+import { DatePipe } from '../../../../shared/pipes/date.pipe';
 
 @Component({
   selector: 'app-upcoming-deadlines',
   standalone: true,
-  imports: [CustomDatePipe, RouterLink, TranslateModule],
+  imports: [DatePipe, RouterLink, TranslateModule],
   templateUrl: './upcoming-deadlines.component.html',
   styleUrl: './upcoming-deadlines.component.scss',
 })

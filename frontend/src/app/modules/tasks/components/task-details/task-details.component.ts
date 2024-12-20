@@ -8,7 +8,7 @@ import { MappersService } from '../../../../features/services/mappers.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
 import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
-import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
+import { DatePipe } from '../../../../shared/pipes/date.pipe';
 
 @Component({
   selector: 'app-task-details',
@@ -18,7 +18,7 @@ import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
     RouterLink,
     PriorityComponent,
     TranslateModule,
-    CustomDatePipe,
+    DatePipe,
   ],
   templateUrl: './task-details.component.html',
   styleUrl: './task-details.component.scss',

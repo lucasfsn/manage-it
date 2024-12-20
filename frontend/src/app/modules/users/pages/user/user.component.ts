@@ -15,7 +15,7 @@ import { AuthService } from '../../../../features/services/auth.service';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { UserService } from '../../../../features/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
+import { DatePipe } from '../../../../shared/pipes/date.pipe';
 import { AddToProjectComponent } from '../../components/add-to-project/add-to-project.component';
 import { EditProfileFormComponent } from '../../components/edit-profile/edit-profile-form.component';
 import { UserProfileRouteData } from '../../users.routes';
@@ -27,7 +27,7 @@ import { UserProfileRouteData } from '../../users.routes';
     SpinnerComponent,
     RouterLink,
     MatIconModule,
-    CustomDatePipe,
+    DatePipe,
     AddToProjectComponent,
     TranslateModule,
   ],

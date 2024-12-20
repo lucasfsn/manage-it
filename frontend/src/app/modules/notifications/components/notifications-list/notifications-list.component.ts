@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Notification } from '../../../../features/dto/notification.model';
 import { NotificationService } from '../../../../features/services/notification.service';
-import { TimeAgoPipe } from '../../../../shared/pipes/am-time-ago.pipe';
+import { TimeAgoPipe } from '../../../../shared/pipes/time-ago.pipe';
 
 @Component({
   selector: 'app-notifications-list',

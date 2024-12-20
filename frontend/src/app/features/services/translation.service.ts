@@ -4,18 +4,15 @@ import {
   Language,
   LanguageCode,
   LanguageLabelKey,
-  Locale,
-} from '../dto/translation.model';
+  LANGUAGES,
+} from '../../language.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TranslationService {
   public currentLanguage: LanguageCode = LanguageCode.EN;
-  public languages: Language[] = [
-    { code: LanguageCode.EN, labelKey: LanguageLabelKey.EN, locale: Locale.EN },
-    { code: LanguageCode.PL, labelKey: LanguageLabelKey.PL, locale: Locale.PL },
-  ];
+  public languages: Language[] = LANGUAGES;
 
   public constructor(private translateService: TranslateService) {
     const storedLanguage = localStorage.getItem('language');

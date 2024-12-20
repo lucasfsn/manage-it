@@ -15,7 +15,7 @@
     <div class="flex flex-col">
       <p class="text-sm text-gray-400">
         {{ "dashboard.upcomingDeadlines.DEADLINE_TEXT" | translate }}
-        {{ project.endDate | customDate }}
+        {{ project.endDate | date }}
       </p>
       <p class="text-sm {{ deadlineClass(project.endDate, project.status) }}">
         {{ deadlineMessage(project.endDate, project.status) }}

@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { ProjectService } from '../../../../features/services/project.service';
-import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
+import { DatePipe } from '../../../../shared/pipes/date.pipe';
 import { ProjectFilters } from '../../models/project-filter.model';
 import {
   ProjectsSort,
@@ -31,7 +31,7 @@ interface ProjectsParams extends Params {
     FilterProjectsComponent,
     SortProjectsComponent,
     TranslateModule,
-    CustomDatePipe,
+    DatePipe,
   ],
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',

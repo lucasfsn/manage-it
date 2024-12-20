@@ -27,7 +27,7 @@ import { UserCredentials } from '../../../features/dto/auth.model';
 import { Message } from '../../../features/dto/chat.model';
 import { AuthService } from '../../../features/services/auth.service';
 import { ChatService } from '../../../features/services/chat.service';
-import { CustomDatePipe } from '../../pipes/custom-date.pipe';
+import { DatePipe } from '../../pipes/date.pipe';
 
 @Component({
   selector: 'app-chat',
@@ -36,7 +36,7 @@ import { CustomDatePipe } from '../../pipes/custom-date.pipe';
     MatIconModule,
     PickerComponent,
     FormsModule,
-    CustomDatePipe,
+    DatePipe,
     TranslateModule,
   ],
   templateUrl: './chat.component.html',

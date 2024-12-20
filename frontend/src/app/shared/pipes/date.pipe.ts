@@ -1,14 +1,14 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe as DatePipeBase } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslationService } from '../../features/services/translation.service';
 
 @Pipe({
-  name: 'customDate',
+  name: 'date',
   standalone: true,
   pure: false,
 })
-export class CustomDatePipe implements PipeTransform {
-  private datePipe = new DatePipe('en-US');
+export class DatePipe implements PipeTransform {
+  private datePipe = new DatePipeBase('en-US');
 
   public constructor(private translationService: TranslationService) {}
 
@@ -21,7 +21,7 @@ export class CustomDatePipe implements PipeTransform {
     const currentLanguage = this.translationService.currentSetLanguage;
     const locale = currentLanguage?.locale || 'en-US';
 
-    this.datePipe = new DatePipe(locale);
+    this.datePipe = new DatePipeBase(locale);
 
     return this.datePipe.transform(value, format);
   }

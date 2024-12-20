@@ -40,13 +40,13 @@
         <p>
           {{ "projects.list.START_DATE_TEXT" | translate }}
           <span class="text-sky-500">
-            {{ project.startDate | customDate }}
+            {{ project.startDate | date }}
           </span>
         </p>
         <p>
           {{ "projects.list.DEADLINE_TEXT" | translate }}
           <span class="text-pink-500">
-            {{ project.endDate | customDate }}
+            {{ project.endDate | date }}
           </span>
         </p>
       </div>

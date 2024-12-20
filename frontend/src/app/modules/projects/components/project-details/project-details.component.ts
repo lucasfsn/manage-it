@@ -14,7 +14,7 @@ import { TranslationService } from '../../../../features/services/translation.se
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
-import { CustomDatePipe } from '../../../../shared/pipes/custom-date.pipe';
+import { DatePipe } from '../../../../shared/pipes/date.pipe';
 import { EditProjectComponent } from '../edit-project/edit-project.component';
 
 @Component({
@@ -24,7 +24,7 @@ import { EditProjectComponent } from '../edit-project/edit-project.component';
     RouterLink,
     MatIconModule,
     ConfirmModalComponent,
-    CustomDatePipe,
+    DatePipe,
     TranslateModule,
   ],
   templateUrl: './project-details.component.html',
