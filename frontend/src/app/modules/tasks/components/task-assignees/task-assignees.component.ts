@@ -15,7 +15,6 @@ import {
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -24,6 +23,10 @@ import { LoadingService } from '../../../../features/services/loading.service';
 import { MappersService } from '../../../../features/services/mappers.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { TranslationService } from '../../../../features/services/translation.service';
+import {
+  PageEvent,
+  PaginatorComponent,
+} from '../../../../shared/components/paginator/paginator.component';
 import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-task.component';
 
 @Component({
@@ -31,11 +34,11 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
   standalone: true,
   imports: [
     MatIconModule,
-    MatPaginatorModule,
     RouterLink,
     ReactiveFormsModule,
     SearchAddToTaskComponent,
     TranslateModule,
+    PaginatorComponent,
   ],
   templateUrl: './task-assignees.component.html',
   styleUrl: './task-assignees.component.scss',
@@ -159,7 +162,7 @@ export class TaskAssigneesComponent implements OnInit {
   }
 
   protected pageChanged(event: PageEvent): void {
-    this.currentPage = event.pageIndex;
+    this.currentPage = event.currentPage;
     this.pageSize = event.pageSize;
     this.updatePaginatedUsers();
   }

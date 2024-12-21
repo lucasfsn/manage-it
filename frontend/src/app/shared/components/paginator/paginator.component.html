@@ -1,0 +1,36 @@
+<div class="flex items-center bg-slate-950 px-4 py-2 gap-4 rounded-full">
+  <select
+    (change)="handlePageSizeChange($event)"
+    [matTooltip]="'paginator.SELECT_INFO' | translate"
+    class="bg-transparent outline-none border-none text-sky-300"
+  >
+    @for (option of pageSizeOptions; track option) {
+    <option
+      [value]="option"
+      class="bg-slate-950 checked:text-sky-500 hover:bg-slate-950 active:bg-transparent"
+    >
+      {{ option }}
+    </option>
+    }
+  </select>
+  <div class="flex items-center">
+    <button
+      (click)="handlePrev()"
+      [disabled]="currentPage === 0"
+      class="text-sky-500 disabled:text-gray-500 flex items-center justify-center"
+    >
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <span
+      >{{ currentPage + 1 }} {{ "paginator.PAGE_INFO" | translate }}
+      {{ totalPages }}</span
+    >
+    <button
+      (click)="handleNext()"
+      [disabled]="currentPage === totalPages - 1"
+      class="text-sky-500 disabled:text-gray-500 flex items-center justify-center"
+    >
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>

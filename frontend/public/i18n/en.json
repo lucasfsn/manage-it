@@ -330,5 +330,9 @@
     "TASK": "Task",
     "PROFILE": "Profile",
     "DEFAULT": "Project Management App"
+  },
+  "paginator": {
+    "PAGE_INFO": "of",
+    "SELECT_INFO": "Items per page"
   }
 }

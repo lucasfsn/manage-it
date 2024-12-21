@@ -330,5 +330,9 @@
     "TASK": "Zadanie",
     "PROFILE": "Profil",
     "DEFAULT": "Zarządzaj Projektami"
+  },
+  "paginator": {
+    "PAGE_INFO": "z",
+    "SELECT_INFO": "Ilość elementów na stronę"
   }
 }
