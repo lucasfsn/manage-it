@@ -93,9 +93,9 @@ public class ProjectService {
         validateUserIsProjectOwner(owner, project);
         if (request.getStatus() != null) {
             project.setStatus(request.getStatus());
-            message = "has marked the project " + project.getName() + "as completed";
+            message = "project;complete;" + project.getName();
         } else {
-            message = "has modified the project " + project.getName();
+            message = "project;update;" + project.getName();
             if (request.getName() != null) {
                 project.setName(request.getName());
             }
@@ -133,7 +133,7 @@ public class ProjectService {
             notificationService.createAndSendNotification(
                     project.getMembers(),
                     userToAdd,
-                    "has joined the project " + project.getName(),
+                    "project;join;" + project.getName(),
                     project.getId(),
                     null
             );
@@ -157,7 +157,7 @@ public class ProjectService {
             notificationService.createAndSendNotification(
                     project.getMembers(),
                     userToRemove,
-                    "has left the project " + project.getName(),
+                    "project;leave;" + project.getName(),
                     project.getId(),
                     null
             );

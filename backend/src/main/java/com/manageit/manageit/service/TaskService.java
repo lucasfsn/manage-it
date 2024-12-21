@@ -70,7 +70,7 @@ public class TaskService {
         notificationService.createAndSendNotification(
                 project.getMembers(),
                 owner,
-                "has created task in " + project.getName(),
+                "task;create;" + project.getName(),
                 projectId,
                 task.getId()
         );
@@ -91,7 +91,7 @@ public class TaskService {
         notificationService.createAndSendNotification(
                 project.getMembers(),
                 user,
-                "has removed task from " + project.getName(),
+                "task;delete;" + project.getName(),
                 project.getId(),
                 task.getId()
         );
@@ -125,7 +125,7 @@ public class TaskService {
         notificationService.createAndSendNotification(
                 project.getMembers(),
                 updater,
-                "has modified task in " + project.getName(),
+                "task;update;" + project.getName(),
                 project.getId(),
                 task.getId()
         );
@@ -152,7 +152,7 @@ public class TaskService {
             notificationService.createAndSendNotification(
                     project.getMembers(),
                     userToAdd,
-                    "has been added to task in " + project.getName(),
+                    "task;join;" + project.getName(),
                     project.getId(),
                     task.getId()
             );
@@ -177,7 +177,7 @@ public class TaskService {
             notificationService.createAndSendNotification(
                     project.getMembers(),
                     userToRemove,
-                    "has been removed to task in " + project.getName(),
+                    "task;leave;" + project.getName(),
                     project.getId(),
                     task.getId()
             );
