@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../features/services/auth.service';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { CreateProjectComponent } from '../../components/create-project/create-project.component';
 import { ProjectsListComponent } from '../../components/projects-list/projects-list.component';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [ProjectsListComponent, SpinnerComponent, MatIconModule],
+  imports: [ProjectsListComponent, SpinnerComponent, MatIconModule, RouterLink],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
 })
@@ -19,19 +18,11 @@ export class ProjectsComponent implements OnInit {
   public constructor(
     private loadingService: LoadingService,
     private projectService: ProjectService,
-    private authService: AuthService,
-    private dialog: MatDialog
+    private authService: AuthService
   ) {}
 
   protected get isLoading(): boolean {
     return this.loadingService.isLoading();
-  }
-
-  protected openCreateProjectDialog(): void {
-    this.dialog.open(CreateProjectComponent, {
-      width: '600px',
-      backdropClass: 'dialog-backdrop',
-    });
   }
 
   private loadProjects(): void {

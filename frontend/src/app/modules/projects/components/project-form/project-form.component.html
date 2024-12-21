@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-2 px-4 py-3 rounded-sm bg-slate-900">
+<div class="flex flex-col gap-2">
   <div class="flex justify-between">
     <div class="flex gap-2 items-center">
       <div
@@ -6,97 +6,106 @@
       >
         <mat-icon>create_new_folder</mat-icon>
       </div>
-      <p class="font-semibold">{{ "project.createForm.TITLE" | translate }}</p>
+      @if (isEditing) {
+      <p class="font-semibold">{{ "project.form.EDIT_TITLE" | translate }}</p>
+      } @else {
+      <p class="font-semibold">{{ "project.form.CREATE_TITLE" | translate }}</p>
+      }
     </div>
-    <button (click)="closeDialog()">
-      <mat-icon>close</mat-icon>
-    </button>
   </div>
-  <form [formGroup]="form" class="grid grid-cols-2 gap-2 bg-slate-900 p-2">
+  <form [formGroup]="form" class="grid grid-cols-2 gap-2 p-2">
     <div class="grid grid-cols-3 gap-2 col-span-2">
-      <label for="name">{{
-        "project.createForm.NAME_LABEL" | translate
-      }}</label>
+      <label for="name">{{ "project.form.NAME_LABEL" | translate }}</label>
       <input
         id="name"
         type="text"
         formControlName="name"
-        [placeholder]="'project.createForm.NAME_PLACEHOLDER' | translate"
+        [placeholder]="'project.form.NAME_PLACEHOLDER' | translate"
         class="w-full"
       />
       @if (nameIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        {{ "project.createForm.NAME_INVALID" | translate }}
+        {{ "project.form.NAME_INVALID" | translate }}
       </p>
       }
     </div>
 
     <div class="grid grid-cols-3 gap-2 col-span-2">
       <label for="description">{{
-        "project.createForm.DESCRIPTION_LABEL" | translate
+        "project.form.DESCRIPTION_LABEL" | translate
       }}</label>
       <input
         type="text"
         id="description"
         formControlName="description"
-        [placeholder]="'project.createForm.DESCRIPTION_PLACEHOLDER' | translate"
+        [placeholder]="'project.form.DESCRIPTION_PLACEHOLDER' | translate"
         class="w-full"
       />
       @if (descriptionIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        {{ "project.createForm.DESCRIPTION_INVALID" | translate }}
+        {{ "project.form.DESCRIPTION_INVALID" | translate }}
       </p>
       }
     </div>
     <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
       <label for="startDate">{{
-        "project.createForm.START_DATE_LABEL" | translate
+        "project.form.START_DATE_LABEL" | translate
       }}</label>
       <input
         type="date"
         id="startDate"
         formControlName="startDate"
-        [min]="getToday()"
+        [min]="minDate()"
       />
       @if (startDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        {{ "project.createForm.START_DATE_INVALID" | translate }}
+        @if (isEditing) {
+        {{ "project.form.EDIT_START_DATE_INVALID" | translate }}
+        } @else {
+        {{ "project.form.CREATE_START_DATE_INVALID" | translate }}
+        }
       </p>
       }
     </div>
 
     <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
       <label for="endDate">{{
-        "project.createForm.END_DATE_LABEL" | translate
+        "project.form.END_DATE_LABEL" | translate
       }}</label>
       <input
         type="date"
         id="endDate"
         formControlName="endDate"
-        [min]="getToday()"
+        [min]="minDate()"
       />
       @if (endDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
-        {{ "project.createForm.END_DATE_INVALID" | translate }}
+        {{ "project.form.END_DATE_INVALID" | translate }}
       </p>
       }
     </div>
 
     <div class="col-span-2 flex justify-end gap-2 mt-4">
       <button
+        [disabled]="disabled"
         (click)="onReset()"
-        class="px-4 py-2 bg-slate-900 flex justify-center items-center rounded-md text-slate-300"
+        class="px-4 py-2 bg-slate-900 flex justify-center items-center rounded-md text-slate-300 disabled:cursor-not-allowed"
       >
         <p class="text-xs">
-          {{ "project.createForm.RESET_BUTTON" | translate }}
+          {{ "project.form.RESET_BUTTON" | translate }}
         </p>
       </button>
       <button
+        [disabled]="disabled"
         (click)="onSubmit()"
-        class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100"
+        class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100 disabled:bg-gray-500 disabled:cursor-not-allowed"
       >
         <p class="text-xs">
-          {{ "project.createForm.CREATE_BUTTON" | translate }}
+          @if (isEditing) {
+          {{ "project.form.SAVE_BUTTON" | translate }}
+          } @else {
+          {{ "project.form.CREATE_BUTTON" | translate }}
+          }
         </p>
       </button>
     </div>

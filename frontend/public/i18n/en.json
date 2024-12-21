@@ -147,6 +147,7 @@
       "FIRST_NAME_PLACEHOLDER": "Enter first name",
       "LAST_NAME_PLACEHOLDER": "Enter last name",
       "EMAIL_PLACEHOLDER": "Enter new email",
+      "PASSWORD_LABEL": "Edit password",
       "PASSWORD_PLACEHOLDER": "Enter new password",
       "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm password",
       "SAVE_BUTTON": "Save",
@@ -201,8 +202,9 @@
       "DELETE_MESSAGE": "Are you sure you want to delete this project?",
       "COMPLETE_MESSAGE": "Are you sure you want to mark this project as completed?"
     },
-    "createForm": {
-      "TITLE": "Edit Project",
+    "form": {
+      "EDIT_TITLE": "Edit Project",
+      "CREATE_TITLE": "Create Project",
       "NAME_LABEL": "Title",
       "NAME_PLACEHOLDER": "Enter project title",
       "NAME_INVALID": "Project title must be between 2 and 50 characters.",
@@ -210,27 +212,13 @@
       "DESCRIPTION_PLACEHOLDER": "Enter project description",
       "DESCRIPTION_INVALID": "Project description must be between 2 and 120 characters.",
       "START_DATE_LABEL": "Start Date",
-      "START_DATE_INVALID": "Start date must be at least today.",
+      "CREATE_START_DATE_INVALID": "Start date must be at least today.",
+      "EDIT_START_DATE_INVALID": "Start date is required.",
       "END_DATE_LABEL": "End Date",
       "END_DATE_INVALID": "End date cannot be earlier than the start date.",
       "RESET_BUTTON": "Reset",
-      "CREATE_BUTTON": "Create Project"
-    },
-    "editForm": {
-      "TITLE": "Edit Project",
-      "NAME_LABEL": "Title",
-      "NAME_PLACEHOLDER": "Enter project title",
-      "NAME_INVALID": "Project title must be between 2 and 50 characters.",
-      "DESCRIPTION_LABEL": "Description",
-      "DESCRIPTION_PLACEHOLDER": "Enter project description",
-      "DESCRIPTION_INVALID": "Project description must be between 2 and 120 characters.",
-      "START_DATE_LABEL": "Start Date",
-      "START_DATE_INVALID": "Start date is required.",
-      "END_DATE_LABEL": "End Date",
-      "END_DATE_INVALID": "End date cannot be earlier than the start date.",
-      "RESET_BUTTON": "Reset",
-      "SAVE_BUTTON": "Save changes",
-      "LOADING_BUTTON": "Saving..."
+      "CREATE_BUTTON": "Create Project",
+      "SAVE_BUTTON": "Save changes"
     }
   },
   "showMoreMembers": {
@@ -327,6 +315,8 @@
     "NOTIFICATIONS": "Notifications",
     "PROJECTS": "Projects",
     "PROJECT": "Project",
+    "PROJECT_CREATE": "Create Project",
+    "PROJECT_EDIT": "Edit Project",
     "TASK": "Task",
     "PROFILE": "Profile",
     "DEFAULT": "Project Management App"

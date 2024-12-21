@@ -51,6 +51,15 @@
         }
       </div>
       <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            (change)="togglePasswordFields($event)"
+            class="rounded-full"
+          />
+          {{ "user.editForm.PASSWORD_LABEL" | translate }}
+        </label>
+        @if (showPasswordFields) {
         <div formGroupName="passwords" class="flex flex-row gap-3">
           <input
             id="password"
@@ -80,6 +89,7 @@
           </p>
           }
         </div>
+        }
       </div>
     </div>
     <div class="flex justify-between">

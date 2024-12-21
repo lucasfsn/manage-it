@@ -1,0 +1,267 @@
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
+import {
+  Project,
+  ProjectRequest,
+} from '../../../../features/dto/project.model';
+import { MappersService } from '../../../../features/services/mappers.service';
+import { ProjectService } from '../../../../features/services/project.service';
+import { TranslationService } from '../../../../features/services/translation.service';
+import {
+  endDateValidator,
+  startDateValidator,
+} from '../../../../shared/validators';
+
+interface RouteData {
+  project?: Project;
+  isEditing?: boolean;
+}
+
+interface DatesForm {
+  startDate: FormControl<string | null>;
+  endDate: FormControl<string | null>;
+}
+
+interface ProjectForm {
+  name: FormControl<string | null>;
+  description: FormControl<string | null>;
+  dates: FormGroup<DatesForm>;
+}
+
+@Component({
+  selector: 'app-project-form',
+  standalone: true,
+  imports: [TranslateModule, ReactiveFormsModule, MatIconModule],
+  templateUrl: './project-form.component.html',
+  styleUrl: './project-form.component.scss',
+})
+export class ProjectFormComponent implements OnInit {
+  private today = new Date().toISOString().split('T')[0];
+  protected isEditing = false;
+
+  public constructor(
+    private projectService: ProjectService,
+    private router: Router,
+    private toastrService: ToastrService,
+    private translationService: TranslationService,
+    private mappersService: MappersService,
+    private route: ActivatedRoute,
+    private location: Location
+  ) {}
+
+  protected get project(): Project | undefined {
+    return this.projectService.loadedProject();
+  }
+
+  protected form: FormGroup<ProjectForm> = new FormGroup<ProjectForm>({
+    name: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
+      ],
+    }),
+    description: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(120),
+      ],
+    }),
+    dates: new FormGroup<DatesForm>(
+      {
+        startDate: new FormControl('', {
+          validators: [Validators.required],
+        }),
+        endDate: new FormControl('', {
+          validators: [Validators.required],
+        }),
+      },
+      {
+        validators: [endDateValidator('startDate', 'endDate')],
+      }
+    ),
+  });
+
+  protected get disabled(): boolean {
+    return this.isEditing
+      ? this.form.invalid || !this.hadFormChanged()
+      : this.form.invalid;
+  }
+
+  private hadFormChanged(): boolean {
+    if (!this.project) return false;
+
+    return (
+      this.form.value.name !== this.project.name ||
+      this.form.value.description !== this.project.description ||
+      this.form.value.dates?.startDate !== this.project.startDate ||
+      this.form.value.dates.endDate !== this.project.endDate
+    );
+  }
+
+  protected get nameIsInvalid(): boolean {
+    return (
+      this.form.controls.name.dirty &&
+      this.form.controls.name.touched &&
+      this.form.controls.name.invalid
+    );
+  }
+
+  protected get descriptionIsInvalid(): boolean {
+    return (
+      this.form.controls.description.dirty &&
+      this.form.controls.description.touched &&
+      this.form.controls.description.invalid
+    );
+  }
+
+  protected get startDateIsInvalid(): boolean {
+    return !!(
+      this.form.controls.dates.get('startDate')?.dirty &&
+      this.form.controls.dates.get('startDate')?.touched &&
+      this.form.controls.dates.get('startDate')?.invalid
+    );
+  }
+
+  protected get endDateIsInvalid(): boolean {
+    return (
+      (this.form.controls.dates.get('endDate')?.dirty &&
+        this.form.controls.dates.get('endDate')?.touched &&
+        this.form.controls.dates.get('endDate')?.invalid) ||
+      this.form.controls.dates.hasError('invalidEndDate')
+    );
+  }
+
+  protected minDate(): string | null {
+    return this.isEditing ? null : this.today;
+  }
+
+  protected onReset(): void {
+    if (this.project) {
+      this.fillFormWithDefaultValues();
+
+      return;
+    }
+
+    this.form.reset({
+      dates: {
+        startDate: this.minDate(),
+        endDate: this.minDate(),
+      },
+    });
+  }
+
+  protected onSubmit(): void {
+    if (this.form.invalid) {
+      return;
+    }
+
+    const projectData: ProjectRequest = this.getProjectData();
+
+    if (this.isEditing) {
+      this.updateProject(projectData);
+    } else {
+      this.createProject(projectData);
+    }
+  }
+
+  private createProject(project: ProjectRequest): void {
+    this.projectService.createProject(project).subscribe({
+      next: (projectId: string) => {
+        this.router.navigate(['/projects', projectId]);
+      },
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
+      },
+      complete: () => {
+        this.toastrService.success(
+          this.translationService.translate('toast.success.PROJECT_CREATED')
+        );
+      },
+    });
+  }
+
+  private updateProject(project: ProjectRequest): void {
+    const projectId = this.project?.id;
+    if (!projectId) return;
+
+    this.projectService.updateProject(projectId, project).subscribe({
+      next: () => {
+        this.router.navigate(['/projects', projectId]);
+      },
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
+      },
+      complete: () => {
+        this.toastrService.success(
+          this.translationService.translate('toast.success.PROJECT_UPDATED')
+        );
+      },
+    });
+  }
+
+  private getProjectData(): ProjectRequest {
+    return {
+      name: this.form.value.name ?? '',
+      description: this.form.value.description ?? '',
+      startDate: this.form.value.dates?.startDate ?? '',
+      endDate: this.form.value.dates?.endDate ?? '',
+    };
+  }
+
+  private fillFormWithDefaultValues(): void {
+    if (!this.project || !this.isEditing) return;
+
+    this.form.patchValue({
+      name: this.project.name,
+      description: this.project.description,
+      dates: {
+        startDate: this.project.startDate,
+        endDate: this.project.endDate,
+      },
+    });
+  }
+
+  private addValidatorsIfCreating(): void {
+    if (this.project) return;
+
+    this.form.controls.dates.controls.startDate.addValidators(
+      startDateValidator
+    );
+    this.form.controls.dates.controls.startDate.updateValueAndValidity();
+  }
+
+  public ngOnInit(): void {
+    this.form.patchValue({
+      dates: {
+        startDate: this.today,
+        endDate: this.today,
+      },
+    });
+
+    this.route.data.subscribe((data: RouteData) => {
+      this.isEditing = data['isEditing'] || false;
+      if (this.isEditing && !data.project) {
+        this.router.navigate(['/']);
+
+        return;
+      }
+      this.fillFormWithDefaultValues();
+    });
+
+    this.addValidatorsIfCreating();
+  }
+}

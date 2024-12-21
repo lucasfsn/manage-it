@@ -40,6 +40,8 @@ interface EditProfileForm {
   styleUrl: './edit-profile-form.component.scss',
 })
 export class EditProfileFormComponent implements OnInit {
+  protected showPasswordFields = false;
+
   public constructor(
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
     private userService: UserService,
@@ -227,6 +229,11 @@ export class EditProfileFormComponent implements OnInit {
     }
 
     return null;
+  }
+
+  protected togglePasswordFields(event: Event): void {
+    this.showPasswordFields = (event.target as HTMLInputElement).checked;
+    if (!this.showPasswordFields) this.form.controls.passwords.reset();
   }
 
   protected closeDialog(): void {

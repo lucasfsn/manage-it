@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
+import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { ProjectComponent } from './pages/project/project.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
+import { projectResolver } from './resolvers/project.resolver';
 
 export const PROJECTS_ROUTES: Routes = [
   {
@@ -8,6 +10,25 @@ export const PROJECTS_ROUTES: Routes = [
     component: ProjectsComponent,
     data: {
       title: 'title.PROJECTS',
+    },
+  },
+  {
+    path: 'create',
+    component: ProjectFormComponent,
+    data: {
+      title: 'title.PROJECT_CREATE',
+      isEditing: false,
+    },
+  },
+  {
+    path: ':projectId/edit',
+    component: ProjectFormComponent,
+    resolve: {
+      project: projectResolver,
+    },
+    data: {
+      title: 'title.PROJECT_EDIT',
+      isEditing: true,
     },
   },
   {

@@ -147,6 +147,7 @@
       "FIRST_NAME_PLACEHOLDER": "Wprowadź swoje imię",
       "LAST_NAME_PLACEHOLDER": "Wprowadź swoje nazwisko",
       "EMAIL_PLACEHOLDER": "Wprowadź nowy email",
+      "PASSWORD_LABEL": "Edytuj hasło",
       "PASSWORD_PLACEHOLDER": "Wprowadź nowe hasło",
       "CONFIRM_PASSWORD_PLACEHOLDER": "Potwierdź hasło",
       "SAVE_BUTTON": "Zapisz",
@@ -201,8 +202,9 @@
       "DELETE_MESSAGE": "Czy na pewno chcesz usunąć ten projekt?",
       "COMPLETE_MESSAGE": "Czy na pewno chcesz oznaczyć ten projekt jako zakończony?"
     },
-    "createForm": {
-      "TITLE": "Utwórz Projekt",
+    "form": {
+      "EDIT_TITLE": "Edytuj Projekt",
+      "CREATE_TITLE": "Utwórz Projekt",
       "NAME_LABEL": "Tytuł",
       "NAME_PLACEHOLDER": "Wprowadź tytuł projektu",
       "NAME_INVALID": "Tytuł projektu musi zawierać od 2 do 50 znaków.",
@@ -210,27 +212,13 @@
       "DESCRIPTION_PLACEHOLDER": "Wprowadź opis projektu",
       "DESCRIPTION_INVALID": "Opis projektu musi zawierać od 2 do 120 znaków.",
       "START_DATE_LABEL": "Data rozpoczęcia",
-      "START_DATE_INVALID": "Data rozpoczęcia musi być co najmniej dzisiejsza.",
+      "EDIT_START_DATE_INVALID": "Data rozpoczęcia jest wymagana.",
+      "CREATE_START_DATE_INVALID": "Data rozpoczęcia musi być co najmniej dzisiejsza.",
       "END_DATE_LABEL": "Data zakończenia",
       "END_DATE_INVALID": "Data zakończenia nie może być wczesniejsza niż data rozpoczęcia.",
       "RESET_BUTTON": "Resetuj",
-      "CREATE_BUTTON": "Utwórz Projekt"
-    },
-    "editForm": {
-      "TITLE": "Edytuj Projekt",
-      "NAME_LABEL": "Tytuł",
-      "NAME_PLACEHOLDER": "Wprowadź tytuł projektu",
-      "NAME_INVALID": "Tytuł projektu musi zawierać od 2 do 50 znaków.",
-      "DESCRIPTION_LABEL": "Opis",
-      "DESCRIPTION_PLACEHOLDER": "Wprowadź opis projektu",
-      "DESCRIPTION_INVALID": "Opis projektu musi zawierać od 2 do 120 znaków.",
-      "START_DATE_LABEL": "Data rozpoczęcia",
-      "START_DATE_INVALID": "Data rozpoczęcia jest wymagana.",
-      "END_DATE_LABEL": "Data zakończenia",
-      "END_DATE_INVALID": "Data zakończenia nie może być wczesniejsza niż data rozpoczęcia.",
-      "RESET_BUTTON": "Resetuj",
-      "SAVE_BUTTON": "Zapisz zmiany",
-      "LOADING_BUTTON": "Zapisywanie..."
+      "CREATE_BUTTON": "Utwórz Projekt",
+      "SAVE_BUTTON": "Zapisz zmiany"
     }
   },
   "showMoreMembers": {
@@ -327,6 +315,8 @@
     "NOTIFICATIONS": "Powiadomienia",
     "PROJECTS": "Projekty",
     "PROJECT": "Projekt",
+    "PROJECT_CREATE": "Utwórz Projekt",
+    "PROJECT_EDIT": "Edytuj Projekt",
     "TASK": "Zadanie",
     "PROFILE": "Profil",
     "DEFAULT": "Zarządzaj Projektami"

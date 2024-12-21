@@ -15,7 +15,6 @@ import { ConfirmModalComponent } from '../../../../shared/components/confirm-mod
 import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
-import { EditProjectComponent } from '../edit-project/edit-project.component';
 
 @Component({
   selector: 'app-project-details',
@@ -120,17 +119,6 @@ export class ProjectDetailsComponent {
           this.loadingService.loadingOff();
         },
       });
-    });
-  }
-
-  protected handleEdit(): void {
-    const projectId = this.project?.id;
-
-    if (!projectId) return;
-
-    this.dialog.open(EditProjectComponent, {
-      width: '600px',
-      backdropClass: 'dialog-backdrop',
     });
   }
 

@@ -8,9 +8,7 @@ import {
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { LoadingService } from '../../../../features/services/loading.service';
-import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
@@ -57,9 +55,7 @@ export class ProjectComponent implements OnInit {
     private projectService: ProjectService,
     private loadingService: LoadingService,
     private route: ActivatedRoute,
-    private router: Router,
-    private mappersService: MappersService,
-    private toastrService: ToastrService
+    private router: Router
   ) {}
 
   protected get isLoading(): boolean {
@@ -79,11 +75,7 @@ export class ProjectComponent implements OnInit {
 
     this.loadingService.loadingOn();
     this.projectService.getProject(projectId).subscribe({
-      error: (error) => {
-        const localeMessage = this.mappersService.errorToastMapper(
-          error.status
-        );
-        this.toastrService.error(localeMessage);
+      error: () => {
         this.loadingService.loadingOff();
         this.router.navigate(['/projects']);
       },
