@@ -1,11 +1,8 @@
-<app-header />
-<main class="flex flex-col gap-4 p-2 lg:flex-row">
-  <app-side-bar />
-  @if (isLoading) {
-  <app-spinner />
-  } @else {
-  <div class="flex-1">
-    <router-outlet />
-  </div>
-  }
-</main>
+<app-side-bar />
+@if (isLoading) {
+<app-spinner />
+} @else {
+<div class="flex-1">
+  <router-outlet />
+</div>
+}

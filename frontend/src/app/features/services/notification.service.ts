@@ -27,7 +27,7 @@ export class NotificationService {
       );
   }
 
-  public markAsRead(notificationId: string): Observable<null> {
+  public markAsRead(notificationId: string): Observable<string> {
     const prevNotifications = this.notifications();
 
     const updatedNotifications = this.notifications().filter(
@@ -37,7 +37,9 @@ export class NotificationService {
     this.notifications.set(updatedNotifications);
 
     return this.http
-      .delete<null>(`${environment.apiUrl}/notifications/${notificationId}`)
+      .delete(`${environment.apiUrl}/notifications/${notificationId}`, {
+        responseType: 'text',
+      })
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.notifications.set(prevNotifications);
@@ -47,17 +49,21 @@ export class NotificationService {
       );
   }
 
-  public markAllAsRead(): Observable<null> {
+  public markAllAsRead(): Observable<string> {
     const prevNotifications = this.notifications();
 
     this.notifications.set([]);
 
-    return this.http.delete<null>(`${environment.apiUrl}/notifications`).pipe(
-      catchError((err: HttpErrorResponse) => {
-        this.notifications.set(prevNotifications);
-
-        return throwError(() => err);
+    return this.http
+      .delete(`${environment.apiUrl}/notifications`, {
+        responseType: 'text',
       })
-    );
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.notifications.set(prevNotifications);
+
+          return throwError(() => err);
+        })
+      );
   }
 }

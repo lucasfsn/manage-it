@@ -63,9 +63,11 @@ export class ProjectService {
       );
   }
 
-  public deleteProject(projectId: string): Observable<null> {
+  public deleteProject(projectId: string): Observable<string> {
     return this.http
-      .delete<null>(`${environment.apiUrl}/projects/${projectId}`)
+      .delete(`${environment.apiUrl}/projects/${projectId}`, {
+        responseType: 'text',
+      })
       .pipe(
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -114,9 +116,11 @@ export class ProjectService {
       );
   }
 
-  public addToProject(projectId: string, user: User): Observable<null> {
+  public addToProject(projectId: string, user: User): Observable<string> {
     return this.http
-      .patch<null>(`${environment.apiUrl}/projects/${projectId}/user/add`, user)
+      .patch(`${environment.apiUrl}/projects/${projectId}/user/add`, user, {
+        responseType: 'text',
+      })
       .pipe(
         tap(() => {
           this.allowAccessToAddToProject = false;

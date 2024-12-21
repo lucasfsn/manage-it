@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -48,18 +52,18 @@ export class UserService {
     projectId?: string,
     taskId?: string
   ): Observable<User[]> {
-    let url = `${environment.apiUrl}/users/search?pattern=${pattern}${
-      projectId ? `&projectId=${projectId}` : ''
-    }`;
+    let params = new HttpParams().set('pattern', pattern);
 
-    if (projectId && taskId) {
-      url += `&taskId=${taskId}`;
-    }
+    if (projectId) params = params.set('projectId', projectId);
 
-    return this.http.get<User[]>(url).pipe(
-      catchError((err: HttpErrorResponse) => {
-        return throwError(() => err);
-      })
-    );
+    if (taskId) params = params.set('taskId', taskId);
+
+    return this.http
+      .get<User[]>(`${environment.apiUrl}/users/search`, { params })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err);
+        })
+      );
   }
 }

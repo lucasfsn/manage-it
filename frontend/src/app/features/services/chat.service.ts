@@ -22,7 +22,7 @@ export class ChatService {
   public loadedTaskMessages = this.taskMessages.asReadonly();
 
   public constructor(
-    private httpClient: HttpClient,
+    private http: HttpClient,
     private projectService: ProjectService,
     private taskService: TaskService
   ) {
@@ -62,7 +62,7 @@ export class ChatService {
   }
 
   public getProjectChatHistory(projectId: string): Observable<Message[]> {
-    return this.httpClient
+    return this.http
       .get<Message[]>(`${environment.apiUrl}/chat/projectss/${projectId}`)
       .pipe(
         tap((messages: Message[]) => {
@@ -78,7 +78,7 @@ export class ChatService {
     projectId: string,
     taskId: string
   ): Observable<Message[]> {
-    return this.httpClient
+    return this.http
       .get<Message[]>(
         `${environment.apiUrl}/chat/projects/${projectId}/tasks/${taskId}`
       )

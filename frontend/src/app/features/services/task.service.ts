@@ -51,7 +51,7 @@ export class TaskService {
   public moveProjectTask(
     project: Project,
     updatedTask: Task
-  ): Observable<null> {
+  ): Observable<string> {
     const prevTask = this.task();
 
     const updatedProjectTasksList = project.tasks.map((t) =>
@@ -66,9 +66,12 @@ export class TaskService {
     this.task.set(updatedTask);
 
     return this.http
-      .patch<null>(
+      .patch(
         `${environment.apiUrl}/projects/${project.id}/tasks/${updatedTask.id}`,
-        { status: updatedTask.status }
+        { status: updatedTask.status },
+        {
+          responseType: 'text',
+        }
       )
       .pipe(
         catchError((err: HttpErrorResponse) => {
@@ -80,11 +83,11 @@ export class TaskService {
       );
   }
 
-  public deleteTask(projectId: string, taskId: string): Observable<null> {
+  public deleteTask(projectId: string, taskId: string): Observable<string> {
     return this.http
-      .delete<null>(
-        `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`
-      )
+      .delete(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`, {
+        responseType: 'text',
+      })
       .pipe(
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
