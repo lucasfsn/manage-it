@@ -1,39 +1,29 @@
 import { Location } from '@angular/common';
 import { inject } from '@angular/core';
-import { ResolveFn, Router } from '@angular/router';
+import { ResolveFn } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
-import { User } from '../../../features/dto/user.model';
-import { AuthService } from '../../../features/services/auth.service';
+import { Task } from '../../../features/dto/project.model';
 import { LoadingService } from '../../../features/services/loading.service';
 import { MappersService } from '../../../features/services/mappers.service';
-import { UserService } from '../../../features/services/user.service';
+import { TaskService } from '../../../features/services/task.service';
 
-export const userRedirectResolver: ResolveFn<void> = () => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
-
-  const loggedInUser = authService.getLoggedInUsername();
-
-  if (loggedInUser) {
-    router.navigate([`/users/${loggedInUser}`]);
-  } else {
-    router.navigate(['/']);
-  }
-};
-
-export const userResolver: ResolveFn<User | undefined> = (route) => {
+export const tasksResolver: ResolveFn<Task | undefined> = (route) => {
   const loadingService = inject(LoadingService);
-  const userService = inject(UserService);
+  const taskService = inject(TaskService);
   const mappersService = inject(MappersService);
   const toastrService = inject(ToastrService);
   const location = inject(Location);
 
-  const username = route.paramMap.get('username');
-  if (username) {
+  loadingService.loadingOn();
+
+  const projectId = route.paramMap.get('projectId');
+  const taskId = route.paramMap.get('taskId');
+
+  if (projectId && taskId) {
     loadingService.loadingOn();
 
-    return userService.getUserByUsername(username).pipe(
+    return taskService.getTask(projectId, taskId).pipe(
       catchError((error) => {
         const localeMessage = mappersService.errorToastMapper(error.status);
         toastrService.error(localeMessage);

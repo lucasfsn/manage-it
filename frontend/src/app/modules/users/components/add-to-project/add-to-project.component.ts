@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -16,8 +16,8 @@ import { UserService } from '../../../../features/services/user.service';
   styleUrl: './add-to-project.component.scss',
 })
 export class AddToProjectComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
   protected projectId: string | null = null;
+  protected loading: boolean = false;
 
   public constructor(
     private projectService: ProjectService,
@@ -37,12 +37,9 @@ export class AddToProjectComponent implements OnInit {
     const user = this.user;
     if (!user || !this.projectId) return;
 
+    this.loading = true;
     this.projectService.addToProject(this.projectId, this.user).subscribe({
-      error: () => {
-        const localeMessage = this.mappersService.errorToastMapper();
-        this.toastrService.error(localeMessage);
-      },
-      complete: () => {
+      next: () => {
         this.toastrService.success(
           `${user.firstName} ${
             user.lastName
@@ -52,16 +49,20 @@ export class AddToProjectComponent implements OnInit {
         );
         this.router.navigate(['/projects', this.projectId]);
       },
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
     });
   }
 
   public ngOnInit(): void {
-    const subscription = this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe((params) => {
       this.projectId = params.get('projectId');
-    });
-
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
     });
   }
 }

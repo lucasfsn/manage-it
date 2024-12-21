@@ -3,11 +3,15 @@ import { ProjectFormComponent } from './components/project-form/project-form.com
 import { ProjectComponent } from './pages/project/project.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { projectResolver } from './resolvers/project.resolver';
+import { projectsResolver } from './resolvers/projects.resolver';
 
 export const PROJECTS_ROUTES: Routes = [
   {
     path: '',
     component: ProjectsComponent,
+    resolve: {
+      projectsResolver,
+    },
     data: {
       title: 'title.PROJECTS',
     },
@@ -24,7 +28,7 @@ export const PROJECTS_ROUTES: Routes = [
     path: ':projectId/edit',
     component: ProjectFormComponent,
     resolve: {
-      project: projectResolver,
+      projectResolver,
     },
     data: {
       title: 'title.PROJECT_EDIT',
@@ -34,6 +38,9 @@ export const PROJECTS_ROUTES: Routes = [
   {
     path: ':projectId',
     component: ProjectComponent,
+    resolve: {
+      projectResolver,
+    },
     data: {
       title: 'title.PROJECT',
     },

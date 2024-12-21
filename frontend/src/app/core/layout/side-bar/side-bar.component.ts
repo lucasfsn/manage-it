@@ -25,7 +25,6 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
           width: '0',
           opacity: 0,
           padding: 0,
-          display: 'none',
         })
       ),
       state(
@@ -50,7 +49,7 @@ export class SideBarComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  protected get username(): string | null {
+  protected get username(): string | undefined {
     return this.authService.getLoggedInUsername();
   }
 

@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, of, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   AuthResponse,
@@ -67,10 +67,6 @@ export class AuthService {
   }
 
   public getUserByToken(): Observable<UserCredentials> {
-    const currentUser = this.currentUser();
-
-    if (currentUser) return of(currentUser);
-
     return this.http
       .get<UserCredentials>(`${environment.apiUrl}/auth/user`)
       .pipe(
@@ -85,14 +81,8 @@ export class AuthService {
       );
   }
 
-  public getLoggedInUsername(): string | null {
-    const currentUser = this.currentUser();
-
-    if (currentUser) return currentUser.username;
-
-    this.logout();
-
-    return null;
+  public getLoggedInUsername(): string | undefined {
+    return this.currentUser()?.username;
   }
 
   private storeJwtToken(jwt: string): void {

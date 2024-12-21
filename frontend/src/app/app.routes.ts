@@ -2,7 +2,9 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
+import { authResolver } from './modules/auth/resolvers/auth.resolver';
 import { HomeComponent } from './modules/home/pages/home/home.component';
+import { NotFoundComponent } from './modules/not-found/pages/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +30,9 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
+    resolve: {
+      authResolver,
+    },
     canActivate: [authGuard],
     children: [
       {
@@ -60,9 +65,9 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    loadChildren: () =>
-      import('./modules/not-found/not-found.routes').then(
-        (r) => r.NOT_FOUND_ROUTES
-      ),
+    component: NotFoundComponent,
+    data: {
+      title: 'title.NOT_FOUND',
+    },
   },
 ];

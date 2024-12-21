@@ -1,29 +1,28 @@
-import { Location } from '@angular/common';
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
 import { Project } from '../../../features/dto/project.model';
+import { AuthService } from '../../../features/services/auth.service';
 import { LoadingService } from '../../../features/services/loading.service';
 import { MappersService } from '../../../features/services/mappers.service';
 import { ProjectService } from '../../../features/services/project.service';
 
-export const projectResolver: ResolveFn<Project | undefined> = (route) => {
+export const projectsResolver: ResolveFn<Project[] | undefined> = () => {
   const loadingService = inject(LoadingService);
   const projectService = inject(ProjectService);
-  const mappersService = inject(MappersService);
+  const authService = inject(AuthService);
   const toastrService = inject(ToastrService);
-  const location = inject(Location);
+  const mappersService = inject(MappersService);
 
-  const projectId = route.paramMap.get('projectId');
-  if (projectId) {
+  const username = authService.getLoggedInUsername();
+  if (username) {
     loadingService.loadingOn();
 
-    return projectService.getProject(projectId).pipe(
-      catchError((error) => {
-        const localeMessage = mappersService.errorToastMapper(error.status);
+    return projectService.getProjects().pipe(
+      catchError(() => {
+        const localeMessage = mappersService.errorToastMapper();
         toastrService.error(localeMessage);
-        location.back();
 
         return of(undefined);
       }),

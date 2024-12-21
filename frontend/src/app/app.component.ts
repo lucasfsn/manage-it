@@ -7,13 +7,12 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
-import { HeaderComponent } from './core/layout/header/header.component';
 import { TranslationService } from './features/services/translation.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HeaderComponent, RouterOutlet],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

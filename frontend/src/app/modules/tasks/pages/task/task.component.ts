@@ -5,20 +5,19 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
 import { ProjectStatus, Task } from '../../../../features/dto/project.model';
+import { ConfirmModalService } from '../../../../features/services/confirm-modal.service';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { MappersService } from '../../../../features/services/mappers.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
-import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { EditTaskComponent } from '../../components/edit-task/edit-task.component';
 import { TaskAssigneesComponent } from '../../components/task-assignees/task-assignees.component';
 import { TaskDetailsComponent } from '../../components/task-details/task-details.component';
@@ -27,7 +26,6 @@ import { TaskDetailsComponent } from '../../components/task-details/task-details
   selector: 'app-task',
   standalone: true,
   imports: [
-    SpinnerComponent,
     ChatComponent,
     TaskAssigneesComponent,
     MatIconModule,
@@ -56,22 +54,18 @@ import { TaskDetailsComponent } from '../../components/task-details/task-details
     ]),
   ],
 })
-export class TaskComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
+export class TaskComponent {
   protected showChat = signal<boolean>(false);
-  private projectId: string | null = null;
-  private taskId: string | null = null;
 
   public constructor(
     private taskService: TaskService,
-    private loadingService: LoadingService,
-    private route: ActivatedRoute,
     private router: Router,
     private toastrService: ToastrService,
     private dialog: MatDialog,
     private confirmModalService: ConfirmModalService,
     private translationService: TranslationService,
-    private mappersService: MappersService
+    private mappersService: MappersService,
+    private loadingService: LoadingService
   ) {}
 
   protected get ProjectStatus(): typeof ProjectStatus {
@@ -84,10 +78,6 @@ export class TaskComponent implements OnInit {
 
   protected get task(): Task | undefined {
     return this.taskService.loadedTask();
-  }
-
-  protected get isLoading(): boolean {
-    return this.loadingService.isLoading();
   }
 
   protected toggleChat(): void {
@@ -108,18 +98,25 @@ export class TaskComponent implements OnInit {
     );
 
     confirmation$.subscribe((confirmed) => {
-      if (!confirmed || !this.projectId || !this.taskId) return;
+      if (!this.task || !confirmed) return;
 
-      this.taskService.deleteTask(this.projectId, this.taskId).subscribe({
-        error: () => {
-          const localeMessage = this.mappersService.errorToastMapper();
-          this.toastrService.error(localeMessage);
-        },
-        complete: () => {
+      const { id, projectId } = this.task;
+
+      this.loadingService.loadingOn();
+      this.taskService.deleteTask(projectId, id).subscribe({
+        next: () => {
           this.router.navigate(['/projects', this.task?.projectId]);
           this.toastrService.success(
             this.translationService.translate('toast.success.TASK_DELETED')
           );
+        },
+        error: () => {
+          const localeMessage = this.mappersService.errorToastMapper();
+          this.toastrService.error(localeMessage);
+          this.loadingService.loadingOff();
+        },
+        complete: () => {
+          this.loadingService.loadingOff();
         },
       });
     });
@@ -132,36 +129,5 @@ export class TaskComponent implements OnInit {
       width: '600px',
       backdropClass: 'dialog-backdrop',
     });
-  }
-
-  private loadTaskData(): void {
-    if (!this.projectId || !this.taskId) {
-      this.router.navigate(['/projects']);
-
-      return;
-    }
-
-    this.loadingService.loadingOn();
-    this.taskService.getTask(this.projectId, this.taskId).subscribe({
-      error: (err) => {
-        const localeMessage = this.mappersService.errorToastMapper(err.status);
-        this.toastrService.error(localeMessage);
-        this.router.navigate(['/projects', this.projectId]);
-        this.loadingService.loadingOff();
-      },
-      complete: () => {
-        this.loadingService.loadingOff();
-      },
-    });
-  }
-
-  public ngOnInit(): void {
-    const subscription = this.route.paramMap.subscribe((params) => {
-      this.projectId = params.get('projectId');
-      this.taskId = params.get('taskId');
-      this.loadTaskData();
-    });
-
-    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }

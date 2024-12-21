@@ -93,13 +93,7 @@ export class TaskAssigneesComponent implements OnInit {
 
     this.loadingService.loadingOn();
     this.taskService.addToTask(task.projectId, task.id, user).subscribe({
-      error: () => {
-        const localeMessage = this.mappersService.errorToastMapper();
-        this.toastrService.error(localeMessage);
-        this.loadingService.loadingOff();
-      },
-      complete: () => {
-        this.loadingService.loadingOff();
+      next: () => {
         this.toastrService.success(
           `${user.firstName} ${
             user.lastName
@@ -107,6 +101,14 @@ export class TaskAssigneesComponent implements OnInit {
             'toast.success.MEMBER_ADDED_TO_TASK'
           )}`
         );
+      },
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
+        this.loadingService.loadingOff();
+      },
+      complete: () => {
+        this.loadingService.loadingOff();
       },
     });
     this.refreshUsersIn();
@@ -118,6 +120,15 @@ export class TaskAssigneesComponent implements OnInit {
 
     this.loadingService.loadingOn();
     this.taskService.removeFromTask(task.projectId, task.id, user).subscribe({
+      next: () => {
+        this.toastrService.success(
+          `${user.firstName} ${
+            user.lastName
+          } ${this.translationService.translate(
+            'toast.success.MEMBER_REMOVED_FROM_TASK'
+          )}`
+        );
+      },
       error: () => {
         const localeMessage = this.mappersService.errorToastMapper();
         this.toastrService.error(localeMessage);
@@ -125,13 +136,6 @@ export class TaskAssigneesComponent implements OnInit {
       },
       complete: () => {
         this.loadingService.loadingOff();
-        this.toastrService.success(
-          `${user.firstName} ${
-            user.lastName
-          } ${this.translationService.translate(
-            'toast.success.MEMBER_ADDED_TO_TASK'
-          )}`
-        );
       },
     });
     this.refreshUsersIn();

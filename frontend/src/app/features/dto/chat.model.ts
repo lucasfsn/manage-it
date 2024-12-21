@@ -11,3 +11,8 @@ export interface MessageSend {
   readonly content: string;
   readonly token: string;
 }
+
+export interface MessageQueue {
+  destination: string;
+  body: string;
+}

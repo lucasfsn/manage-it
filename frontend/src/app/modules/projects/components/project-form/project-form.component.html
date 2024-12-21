@@ -87,7 +87,7 @@
 
     <div class="col-span-2 flex justify-end gap-2 mt-4">
       <button
-        [disabled]="disabled"
+        [disabled]="loading"
         (click)="onReset()"
         class="px-4 py-2 bg-slate-900 flex justify-center items-center rounded-md text-slate-300 disabled:cursor-not-allowed"
       >
@@ -101,7 +101,9 @@
         class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100 disabled:bg-gray-500 disabled:cursor-not-allowed"
       >
         <p class="text-xs">
-          @if (isEditing) {
+          @if (loading) {
+          {{ "utils.LOADING" | translate }}
+          } @else if (isEditing) {
           {{ "project.form.SAVE_BUTTON" | translate }}
           } @else {
           {{ "project.form.CREATE_BUTTON" | translate }}

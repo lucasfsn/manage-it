@@ -78,7 +78,7 @@
     </div>
     <div class="col-span-2 flex justify-end gap-2 mt-4">
       <button
-        [disabled]="isLoading"
+        [disabled]="loading"
         (click)="onReset()"
         class="px-4 py-2 bg-slate-900 flex justify-center items-center rounded-md text-slate-300 disabled:cursor-not-allowed"
       >
@@ -90,8 +90,8 @@
         class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100 disabled:bg-gray-500 disabled:cursor-not-allowed"
       >
         <p class="text-xs">
-          @if (isLoading) {
-          {{ "task.editForm.LOADING_BUTTON" | translate }}
+          @if (loading) {
+          {{ "utils.LOADING" | translate }}
           } @else {
           {{ "task.editForm.SAVE_BUTTON" | translate }}
           }

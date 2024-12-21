@@ -47,6 +47,7 @@ interface ProjectForm {
 })
 export class ProjectFormComponent implements OnInit {
   private today = new Date().toISOString().split('T')[0];
+  protected loading = false;
   protected isEditing = false;
 
   public constructor(
@@ -94,9 +95,11 @@ export class ProjectFormComponent implements OnInit {
   });
 
   protected get disabled(): boolean {
-    return this.isEditing
-      ? this.form.invalid || !this.hadFormChanged()
-      : this.form.invalid;
+    return (
+      (this.isEditing
+        ? this.form.invalid || !this.hadFormChanged()
+        : this.form.invalid) || this.loading
+    );
   }
 
   private hadFormChanged(): boolean {
@@ -177,18 +180,21 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private createProject(project: ProjectRequest): void {
+    this.loading = true;
     this.projectService.createProject(project).subscribe({
       next: (projectId: string) => {
         this.router.navigate(['/projects', projectId]);
+        this.toastrService.success(
+          this.translationService.translate('toast.success.PROJECT_CREATED')
+        );
       },
       error: () => {
         const localeMessage = this.mappersService.errorToastMapper();
         this.toastrService.error(localeMessage);
+        this.loading = false;
       },
       complete: () => {
-        this.toastrService.success(
-          this.translationService.translate('toast.success.PROJECT_CREATED')
-        );
+        this.loading = false;
       },
     });
   }
@@ -197,18 +203,21 @@ export class ProjectFormComponent implements OnInit {
     const projectId = this.project?.id;
     if (!projectId) return;
 
+    this.loading = true;
     this.projectService.updateProject(projectId, project).subscribe({
       next: () => {
         this.router.navigate(['/projects', projectId]);
+        this.toastrService.success(
+          this.translationService.translate('toast.success.PROJECT_UPDATED')
+        );
       },
       error: () => {
         const localeMessage = this.mappersService.errorToastMapper();
         this.toastrService.error(localeMessage);
+        this.loading = false;
       },
       complete: () => {
-        this.toastrService.success(
-          this.translationService.translate('toast.success.PROJECT_UPDATED')
-        );
+        this.loading = false;
       },
     });
   }
@@ -254,11 +263,6 @@ export class ProjectFormComponent implements OnInit {
 
     this.route.data.subscribe((data: RouteData) => {
       this.isEditing = data['isEditing'] || false;
-      if (this.isEditing && !data.project) {
-        this.router.navigate(['/']);
-
-        return;
-      }
       this.fillFormWithDefaultValues();
     });
 

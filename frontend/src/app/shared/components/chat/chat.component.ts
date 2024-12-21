@@ -23,10 +23,12 @@ import { ActivatedRoute } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 import { UserCredentials } from '../../../features/dto/auth.model';
 import { Message } from '../../../features/dto/chat.model';
 import { AuthService } from '../../../features/services/auth.service';
 import { ChatService } from '../../../features/services/chat.service';
+import { MappersService } from '../../../features/services/mappers.service';
 import { DatePipe } from '../../pipes/date.pipe';
 
 @Component({
@@ -72,7 +74,9 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   public constructor(
     private authService: AuthService,
     private chatService: ChatService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastrService: ToastrService,
+    private mappersService: MappersService
   ) {}
 
   protected message = '';
@@ -123,6 +127,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         .getTaskChatHistory(this.projectId, this.taskId)
         .subscribe({
           error: () => {
+            const localeMessage = this.mappersService.errorToastMapper();
+            this.toastrService.error(localeMessage);
             this.isLoading.set(false);
           },
           complete: () => {
@@ -132,6 +138,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     } else {
       this.chatService.getProjectChatHistory(this.projectId).subscribe({
         error: () => {
+          const localeMessage = this.mappersService.errorToastMapper();
+          this.toastrService.error(localeMessage);
           this.isLoading.set(false);
         },
         complete: () => {

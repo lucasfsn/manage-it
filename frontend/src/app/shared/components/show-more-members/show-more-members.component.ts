@@ -23,6 +23,7 @@ export class ShowMoreMembersComponent {
     .isOnlyShow;
   protected isOnProject = inject<{ isOnProject: boolean }>(MAT_DIALOG_DATA)
     .isOnProject;
+  protected loading: boolean = false;
 
   public constructor(
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
@@ -49,15 +50,9 @@ export class ShowMoreMembersComponent {
     const projectId = this.projectService.loadedProject()?.id;
     if (!projectId) return;
 
-    this.loadingService.loadingOn();
+    this.loading = true;
     this.projectService.removeFromProject(user, projectId).subscribe({
-      error: () => {
-        const localeMessage = this.mappersService.errorToastMapper();
-        this.toastrService.error(localeMessage);
-        this.loadingService.loadingOff();
-      },
-      complete: () => {
-        this.loadingService.loadingOff();
+      next: () => {
         this.toastrService.success(
           `${user.firstName} ${
             user.lastName
@@ -65,6 +60,14 @@ export class ShowMoreMembersComponent {
             'toast.success.MEMBER_REMOVED_FROM_PROJECT'
           )}`
         );
+      },
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       },
     });
   }

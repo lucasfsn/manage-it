@@ -34,7 +34,7 @@ interface EditTaskForm {
   styleUrl: './edit-task.component.scss',
 })
 export class EditTaskComponent implements OnInit {
-  protected isLoading = false;
+  protected loading = false;
 
   public constructor(
     private taskService: TaskService,
@@ -62,7 +62,7 @@ export class EditTaskComponent implements OnInit {
   });
 
   protected get disabled(): boolean {
-    return this.form.invalid || !this.isFormChanged() || this.isLoading;
+    return this.form.invalid || !this.isFormChanged() || this.loading;
   }
 
   protected get task(): Task | undefined {
@@ -140,10 +140,9 @@ export class EditTaskComponent implements OnInit {
   }
 
   protected onSubmit(): void {
-    const projectId = this.task?.projectId;
-    const taskId = this.task?.id;
+    if (!this.task || this.form.invalid) return;
 
-    if (this.form.invalid || !projectId || !taskId) return;
+    const { id, projectId } = this.task;
 
     const updatedTask: TaskData = {
       description: this.form.value.description!,
@@ -154,19 +153,21 @@ export class EditTaskComponent implements OnInit {
 
     if (!this.isFormChanged()) return;
 
-    this.isLoading = true;
-    this.taskService.updateTask(projectId, taskId, updatedTask).subscribe({
-      error: () => {
-        const localeMessage = this.mappersService.errorToastMapper();
-        this.toastrService.error(localeMessage);
-        this.isLoading = false;
-      },
-      complete: () => {
+    this.loading = true;
+    this.taskService.updateTask(projectId, id, updatedTask).subscribe({
+      next: () => {
         this.toastrService.success(
           this.translationService.translate('toast.success.TASK_UPDATED')
         );
-        this.isLoading = false;
         this.closeDialog();
+      },
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       },
     });
   }

@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Client, IMessage } from '@stomp/stompjs';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Message, MessageSend } from '../dto/chat.model';
+import { Message, MessageQueue, MessageSend } from '../dto/chat.model';
 import { ProjectService } from './project.service';
 import { TaskService } from './task.service';
 
@@ -12,7 +12,7 @@ import { TaskService } from './task.service';
 })
 export class ChatService {
   private stompClient: Client;
-  private messageQueue: { destination: string; body: string }[] = [];
+  private messageQueue: MessageQueue[] = [];
   private isConnected = false;
 
   private projectMessages = signal<Message[]>([]);
@@ -63,10 +63,13 @@ export class ChatService {
 
   public getProjectChatHistory(projectId: string): Observable<Message[]> {
     return this.httpClient
-      .get<Message[]>(`${environment.apiUrl}/chat/projects/${projectId}`)
+      .get<Message[]>(`${environment.apiUrl}/chat/projectss/${projectId}`)
       .pipe(
         tap((messages: Message[]) => {
           this.projectMessages.set(messages);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err);
         })
       );
   }
@@ -82,6 +85,9 @@ export class ChatService {
       .pipe(
         tap((messages: Message[]) => {
           this.taskMessages.set(messages);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err);
         })
       );
   }

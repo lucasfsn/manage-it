@@ -262,8 +262,7 @@
       "PRIORITY_LABEL": "Priorytet",
       "PRIORITY_SELECT": "Wybierz prioritet",
       "RESET_BUTTON": "Resetuj",
-      "ADD_BUTTON": "Utwórz Zadanie",
-      "LOADING_BUTTON": "Trwa dodawanie..."
+      "ADD_BUTTON": "Utwórz Zadanie"
     },
     "editForm": {
       "TITLE": "Edytuj Zadanie",
@@ -276,8 +275,7 @@
       "PRIORITY_SELECT": "Wybierz prioritet",
       "STATUS_LABEL": "Status",
       "RESET_BUTTON": "Resetuj",
-      "SAVE_BUTTON": "Zapisz zmiany",
-      "LOADING_BUTTON": "Zapisywanie..."
+      "SAVE_BUTTON": "Zapisz zmiany"
     }
   },
   "toast": {
@@ -303,7 +301,7 @@
       "409_USERNAME": "Nazwa użytkownika jest już zajęta",
       "401": "Nie masz dostępu do tego zasobu",
       "404": "Nie znaleziono strony",
-      "DEFAULT": "Wystąpił błąd. Spróbuj ponownie później"
+      "DEFAULT": "Wystąpił nieoczekiwany błąd"
     }
   },
   "title": {
@@ -324,5 +322,8 @@
   "paginator": {
     "PAGE_INFO": "z",
     "SELECT_INFO": "Ilość elementów na stronę"
+  },
+  "utils": {
+    "LOADING": "Ładowanie..."
   }
 }

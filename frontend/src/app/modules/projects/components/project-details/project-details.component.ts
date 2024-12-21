@@ -4,9 +4,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
+import { ConfirmModalService } from '../../../../features/services/confirm-modal.service';
 import { LoadingService } from '../../../../features/services/loading.service';
 import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
@@ -78,16 +78,21 @@ export class ProjectDetailsComponent {
     confirmation$.subscribe((confirmed) => {
       if (!confirmed) return;
 
+      this.loadingService.loadingOn();
       this.projectService.deleteProject(projectId).subscribe({
-        error: () => {
-          const localeMessage = this.mappersService.errorToastMapper();
-          this.toastrService.error(localeMessage);
-        },
-        complete: () => {
+        next: () => {
           this.toastrService.success(
             this.translationService.translate('toast.success.PROJECT_DELETED')
           );
           this.router.navigate(['/projects']);
+        },
+        error: () => {
+          const localeMessage = this.mappersService.errorToastMapper();
+          this.toastrService.error(localeMessage);
+          this.loadingService.loadingOff();
+        },
+        complete: () => {
+          this.loadingService.loadingOff();
         },
       });
     });
@@ -107,15 +112,17 @@ export class ProjectDetailsComponent {
 
       this.loadingService.loadingOn();
       this.projectService.completeProject(project).subscribe({
+        next: () => {
+          this.toastrService.success(
+            this.translationService.translate('toast.success.PROJECT_COMPLETED')
+          );
+        },
         error: () => {
           const localeMessage = this.mappersService.errorToastMapper();
           this.toastrService.error(localeMessage);
           this.loadingService.loadingOff();
         },
         complete: () => {
-          this.toastrService.success(
-            this.translationService.translate('toast.success.PROJECT_COMPLETED')
-          );
           this.loadingService.loadingOff();
         },
       });

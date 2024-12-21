@@ -25,21 +25,21 @@ export class UserService {
     );
   }
 
-  public updateUserData(updatedData: UpdateUser): Observable<null> {
-    const prevData = this.user();
-
-    if (!prevData) return throwError(() => 'User not found');
-
-    const updatedUser = { ...prevData, ...updatedData };
-
-    this.user.set(updatedUser);
-
+  public updateUser(updatedData: UpdateUser): Observable<null> {
     return this.http
       .patch<null>(`${environment.apiUrl}/users`, updatedData)
       .pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.user.set(prevData);
+        tap(() => {
+          // res: User; // TODO:
 
+          const prevProject = this.user()!;
+
+          console.log('xd');
+
+          this.user.set({ ...prevProject, ...updatedData });
+          // this.project.set(res)
+        }),
+        catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         })
       );

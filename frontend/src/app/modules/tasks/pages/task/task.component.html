@@ -1,6 +1,9 @@
-@if (isLoading) { <app-spinner />} @else { @if (isModalOpen) {
+@if (isModalOpen) {
 <app-confirm-modal />
-} @if (task) {
+} @if (showChat()) {
+<app-chat @chatAnimation [isTaskChat]="true" />
+}
+
 <div class="flex flex-col gap-10 w-full px-4">
   <div class="flex flex-col-reverse gap-2 items-end">
     <button
@@ -37,6 +40,3 @@
     @if (showChat()) { keyboard_arrow_up } @else { chat }
   </mat-icon>
 </button>
-@if (showChat()) {
-<app-chat @chatAnimation [isTaskChat]="true" />
-}} }

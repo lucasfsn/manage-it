@@ -45,7 +45,7 @@ interface CreateTaskForm {
   styleUrl: './create-task.component.scss',
 })
 export class CreateTaskComponent {
-  protected isLoading = false;
+  protected loading = false;
   protected selectedStatus = inject<{ selectedStatus: TaskStatus }>(
     MAT_DIALOG_DATA
   ).selectedStatus;
@@ -138,10 +138,10 @@ export class CreateTaskComponent {
       dueDate: this.form.value.dueDate!,
     };
 
-    this.isLoading = true;
+    this.loading = true;
     this.taskService.createTask(project, newTask).subscribe({
       next: (newTask: Task) => {
-        this.isLoading = false;
+        this.loading = false;
         this.dialogRef.close(newTask);
         this.toastrService.success(
           this.translationService.translate('toast.success.TASK_ADDED')
@@ -150,7 +150,7 @@ export class CreateTaskComponent {
       error: () => {
         const localeMessage = this.mappersService.errorToastMapper();
         this.toastrService.error(localeMessage);
-        this.isLoading = false;
+        this.loading = false;
       },
     });
   }

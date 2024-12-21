@@ -262,8 +262,7 @@
       "PRIORITY_LABEL": "Priority",
       "PRIORITY_SELECT": "Select priority",
       "RESET_BUTTON": "Reset",
-      "ADD_BUTTON": "Add Task",
-      "LOADING_BUTTON": "Adding..."
+      "ADD_BUTTON": "Add Task"
     },
     "editForm": {
       "TITLE": "Edit Task",
@@ -276,8 +275,7 @@
       "PRIORITY_SELECT": "Select priority",
       "STATUS_LABEL": "Status",
       "RESET_BUTTON": "Reset",
-      "SAVE_BUTTON": "Save changes",
-      "LOADING_BUTTON": "Saving..."
+      "SAVE_BUTTON": "Save changes"
     }
   },
   "toast": {
@@ -303,7 +301,7 @@
       "409_USERNAME": "Username is already in use",
       "401": "You are not authorized to perform this action",
       "404": "Resource not found",
-      "DEFAULT": "An unexpected error occurred. Please try again later"
+      "DEFAULT": "An unexpected error has occurred"
     }
   },
   "title": {
@@ -324,5 +322,8 @@
   "paginator": {
     "PAGE_INFO": "of",
     "SELECT_INFO": "Items per page"
+  },
+  "utils": {
+    "LOADING": "Loading..."
   }
 }
