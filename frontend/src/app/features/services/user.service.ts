@@ -34,8 +34,6 @@ export class UserService {
 
           const prevProject = this.user()!;
 
-          console.log('xd');
-
           this.user.set({ ...prevProject, ...updatedData });
           // this.project.set(res)
         }),

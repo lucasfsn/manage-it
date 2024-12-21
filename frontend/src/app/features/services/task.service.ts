@@ -37,7 +37,7 @@ export class TaskService {
 
   public getTask(projectId: string, taskId: string): Observable<Task> {
     return this.http
-      .get<Task>(`${environment.apiUrl}/projectss/${projectId}/tasks/${taskId}`)
+      .get<Task>(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
       .pipe(
         tap((res: Task) => {
           this.task.set(res);
