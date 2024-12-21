@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 import { Notification } from '../../../../features/dto/notification.model';
 import { LoadingService } from '../../../../features/services/loading.service';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { NotificationService } from '../../../../features/services/notification.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { NotificationsListComponent } from '../../components/notifications-list/notifications-list.component';
@@ -16,7 +18,9 @@ import { NotificationsListComponent } from '../../components/notifications-list/
 export class NotificationsComponent implements OnInit {
   public constructor(
     private loadingService: LoadingService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private toastrService: ToastrService,
+    private mappersService: MappersService
   ) {}
 
   protected markAllAsRead(): void {
@@ -37,6 +41,8 @@ export class NotificationsComponent implements OnInit {
     this.loadingService.loadingOn();
     this.notificationService.getNotifications().subscribe({
       error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
         this.loadingService.loadingOff();
       },
       complete: () => {

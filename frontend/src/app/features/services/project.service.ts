@@ -29,7 +29,7 @@ export class ProjectService {
         this.projects.set(res);
       }),
       catchError((err: HttpErrorResponse) => {
-        return throwError(() => err.error);
+        return throwError(() => err);
       })
     );
   }
@@ -45,7 +45,7 @@ export class ProjectService {
         }),
         map((res: Project) => res.id),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -58,7 +58,7 @@ export class ProjectService {
           this.project.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -68,7 +68,7 @@ export class ProjectService {
       .delete<null>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -92,7 +92,7 @@ export class ProjectService {
           // this.project.set(res)
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -109,7 +109,7 @@ export class ProjectService {
         catchError((err: HttpErrorResponse) => {
           this.project.set(project);
 
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -124,7 +124,7 @@ export class ProjectService {
         catchError((err: HttpErrorResponse) => {
           this.allowAccessToAddToProject = false;
 
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -148,7 +148,7 @@ export class ProjectService {
           // this.project.set(res)
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }

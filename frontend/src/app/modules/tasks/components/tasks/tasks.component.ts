@@ -10,12 +10,14 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 import {
   Project,
   ProjectStatus,
   Task,
   TaskStatus,
 } from '../../../../features/dto/project.model';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
@@ -41,7 +43,9 @@ export class TasksComponent implements OnInit {
   public constructor(
     private dialog: MatDialog,
     private projectService: ProjectService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private mappersService: MappersService,
+    private toastrService: ToastrService
   ) {}
 
   protected completedTasks: Task[] = [];
@@ -133,6 +137,8 @@ export class TasksComponent implements OnInit {
 
     this.taskService.moveProjectTask(this.project, task).subscribe({
       error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
         this.restoreTaskState(task, prevStatus);
       },
     });

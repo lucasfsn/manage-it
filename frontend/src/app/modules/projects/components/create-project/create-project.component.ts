@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectRequest } from '../../../../features/dto/project.model';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import {
@@ -49,7 +50,8 @@ export class CreateProjectComponent {
     private dialogRef: MatDialogRef<CreateProjectComponent>,
     private router: Router,
     private toastrService: ToastrService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private mappersService: MappersService
   ) {}
 
   protected form: FormGroup<CreateProjectForm> =
@@ -149,8 +151,9 @@ export class CreateProjectComponent {
       next: (projectId: string) => {
         this.router.navigate(['/projects', projectId]);
       },
-      error: (err) => {
-        this.toastrService.error(err.error.message);
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
       },
       complete: () => {
         this.toastrService.success(

@@ -115,7 +115,18 @@
   "notifications": {
     "TITLE": "Powiadomienia",
     "MARK_ALL_AS_READ": "Oznacz wszystkie jako przeczytane",
-    "NO_NOTIFICATIONS": "Brak powiadomień."
+    "NO_NOTIFICATIONS": "Brak powiadomień.",
+    "content": {
+      "PROJECT_COMPLETE": "oznaczył(a) () jako ukończony",
+      "PROJECT_UPDATE": "zmodyfikował(a) ()",
+      "PROJECT_JOIN": "dołączył(a) do ()",
+      "PROJECT_LEAVE": "opuścił(a) ()",
+      "TASK_CREATE": "utworzył(a) nowe zadanie w ()",
+      "TASK_DELETE": "usunął(a) ()",
+      "TASK_UPDATE": "zmodyfikował(a) zadanie w ()",
+      "TASK_JOIN": "dołączył(a) do zadania w ()",
+      "TASK_LEAVE": "opuścił(a) zadanie w ()"
+    }
   },
   "notFound": {
     "TITLE": "Strona nie została znaleziona.",
@@ -297,6 +308,14 @@
       "PROJECT_COMPLETED": "Projekt został oznaczony jako ukończony",
       "MEMBER_ADDED_TO_PROJECT": "został dodany(a) do projektu",
       "MEMBER_REMOVED_FROM_PROJECT": "został usunięty(a) z projektu"
+    },
+    "error": {
+      "BAD_CREDENTIALS": "Podany email oraz hasło są nieprawidłowe",
+      "409_EMAIL": "Email jest już zajęty",
+      "409_USERNAME": "Nazwa użytkownika jest już zajęta",
+      "401": "Nie masz dostępu do tego zasobu",
+      "404": "Nie znaleziono strony",
+      "DEFAULT": "Wystąpił błąd. Spróbuj ponownie później"
     }
   },
   "title": {

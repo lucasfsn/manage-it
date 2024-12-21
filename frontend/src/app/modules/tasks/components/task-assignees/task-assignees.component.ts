@@ -21,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-task.component';
@@ -75,7 +76,8 @@ export class TaskAssigneesComponent implements OnInit {
     private taskService: TaskService,
     private loadingService: LoadingService,
     private toastrService: ToastrService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private mappersService: MappersService
   ) {}
 
   protected get members(): User[] {
@@ -88,9 +90,10 @@ export class TaskAssigneesComponent implements OnInit {
 
     this.loadingService.loadingOn();
     this.taskService.addToTask(task.projectId, task.id, user).subscribe({
-      error: (error) => {
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
         this.loadingService.loadingOff();
-        this.toastrService.error(error.message);
       },
       complete: () => {
         this.loadingService.loadingOff();
@@ -112,9 +115,10 @@ export class TaskAssigneesComponent implements OnInit {
 
     this.loadingService.loadingOn();
     this.taskService.removeFromTask(task.projectId, task.id, user).subscribe({
-      error: (error) => {
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
         this.loadingService.loadingOff();
-        this.toastrService.error(error.message);
       },
       complete: () => {
         this.loadingService.loadingOff();

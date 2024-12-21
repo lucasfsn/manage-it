@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
 import { ProjectStatus, Task } from '../../../../features/dto/project.model';
 import { LoadingService } from '../../../../features/services/loading.service';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
@@ -69,7 +70,8 @@ export class TaskComponent implements OnInit {
     private toastrService: ToastrService,
     private dialog: MatDialog,
     private confirmModalService: ConfirmModalService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private mappersService: MappersService
   ) {}
 
   protected get ProjectStatus(): typeof ProjectStatus {
@@ -109,8 +111,9 @@ export class TaskComponent implements OnInit {
       if (!confirmed || !this.projectId || !this.taskId) return;
 
       this.taskService.deleteTask(this.projectId, this.taskId).subscribe({
-        error: (err) => {
-          this.toastrService.error(err.message);
+        error: () => {
+          const localeMessage = this.mappersService.errorToastMapper();
+          this.toastrService.error(localeMessage);
         },
         complete: () => {
           this.router.navigate(['/projects', this.task?.projectId]);
@@ -141,7 +144,8 @@ export class TaskComponent implements OnInit {
     this.loadingService.loadingOn();
     this.taskService.getTask(this.projectId, this.taskId).subscribe({
       error: (err) => {
-        this.toastrService.error(err.message);
+        const localeMessage = this.mappersService.errorToastMapper(err.status);
+        this.toastrService.error(localeMessage);
         this.router.navigate(['/projects', this.projectId]);
         this.loadingService.loadingOff();
       },

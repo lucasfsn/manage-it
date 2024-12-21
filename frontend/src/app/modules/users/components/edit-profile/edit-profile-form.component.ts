@@ -12,6 +12,7 @@ import { UpdateUser, User } from '../../../../features/dto/user.model';
 import { UserService } from '../../../../features/services/user.service';
 
 import { TranslateModule } from '@ngx-translate/core';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import {
   equalValues,
@@ -43,7 +44,8 @@ export class EditProfileFormComponent implements OnInit {
     private dialogRef: MatDialogRef<EditProfileFormComponent>,
     private userService: UserService,
     private toastrService: ToastrService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private mappersService: MappersService
   ) {}
 
   protected get userData(): User | undefined {
@@ -250,8 +252,9 @@ export class EditProfileFormComponent implements OnInit {
     if (!this.isFormChanged()) return;
 
     this.userService.updateUserData(updatedUserData).subscribe({
-      error: (error) => {
-        this.toastrService.error(error.message);
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
       },
     });
     this.closeDialog();

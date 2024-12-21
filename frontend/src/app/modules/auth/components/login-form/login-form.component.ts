@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
 import { AuthService } from '../../../../features/services/auth.service';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import { passwordValidator } from '../../../../shared/validators';
 
@@ -31,7 +32,8 @@ export class LoginFormComponent implements OnInit {
   public constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private mappersService: MappersService
   ) {}
 
   protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>({
@@ -87,7 +89,11 @@ export class LoginFormComponent implements OnInit {
 
     this.authService.login({ email, password }).subscribe({
       error: (error) => {
-        this.toastrService.error(error.message);
+        const localeMessage = this.mappersService.errorToastMapper(
+          error.status,
+          error.error.errorDescription
+        );
+        this.toastrService.error(localeMessage);
       },
       complete: () => {
         this.toastrService.success(

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../../features/dto/user.model';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import { UserService } from '../../../../features/services/user.service';
@@ -24,7 +25,8 @@ export class AddToProjectComponent implements OnInit {
     private router: Router,
     private toastrService: ToastrService,
     private userService: UserService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private mappersService: MappersService
   ) {}
 
   private get user(): User | undefined {
@@ -36,8 +38,9 @@ export class AddToProjectComponent implements OnInit {
     if (!user || !this.projectId) return;
 
     this.projectService.addToProject(this.projectId, this.user).subscribe({
-      error: (error) => {
-        this.toastrService.error(error.message);
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
       },
       complete: () => {
         this.toastrService.success(

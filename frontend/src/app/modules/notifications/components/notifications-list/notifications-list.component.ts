@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Notification } from '../../../../features/dto/notification.model';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { NotificationService } from '../../../../features/services/notification.service';
 import { TimeAgoPipe } from '../../../../shared/pipes/time-ago.pipe';
 
@@ -14,6 +15,7 @@ import { TimeAgoPipe } from '../../../../shared/pipes/time-ago.pipe';
 export class NotificationsListComponent {
   public constructor(
     private notificationService: NotificationService,
+    private mappersService: MappersService,
     private router: Router
   ) {}
 
@@ -21,6 +23,10 @@ export class NotificationsListComponent {
     return this.notificationService
       .loadedNotifications()
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }
+
+  protected localeMessage(message: string): string {
+    return this.mappersService.notificationMessageMapper(message);
   }
 
   protected markAsReadAndOpen(notification: Notification): void {

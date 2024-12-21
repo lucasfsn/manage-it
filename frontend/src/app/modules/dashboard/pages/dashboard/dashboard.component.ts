@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../../features/services/auth.service';
 import { LoadingService } from '../../../../features/services/loading.service';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { OngoingProjectsComponent } from '../../components/ongoing-projects/ongoing-projects.component';
@@ -27,7 +28,8 @@ export class DashboardComponent implements OnInit {
     private loadingService: LoadingService,
     private toastrService: ToastrService,
     private projectService: ProjectService,
-    private authService: AuthService
+    private authService: AuthService,
+    private mappersService: MappersService
   ) {}
 
   protected get isLoading(): boolean {
@@ -40,8 +42,9 @@ export class DashboardComponent implements OnInit {
 
     this.loadingService.loadingOn();
     this.projectService.getProjects().subscribe({
-      error: (error: Error) => {
-        this.toastrService.error(error.message);
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
         this.loadingService.loadingOff();
       },
       complete: () => {

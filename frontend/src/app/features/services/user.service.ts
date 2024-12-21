@@ -20,7 +20,7 @@ export class UserService {
         this.user.set(res);
       }),
       catchError((err: HttpErrorResponse) => {
-        return throwError(() => err.error);
+        return throwError(() => err);
       })
     );
   }
@@ -40,7 +40,7 @@ export class UserService {
         catchError((err: HttpErrorResponse) => {
           this.user.set(prevData);
 
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -60,7 +60,7 @@ export class UserService {
 
     return this.http.get<User[]>(url).pipe(
       catchError((err: HttpErrorResponse) => {
-        return throwError(() => err.error);
+        return throwError(() => err);
       })
     );
   }

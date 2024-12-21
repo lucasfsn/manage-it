@@ -13,6 +13,7 @@ import {
   Project,
   ProjectRequest,
 } from '../../../../features/dto/project.model';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import { endDateValidator } from '../../../../shared/validators';
@@ -42,7 +43,8 @@ export class EditProjectComponent implements OnInit {
     private projectService: ProjectService,
     private dialogRef: MatDialogRef<EditProjectComponent>,
     private toastrService: ToastrService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private mappersService: MappersService
   ) {}
 
   protected form: FormGroup<EditProjectForm> = new FormGroup<EditProjectForm>({
@@ -153,8 +155,9 @@ export class EditProjectComponent implements OnInit {
 
     this.isLoading = true;
     this.projectService.updateProject(this.project.id, projectData).subscribe({
-      error: (err) => {
-        this.toastrService.error(err.message);
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
         this.isLoading = false;
       },
       complete: () => {

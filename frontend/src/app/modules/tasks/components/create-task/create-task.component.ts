@@ -148,6 +148,8 @@ export class CreateTaskComponent {
         );
       },
       error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
         this.isLoading = false;
       },
     });

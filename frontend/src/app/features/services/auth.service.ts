@@ -34,7 +34,7 @@ export class AuthService {
           this.router.navigate(['/dashboard']);
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -52,7 +52,7 @@ export class AuthService {
           this.router.navigate(['/dashboard']);
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -75,6 +75,7 @@ export class AuthService {
       .get<UserCredentials>(`${environment.apiUrl}/auth/user`)
       .pipe(
         tap((res: UserCredentials) => {
+          console.log(res);
           this.currentUser.set(res);
         }),
         catchError((err: HttpErrorResponse) => {

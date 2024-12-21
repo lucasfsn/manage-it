@@ -8,3 +8,17 @@ export interface Notification {
   readonly projectId: string;
   readonly taskId?: string;
 }
+
+export enum NotificationType {
+  PROJECT = 'project',
+  TASK = 'task',
+}
+
+export enum NotificationOperation {
+  COMPLETE = 'complete',
+  UPDATE = 'update',
+  JOIN = 'join',
+  LEAVE = 'leave',
+  CREATE = 'create',
+  DELETE = 'delete',
+}

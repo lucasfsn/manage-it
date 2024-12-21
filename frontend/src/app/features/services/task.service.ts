@@ -30,7 +30,7 @@ export class TaskService {
           this.projectService.setProject(updatedProject);
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -43,7 +43,7 @@ export class TaskService {
           this.task.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -75,7 +75,7 @@ export class TaskService {
           this.projectService.setProject(project);
           this.task.set(prevTask);
 
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -87,7 +87,7 @@ export class TaskService {
       )
       .pipe(
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -112,7 +112,7 @@ export class TaskService {
           // this.task.set(res)
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -139,7 +139,7 @@ export class TaskService {
           // this.task.set(res)
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -168,7 +168,7 @@ export class TaskService {
           // this.task.set(res)
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }

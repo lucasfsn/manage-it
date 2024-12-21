@@ -13,6 +13,7 @@ import {
 import { User } from '../../../../features/dto/user.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { LoadingService } from '../../../../features/services/loading.service';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { UserService } from '../../../../features/services/user.service';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
@@ -47,7 +48,8 @@ export class UserComponent implements OnInit {
     private dialog: MatDialog,
     private authService: AuthService,
     private toastrService: ToastrService,
-    private titleService: Title
+    private titleService: Title,
+    private mappersService: MappersService
   ) {}
 
   protected get ProjectStatus(): typeof ProjectStatus {
@@ -89,7 +91,10 @@ export class UserComponent implements OnInit {
         );
       },
       error: (error) => {
-        this.toastrService.error(error.message);
+        const localeMessage = this.mappersService.errorToastMapper(
+          error.status
+        );
+        this.toastrService.error(localeMessage);
         this.location.back();
         this.loadingService.loadingOff();
       },

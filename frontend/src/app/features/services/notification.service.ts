@@ -22,7 +22,7 @@ export class NotificationService {
           this.notifications.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -42,7 +42,7 @@ export class NotificationService {
         catchError((err: HttpErrorResponse) => {
           this.notifications.set(prevNotifications);
 
-          return throwError(() => err.error);
+          return throwError(() => err);
         })
       );
   }
@@ -56,7 +56,7 @@ export class NotificationService {
       catchError((err: HttpErrorResponse) => {
         this.notifications.set(prevNotifications);
 
-        return throwError(() => err.error);
+        return throwError(() => err);
       })
     );
   }

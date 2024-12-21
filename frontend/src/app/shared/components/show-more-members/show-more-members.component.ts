@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../features/dto/project.model';
 import { LoadingService } from '../../../features/services/loading.service';
+import { MappersService } from '../../../features/services/mappers.service';
 import { ProjectService } from '../../../features/services/project.service';
 import { TaskService } from '../../../features/services/task.service';
 import { TranslationService } from '../../../features/services/translation.service';
@@ -30,7 +31,8 @@ export class ShowMoreMembersComponent {
     private toastrService: ToastrService,
     private loadingService: LoadingService,
     private router: Router,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private mappersService: MappersService
   ) {}
 
   protected get members(): User[] | undefined {
@@ -49,9 +51,10 @@ export class ShowMoreMembersComponent {
 
     this.loadingService.loadingOn();
     this.projectService.removeFromProject(user, projectId).subscribe({
-      error: (error) => {
+      error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
         this.loadingService.loadingOff();
-        this.toastrService.error(error.message);
       },
       complete: () => {
         this.loadingService.loadingOff();

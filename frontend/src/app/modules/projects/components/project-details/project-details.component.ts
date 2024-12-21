@@ -80,12 +80,13 @@ export class ProjectDetailsComponent {
       if (!confirmed) return;
 
       this.projectService.deleteProject(projectId).subscribe({
-        error: (err) => {
-          this.toastrService.error(err.message);
+        error: () => {
+          const localeMessage = this.mappersService.errorToastMapper();
+          this.toastrService.error(localeMessage);
         },
         complete: () => {
           this.toastrService.success(
-            this.translationService.translate('project.details.PROJECT_DELETED')
+            this.translationService.translate('toast.success.PROJECT_DELETED')
           );
           this.router.navigate(['/projects']);
         },
@@ -107,15 +108,14 @@ export class ProjectDetailsComponent {
 
       this.loadingService.loadingOn();
       this.projectService.completeProject(project).subscribe({
-        error: (err) => {
-          this.toastrService.error(err.message);
+        error: () => {
+          const localeMessage = this.mappersService.errorToastMapper();
+          this.toastrService.error(localeMessage);
           this.loadingService.loadingOff();
         },
         complete: () => {
           this.toastrService.success(
-            this.translationService.translate(
-              'project.details.PROJECT_COMPLETED'
-            )
+            this.translationService.translate('toast.success.PROJECT_COMPLETED')
           );
           this.loadingService.loadingOff();
         },

@@ -157,6 +157,8 @@ export class EditTaskComponent implements OnInit {
     this.isLoading = true;
     this.taskService.updateTask(projectId, taskId, updatedTask).subscribe({
       error: () => {
+        const localeMessage = this.mappersService.errorToastMapper();
+        this.toastrService.error(localeMessage);
         this.isLoading = false;
       },
       complete: () => {

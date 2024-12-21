@@ -115,7 +115,18 @@
   "notifications": {
     "TITLE": "Notifications",
     "MARK_ALL_AS_READ": "Mark all as read",
-    "NO_NOTIFICATIONS": "You are up to date."
+    "NO_NOTIFICATIONS": "You are up to date.",
+    "content": {
+      "PROJECT_COMPLETE": "marked () as completed",
+      "PROJECT_UPDATED": "modified ()",
+      "PROJECT_JOIN": "joined ()",
+      "PROJECT_LEAVE": "left ()",
+      "TASK_CREATE": "created task in ()",
+      "TASK_DELETE": "removed task from ()",
+      "TASK_UPDATE": "modified task in ()",
+      "TASK_JOIN": "joined task in ()",
+      "TASK_LEAVE": "left task in ()"
+    }
   },
   "notFound": {
     "TITLE": "Page not found.",
@@ -297,6 +308,14 @@
       "PROJECT_COMPLETED": "Project has been marked as completed",
       "MEMBER_ADDED_TO_PROJECT": "has been added to project",
       "MEMBER_REMOVED_FROM_PROJECT": "has been removed from project"
+    },
+    "error": {
+      "BAD_CREDENTIALS": "Email and password do not match",
+      "409_EMAIL": "Email is already in use",
+      "409_USERNAME": "Username is already in use",
+      "401": "You are not authorized to perform this action",
+      "404": "Resource not found",
+      "DEFAULT": "An unexpected error occurred. Please try again later"
     }
   },
   "title": {

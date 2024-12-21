@@ -12,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterCredentials } from '../../../../features/dto/auth.model';
 import { AuthService } from '../../../../features/services/auth.service';
+import { MappersService } from '../../../../features/services/mappers.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import {
   equalValues,
@@ -50,6 +51,7 @@ export class SignupFormComponent {
   public constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
+    private mappersService: MappersService,
     private translationService: TranslationService
   ) {}
 
@@ -299,7 +301,12 @@ export class SignupFormComponent {
 
     this.authService.register(registerCredentials).subscribe({
       error: (error) => {
-        this.toastrService.error(error.message);
+        const localeMessage = this.mappersService.errorToastMapper(
+          error.status,
+          error.error.errorDescription,
+          error.error.message
+        );
+        this.toastrService.error(localeMessage);
       },
       complete: () => {
         this.toastrService.success(
