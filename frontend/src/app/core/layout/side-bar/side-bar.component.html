@@ -1,68 +1,79 @@
 <nav
-  class="flex lg:flex-col shadow-sm h-full justify-center lg:justify-start items-center gap-1"
-  [@toggleMenu]="isCollapsed ? 'collapsed' : 'expanded'"
+  class="shadow-sm h-full gap-3 grid grid-cols-1 lg:grid-rows-[auto_auto_1fr] justify-start"
 >
   <button
     (click)="toggleSidebar()"
-    class="bg-sky-500 rounded-full items-center justify-center hover:bg-sky-600 transition-all hidden xl:flex p-0.5"
-    [class.self-center]="isCollapsed"
-    [class.self-end]="!isCollapsed"
+    class="bg-sky-500 rounded-full hover:bg-sky-600 transition-all hidden xl:flex col-span-2 ml-3"
+    [class.justify-self-end]="!isCollapsed"
+    [class.justify-self-start]="isCollapsed"
   >
     <mat-icon>{{ isCollapsed ? "chevron_right" : "chevron_left" }}</mat-icon>
   </button>
-  <div class="flex lg:flex-col lg:divide-y divide-slate-500">
-    <button
-      class="flex flex-row gap-2 text-center sidebar-item"
-      (click)="openSearchDialog()"
-    >
-      <mat-icon>search</mat-icon>
-      @if (!isCollapsed) {
-      <p>{{ "sidebar.SEARCH" | translate }}</p>
-      }
+  <div
+    class="grid mx-auto lg:mx-0 grid-cols-5 lg:gap-0.5 lg:grid-cols-1 lg:grid-rows-5 items-center"
+  >
+    <button class="sidebar" (click)="openSearchDialog()">
+      <p class="sidebar-item">
+        <mat-icon>search</mat-icon>
+      </p>
+      <p
+        class="sidebar-item"
+        [@toggleMenu]="isCollapsed ? 'collapsed' : 'expanded'"
+      >
+        {{ "sidebar.SEARCH" | translate }}
+      </p>
     </button>
-    <ul class="flex lg:flex-col">
-      <li
-        class="flex flex-row gap-2"
-        routerLink="/dashboard"
-        routerLinkActive="active-link"
-      >
+    <div class="sidebar" routerLink="/dashboard" routerLinkActive="active-link">
+      <p class="sidebar-item">
         <mat-icon>space_dashboard</mat-icon>
-        @if (!isCollapsed) {
-        <p>{{ "sidebar.DASHBOARD" | translate }}</p>
-        }
-      </li>
-      <li
-        class="flex flex-row gap-2"
-        routerLink="projects"
-        routerLinkActive="active-link"
+      </p>
+      <p
+        class="sidebar-item"
+        [@toggleMenu]="isCollapsed ? 'collapsed' : 'expanded'"
       >
+        {{ "sidebar.DASHBOARD" | translate }}
+      </p>
+    </div>
+    <div class="sidebar" routerLink="projects" routerLinkActive="active-link">
+      <p class="sidebar-item">
         <mat-icon>folder_open</mat-icon>
-        @if (!isCollapsed) {
-        <p>{{ "sidebar.PROJECTS" | translate }}</p>
-        }
-      </li>
-      <li
-        class="flex flex-row gap-2"
-        routerLink="notifications"
-        routerLinkActive="active-link"
+      </p>
+      <p
+        class="sidebar-item"
+        [@toggleMenu]="isCollapsed ? 'collapsed' : 'expanded'"
       >
+        {{ "sidebar.PROJECTS" | translate }}
+      </p>
+    </div>
+    <div
+      class="sidebar w-auto"
+      routerLink="notifications"
+      routerLinkActive="active-link"
+    >
+      <p class="sidebar-item">
         <mat-icon>notifications</mat-icon>
-        @if (!isCollapsed) {
-        <p>{{ "sidebar.NOTIFICATIONS" | translate }}</p>
-        }
-      </li>
-    </ul>
-    <ul class="py-1 flex lg:flex-col">
-      <li
-        class="flex flex-row gap-2"
-        routerLink="users/{{ username }}"
-        routerLinkActive="active-link"
+      </p>
+      <p
+        class="sidebar-item]"
+        [@toggleMenu]="isCollapsed ? 'collapsed' : 'expanded'"
       >
+        {{ "sidebar.NOTIFICATIONS" | translate }}
+      </p>
+    </div>
+    <div
+      class="sidebar"
+      routerLink="users/{{ username }}"
+      routerLinkActive="active-link"
+    >
+      <p class="sidebar-item">
         <mat-icon>account_circle</mat-icon>
-        @if (!isCollapsed) {
-        <p>{{ "sidebar.PROFILE" | translate }}</p>
-        }
-      </li>
-    </ul>
+      </p>
+      <p
+        class="sidebar-item"
+        [@toggleMenu]="isCollapsed ? 'collapsed' : 'expanded'"
+      >
+        {{ "sidebar.PROFILE" | translate }}
+      </p>
+    </div>
   </div>
 </nav>

@@ -22,8 +22,8 @@ export const USERS_ROUTES: UserProfileRoutes = [
   {
     path: ':username',
     component: UserComponent,
-    title: 'Profile | ManageIt',
     data: {
+      title: 'title.PROFILE',
       routeType: 'profile',
     },
   },
@@ -31,8 +31,8 @@ export const USERS_ROUTES: UserProfileRoutes = [
     path: ':username/projects/:projectId/add',
     component: UserComponent,
     canActivate: [addToProjectGuard],
-    title: 'Add To Project | ManageIt',
     data: {
+      title: 'title.PROFILE',
       routeType: 'addToProject',
     },
   },

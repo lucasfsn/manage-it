@@ -5,6 +5,8 @@ export const TASKS_ROUTES: Routes = [
   {
     path: ':taskId',
     component: TaskComponent,
-    title: 'Task Details | ManageIt',
+    data: {
+      title: 'title.TASK',
+    },
   },
 ];

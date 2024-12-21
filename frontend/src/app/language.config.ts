@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Locale as DateFnsLocale } from 'date-fns';
 import { enUS, pl } from 'date-fns/locale';
 
@@ -36,7 +35,7 @@ export const LANGUAGES: Language[] = [
   },
 ];
 
-export const ANGULAR_LOCALES: Record<LanguageCode, () => Promise<any>> = {
+export const ANGULAR_LOCALES: Record<LanguageCode, () => Promise<unknown>> = {
   [LanguageCode.EN]: () =>
     import('@angular/common/locales/en').then((m) => m.default),
   [LanguageCode.PL]: () =>

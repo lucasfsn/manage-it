@@ -6,12 +6,16 @@ export const PROJECTS_ROUTES: Routes = [
   {
     path: '',
     component: ProjectsComponent,
-    title: 'Projects | ManageIt',
+    data: {
+      title: 'title.PROJECTS',
+    },
   },
   {
     path: ':projectId',
     component: ProjectComponent,
-    title: 'Project Details | ManageIt',
+    data: {
+      title: 'title.PROJECT',
+    },
   },
   {
     path: ':projectId/tasks',

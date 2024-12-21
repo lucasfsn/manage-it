@@ -22,13 +22,18 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
       state(
         'collapsed',
         style({
-          width: '*',
+          width: '0',
+          opacity: 0,
+          padding: 0,
+          display: 'none',
         })
       ),
       state(
         'expanded',
         style({
-          width: '180px',
+          width: '*',
+          opacity: 1,
+          padding: '0 0 0 0.75rem',
         })
       ),
       transition('collapsed <=> expanded', [animate('300ms ease-in-out')]),

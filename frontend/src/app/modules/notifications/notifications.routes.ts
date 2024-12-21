@@ -5,6 +5,8 @@ export const NOTIFICATIONS_ROUTES: Routes = [
   {
     path: '',
     component: NotificationsComponent,
-    title: 'Notifications | ManageIt',
+    data: {
+      title: 'title.NOTIFICATIONS',
+    },
   },
 ];

@@ -9,7 +9,9 @@ export const routes: Routes = [
     path: '',
     component: HomeComponent,
     canActivate: [guestGuard],
-    title: 'Manage Your Projects | ManageIt',
+    data: {
+      title: 'title.HOME',
+    },
   },
   {
     path: 'home',

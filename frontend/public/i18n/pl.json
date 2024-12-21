@@ -298,5 +298,18 @@
       "MEMBER_ADDED_TO_PROJECT": "został dodany(a) do projektu",
       "MEMBER_REMOVED_FROM_PROJECT": "został usunięty(a) z projektu"
     }
+  },
+  "title": {
+    "HOME": "Zarządzaj Projektami",
+    "LOGIN": "Zaloguj się",
+    "SIGNUP": "Zarejestruj się",
+    "NOT_FOUND": "Nie znaleziono strony",
+    "DASHBOARD": "Pulpit",
+    "NOTIFICATIONS": "Powiadomienia",
+    "PROJECTS": "Projekty",
+    "PROJECT": "Projekt",
+    "TASK": "Zadanie",
+    "PROFILE": "Profil",
+    "DEFAULT": "Zarządzaj Projektami"
   }
 }

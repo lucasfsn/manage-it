@@ -7,12 +7,12 @@
   <div class="flex gap-2 sm:gap-10 h-full items-center">
     <div>
       <button
-        [matMenuTriggerFor]="menu"
+        [matMenuTriggerFor]="languageMenu"
         class="flex items-center justify-center"
       >
         <mat-icon>language</mat-icon>
       </button>
-      <mat-menu #menu="matMenu">
+      <mat-menu #languageMenu="matMenu">
         @for (language of languages; track language.code) {
         <button mat-menu-item (click)="changeLanguage(language.code)">
           <span [class.text-sky-500]="currentLanguage === language.code">{{
@@ -61,11 +61,11 @@
     <div class="block sm:hidden px-2">
       <button
         class="flex sm:hidden justify-center items-center"
-        [matMenuTriggerFor]="menu"
+        [matMenuTriggerFor]="operationMenu"
       >
         <mat-icon>more_vert</mat-icon>
       </button>
-      <mat-menu #menu="matMenu">
+      <mat-menu #operationMenu="matMenu">
         @if (isLoggedIn) {
         <button mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>

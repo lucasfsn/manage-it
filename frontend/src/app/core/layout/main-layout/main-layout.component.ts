@@ -7,7 +7,7 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [SideBarComponent, RouterOutlet, SpinnerComponent],
+  imports: [RouterOutlet, SpinnerComponent, SideBarComponent],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
 })

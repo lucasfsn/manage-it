@@ -1,22 +1,29 @@
-li,
-.sidebar-item {
-  padding: 0.75rem;
-  cursor: pointer;
-  border-radius: 0.5rem;
+.active-link {
+  color: #0ea5e9;
+}
 
-  &:hover,
-  &:focus {
-    background-color: #f5f5f5;
+.sidebar {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  cursor: pointer;
+  padding: 0.75rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+  }
+
+  &:hover, &:focus {
     transition: all 0.3s;
     color: #0ea5e9;
     background-color: #101625;
-  }
-
-  &:focus {
+    border-radius: 0.5rem;
     outline: none;
   }
-}
 
-.active-link {
-  color: #0ea5e9;
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+  }
 }

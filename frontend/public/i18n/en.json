@@ -298,5 +298,18 @@
       "MEMBER_ADDED_TO_PROJECT": "has been added to project",
       "MEMBER_REMOVED_FROM_PROJECT": "has been removed from project"
     }
+  },
+  "title": {
+    "HOME": "Manage Your Projects",
+    "LOGIN": "Log in",
+    "SIGNUP": "Sign up",
+    "NOT_FOUND": "Page Not Found",
+    "DASHBOARD": "Dashboard",
+    "NOTIFICATIONS": "Notifications",
+    "PROJECTS": "Projects",
+    "PROJECT": "Project",
+    "TASK": "Task",
+    "PROFILE": "Profile",
+    "DEFAULT": "Project Management App"
   }
 }

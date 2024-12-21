@@ -5,6 +5,8 @@ export const NOT_FOUND_ROUTES: Routes = [
   {
     path: '',
     component: NotFoundComponent,
-    title: 'Page Not Found | ManageIt',
+    data: {
+      title: 'title.NOT_FOUND',
+    },
   },
 ];

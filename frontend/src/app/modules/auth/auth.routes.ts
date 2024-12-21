@@ -6,11 +6,15 @@ export const AUTH_ROUTES: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    title: 'Login | ManageIt',
+    data: {
+      title: 'title.LOGIN',
+    },
   },
   {
     path: 'signup',
     component: SignupComponent,
-    title: 'Sign Up | ManageIt',
+    data: {
+      title: 'title.SIGNUP',
+    },
   },
 ];
