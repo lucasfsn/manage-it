@@ -10,11 +10,12 @@ import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-project-menu',
   standalone: true,
-  imports: [ButtonComponent, MatIconModule],
+  imports: [ButtonComponent, MatIconModule, ConfirmModalComponent],
   templateUrl: './project-menu.component.html',
   styleUrl: './project-menu.component.scss',
 })
@@ -38,6 +39,10 @@ export class ProjectMenuComponent {
     return (
       this.project?.owner.username === this.authService.getLoggedInUsername()
     );
+  }
+
+  protected get isModalOpen(): boolean {
+    return this.confirmModalService.isModalOpen;
   }
 
   protected get ProjectStatus(): typeof ProjectStatus {

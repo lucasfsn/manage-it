@@ -1,14 +1,14 @@
 <div
   class="flex flex-col lg:flex-row text-sm gap-2 justify-between items-center"
 >
-  <app-filter-projects (filterChange)="onFilterChange($event)" />
-  <app-sort-projects
+  <app-projects-filter (filterChange)="onFilterChange($event)" />
+  <app-projects-sort
     (sortChange)="onSortChange($event)"
     [sortCriteria]="sortCriteria"
     [sortOrder]="sortOrder"
   />
 </div>
-@if (sortedAndFilteredProjects?.length === 0) {
+@if (sortedAndFilteredProjects.length === 0) {
 <p class="text-gray-400 text-center w-full">
   {{ "projects.list.NO_PROJECTS" | translate }}
 </p>

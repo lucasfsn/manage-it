@@ -45,8 +45,9 @@
           />
           } @if (task.members.length > 4) {
           <button
-            class="p-0.5 bg-sky-500 hover:bg-sky-600 focus:bg-sky-600 text-sky-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
+            class="text-sky-500 cursor-pointer transition-all"
             (click)="showAllMembers(true)"
+            tabindex="0"
           >
             +{{ task.members.length - 4 }}
           </button>

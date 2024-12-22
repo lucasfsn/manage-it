@@ -2,7 +2,9 @@
 <div
   class="bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
 >
-  <h3 class="text-gray-100 self-start">Done</h3>
+  <h3 class="text-gray-100 self-start">
+    {{ "task.drag-and-drop.labels.COMPLETED" | translate }}
+  </h3>
   <div
     cdkDropList
     #completedList="cdkDropList"
@@ -30,16 +32,16 @@
         >
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
-          @for (user of task.members.slice(0, 3); track user.username) {
+          @for (user of task.members.slice(0,4); track user.username) {
           <app-profile-icon
             size="sm"
             [firstName]="user.firstName"
             [lastName]="user.lastName"
             [hover]="false"
           />
-          } @if (task.members.length > 3) {
-          <span class="text-xs text-gray-400"
-            >+{{ task.members.length - 3 }}</span
+          } @if (task.members.length > 4) {
+          <span class="text-xs text-sky-500"
+            >+{{ task.members.length - 4 }}</span
           >
           }
         </div>
@@ -58,11 +60,12 @@
   </button>
   }
 </div>
-
 <div
   class="bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
 >
-  <h3 class="text-gray-100 self-start">In Progress</h3>
+  <h3 class="text-gray-100 self-start">
+    {{ "task.drag-and-drop.labels.IN_PROGRESS" | translate }}
+  </h3>
   <div
     cdkDropList
     #inProgressList="cdkDropList"
@@ -90,16 +93,16 @@
         >
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
-          @for (user of task.members.slice(0, 3); track user.username) {
+          @for (user of task.members.slice(0,4); track user.username) {
           <app-profile-icon
             size="sm"
             [firstName]="user.firstName"
             [lastName]="user.lastName"
             [hover]="false"
           />
-          } @if (task.members.length > 3) {
-          <span class="text-xs text-gray-400"
-            >+{{ task.members.length - 3 }}</span
+          } @if (task.members.length > 4) {
+          <span class="text-xs text-sky-500"
+            >+{{ task.members.length - 4 }}</span
           >
           }
         </div>
@@ -118,11 +121,12 @@
   </button>
   }
 </div>
-
 <div
   class="bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
 >
-  <h3 class="text-gray-100 self-start">Upcoming</h3>
+  <h3 class="text-gray-100 self-start">
+    {{ "task.drag-and-drop.labels.NOT_STARTED" | translate }}
+  </h3>
   <div
     cdkDropList
     #notStartedList="cdkDropList"
@@ -150,16 +154,16 @@
         >
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
-          @for (user of task.members.slice(0, 3); track user.username) {
+          @for (user of task.members.slice(0,4); track user.username) {
           <app-profile-icon
             size="sm"
             [firstName]="user.firstName"
             [lastName]="user.lastName"
             [hover]="false"
           />
-          } @if (task.members.length > 3) {
-          <span class="text-xs text-gray-400"
-            >+{{ task.members.length - 3 }}</span
+          } @if (task.members.length > 4) {
+          <span class="text-xs text-sky-500"
+            >+{{ task.members.length - 4 }}</span
           >
           }
         </div>

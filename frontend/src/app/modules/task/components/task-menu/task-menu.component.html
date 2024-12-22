@@ -1,24 +1,16 @@
+@if (isModalOpen) {
+<app-confirm-modal />
+}
 <div class="flex flex-col-reverse gap-2 items-end">
-  @if (isOwner) {
-  <div class="flex items-center gap-2">
-    @if (project?.status !== ProjectStatus.COMPLETED) {
+  <div class="flex gap-2">
     <app-button
       bgColor="bg-sky-300"
       textColor="text-slate-900"
       hoverBgColor="hover:bg-sky-400"
-      [routerLink]="'/projects/' + project?.id + '/edit'"
+      (handleClick)="handleEdit()"
     >
       <mat-icon>edit</mat-icon>
     </app-button>
-    <app-button
-      bgColor="bg-green-300"
-      textColor="text-slate-900"
-      hoverBgColor="hover:bg-green-400"
-      (handleClick)="handleComplete()"
-    >
-      <mat-icon>done</mat-icon>
-    </app-button>
-    }
     <app-button
       bgColor="bg-pink-900"
       textColor="text-pink-200"
@@ -28,7 +20,6 @@
       <mat-icon>delete</mat-icon>
     </app-button>
   </div>
-  }
   <app-button
     bgColor="bg-slate-400"
     textColor="text-slate-900"
@@ -38,6 +29,18 @@
     <mat-icon>arrow_back</mat-icon>
   </app-button>
 </div>
-@if (isModalOpen) {
-<app-confirm-modal />
+<app-button
+  textColor="text-sky-100"
+  bgColor="bg-sky-500"
+  hoverBgColor="hover:bg-sky-600"
+  customClass="fixed bottom-4 right-4"
+  [largeSize]="true"
+  (handleClick)="toggleChat()"
+>
+  <mat-icon class="transition-transform" [class.rotate-180]="showChat">
+    @if (showChat) { keyboard_arrow_up } @else { chat }
+  </mat-icon>
+</app-button>
+@if (showChat) {
+<app-chat @chatAnimation [isTaskChat]="true" />
 }

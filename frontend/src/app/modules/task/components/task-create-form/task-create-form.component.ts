@@ -27,14 +27,14 @@ import { TranslationService } from '../../../../features/services/translation.se
 import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 import { dueDateValidator } from '../../../../shared/validators';
 
-interface CreateTaskForm {
+interface TaskCreateForm {
   description: FormControl<string | null>;
   dueDate: FormControl<string | null>;
   priority: FormControl<Priority | null>;
 }
 
 @Component({
-  selector: 'app-create-task',
+  selector: 'app-task-create-form',
   standalone: true,
   imports: [
     MatIconModule,
@@ -43,10 +43,10 @@ interface CreateTaskForm {
     TranslateModule,
     FormButtonComponent,
   ],
-  templateUrl: './create-task.component.html',
-  styleUrl: './create-task.component.scss',
+  templateUrl: './task-create-form.component.html',
+  styleUrl: './task-create-form.component.scss',
 })
-export class CreateTaskComponent {
+export class TaskCreateFormComponent {
   protected loading = false;
   protected selectedStatus = inject<{ selectedStatus: TaskStatus }>(
     MAT_DIALOG_DATA
@@ -57,7 +57,7 @@ export class CreateTaskComponent {
     private toastrService: ToastrService,
     private projectService: ProjectService,
     private dialog: MatDialog,
-    private dialogRef: MatDialogRef<CreateTaskComponent>,
+    private dialogRef: MatDialogRef<TaskCreateFormComponent>,
     private mapperService: MapperService,
     private translationService: TranslationService
   ) {}
@@ -74,7 +74,7 @@ export class CreateTaskComponent {
     return new Date().toISOString().split('T')[0];
   }
 
-  protected form: FormGroup<CreateTaskForm> = new FormGroup<CreateTaskForm>({
+  protected form: FormGroup<TaskCreateForm> = new FormGroup<TaskCreateForm>({
     description: new FormControl('', {
       validators: [
         Validators.required,

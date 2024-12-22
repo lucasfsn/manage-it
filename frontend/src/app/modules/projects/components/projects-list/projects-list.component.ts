@@ -7,18 +7,22 @@ import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
+import { enumValueValidator } from '../../../../shared/validators';
 import { ProjectFilters } from '../../models/project-filter.model';
 import {
   ProjectsSort,
   SortCriteria,
   SortOrder,
 } from '../../models/project-sort.model';
-import { FilterProjectsComponent } from '../filter-projects/filter-projects.component';
-import { SortProjectsComponent } from '../sort-projects/sort-projects.component';
+import { ProjectsFilterComponent } from '../projects-filter/projects-filter.component';
+import { ProjectsSortComponent } from '../projects-sort/projects-sort.component';
 
 interface ProjectsParams extends Params {
   sort?: SortCriteria;
   order?: SortOrder;
+  name?: string;
+  status?: ProjectStatus;
+  onlyOwnedByMe?: string;
 }
 
 @Component({
@@ -28,23 +32,23 @@ interface ProjectsParams extends Params {
     RouterLink,
     DecimalPipe,
     FormsModule,
-    FilterProjectsComponent,
-    SortProjectsComponent,
     TranslateModule,
     DatePipe,
+    ProjectsSortComponent,
+    ProjectsFilterComponent,
   ],
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',
 })
 export class ProjectsListComponent implements OnInit {
-  protected sortedAndFilteredProjects: Project[] | undefined;
+  protected sortedAndFilteredProjects: Project[] = [];
 
   protected sortCriteria: SortCriteria = SortCriteria.NAME;
   protected sortOrder: SortOrder = SortOrder.ASCENDING;
 
-  protected filterName = '';
-  protected filterStatus: ProjectStatus | undefined;
-  protected filterOwnedByCurrentUser = false;
+  protected filterName?: string;
+  protected filterStatus?: ProjectStatus;
+  protected filterOnlyOwnedByMe: boolean = false;
 
   public constructor(
     private route: ActivatedRoute,
@@ -61,86 +65,87 @@ export class ProjectsListComponent implements OnInit {
     return ProjectStatus;
   }
 
-  protected sortProjects(): void {
-    if (!this.sortedAndFilteredProjects) return;
-
-    this.sortedAndFilteredProjects = [...this.sortedAndFilteredProjects].sort(
-      (a, b) => {
-        let comparison = 0;
-        switch (this.sortCriteria) {
-          case SortCriteria.NAME:
-            comparison = a.name.localeCompare(b.name);
-            break;
-          case SortCriteria.START_DATE:
-            comparison =
-              new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-            break;
-          case SortCriteria.END_DATE:
-            comparison =
-              new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
-            break;
-          case SortCriteria.COMPLETED_TASKS:
-            comparison = a.completedTasks - b.completedTasks;
-            break;
-        }
-
-        return this.sortOrder === SortOrder.ASCENDING
-          ? comparison
-          : -comparison;
-      }
-    );
-
-    this.updateQueryParams();
-  }
-
-  protected updateQueryParams(): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        sort: this.sortCriteria,
-        order: this.sortOrder,
-      },
-      queryParamsHandling: 'merge',
-    });
-  }
-
   protected onSortChange(sort: ProjectsSort): void {
     this.sortCriteria = sort.criteria;
     this.sortOrder = sort.order;
-    this.sortProjects();
+    this.applyFiltersAndSort();
   }
 
-  private filterProjects(): Project[] | undefined {
-    if (!this.projects) return;
+  protected onFilterChange(filters: ProjectFilters): void {
+    this.filterName = filters.name;
+    this.filterStatus = filters.status;
+    this.filterOnlyOwnedByMe = filters.onlyOwnedByMe;
+    this.applyFiltersAndSort();
+  }
 
-    return this.projects.filter((project) => {
+  private applyFiltersAndSort(): void {
+    this.sortedAndFilteredProjects = this.sortProjects(this.filterProjects());
+    this.updateQueryParams();
+  }
+
+  private sortProjects(projects: Project[]): Project[] {
+    return [...projects].sort((a, b) => {
+      let comparison = 0;
+      switch (this.sortCriteria) {
+        case SortCriteria.NAME:
+          comparison = a.name.localeCompare(b.name);
+          break;
+        case SortCriteria.START_DATE:
+          comparison =
+            new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+          break;
+        case SortCriteria.END_DATE:
+          comparison =
+            new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+          break;
+        case SortCriteria.COMPLETED_TASKS:
+          comparison = a.completedTasks - b.completedTasks;
+          break;
+      }
+
+      return this.sortOrder === SortOrder.ASCENDING ? comparison : -comparison;
+    });
+  }
+
+  private filterProjects(): Project[] {
+    return (this.projects || []).filter((project) => {
       const matchesName =
         !this.filterName ||
         project.name.toLowerCase().includes(this.filterName.toLowerCase());
       const matchesStatus =
         !this.filterStatus || project.status === this.filterStatus;
       const matchesOwner =
-        !this.filterOwnedByCurrentUser ||
+        !this.filterOnlyOwnedByMe ||
         project.owner.username === this.authService.getLoggedInUsername();
 
       return matchesName && matchesStatus && matchesOwner;
     });
   }
 
-  protected onFilterChange(filters: ProjectFilters): void {
-    this.filterName = filters.name;
-    this.filterStatus = filters.status;
-    this.filterOwnedByCurrentUser = filters.ownedByCurrentUser;
-    this.sortedAndFilteredProjects = this.filterProjects();
-    this.sortProjects();
+  private updateQueryParams(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        sort: this.sortCriteria,
+        order: this.sortOrder,
+        name: this.filterName,
+        status: this.filterStatus,
+        onlyOwnedByMe: this.filterOnlyOwnedByMe,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
   public ngOnInit(): void {
     this.route.queryParams.subscribe((params: ProjectsParams) => {
-      this.sortCriteria = params.sort || SortCriteria.NAME;
-      this.sortOrder = params.order || SortOrder.ASCENDING;
-      this.sortedAndFilteredProjects = this.filterProjects();
-      this.sortProjects();
+      this.sortCriteria =
+        enumValueValidator(params.sort, SortCriteria) || SortCriteria.NAME;
+      this.sortOrder =
+        enumValueValidator(params.order, SortOrder) || SortOrder.ASCENDING;
+      this.filterName = params.name || undefined;
+      this.filterStatus = enumValueValidator(params.status, ProjectStatus);
+      this.filterOnlyOwnedByMe = params.onlyOwnedByMe === 'true';
+      this.applyFiltersAndSort();
     });
   }
 }

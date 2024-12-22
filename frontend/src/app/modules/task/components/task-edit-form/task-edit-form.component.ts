@@ -20,7 +20,7 @@ import { TaskService } from '../../../../features/services/task.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 
-interface EditTaskForm {
+interface TaskEditForm {
   description: FormControl<string | null>;
   status: FormControl<TaskStatus | null>;
   priority: FormControl<Priority | null>;
@@ -28,7 +28,7 @@ interface EditTaskForm {
 }
 
 @Component({
-  selector: 'app-edit-task',
+  selector: 'app-task-edit-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -36,21 +36,21 @@ interface EditTaskForm {
     TranslateModule,
     FormButtonComponent,
   ],
-  templateUrl: './edit-task.component.html',
-  styleUrl: './edit-task.component.scss',
+  templateUrl: './task-edit-form.component.html',
+  styleUrl: './task-edit-form.component.scss',
 })
-export class EditTaskComponent implements OnInit {
+export class TaskEditFormComponent implements OnInit {
   protected loading = false;
 
   public constructor(
     private taskService: TaskService,
     private toastrService: ToastrService,
-    private dialogRef: MatDialogRef<EditTaskComponent>,
+    private dialogRef: MatDialogRef<TaskEditFormComponent>,
     private mapperService: MapperService,
     private translationService: TranslationService
   ) {}
 
-  protected form: FormGroup<EditTaskForm> = new FormGroup<EditTaskForm>({
+  protected form: FormGroup<TaskEditForm> = new FormGroup<TaskEditForm>({
     description: new FormControl('', [
       Validators.minLength(2),
       Validators.maxLength(120),

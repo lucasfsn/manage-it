@@ -11,7 +11,7 @@ import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectFilters } from '../../models/project-filter.model';
 
 @Component({
-  selector: 'app-filter-projects',
+  selector: 'app-projects-filter',
   standalone: true,
   imports: [
     MatIconModule,
@@ -22,17 +22,17 @@ import { ProjectFilters } from '../../models/project-filter.model';
     MatCheckboxModule,
     TranslateModule,
   ],
-  templateUrl: './filter-projects.component.html',
-  styleUrl: './filter-projects.component.scss',
+  templateUrl: './projects-filter.component.html',
+  styleUrl: './projects-filter.component.scss',
 })
-export class FilterProjectsComponent {
+export class ProjectsFilterComponent {
   @Output() public filterChange = new EventEmitter<ProjectFilters>();
 
   public constructor(private mapperService: MapperService) {}
 
-  protected filterProjectName = '';
-  protected filterStatus: ProjectStatus | undefined;
-  protected filterOwnedByCurrentUser = false;
+  protected filterProjectName?: string;
+  protected filterStatus?: ProjectStatus;
+  protected filterOnlyOwnedByMe = false;
 
   protected get ProjectStatus(): typeof ProjectStatus {
     return ProjectStatus;
@@ -40,15 +40,16 @@ export class FilterProjectsComponent {
 
   private applyFilters(): void {
     this.filterChange.emit({
-      name: this.filterProjectName,
+      name: this.filterProjectName?.trim() || undefined,
       status: this.filterStatus,
-      ownedByCurrentUser: this.filterOwnedByCurrentUser,
+      onlyOwnedByMe: this.filterOnlyOwnedByMe,
     });
   }
 
   protected handleClear(): void {
     this.filterStatus = undefined;
-    this.filterOwnedByCurrentUser = false;
+    this.filterOnlyOwnedByMe = false;
+    this.filterProjectName = undefined;
     this.applyFilters();
   }
 

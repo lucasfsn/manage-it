@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -17,6 +16,7 @@ import {
 import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TranslationService } from '../../../../features/services/translation.service';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 import {
   endDateValidator,
@@ -47,6 +47,7 @@ interface ProjectForm {
     ReactiveFormsModule,
     MatIconModule,
     FormButtonComponent,
+    ButtonComponent,
   ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss',
@@ -62,8 +63,7 @@ export class ProjectFormComponent implements OnInit {
     private toastrService: ToastrService,
     private translationService: TranslationService,
     private mapperService: MapperService,
-    private route: ActivatedRoute,
-    private location: Location
+    private route: ActivatedRoute
   ) {}
 
   protected get project(): Project | undefined {
@@ -150,6 +150,16 @@ export class ProjectFormComponent implements OnInit {
         this.form.controls.dates.get('endDate')?.invalid) ||
       this.form.controls.dates.hasError('invalidEndDate')
     );
+  }
+
+  protected handleGoBack(): void {
+    if (!this.project) {
+      this.router.navigate(['/projects']);
+
+      return;
+    }
+
+    this.router.navigate(['/projects', this.project.id]);
   }
 
   protected minDate(): string | null {

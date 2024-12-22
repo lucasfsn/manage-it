@@ -9,13 +9,13 @@ import {
 } from '../../models/project-sort.model';
 
 @Component({
-  selector: 'app-sort-projects',
+  selector: 'app-projects-sort',
   standalone: true,
   imports: [FormsModule, TranslateModule],
-  templateUrl: './sort-projects.component.html',
-  styleUrl: './sort-projects.component.scss',
+  templateUrl: './projects-sort.component.html',
+  styleUrl: './projects-sort.component.scss',
 })
-export class SortProjectsComponent {
+export class ProjectsSortComponent {
   @Input() public sortCriteria: SortCriteria = SortCriteria.NAME;
   @Input() public sortOrder: SortOrder = SortOrder.ASCENDING;
   @Output() public sortChange = new EventEmitter<ProjectsSort>();

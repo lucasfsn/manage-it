@@ -5,17 +5,9 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import {
-  Component,
-  DestroyRef,
-  ElementRef,
-  inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../../features/dto/project.model';
@@ -27,20 +19,19 @@ import {
   PageEvent,
   PaginatorComponent,
 } from '../../../../shared/components/paginator/paginator.component';
-import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
-import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-task.component';
+import { TaskAddUserComponent } from '../task-add-user/task-add-user.component';
+import { TaskAssigneesListComponent } from '../task-assignees-list/task-assignees-list.component';
 
 @Component({
   selector: 'app-task-assignees',
   standalone: true,
   imports: [
     MatIconModule,
-    RouterLink,
     ReactiveFormsModule,
-    SearchAddToTaskComponent,
     TranslateModule,
     PaginatorComponent,
-    ProfileIconComponent,
+    TaskAddUserComponent,
+    TaskAssigneesListComponent,
   ],
   templateUrl: './task-assignees.component.html',
   styleUrl: './task-assignees.component.scss',
@@ -51,7 +42,6 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
         style({
           visibility: 'visible',
           opacity: 1,
-          height: '*',
         })
       ),
       state(
@@ -59,20 +49,19 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
         style({
           visibility: 'hidden',
           opacity: 0,
-          height: '0px',
         })
       ),
-      transition('show <=> hide', [animate('0.5s ease-in-out')]),
+      transition('show <=> hide', [animate('400ms ease-in-out')]),
     ]),
   ],
 })
 export class TaskAssigneesComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
-  @ViewChild('searchInput')
-  protected searchInput!: ElementRef<HTMLInputElement>;
   protected filteredUsers: User[] = [];
+
+  protected browseControl = new FormControl('');
+
   protected paginatedUsers: User[] = [];
-  protected searchControl = new FormControl('');
   protected currentPage = 0;
   protected pageSize = 5;
   protected showAssignees = true;
@@ -151,18 +140,14 @@ export class TaskAssigneesComponent implements OnInit {
     this.showAssignees = false;
   }
 
-  protected focusSearchInput(): void {
-    this.searchInput.nativeElement.focus();
-  }
-
   protected filterUsers(): void {
-    const searchTerm = this.searchControl.value?.toLowerCase() || '';
+    const value = this.browseControl.value?.toLowerCase() || '';
 
     this.filteredUsers = this.members.filter(
       (user) =>
-        user.firstName.toLowerCase().includes(searchTerm) ||
-        user.lastName.toLowerCase().includes(searchTerm) ||
-        user.username.toLowerCase().includes(searchTerm)
+        user.firstName.toLowerCase().includes(value) ||
+        user.lastName.toLowerCase().includes(value) ||
+        user.username.toLowerCase().includes(value)
     );
     this.updatePaginatedUsers();
   }
@@ -186,7 +171,7 @@ export class TaskAssigneesComponent implements OnInit {
 
   public ngOnInit(): void {
     this.refreshUsersIn();
-    const subscription = this.searchControl.valueChanges.subscribe(() => {
+    const subscription = this.browseControl.valueChanges.subscribe(() => {
       this.filterUsers();
     });
 

@@ -6,15 +6,21 @@ import { User } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { UserService } from '../../../../features/services/user.service';
+import { TaskAssigneesListComponent } from '../task-assignees-list/task-assignees-list.component';
 
 @Component({
-  selector: 'app-search-add-to-task',
+  selector: 'app-task-add-user',
   standalone: true,
-  imports: [MatIconModule, ReactiveFormsModule, TranslateModule],
-  templateUrl: './search-add-to-task.component.html',
-  styleUrl: './search-add-to-task.component.scss',
+  imports: [
+    MatIconModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    TaskAssigneesListComponent,
+  ],
+  templateUrl: './task-add-user.component.html',
+  styleUrl: './task-add-user.component.scss',
 })
-export class SearchAddToTaskComponent {
+export class TaskAddUserComponent {
   @Output() public userAdd = new EventEmitter<User>();
   protected form = new FormControl<string>('');
   protected searchResults: User[] = [];

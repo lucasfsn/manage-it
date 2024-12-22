@@ -1,36 +1,44 @@
-<div class="flex flex-col gap-2">
-  <div class="flex justify-between">
-    <div class="flex gap-2 items-center">
-      <div
-        class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
-      >
-        <mat-icon>create_new_folder</mat-icon>
-      </div>
-      @if (isEditing) {
-      <p class="font-semibold">{{ "project.form.EDIT_TITLE" | translate }}</p>
-      } @else {
-      <p class="font-semibold">{{ "project.form.CREATE_TITLE" | translate }}</p>
-      }
+<div class="flex flex-col gap-5 h-full items-end">
+  <app-button
+    bgColor="bg-slate-400"
+    textColor="text-slate-900"
+    hoverBgColor="hover:bg-slate-500"
+    (handleClick)="handleGoBack()"
+  >
+    <mat-icon>arrow_back</mat-icon>
+  </app-button>
+  <div class="flex gap-2 items-center self-center">
+    <div
+      class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
+    >
+      <mat-icon>create_new_folder</mat-icon>
     </div>
+    @if (isEditing) {
+    <p class="font-semibold">{{ "project.form.EDIT_TITLE" | translate }}</p>
+    } @else {
+    <p class="font-semibold">{{ "project.form.CREATE_TITLE" | translate }}</p>
+    }
   </div>
-  <form [formGroup]="form" class="grid grid-cols-2 gap-2 p-2">
-    <div class="grid grid-cols-3 gap-2 col-span-2">
+  <form
+    [formGroup]="form"
+    class="flex flex-col gap-2 p-2 self-center lg:w-1/2 w-full"
+  >
+    <div class="grid grid-cols-3 gap-2 items-center">
       <label for="name">{{ "project.form.NAME_LABEL" | translate }}</label>
       <input
         id="name"
         type="text"
         formControlName="name"
         [placeholder]="'project.form.NAME_PLACEHOLDER' | translate"
-        class="w-full"
+        class="w-auto"
       />
       @if (nameIsInvalid) {
-      <p class="text-red-500 text-sm col-span-3">
+      <p class="col-span-2 text-red-500 text-sm">
         {{ "project.form.NAME_INVALID" | translate }}
       </p>
       }
     </div>
-
-    <div class="grid grid-cols-3 gap-2 col-span-2">
+    <div class="grid grid-cols-3 gap-2 items-center">
       <label for="description">{{
         "project.form.DESCRIPTION_LABEL" | translate
       }}</label>
@@ -47,7 +55,7 @@
       </p>
       }
     </div>
-    <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
+    <div class="grid grid-cols-3 gap-2 items-center" formGroupName="dates">
       <label for="startDate">{{
         "project.form.START_DATE_LABEL" | translate
       }}</label>
@@ -67,8 +75,7 @@
       </p>
       }
     </div>
-
-    <div class="grid grid-cols-3 gap-2 col-span-2" formGroupName="dates">
+    <div class="grid grid-cols-3 gap-2 items-center" formGroupName="dates">
       <label for="endDate">{{
         "project.form.END_DATE_LABEL" | translate
       }}</label>
@@ -84,11 +91,13 @@
       </p>
       }
     </div>
-
-    <div class="col-span-2 flex justify-end gap-2 mt-4">
-      <app-form-button buttonType="reset" [disabled]="loading">{{
-        "project.form.RESET_BUTTON" | translate
-      }}</app-form-button>
+    <div class="col-span-2 flex justify-end gap-2">
+      <app-form-button
+        buttonType="reset"
+        [disabled]="loading"
+        (handleClick)="onReset()"
+        >{{ "project.form.RESET_BUTTON" | translate }}</app-form-button
+      >
       <app-form-button
         buttonType="submit"
         [disabled]="disabled"

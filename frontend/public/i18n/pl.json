@@ -93,7 +93,7 @@
     },
     "taskStatus": {
       "IN_PROGRESS": "W trakcie",
-      "COMPLETED": "Zrobione",
+      "COMPLETED": "Ukończony",
       "NOT_STARTED": "Nadchodzące"
     },
     "sortCriteria": {
@@ -172,7 +172,7 @@
   },
   "projects": {
     "list": {
-      "NO_PROJECTS": "Brak projektów.",
+      "NO_PROJECTS": "Brak projektów",
       "START_DATE_TEXT": "Data rozpoczęcia:",
       "DEADLINE_TEXT": "Termin:",
       "NO_TASKS": "Brak zadań.",
@@ -247,10 +247,16 @@
       "PRIORITY": "Prioritet",
       "ASSIGNEES": "Przydzielone osoby",
       "NO_ASSIGNEES": "Brak",
-      "ASSIGNEE_INPUT_PLACEHOLDER": "Wyszukaj użytkowników"
+      "ASSIGNEE_INPUT_PLACEHOLDER": "Wyszukaj użytkowników",
+      "EMPTY_ASSIGNEES_LIST": "Przydziel nowych użytkowników do zadania lub zacznij pisać, aby wyszukać użytkowników"
     },
     "drag-and-drop": {
-      "ADD_BUTTON": "Dodaj nowe zadanie"
+      "ADD_BUTTON": "Dodaj nowe zadanie",
+      "labels": {
+        "COMPLETED": "Ukończone",
+        "IN_PROGRESS": "W trakcie",
+        "NOT_STARTED": "Nadchodzące"
+      }
     },
     "createForm": {
       "TITLE": "Utwórz Zadanie",

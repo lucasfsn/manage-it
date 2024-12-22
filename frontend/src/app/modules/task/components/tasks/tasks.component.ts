@@ -23,7 +23,7 @@ import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
 import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
-import { CreateTaskComponent } from '../create-task/create-task.component';
+import { TaskCreateFormComponent } from '../task-create-form/task-create-form.component';
 
 @Component({
   selector: 'app-tasks',
@@ -104,8 +104,8 @@ export class TasksComponent implements OnInit {
   protected openAddCardDialog(selectedStatus: TaskStatus): void {
     if (!this.project) return;
 
-    const dialogRef: MatDialogRef<CreateTaskComponent> = this.dialog.open(
-      CreateTaskComponent,
+    const dialogRef: MatDialogRef<TaskCreateFormComponent> = this.dialog.open(
+      TaskCreateFormComponent,
       {
         width: '450px',
         backdropClass: 'dialog-backdrop',

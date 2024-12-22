@@ -12,12 +12,10 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
-import { ConfirmModalService } from '../../../../features/services/confirm-modal.service';
 import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
-import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
@@ -30,7 +28,6 @@ import { ProjectMenuComponent } from '../project-menu/project-menu.component';
   imports: [
     RouterLink,
     MatIconModule,
-    ConfirmModalComponent,
     DatePipe,
     TranslateModule,
     ButtonComponent,
@@ -67,13 +64,8 @@ export class ProjectDetailsComponent {
     private dialog: MatDialog,
     private authService: AuthService,
     private projectService: ProjectService,
-    private confirmModalService: ConfirmModalService,
     private mapperService: MapperService
   ) {}
-
-  protected get isModalOpen(): boolean {
-    return this.confirmModalService.isOpen();
-  }
 
   protected get project(): Project | undefined {
     return this.projectService.loadedProject();

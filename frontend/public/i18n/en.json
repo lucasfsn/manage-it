@@ -93,7 +93,7 @@
     },
     "taskStatus": {
       "IN_PROGRESS": "In progress",
-      "COMPLETED": "Done",
+      "COMPLETED": "Completed",
       "NOT_STARTED": "Upcoming"
     },
     "sortCriteria": {
@@ -172,7 +172,7 @@
   },
   "projects": {
     "list": {
-      "NO_PROJECTS": "No projects found.",
+      "NO_PROJECTS": "No projects found",
       "START_DATE_TEXT": "Start date:",
       "DEADLINE_TEXT": "Deadline:",
       "NO_TASKS": "No tasks yet.",
@@ -247,10 +247,16 @@
       "PRIORITY": "Priority",
       "ASSIGNEES": "Assignees",
       "NO_ASSIGNEES": "No assignees",
-      "ASSIGNEE_INPUT_PLACEHOLDER": "Search users"
+      "ASSIGNEE_INPUT_PLACEHOLDER": "Search users",
+      "EMPTY_ASSIGNEES_LIST": "Assign new users to the task or start typing to search for users"
     },
     "drag-and-drop": {
-      "ADD_BUTTON": "Add another task"
+      "ADD_BUTTON": "Add another task",
+      "labels": {
+        "COMPLETED": "Completed",
+        "IN_PROGRESS": "In Progress",
+        "NOT_STARTED": "Upcoming"
+      }
     },
     "createForm": {
       "TITLE": "Add Task",
