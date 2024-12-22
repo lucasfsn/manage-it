@@ -5,7 +5,7 @@ import { catchError, finalize, of } from 'rxjs';
 import { Project } from '../../../features/dto/project.model';
 import { AuthService } from '../../../features/services/auth.service';
 import { LoadingService } from '../../../features/services/loading.service';
-import { MappersService } from '../../../features/services/mappers.service';
+import { MapperService } from '../../../features/services/mapper.service';
 import { ProjectService } from '../../../features/services/project.service';
 
 export const projectsResolver: ResolveFn<Project[] | undefined> = () => {
@@ -13,7 +13,7 @@ export const projectsResolver: ResolveFn<Project[] | undefined> = () => {
   const projectService = inject(ProjectService);
   const authService = inject(AuthService);
   const toastrService = inject(ToastrService);
-  const mappersService = inject(MappersService);
+  const mapperService = inject(MapperService);
 
   const username = authService.getLoggedInUsername();
   if (username) {
@@ -21,7 +21,7 @@ export const projectsResolver: ResolveFn<Project[] | undefined> = () => {
 
     return projectService.getProjects().pipe(
       catchError(() => {
-        const localeMessage = mappersService.errorToastMapper();
+        const localeMessage = mapperService.errorToastMapper();
         toastrService.error(localeMessage);
 
         return of(undefined);

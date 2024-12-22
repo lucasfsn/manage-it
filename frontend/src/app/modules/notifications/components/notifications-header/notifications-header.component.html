@@ -1,0 +1,19 @@
+<div class="flex justify-between">
+  <h1 class="flex gap-2 text-base sm:text-xl font-semibold items-baseline">
+    <span>{{ "notifications.TITLE" | translate }}</span>
+    @if (notifications.length > 0) {
+    <span
+      class="flex justify-center items-center text-sm px-3 bg-sky-500 text-slate-950 rounded-lg"
+      >{{ notifications.length }}</span
+    >
+    }
+  </h1>
+  @if (notifications.length > 0) {
+  <button
+    class="text-gray-400 text-xs sm:text-sm hover:text-gray-500 transition-all"
+    (click)="markAllAsRead()"
+  >
+    {{ "notifications.MARK_ALL_AS_READ" | translate }}
+  </button>
+  }
+</div>

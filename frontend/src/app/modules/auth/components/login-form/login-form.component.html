@@ -1,6 +1,5 @@
 <form
   [formGroup]="form"
-  (ngSubmit)="onSubmit()"
   class="flex flex-col gap-4 p-9 rounded-lg shadow-sm bg-slate-100 text-xs sm:text-base w-2/3 max-w-[600px]"
   style="background-color: #1e293b"
 >
@@ -35,13 +34,18 @@
         }
       </div>
       <div class="flex justify-center">
-        <button
-          [disabled]="this.form.invalid"
-          class="bg-sky-600 mx-auto text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full disabled:cursor-not-allowed disabled:bg-gray-500"
-          type="submit"
+        <app-form-button
+          buttonType="submit"
+          [disabled]="form.invalid || loading"
+          (handleClick)="onSubmit()"
+          roundedType="rounded-full"
         >
+          @if (loading) {
+          {{ "utils.LOADING" | translate }}
+          } @else {
           {{ "loginForm.LOGIN_BUTTON" | translate }}
-        </button>
+          }
+        </app-form-button>
       </div>
     </div>
     <a routerLink="/auth/signup" class="text-xs text-sky-400 text-center">{{

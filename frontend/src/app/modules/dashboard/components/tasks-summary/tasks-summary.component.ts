@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { TaskStatus } from '../../../../features/dto/project.model';
-import { MappersService } from '../../../../features/services/mappers.service';
+import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { ProjectService } from '../../../../features/services/project.service';
 export class TasksSummaryComponent implements OnInit {
   public constructor(
     private projectService: ProjectService,
-    private mappersService: MappersService
+    private mapperService: MapperService
   ) {}
 
   protected barChartData: ChartData<'bar'> = {
@@ -52,7 +52,7 @@ export class TasksSummaryComponent implements OnInit {
 
     this.barChartData = {
       labels: Object.keys(taskStatusCounts).map((status) =>
-        this.mappersService.taskStatusMapper(status as TaskStatus)
+        this.mapperService.taskStatusMapper(status as TaskStatus)
       ),
       datasets: [
         {

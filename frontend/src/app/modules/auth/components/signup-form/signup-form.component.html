@@ -1,6 +1,5 @@
 <form
   [formGroup]="form"
-  (ngSubmit)="onSubmit()"
   class="flex flex-col gap-4 mx-auto p-9 rounded-lg shadow-sm bg-slate-100 text-xs sm:text-base w-2/3 max-w-[800px]"
   style="background-color: #1e293b"
 >
@@ -102,18 +101,26 @@
       </div>
     </div>
     <div class="flex justify-between gap-2 flex-col sm:flex-row">
-      <button
-        class="bg-gray-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-gray-700 transition-all rounded-full"
-        (click)="onReset()"
+      <app-form-button
+        buttonType="reset"
+        (handleClick)="onReset()"
+        [disabled]="loading"
+        roundedType="rounded-full"
       >
         {{ "signupForm.RESET_BUTTON" | translate }}
-      </button>
-      <button
-        [disabled]="this.form.invalid"
-        class="bg-sky-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full disabled:cursor-not-allowed disabled:bg-gray-500"
+      </app-form-button>
+      <app-form-button
+        buttonType="submit"
+        (handleClick)="onSubmit()"
+        roundedType="rounded-full"
+        [disabled]="form.invalid || loading"
       >
+        @if (loading) {
+        {{ "utils.LOADING" | translate }}
+        } @else {
         {{ "signupForm.SIGN_UP_BUTTON" | translate }}
-      </button>
+        }
+      </app-form-button>
     </div>
   </div>
   <a routerLink="/auth/login" class="text-xs text-sky-400 text-center">{{

@@ -1,3 +1,4 @@
+@if (notifications.length > 0) {
 <ul class="flex flex-col gap-3">
   @for (notification of notifications; track notification.id) {
   <li
@@ -9,6 +10,7 @@
   >
     <app-profile-icon
       size="lg"
+      [hover]="false"
       [firstName]="notification.user.firstName"
       [lastName]="notification.user.lastName"
     />
@@ -26,3 +28,8 @@
   </li>
   }
 </ul>
+} @else {
+<p class="text-gray-400">
+  {{ "notifications.NO_NOTIFICATIONS" | translate }}
+</p>
+}

@@ -63,7 +63,7 @@ export class ChatService {
 
   public getProjectChatHistory(projectId: string): Observable<Message[]> {
     return this.http
-      .get<Message[]>(`${environment.apiUrl}/chat/projectss/${projectId}`)
+      .get<Message[]>(`${environment.apiUrl}/chat/projects/${projectId}`)
       .pipe(
         tap((messages: Message[]) => {
           this.projectMessages.set(messages);

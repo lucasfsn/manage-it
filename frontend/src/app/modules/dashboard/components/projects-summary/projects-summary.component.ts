@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { MappersService } from '../../../../features/services/mappers.service';
+import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { ProjectService } from '../../../../features/services/project.service';
 export class ProjectsSummaryComponent implements OnInit {
   public constructor(
     private projectService: ProjectService,
-    private mappersService: MappersService
+    private mapperService: MapperService
   ) {}
 
   protected activeProjectsCount = 0;
@@ -65,8 +65,8 @@ export class ProjectsSummaryComponent implements OnInit {
 
   public ngOnInit(): void {
     this.progressChartData.labels = [
-      this.mappersService.projectStatusMapper(ProjectStatus.COMPLETED),
-      this.mappersService.projectStatusMapper(ProjectStatus.IN_PROGRESS),
+      this.mapperService.projectStatusMapper(ProjectStatus.COMPLETED),
+      this.mapperService.projectStatusMapper(ProjectStatus.IN_PROGRESS),
     ];
 
     this.updateChart();

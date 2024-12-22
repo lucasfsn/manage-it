@@ -14,9 +14,10 @@ import {
   Project,
   ProjectRequest,
 } from '../../../../features/dto/project.model';
-import { MappersService } from '../../../../features/services/mappers.service';
+import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TranslationService } from '../../../../features/services/translation.service';
+import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 import {
   endDateValidator,
   startDateValidator,
@@ -41,7 +42,12 @@ interface ProjectForm {
 @Component({
   selector: 'app-project-form',
   standalone: true,
-  imports: [TranslateModule, ReactiveFormsModule, MatIconModule],
+  imports: [
+    TranslateModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    FormButtonComponent,
+  ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss',
 })
@@ -55,7 +61,7 @@ export class ProjectFormComponent implements OnInit {
     private router: Router,
     private toastrService: ToastrService,
     private translationService: TranslationService,
-    private mappersService: MappersService,
+    private mapperService: MapperService,
     private route: ActivatedRoute,
     private location: Location
   ) {}
@@ -189,7 +195,7 @@ export class ProjectFormComponent implements OnInit {
         );
       },
       error: () => {
-        const localeMessage = this.mappersService.errorToastMapper();
+        const localeMessage = this.mapperService.errorToastMapper();
         this.toastrService.error(localeMessage);
         this.loading = false;
       },
@@ -212,7 +218,7 @@ export class ProjectFormComponent implements OnInit {
         );
       },
       error: () => {
-        const localeMessage = this.mappersService.errorToastMapper();
+        const localeMessage = this.mapperService.errorToastMapper();
         this.toastrService.error(localeMessage);
         this.loading = false;
       },

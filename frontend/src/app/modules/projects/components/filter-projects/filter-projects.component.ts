@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProjectStatus } from '../../../../features/dto/project.model';
-import { MappersService } from '../../../../features/services/mappers.service';
+import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectFilters } from '../../models/project-filter.model';
 
 @Component({
@@ -28,7 +28,7 @@ import { ProjectFilters } from '../../models/project-filter.model';
 export class FilterProjectsComponent {
   @Output() public filterChange = new EventEmitter<ProjectFilters>();
 
-  public constructor(private mappersService: MappersService) {}
+  public constructor(private mapperService: MapperService) {}
 
   protected filterProjectName = '';
   protected filterStatus: ProjectStatus | undefined;
@@ -57,7 +57,7 @@ export class FilterProjectsComponent {
   }
 
   protected mapStatus(status: ProjectStatus): string {
-    return this.mappersService.projectStatusMapper(status);
+    return this.mapperService.projectStatusMapper(status);
   }
 
   protected get projectStatuses(): ProjectStatus[] {

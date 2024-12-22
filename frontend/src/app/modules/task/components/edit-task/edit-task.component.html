@@ -1,0 +1,100 @@
+<div class="flex flex-col gap-2 px-4 py-3 rounded-sm bg-slate-900">
+  <div class="flex justify-between">
+    <div class="flex gap-2 items-center">
+      <div
+        class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
+      >
+        <mat-icon>edit_note</mat-icon>
+      </div>
+      <p class="font-semibold">{{ "task.editForm.TITLE" | translate }}</p>
+    </div>
+    <button (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="form" class="grid grid-cols-2 gap-2 bg-slate-900 p-2">
+    <div class="grid grid-cols-3 gap-2 col-span-2">
+      <label for="description">{{
+        "task.editForm.DESCRIPTION_LABEL" | translate
+      }}</label>
+      <input
+        id="description"
+        type="text"
+        formControlName="description"
+        [placeholder]="'task.editForm.DESCRIPTION_PLACEHOLDER' | translate"
+        class="w-full pl-0.5"
+      />
+      @if (descriptionIsInvalid) {
+      <p class="text-red-500 text-sm col-span-3">
+        {{ "task.editForm.DESCRIPTION_INVALID" | translate }}
+      </p>
+      }
+    </div>
+    <div class="grid grid-cols-3 gap-2 col-span-2">
+      <label for="dueDate">{{
+        "task.editForm.DUE_DATE_LABEL" | translate
+      }}</label>
+      <input
+        type="date"
+        id="dueDate"
+        formControlName="dueDate"
+        class="w-full pl-0.5"
+      />
+      @if (dueDateIsInvalid) {
+      <p class="text-red-500 text-sm col-span-3">
+        {{ "task.editForm.DUE_DATE_INVALID" | translate }}
+      </p>
+      }
+    </div>
+    <div class="grid grid-cols-3 gap-2 col-span-2">
+      <label for="status">{{ "task.editForm.STATUS_LABEL" | translate }}</label>
+      <select
+        id="status"
+        formControlName="status"
+        class="bg-transparent border-none text-slate-300 rounded-full placeholder-slate-500"
+      >
+        @for (status of statuses; track status) {
+        <option [value]="status">
+          {{ mapTaskStatus(status) }}
+        </option>
+        }
+      </select>
+    </div>
+    <div class="grid grid-cols-3 gap-2 col-span-2">
+      <label for="priority">{{
+        "task.editForm.PRIORITY_LABEL" | translate
+      }}</label>
+      <select
+        id="priority"
+        formControlName="priority"
+        class="bg-transparent border-none text-slate-300 rounded-full placeholder-slate-500"
+      >
+        @for (priority of priorities; track priority) {
+        <option [value]="priority">
+          {{ mapPriority(priority) }}
+        </option>
+        }
+      </select>
+    </div>
+    <div class="col-span-2 flex justify-end gap-2 mt-4">
+      <app-form-button
+        buttonType="reset"
+        [disabled]="loading"
+        (handleClick)="onReset()"
+      >
+        {{ "task.editForm.RESET_BUTTON" | translate }}
+      </app-form-button>
+      <app-form-button
+        buttonType="submit"
+        [disabled]="disabled"
+        (handleClick)="onSubmit()"
+      >
+        @if (loading) {
+        {{ "utils.LOADING" | translate }}
+        } @else {
+        {{ "task.editForm.SAVE_BUTTON" | translate }}
+        }
+      </app-form-button>
+    </div>
+  </form>
+</div>

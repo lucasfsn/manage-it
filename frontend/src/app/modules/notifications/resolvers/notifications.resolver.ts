@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
 import { Notification } from '../../../features/dto/notification.model';
 import { LoadingService } from '../../../features/services/loading.service';
-import { MappersService } from '../../../features/services/mappers.service';
+import { MapperService } from '../../../features/services/mapper.service';
 import { NotificationService } from '../../../features/services/notification.service';
 
 export const notificationsResolver: ResolveFn<
@@ -13,7 +13,7 @@ export const notificationsResolver: ResolveFn<
 > = () => {
   const loadingService = inject(LoadingService);
   const notificationService = inject(NotificationService);
-  const mappersService = inject(MappersService);
+  const mapperService = inject(MapperService);
   const toastrService = inject(ToastrService);
   const location = inject(Location);
 
@@ -21,7 +21,7 @@ export const notificationsResolver: ResolveFn<
 
   return notificationService.getNotifications().pipe(
     catchError(() => {
-      const localeMessage = mappersService.errorToastMapper();
+      const localeMessage = mapperService.errorToastMapper();
       toastrService.error(localeMessage);
       location.back();
 

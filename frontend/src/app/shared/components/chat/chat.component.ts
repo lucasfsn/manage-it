@@ -28,7 +28,7 @@ import { UserCredentials } from '../../../features/dto/auth.model';
 import { Message } from '../../../features/dto/chat.model';
 import { AuthService } from '../../../features/services/auth.service';
 import { ChatService } from '../../../features/services/chat.service';
-import { MappersService } from '../../../features/services/mappers.service';
+import { MapperService } from '../../../features/services/mapper.service';
 import { DatePipe } from '../../pipes/date.pipe';
 
 @Component({
@@ -76,7 +76,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     private chatService: ChatService,
     private route: ActivatedRoute,
     private toastrService: ToastrService,
-    private mappersService: MappersService
+    private mapperService: MapperService
   ) {}
 
   protected message = '';
@@ -127,7 +127,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         .getTaskChatHistory(this.projectId, this.taskId)
         .subscribe({
           error: () => {
-            const localeMessage = this.mappersService.errorToastMapper();
+            const localeMessage = this.mapperService.errorToastMapper();
             this.toastrService.error(localeMessage);
             this.isLoading.set(false);
           },
@@ -138,7 +138,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     } else {
       this.chatService.getProjectChatHistory(this.projectId).subscribe({
         error: () => {
-          const localeMessage = this.mappersService.errorToastMapper();
+          const localeMessage = this.mapperService.errorToastMapper();
           this.toastrService.error(localeMessage);
           this.isLoading.set(false);
         },

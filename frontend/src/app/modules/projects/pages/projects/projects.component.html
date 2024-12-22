@@ -1,7 +1,11 @@
 <app-projects-list />
-<button
-  class="fixed bottom-4 right-4 rounded-full bg-sky-500 h-10 flex items-center justify-center aspect-square hover:bg-sky-600 transition-all cursor-pointer shadow-sm text-white"
+<app-button
   routerLink="/projects/create"
+  textColor="text-sky-100"
+  bgColor="bg-sky-500"
+  hoverBgColor="hover:bg-sky-600"
+  customClass="fixed bottom-4 right-4"
+  [largeSize]="true"
 >
   <mat-icon>add</mat-icon>
-</button>
+</app-button>

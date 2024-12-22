@@ -3,46 +3,7 @@
 } @if (project) {
 <div class="flex flex-col text-gray-400 gap-3">
   <div class="flex flex-row justify-between items-center self-end">
-    <div class="flex flex-col-reverse gap-2 items-end mr-4">
-      <app-button
-        bgColor="bg-slate-400"
-        textColor="text-slate-900"
-        hoverBgColor="hover:bg-slate-500"
-        (handleClick)="handleGoBack()"
-      >
-        <mat-icon>arrow_back</mat-icon>
-      </app-button>
-      @if (isOwner) {
-      <div class="flex items-center gap-2">
-        @if (project.status !== ProjectStatus.COMPLETED) {
-        <app-button
-          bgColor="bg-sky-300"
-          textColor="text-slate-900"
-          hoverBgColor="hover:bg-sky-400"
-          [routerLink]="'/projects/' + project.id + '/edit'"
-        >
-          <mat-icon>edit</mat-icon>
-        </app-button>
-        <app-button
-          bgColor="bg-green-300"
-          textColor="text-slate-900"
-          hoverBgColor="hover:bg-green-400"
-          (handleClick)="handleComplete()"
-        >
-          <mat-icon>done</mat-icon>
-        </app-button>
-        }
-        <app-button
-          bgColor="bg-pink-900"
-          textColor="text-pink-200"
-          hoverBgColor="hover:bg-pink-950"
-          (handleClick)="handleDelete()"
-        >
-          <mat-icon>delete</mat-icon>
-        </app-button>
-      </div>
-      }
-    </div>
+    <app-project-menu />
   </div>
   <h2 class="text-2xl font-semibold text-gray-100">
     {{ project.name }}
@@ -128,4 +89,19 @@
     </div>
   </div>
 </div>
+}
+<app-button
+  textColor="text-sky-100"
+  bgColor="bg-sky-500"
+  hoverBgColor="hover:bg-sky-600"
+  customClass="fixed bottom-4 right-4"
+  [largeSize]="true"
+  (handleClick)="toggleChat()"
+>
+  <mat-icon class="transition-transform" [class.rotate-180]="showChat">
+    @if (showChat) { keyboard_arrow_up } @else { chat }
+  </mat-icon>
+</app-button>
+@if (showChat) {
+<app-chat @chatAnimation [isTaskChat]="false" />
 }

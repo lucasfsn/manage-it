@@ -12,8 +12,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterCredentials } from '../../../../features/dto/auth.model';
 import { AuthService } from '../../../../features/services/auth.service';
-import { MappersService } from '../../../../features/services/mappers.service';
+import { MapperService } from '../../../../features/services/mapper.service';
 import { TranslationService } from '../../../../features/services/translation.service';
+import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 import {
   equalValues,
   nameValidator,
@@ -45,13 +46,16 @@ interface SignupForm {
     MatIconModule,
     MatTooltipModule,
     TranslateModule,
+    FormButtonComponent,
   ],
 })
 export class SignupFormComponent {
+  protected loading: boolean = false;
+
   public constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
-    private mappersService: MappersService,
+    private mapperService: MapperService,
     private translationService: TranslationService
   ) {}
 
@@ -299,19 +303,24 @@ export class SignupFormComponent {
       password: this.form.value.passwords?.password ?? '',
     };
 
+    this.loading = true;
     this.authService.register(registerCredentials).subscribe({
+      next: () => {
+        this.toastrService.success(
+          this.translationService.translate('toast.success.SIGNUP')
+        );
+      },
       error: (error) => {
-        const localeMessage = this.mappersService.errorToastMapper(
+        const localeMessage = this.mapperService.errorToastMapper(
           error.status,
           error.error.errorDescription,
           error.error.message
         );
         this.toastrService.error(localeMessage);
+        this.loading = false;
       },
       complete: () => {
-        this.toastrService.success(
-          this.translationService.translate('toast.success.SIGNUP')
-        );
+        this.loading = false;
       },
     });
   }

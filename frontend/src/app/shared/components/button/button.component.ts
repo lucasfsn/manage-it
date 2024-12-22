@@ -13,8 +13,10 @@ export class ButtonComponent {
   @Input({ required: true }) public bgColor!: string;
   @Input({ required: true }) public textColor!: string;
   @Input({ required: true }) public hoverBgColor!: string;
-  @Output() public handleClick = new EventEmitter<void>();
+  @Input() public customClass: string = '';
+  @Input() public largeSize?: boolean;
   @Input() public routerLink?: string;
+  @Output() public handleClick = new EventEmitter<void>();
 
   protected onClick(): void {
     this.handleClick.emit();

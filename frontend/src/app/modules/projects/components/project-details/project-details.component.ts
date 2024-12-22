@@ -1,22 +1,28 @@
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { ConfirmModalService } from '../../../../features/services/confirm-modal.service';
-import { LoadingService } from '../../../../features/services/loading.service';
-import { MappersService } from '../../../../features/services/mappers.service';
+import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
-import { TranslationService } from '../../../../features/services/translation.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
+import { ProjectMenuComponent } from '../project-menu/project-menu.component';
 
 @Component({
   selector: 'app-project-details',
@@ -29,21 +35,40 @@ import { DatePipe } from '../../../../shared/pipes/date.pipe';
     TranslateModule,
     ButtonComponent,
     ProfileIconComponent,
+    ChatComponent,
+    ProjectMenuComponent,
+  ],
+  animations: [
+    trigger('chatAnimation', [
+      state(
+        'void',
+        style({
+          opacity: 0,
+          transform: 'translateY(20px)',
+        })
+      ),
+      state(
+        '*',
+        style({
+          opacity: 1,
+          transform: 'translateY(0)',
+        })
+      ),
+      transition('void <=> *', animate('300ms ease-in-out')),
+    ]),
   ],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss',
 })
 export class ProjectDetailsComponent {
+  protected showChat: boolean = false;
+
   public constructor(
     private dialog: MatDialog,
     private authService: AuthService,
     private projectService: ProjectService,
-    private toastrService: ToastrService,
-    private router: Router,
     private confirmModalService: ConfirmModalService,
-    private loadingService: LoadingService,
-    private translationService: TranslationService,
-    private mappersService: MappersService
+    private mapperService: MapperService
   ) {}
 
   protected get isModalOpen(): boolean {
@@ -64,73 +89,8 @@ export class ProjectDetailsComponent {
     );
   }
 
-  protected handleGoBack(): void {
-    if (!this.project) return;
-
-    this.router.navigate(['/projects']);
-  }
-
-  protected handleDelete(): void {
-    const projectId = this.project?.id;
-
-    if (!projectId) return;
-
-    const confirmation$ = this.confirmModalService.confirm(
-      this.translationService.translate('project.details.DELETE_MESSAGE')
-    );
-
-    confirmation$.subscribe((confirmed) => {
-      if (!confirmed) return;
-
-      this.loadingService.loadingOn();
-      this.projectService.deleteProject(projectId).subscribe({
-        next: () => {
-          this.toastrService.success(
-            this.translationService.translate('toast.success.PROJECT_DELETED')
-          );
-          this.router.navigate(['/projects']);
-        },
-        error: () => {
-          const localeMessage = this.mappersService.errorToastMapper();
-          this.toastrService.error(localeMessage);
-          this.loadingService.loadingOff();
-        },
-        complete: () => {
-          this.loadingService.loadingOff();
-        },
-      });
-    });
-  }
-
-  protected handleComplete(): void {
-    const project = this.project;
-
-    if (!project) return;
-
-    const confirmation$ = this.confirmModalService.confirm(
-      this.translationService.translate('project.details.COMPLETE_MESSAGE')
-    );
-
-    confirmation$.subscribe((confirmed) => {
-      if (!confirmed) return;
-
-      this.loadingService.loadingOn();
-      this.projectService.completeProject(project).subscribe({
-        next: () => {
-          this.toastrService.success(
-            this.translationService.translate('toast.success.PROJECT_COMPLETED')
-          );
-        },
-        error: () => {
-          const localeMessage = this.mappersService.errorToastMapper();
-          this.toastrService.error(localeMessage);
-          this.loadingService.loadingOff();
-        },
-        complete: () => {
-          this.loadingService.loadingOff();
-        },
-      });
-    });
+  protected toggleChat(): void {
+    this.showChat = !this.showChat;
   }
 
   protected showAllMembers(isOnlyShow: boolean): void {
@@ -158,7 +118,7 @@ export class ProjectDetailsComponent {
   }
 
   protected mapProjectStatus(): string {
-    return this.mappersService.projectStatusMapper(
+    return this.mapperService.projectStatusMapper(
       this.project?.status ?? ProjectStatus.IN_PROGRESS
     );
   }

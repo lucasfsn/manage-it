@@ -48,6 +48,6 @@ export const PROJECTS_ROUTES: Routes = [
   {
     path: ':projectId/tasks',
     loadChildren: () =>
-      import('../tasks/tasks.routes').then((r) => r.TASKS_ROUTES),
+      import('../task/tasks.routes').then((r) => r.TASKS_ROUTES),
   },
 ];

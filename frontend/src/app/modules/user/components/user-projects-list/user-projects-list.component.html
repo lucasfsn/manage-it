@@ -1,0 +1,32 @@
+@if (commonProjects.length > 0) {
+<div class="flex flex-col gap-2">
+  <h3 class="text-xl font-semibold text-center"><ng-content /></h3>
+  <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5 px-4">
+    @for (project of commonProjects; track project.id) {
+    <li
+      class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer transition-all hover:bg-opacity-75 gap-4 justify-between focus:bg-opacity-95 focus:outline-none focus:ring-0 focus-visible:outline-none focus-within:outline-none"
+      routerLink="/projects/{{ project.id }}"
+    >
+      <div class="flex flex-col gap-2 h-full justify-between">
+        <div class="flex flex-col gap-1">
+          <h3
+            class="flex flex-row text-lg font-semibold justify-between items-center gap-1"
+          >
+            {{ project.name }}
+            <span
+              class="rounded-full h-[15px] aspect-square"
+              [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
+              [class.bg-orange-400]="
+                project.status === ProjectStatus.IN_PROGRESS
+              "
+            >
+            </span>
+          </h3>
+          <p class="text-sm text-gray-400">{{ project.description }}</p>
+        </div>
+      </div>
+    </li>
+    }
+  </ul>
+</div>
+}

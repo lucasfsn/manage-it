@@ -10,8 +10,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
 import { AuthService } from '../../../../features/services/auth.service';
-import { MappersService } from '../../../../features/services/mappers.service';
+import { MapperService } from '../../../../features/services/mapper.service';
 import { TranslationService } from '../../../../features/services/translation.service';
+import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 import { passwordValidator } from '../../../../shared/validators';
 
 interface LoginForm {
@@ -22,18 +23,24 @@ interface LoginForm {
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, TranslateModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    TranslateModule,
+    FormButtonComponent,
+  ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
+  protected loading: boolean = false;
 
   public constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
     private translationService: TranslationService,
-    private mappersService: MappersService
+    private mapperService: MapperService
   ) {}
 
   protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>({
@@ -87,18 +94,23 @@ export class LoginFormComponent implements OnInit {
     const email = this.form.value.email ?? '';
     const password = this.form.value.password ?? '';
 
+    this.loading = true;
     this.authService.login({ email, password }).subscribe({
+      next: () => {
+        this.toastrService.success(
+          this.translationService.translate('toast.success.LOGIN')
+        );
+      },
       error: (error) => {
-        const localeMessage = this.mappersService.errorToastMapper(
+        const localeMessage = this.mapperService.errorToastMapper(
           error.status,
           error.error.errorDescription
         );
         this.toastrService.error(localeMessage);
+        this.loading = false;
       },
       complete: () => {
-        this.toastrService.success(
-          this.translationService.translate('toast.success.LOGIN')
-        );
+        this.loading = false;
       },
     });
   }

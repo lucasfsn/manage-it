@@ -86,30 +86,22 @@
     </div>
 
     <div class="col-span-2 flex justify-end gap-2 mt-4">
-      <button
-        [disabled]="loading"
-        (click)="onReset()"
-        class="px-4 py-2 bg-slate-900 flex justify-center items-center rounded-md text-slate-300 disabled:cursor-not-allowed"
-      >
-        <p class="text-xs">
-          {{ "project.form.RESET_BUTTON" | translate }}
-        </p>
-      </button>
-      <button
+      <app-form-button buttonType="reset" [disabled]="loading">{{
+        "project.form.RESET_BUTTON" | translate
+      }}</app-form-button>
+      <app-form-button
+        buttonType="submit"
         [disabled]="disabled"
-        (click)="onSubmit()"
-        class="px-4 py-2 bg-sky-500 flex justify-center items-center rounded-lg text-sky-100 disabled:bg-gray-500 disabled:cursor-not-allowed"
+        (handleClick)="onSubmit()"
       >
-        <p class="text-xs">
-          @if (loading) {
-          {{ "utils.LOADING" | translate }}
-          } @else if (isEditing) {
-          {{ "project.form.SAVE_BUTTON" | translate }}
-          } @else {
-          {{ "project.form.CREATE_BUTTON" | translate }}
-          }
-        </p>
-      </button>
+        @if (loading) {
+        {{ "utils.LOADING" | translate }}
+        } @else if (isEditing) {
+        {{ "project.form.SAVE_BUTTON" | translate }}
+        } @else {
+        {{ "project.form.CREATE_BUTTON" | translate }}
+        }
+      </app-form-button>
     </div>
   </form>
 </div>

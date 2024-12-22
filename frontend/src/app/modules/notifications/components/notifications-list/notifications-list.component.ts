@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Notification } from '../../../../features/dto/notification.model';
-import { MappersService } from '../../../../features/services/mappers.service';
+import { MapperService } from '../../../../features/services/mapper.service';
 import { NotificationService } from '../../../../features/services/notification.service';
 import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { TimeAgoPipe } from '../../../../shared/pipes/time-ago.pipe';
@@ -9,14 +10,14 @@ import { TimeAgoPipe } from '../../../../shared/pipes/time-ago.pipe';
 @Component({
   selector: 'app-notifications-list',
   standalone: true,
-  imports: [TimeAgoPipe, ProfileIconComponent],
+  imports: [TimeAgoPipe, ProfileIconComponent, TranslateModule],
   templateUrl: './notifications-list.component.html',
   styleUrl: './notifications-list.component.scss',
 })
 export class NotificationsListComponent {
   public constructor(
     private notificationService: NotificationService,
-    private mappersService: MappersService,
+    private mapperService: MapperService,
     private router: Router
   ) {}
 
@@ -27,7 +28,7 @@ export class NotificationsListComponent {
   }
 
   protected localeMessage(message: string): string {
-    return this.mappersService.notificationMessageMapper(message);
+    return this.mapperService.notificationMessageMapper(message);
   }
 
   protected markAsReadAndOpen(notification: Notification): void {

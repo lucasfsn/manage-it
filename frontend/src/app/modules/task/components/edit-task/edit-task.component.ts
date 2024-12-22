@@ -1,0 +1,184 @@
+import { Component, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
+import {
+  Priority,
+  Task,
+  TaskData,
+  TaskStatus,
+} from '../../../../features/dto/project.model';
+import { MapperService } from '../../../../features/services/mapper.service';
+import { TaskService } from '../../../../features/services/task.service';
+import { TranslationService } from '../../../../features/services/translation.service';
+import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
+
+interface EditTaskForm {
+  description: FormControl<string | null>;
+  status: FormControl<TaskStatus | null>;
+  priority: FormControl<Priority | null>;
+  dueDate: FormControl<string | null>;
+}
+
+@Component({
+  selector: 'app-edit-task',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatIconModule,
+    TranslateModule,
+    FormButtonComponent,
+  ],
+  templateUrl: './edit-task.component.html',
+  styleUrl: './edit-task.component.scss',
+})
+export class EditTaskComponent implements OnInit {
+  protected loading = false;
+
+  public constructor(
+    private taskService: TaskService,
+    private toastrService: ToastrService,
+    private dialogRef: MatDialogRef<EditTaskComponent>,
+    private mapperService: MapperService,
+    private translationService: TranslationService
+  ) {}
+
+  protected form: FormGroup<EditTaskForm> = new FormGroup<EditTaskForm>({
+    description: new FormControl('', [
+      Validators.minLength(2),
+      Validators.maxLength(120),
+      Validators.required,
+    ]),
+    status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED, {
+      validators: [Validators.required],
+    }),
+    priority: new FormControl<Priority | null>(Priority.LOW, {
+      validators: [Validators.required],
+    }),
+    dueDate: new FormControl('', {
+      validators: [Validators.required],
+    }),
+  });
+
+  protected get disabled(): boolean {
+    return this.form.invalid || !this.isFormChanged() || this.loading;
+  }
+
+  protected get task(): Task | undefined {
+    return this.taskService.loadedTask();
+  }
+
+  protected get Priority(): typeof Priority {
+    return Priority;
+  }
+
+  protected get TaskStatus(): typeof TaskStatus {
+    return TaskStatus;
+  }
+
+  protected get priorities(): Priority[] {
+    return Object.values(Priority);
+  }
+
+  protected get statuses(): TaskStatus[] {
+    return Object.values(TaskStatus);
+  }
+
+  protected mapTaskStatus(taskStatus: TaskStatus): string {
+    return this.mapperService.taskStatusMapper(taskStatus);
+  }
+
+  protected mapPriority(priority: Priority): string {
+    return this.mapperService.priorityMapper(priority);
+  }
+
+  protected get descriptionIsInvalid(): boolean {
+    return (
+      this.form.controls['description'].dirty &&
+      this.form.controls['description'].touched &&
+      this.form.controls['description'].invalid
+    );
+  }
+
+  protected get dueDateIsInvalid(): boolean {
+    return (
+      this.form.controls['dueDate'].dirty &&
+      this.form.controls['dueDate'].touched &&
+      this.form.controls['dueDate'].invalid
+    );
+  }
+
+  private isFormChanged(): boolean {
+    if (!this.task) return false;
+
+    return (
+      this.form.value.description !== this.task.description ||
+      this.form.value.status !== this.task.status ||
+      this.form.value.priority !== this.task.priority ||
+      this.form.value.dueDate !== this.task.dueDate
+    );
+  }
+
+  private fillFormWithDefaultValues(): void {
+    if (!this.task) return;
+
+    this.form.patchValue({
+      description: this.task.description,
+      status: this.task.status,
+      priority: this.task.priority,
+      dueDate: this.task.dueDate,
+    });
+  }
+
+  protected closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  protected onReset(): void {
+    this.fillFormWithDefaultValues();
+  }
+
+  protected onSubmit(): void {
+    if (!this.task || this.form.invalid) return;
+
+    const { id, projectId } = this.task;
+
+    const updatedTask: TaskData = {
+      description: this.form.value.description!,
+      status: this.form.value.status!,
+      priority: this.form.value.priority!,
+      dueDate: this.form.value.dueDate!,
+    };
+
+    if (!this.isFormChanged()) return;
+
+    this.loading = true;
+    this.taskService.updateTask(projectId, id, updatedTask).subscribe({
+      next: () => {
+        this.toastrService.success(
+          this.translationService.translate('toast.success.TASK_UPDATED')
+        );
+        this.closeDialog();
+      },
+      error: () => {
+        const localeMessage = this.mapperService.errorToastMapper();
+        this.toastrService.error(localeMessage);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+  public ngOnInit(): void {
+    this.fillFormWithDefaultValues();
+  }
+}

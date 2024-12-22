@@ -5,13 +5,13 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
 import { Project } from '../../../features/dto/project.model';
 import { LoadingService } from '../../../features/services/loading.service';
-import { MappersService } from '../../../features/services/mappers.service';
+import { MapperService } from '../../../features/services/mapper.service';
 import { ProjectService } from '../../../features/services/project.service';
 
 export const projectResolver: ResolveFn<Project | undefined> = (route) => {
   const loadingService = inject(LoadingService);
   const projectService = inject(ProjectService);
-  const mappersService = inject(MappersService);
+  const mapperService = inject(MapperService);
   const toastrService = inject(ToastrService);
   const location = inject(Location);
 
@@ -21,7 +21,7 @@ export const projectResolver: ResolveFn<Project | undefined> = (route) => {
 
     return projectService.getProject(projectId).pipe(
       catchError((error) => {
-        const localeMessage = mappersService.errorToastMapper(error.status);
+        const localeMessage = mapperService.errorToastMapper(error.status);
         toastrService.error(localeMessage);
         location.back();
 

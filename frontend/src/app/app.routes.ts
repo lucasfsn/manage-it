@@ -59,7 +59,7 @@ export const routes: Routes = [
       {
         path: 'users',
         loadChildren: () =>
-          import('./modules/users/users.routes').then((r) => r.USERS_ROUTES),
+          import('./modules/user/users.routes').then((r) => r.USERS_ROUTES),
       },
     ],
   },
