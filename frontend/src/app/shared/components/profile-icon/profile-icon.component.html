@@ -1,0 +1,13 @@
+<div
+  class="bg-sky-500 rounded-full flex justify-center items-center aspect-square font-semibold text-slate-950 transition-all"
+  [ngClass]="{
+    'w-24 h-24 text-4xl': size === 'xl',
+    'w-9 h-9 text-lg': size === 'lg',
+    'w-7 h-7 text-base': size === 'md',
+    'w-6 h-6 text-xs': size === 'sm',
+    'hover:bg-sky-600 cursor-pointer': hover
+  }"
+  [routerLink]="routerLink"
+>
+  {{ firstName.charAt(0) + lastName.charAt(0) }}
+</div>

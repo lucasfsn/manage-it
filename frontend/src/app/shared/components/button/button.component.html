@@ -1,0 +1,8 @@
+<button
+  [ngClass]="[bgColor, textColor, hoverBgColor]"
+  class="transition-all p-1 flex justify-center items-center rounded-full"
+  (click)="onClick()"
+  [routerLink]="routerLink"
+>
+  <ng-content />
+</button>

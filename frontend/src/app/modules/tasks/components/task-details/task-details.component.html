@@ -37,12 +37,12 @@
             {{ "task.details.NO_ASSIGNEES" | translate }}
           </p>
           } @for (member of task.members.slice(0,4); track member.username) {
-          <li
-            class="p-0.5 bg-sky-500 hover:bg-sky-600 text-sky-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"
-            [routerLink]="['/users', member.username]"
-          >
-            {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
-          </li>
+          <app-profile-icon
+            size="md"
+            [firstName]="member.firstName"
+            [lastName]="member.lastName"
+            [routerLink]="'/users/' + member.username"
+          />
           } @if (task.members.length > 4) {
           <button
             class="p-0.5 bg-sky-500 hover:bg-sky-600 focus:bg-sky-600 text-sky-950 rounded-full aspect-square w-7 h-7 flex justify-center cursor-pointer items-center transition-all shadow-sm text-sm"

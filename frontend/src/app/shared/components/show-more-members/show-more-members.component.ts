@@ -10,11 +10,12 @@ import { MappersService } from '../../../features/services/mappers.service';
 import { ProjectService } from '../../../features/services/project.service';
 import { TaskService } from '../../../features/services/task.service';
 import { TranslationService } from '../../../features/services/translation.service';
+import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
 
 @Component({
   selector: 'app-show-more-members',
   standalone: true,
-  imports: [MatIconModule, TranslateModule],
+  imports: [MatIconModule, TranslateModule, ProfileIconComponent],
   templateUrl: './show-more-members.component.html',
   styleUrl: './show-more-members.component.scss',
 })

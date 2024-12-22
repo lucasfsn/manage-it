@@ -11,6 +11,7 @@ import {
 import { User } from '../../../../features/dto/user.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { UserService } from '../../../../features/services/user.service';
+import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
 import { AddToProjectComponent } from '../../components/add-to-project/add-to-project.component';
 import { EditProfileFormComponent } from '../../components/edit-profile/edit-profile-form.component';
@@ -25,6 +26,7 @@ import { UserProfileRouteData } from '../../users.routes';
     DatePipe,
     AddToProjectComponent,
     TranslateModule,
+    ProfileIconComponent,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',

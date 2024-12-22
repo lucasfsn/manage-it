@@ -11,7 +11,9 @@ import { LoadingService } from '../../../../features/services/loading.service';
 import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TranslationService } from '../../../../features/services/translation.service';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
+import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
@@ -25,6 +27,8 @@ import { DatePipe } from '../../../../shared/pipes/date.pipe';
     ConfirmModalComponent,
     DatePipe,
     TranslateModule,
+    ButtonComponent,
+    ProfileIconComponent,
   ],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss',

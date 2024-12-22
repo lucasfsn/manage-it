@@ -7,14 +7,11 @@
     (keydown.space)="markAsReadAndOpen(notification)"
     tabindex="0"
   >
-    <div
-      class="bg-sky-500 rounded-full flex justify-center items-center w-[35px] h-[35px] aspect-square font-semibold text-slate-950"
-    >
-      {{
-        notification.user.firstName.charAt(0) +
-          notification.user.lastName.charAt(0)
-      }}
-    </div>
+    <app-profile-icon
+      size="lg"
+      [firstName]="notification.user.firstName"
+      [lastName]="notification.user.lastName"
+    />
     <div class="flex flex-col gap-1 text-sm">
       <p>
         <span class="font-semibold text-sky-500">{{

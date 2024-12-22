@@ -27,6 +27,7 @@ import {
   PageEvent,
   PaginatorComponent,
 } from '../../../../shared/components/paginator/paginator.component';
+import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-task.component';
 
 @Component({
@@ -39,6 +40,7 @@ import { SearchAddToTaskComponent } from '../search-add-to-task/search-add-to-ta
     SearchAddToTaskComponent,
     TranslateModule,
     PaginatorComponent,
+    ProfileIconComponent,
   ],
   templateUrl: './task-assignees.component.html',
   styleUrl: './task-assignees.component.scss',

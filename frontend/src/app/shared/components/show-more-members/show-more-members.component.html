@@ -34,12 +34,13 @@
         [disabled]="loading"
         tabindex="0"
       >
-        <p class="flex gap-1 items-center flex-grow">
-          <span
-            class="flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full mr-3"
-          >
-            {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
-          </span>
+        <p class="flex gap-3 items-center flex-grow">
+          <app-profile-icon
+            size="lg"
+            [firstName]="member.firstName"
+            [lastName]="member.lastName"
+            [hover]="false"
+          />
           <span class="text-slate-100"
             >{{ member.firstName }} {{ member.lastName }}</span
           >

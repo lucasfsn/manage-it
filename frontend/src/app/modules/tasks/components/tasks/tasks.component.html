@@ -31,12 +31,12 @@
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
           @for (user of task.members.slice(0, 3); track user.username) {
-          <span
-            class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-            title="{{ user.firstName }} {{ user.lastName }}"
-          >
-            {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
-          </span>
+          <app-profile-icon
+            size="sm"
+            [firstName]="user.firstName"
+            [lastName]="user.lastName"
+            [hover]="false"
+          />
           } @if (task.members.length > 3) {
           <span class="text-xs text-gray-400"
             >+{{ task.members.length - 3 }}</span
@@ -91,12 +91,12 @@
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
           @for (user of task.members.slice(0, 3); track user.username) {
-          <span
-            class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-            title="{{ user.firstName }} {{ user.lastName }}"
-          >
-            {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
-          </span>
+          <app-profile-icon
+            size="sm"
+            [firstName]="user.firstName"
+            [lastName]="user.lastName"
+            [hover]="false"
+          />
           } @if (task.members.length > 3) {
           <span class="text-xs text-gray-400"
             >+{{ task.members.length - 3 }}</span
@@ -151,12 +151,12 @@
         @if (task.members && task.members.length) {
         <div class="flex items-center gap-1">
           @for (user of task.members.slice(0, 3); track user.username) {
-          <span
-            class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-            title="{{ user.firstName }} {{ user.lastName }}"
-          >
-            {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
-          </span>
+          <app-profile-icon
+            size="sm"
+            [firstName]="user.firstName"
+            [lastName]="user.lastName"
+            [hover]="false"
+          />
           } @if (task.members.length > 3) {
           <span class="text-xs text-gray-400"
             >+{{ task.members.length - 3 }}</span

@@ -21,6 +21,7 @@ import { MappersService } from '../../../../features/services/mappers.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
+import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
 import { CreateTaskComponent } from '../create-task/create-task.component';
 
@@ -35,6 +36,7 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
     PriorityComponent,
     RouterLink,
     TranslateModule,
+    ProfileIconComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',

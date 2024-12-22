@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { Notification } from '../../../../features/dto/notification.model';
 import { MappersService } from '../../../../features/services/mappers.service';
 import { NotificationService } from '../../../../features/services/notification.service';
+import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { TimeAgoPipe } from '../../../../shared/pipes/time-ago.pipe';
 
 @Component({
   selector: 'app-notifications-list',
   standalone: true,
-  imports: [TimeAgoPipe],
+  imports: [TimeAgoPipe, ProfileIconComponent],
   templateUrl: './notifications-list.component.html',
   styleUrl: './notifications-list.component.scss',
 })

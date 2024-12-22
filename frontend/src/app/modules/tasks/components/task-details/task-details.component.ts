@@ -7,6 +7,7 @@ import { Task, TaskStatus } from '../../../../features/dto/project.model';
 import { MappersService } from '../../../../features/services/mappers.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
+import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
 
@@ -19,6 +20,7 @@ import { DatePipe } from '../../../../shared/pipes/date.pipe';
     PriorityComponent,
     TranslateModule,
     DatePipe,
+    ProfileIconComponent,
   ],
   templateUrl: './task-details.component.html',
   styleUrl: './task-details.component.scss',

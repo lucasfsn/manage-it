@@ -16,6 +16,7 @@ import { LoadingService } from '../../../../features/services/loading.service';
 import { MappersService } from '../../../../features/services/mappers.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { TranslationService } from '../../../../features/services/translation.service';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { EditTaskComponent } from '../../components/edit-task/edit-task.component';
@@ -31,6 +32,7 @@ import { TaskDetailsComponent } from '../../components/task-details/task-details
     MatIconModule,
     TaskDetailsComponent,
     ConfirmModalComponent,
+    ButtonComponent,
   ],
   templateUrl: './task.component.html',
   styleUrl: './task.component.scss',

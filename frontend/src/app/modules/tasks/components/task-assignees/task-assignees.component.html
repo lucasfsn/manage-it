@@ -37,11 +37,12 @@
             class="flex gap-2 cursor-pointer focus:outline-none"
             routerLink="/users/{{ user.username }}"
           >
-            <div
-              class="bg-sky-500 text-sky-950 font-semibold p-2 rounded-full aspect-square h-10 flex justify-center items-center"
-            >
-              {{ user.firstName.charAt(0) + user.lastName.charAt(0) }}
-            </div>
+            <app-profile-icon
+              size="lg"
+              [firstName]="user.firstName"
+              [lastName]="user.lastName"
+              [hover]="false"
+            />
             <p class="flex items-center gap-1">
               {{ user.firstName }} {{ user.lastName }}
               <span class="text-slate-600">({{ user.username }})</span>
