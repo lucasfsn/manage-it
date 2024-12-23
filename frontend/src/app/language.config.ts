@@ -17,9 +17,9 @@ export enum Locale {
 }
 
 export interface Language {
-  code: LanguageCode;
-  labelKey: LanguageLabelKey;
-  locale: Locale;
+  readonly code: LanguageCode;
+  readonly labelKey: LanguageLabelKey;
+  readonly locale: Locale;
 }
 
 export const LANGUAGES: Language[] = [

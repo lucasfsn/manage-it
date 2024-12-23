@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   SortCriteria,
   SortOrder,
-} from '../../modules/projects/models/project-sort.model';
+} from '../../modules/projects/models/projects-sort.model';
 import {
   NotificationOperation,
   NotificationType,

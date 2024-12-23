@@ -28,9 +28,9 @@ import { FormButtonComponent } from '../../../../shared/components/form-button/f
 import { dueDateValidator } from '../../../../shared/validators';
 
 interface TaskCreateForm {
-  description: FormControl<string | null>;
-  dueDate: FormControl<string | null>;
-  priority: FormControl<Priority | null>;
+  readonly description: FormControl<string | null>;
+  readonly dueDate: FormControl<string | null>;
+  readonly priority: FormControl<Priority | null>;
 }
 
 @Component({

@@ -31,7 +31,7 @@ export class ProjectMenuComponent {
     private router: Router
   ) {}
 
-  protected get project(): Project | undefined {
+  protected get project(): Project | null {
     return this.projectService.loadedProject();
   }
 

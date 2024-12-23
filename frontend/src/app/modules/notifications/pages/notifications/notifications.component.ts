@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NotificationsListComponent } from '../../components/notifications-list/notifications-list.component';
-import { NotificationsHeaderComponent } from '../../components/notifications-header/notifications-header.component';
+import { NotificationsMenuComponent } from '../../components/notifications-menu/notifications-menu.component';
 
 @Component({
   selector: 'app-notifications',
@@ -9,7 +9,7 @@ import { NotificationsHeaderComponent } from '../../components/notifications-hea
   imports: [
     NotificationsListComponent,
     TranslateModule,
-    NotificationsHeaderComponent,
+    NotificationsMenuComponent,
   ],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.scss',

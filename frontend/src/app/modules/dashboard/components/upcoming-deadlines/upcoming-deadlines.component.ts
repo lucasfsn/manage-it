@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { AuthService } from '../../../../features/services/auth.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TranslationService } from '../../../../features/services/translation.service';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
@@ -16,15 +15,14 @@ import { DatePipe } from '../../../../shared/pipes/date.pipe';
 })
 export class UpcomingDeadlinesComponent {
   public constructor(
-    private authService: AuthService,
     private projectService: ProjectService,
     private translationService: TranslationService
   ) {}
 
-  protected get projects(): Project[] | undefined {
+  protected get projects(): Project[] {
     return this.projectService
       .loadedProjects()
-      ?.filter(
+      .filter(
         (project) =>
           this.isUpcomingDeadline(project.endDate) &&
           project.status !== ProjectStatus.COMPLETED
@@ -32,15 +30,9 @@ export class UpcomingDeadlinesComponent {
   }
 
   protected sortedProjectsByEndDate(): Project[] {
-    const projects = this.projects;
-
-    if (!projects) return [];
-
-    return projects
-      .slice()
-      .sort(
-        (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
-      );
+    return [...this.projects].sort(
+      (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+    );
   }
 
   protected deadlineClass(endDate: string, status: ProjectStatus): string {
@@ -83,12 +75,6 @@ export class UpcomingDeadlinesComponent {
     const timeDiff = end.getTime() - currentDate.getTime();
 
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
-  }
-
-  protected isInProject(project: Project): boolean {
-    return project.members.some(
-      (member) => member.username === this.authService.getLoggedInUsername()
-    );
   }
 
   private isUpcomingDeadline(endDate: string): boolean {

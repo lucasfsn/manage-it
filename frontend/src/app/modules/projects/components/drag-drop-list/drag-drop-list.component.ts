@@ -23,10 +23,10 @@ import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
 import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
-import { TaskCreateFormComponent } from '../task-create-form/task-create-form.component';
+import { TaskCreateFormComponent } from '../../../task/components/task-create-form/task-create-form.component';
 
 @Component({
-  selector: 'app-tasks',
+  selector: 'app-drag-drop-list',
   standalone: true,
   imports: [
     MatIconModule,
@@ -38,10 +38,12 @@ import { TaskCreateFormComponent } from '../task-create-form/task-create-form.co
     TranslateModule,
     ProfileIconComponent,
   ],
-  templateUrl: './tasks.component.html',
-  styleUrl: './tasks.component.scss',
+  templateUrl: './drag-drop-list.component.html',
+  styleUrl: './drag-drop-list.component.scss',
 })
-export class TasksComponent implements OnInit {
+export class DragDropListComponent implements OnInit {
+  protected loading: boolean = false;
+
   public constructor(
     private dialog: MatDialog,
     private projectService: ProjectService,
@@ -54,7 +56,7 @@ export class TasksComponent implements OnInit {
   protected inProgressTasks: Task[] = [];
   protected notStartedTasks: Task[] = [];
 
-  protected get project(): Project | undefined {
+  protected get project(): Project | null {
     return this.projectService.loadedProject();
   }
 
@@ -115,7 +117,7 @@ export class TasksComponent implements OnInit {
       }
     );
 
-    dialogRef.afterClosed().subscribe((newTask: Task | undefined) => {
+    dialogRef.afterClosed().subscribe((newTask: Task | null) => {
       if (newTask) this.addTaskToList(newTask);
     });
   }
@@ -137,11 +139,16 @@ export class TasksComponent implements OnInit {
   protected handleMoveTask(task: Task, prevStatus: TaskStatus): void {
     if (!this.project) return;
 
+    this.loading = true;
     this.taskService.moveProjectTask(this.project, task).subscribe({
       error: () => {
         const localeMessage = this.mapperService.errorToastMapper();
         this.toastrService.error(localeMessage);
         this.restoreTaskState(task, prevStatus);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       },
     });
   }

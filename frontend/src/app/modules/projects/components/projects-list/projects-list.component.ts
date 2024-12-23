@@ -8,21 +8,21 @@ import { AuthService } from '../../../../features/services/auth.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
 import { enumValueValidator } from '../../../../shared/validators';
-import { ProjectFilters } from '../../models/project-filter.model';
+import { ProjectsFilters } from '../../models/projects-filter.model';
 import {
   ProjectsSort,
   SortCriteria,
   SortOrder,
-} from '../../models/project-sort.model';
+} from '../../models/projects-sort.model';
 import { ProjectsFilterComponent } from '../projects-filter/projects-filter.component';
 import { ProjectsSortComponent } from '../projects-sort/projects-sort.component';
 
 interface ProjectsParams extends Params {
-  sort?: SortCriteria;
-  order?: SortOrder;
-  name?: string;
-  status?: ProjectStatus;
-  onlyOwnedByMe?: string;
+  readonly sort?: SortCriteria;
+  readonly order?: SortOrder;
+  readonly name?: string;
+  readonly status?: ProjectStatus;
+  readonly onlyOwnedByMe?: string;
 }
 
 @Component({
@@ -57,7 +57,7 @@ export class ProjectsListComponent implements OnInit {
     private projectService: ProjectService
   ) {}
 
-  protected get projects(): Project[] | undefined {
+  protected get projects(): Project[] {
     return this.projectService.loadedProjects();
   }
 
@@ -71,7 +71,7 @@ export class ProjectsListComponent implements OnInit {
     this.applyFiltersAndSort();
   }
 
-  protected onFilterChange(filters: ProjectFilters): void {
+  protected onFilterChange(filters: ProjectsFilters): void {
     this.filterName = filters.name;
     this.filterStatus = filters.status;
     this.filterOnlyOwnedByMe = filters.onlyOwnedByMe;
@@ -108,7 +108,7 @@ export class ProjectsListComponent implements OnInit {
   }
 
   private filterProjects(): Project[] {
-    return (this.projects || []).filter((project) => {
+    return this.projects.filter((project) => {
       const matchesName =
         !this.filterName ||
         project.name.toLowerCase().includes(this.filterName.toLowerCase());

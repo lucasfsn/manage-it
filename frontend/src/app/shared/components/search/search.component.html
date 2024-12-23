@@ -11,11 +11,10 @@
       [placeholder]="'searchModal.PLACEHOLDER' | translate"
       [formControl]="form"
       (input)="onSearch()"
-      #searchInput
       id="searchInput"
     />
     <button
-      (click)="closeDialog()"
+      (click)="handleClose()"
       class="px-1.5 py-1 bg-slate-500 flex justify-center items-center rounded-md text-slate-300"
     >
       <p class="text-xs">{{ "searchModal.CLOSE_BUTTON" | translate }}</p>

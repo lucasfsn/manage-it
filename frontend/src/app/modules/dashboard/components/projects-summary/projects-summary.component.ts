@@ -43,13 +43,11 @@ export class ProjectsSummaryComponent implements OnInit {
   };
 
   protected get projects(): Project[] {
-    return this.projectService.loadedProjects() || [];
+    return this.projectService.loadedProjects();
   }
 
   protected updateChart(): void {
     const projects = this.projectService.loadedProjects();
-
-    if (!projects) return;
 
     const inProgress = projects.filter(
       (p) => p.status === ProjectStatus.IN_PROGRESS

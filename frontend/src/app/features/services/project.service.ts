@@ -15,13 +15,17 @@ import {
 export class ProjectService {
   public constructor(private http: HttpClient) {}
 
-  private allowAccess = false;
-
-  private projects = signal<Project[] | undefined>(undefined);
-  private project = signal<Project | undefined>(undefined);
+  private projects = signal<Project[]>([]);
+  private project = signal<Project | null>(null);
 
   public loadedProjects = this.projects.asReadonly();
   public loadedProject = this.project.asReadonly();
+
+  private allowAddToProject: boolean = false;
+
+  public get accessAddToProject(): boolean {
+    return this.allowAddToProject;
+  }
 
   public getProjects(): Observable<Project[]> {
     return this.http.get<Project[]>(`${environment.apiUrl}/projects`).pipe(
@@ -39,9 +43,7 @@ export class ProjectService {
       .post<Project>(`${environment.apiUrl}/projects`, newProject)
       .pipe(
         tap((res: Project) => {
-          const projects = this.projects();
-
-          this.projects.set([...(projects ?? []), res]);
+          this.projects.set([...this.projects(), res]);
         }),
         map((res: Project) => res.id),
         catchError((err: HttpErrorResponse) => {
@@ -123,10 +125,10 @@ export class ProjectService {
       })
       .pipe(
         tap(() => {
-          this.allowAccessToAddToProject = false;
+          this.allowAddToProject = false;
         }),
         catchError((err: HttpErrorResponse) => {
-          this.allowAccessToAddToProject = false;
+          this.allowAddToProject = false;
 
           return throwError(() => err);
         })
@@ -157,15 +159,11 @@ export class ProjectService {
       );
   }
 
+  public allowAccessToAddToProject(): void {
+    this.allowAddToProject = true;
+  }
+
   public setProject(project: Project): void {
     this.project.set(project);
-  }
-
-  public get allowAccessToAddToProject(): boolean {
-    return this.allowAccess;
-  }
-
-  public set allowAccessToAddToProject(value: boolean) {
-    this.allowAccess = value;
   }
 }

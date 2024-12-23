@@ -12,7 +12,7 @@ import { UpdateUser, User } from '../dto/user.model';
   providedIn: 'root',
 })
 export class UserService {
-  private user = signal<User | undefined>(undefined);
+  private user = signal<User | null>(null);
 
   public loadedUser = this.user.asReadonly();
 

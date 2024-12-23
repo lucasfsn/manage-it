@@ -10,6 +10,7 @@
     #completedList="cdkDropList"
     [cdkDropListData]="completedTasks"
     [cdkDropListConnectedTo]="[inProgressList, notStartedList]"
+    [cdkDropListDisabled]="loading"
     id="completed"
     class="w-full flex flex-col gap-1 min-h-[10px]"
     (cdkDropListDropped)="drop($event)"
@@ -17,7 +18,9 @@
   >
     @for (task of completedTasks; track task.id) {
     <div
-      class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none cursor-pointer flex flex-col gap-2 hover:border-slate-600"
+      class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none flex flex-col gap-2 hover:border-slate-600"
+      [class.cursor-wait]="loading"
+      [class.cursor-move]="!loading"
       routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
       cdkDrag
     >
@@ -71,6 +74,7 @@
     #inProgressList="cdkDropList"
     [cdkDropListData]="inProgressTasks"
     [cdkDropListConnectedTo]="[completedList, notStartedList]"
+    [cdkDropListDisabled]="loading"
     id="inProgress"
     class="w-full flex flex-col gap-1 min-h-[10px]"
     (cdkDropListDropped)="drop($event)"
@@ -78,7 +82,9 @@
   >
     @for (task of inProgressTasks; track task.id) {
     <div
-      class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none cursor-pointer flex flex-col gap-2 hover:border-slate-600"
+      class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none flex flex-col gap-2 hover:border-slate-600"
+      [class.cursor-wait]="loading"
+      [class.cursor-move]="!loading"
       routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
       cdkDrag
     >
@@ -132,6 +138,7 @@
     #notStartedList="cdkDropList"
     [cdkDropListData]="notStartedTasks"
     [cdkDropListConnectedTo]="[inProgressList, completedList]"
+    [cdkDropListDisabled]="loading"
     id="notStarted"
     class="w-full flex flex-col gap-1 min-h-[10px]"
     (cdkDropListDropped)="drop($event)"
@@ -139,7 +146,9 @@
   >
     @for (task of notStartedTasks; track task.id) {
     <div
-      class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none cursor-pointer flex flex-col gap-2 hover:border-slate-600"
+      class="p-3 rounded-lg text-gray-300 shadow-lg border-b border-slate-700 bg-card list-none flex flex-col gap-2 hover:border-slate-600"
+      [class.cursor-wait]="loading"
+      [class.cursor-move]="!loading"
       routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
       cdkDrag
     >

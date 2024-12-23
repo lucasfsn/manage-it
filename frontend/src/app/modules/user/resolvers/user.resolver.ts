@@ -22,7 +22,7 @@ export const userRedirectResolver: ResolveFn<void> = () => {
   }
 };
 
-export const userResolver: ResolveFn<User | undefined> = (route) => {
+export const userResolver: ResolveFn<User | null> = (route) => {
   const loadingService = inject(LoadingService);
   const userService = inject(UserService);
   const mapperService = inject(MapperService);
@@ -39,11 +39,11 @@ export const userResolver: ResolveFn<User | undefined> = (route) => {
         toastrService.error(localeMessage);
         location.back();
 
-        return of(undefined);
+        return of(null);
       }),
       finalize(() => loadingService.loadingOff())
     );
   }
 
-  return of(undefined);
+  return of(null);
 };

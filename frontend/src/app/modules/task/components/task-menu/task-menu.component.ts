@@ -70,7 +70,7 @@ export class TaskMenuComponent {
     this.showChat = !this.showChat;
   }
 
-  protected get task(): Task | undefined {
+  protected get task(): Task | null {
     return this.taskService.loadedTask();
   }
 

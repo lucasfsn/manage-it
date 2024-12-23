@@ -1,4 +1,9 @@
-@if (notifications.length > 0) {
+@if (notifications.length === 0) {
+<p class="text-gray-400">
+  {{ "notifications.NO_NOTIFICATIONS" | translate }}
+</p>
+}
+
 <ul class="flex flex-col gap-3">
   @for (notification of notifications; track notification.id) {
   <li
@@ -28,8 +33,3 @@
   </li>
   }
 </ul>
-} @else {
-<p class="text-gray-400">
-  {{ "notifications.NO_NOTIFICATIONS" | translate }}
-</p>
-}

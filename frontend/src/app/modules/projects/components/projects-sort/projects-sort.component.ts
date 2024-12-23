@@ -6,7 +6,7 @@ import {
   ProjectsSort,
   SortCriteria,
   SortOrder,
-} from '../../models/project-sort.model';
+} from '../../models/projects-sort.model';
 
 @Component({
   selector: 'app-projects-sort',

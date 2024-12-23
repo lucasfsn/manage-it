@@ -4,9 +4,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
 export interface PageEvent {
-  currentPage: number;
-  pageSize: number;
-  length: number;
+  readonly currentPage: number;
+  readonly pageSize: number;
+  readonly length: number;
 }
 
 @Component({

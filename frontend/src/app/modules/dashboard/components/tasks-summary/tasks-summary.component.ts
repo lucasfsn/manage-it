@@ -36,8 +36,6 @@ export class TasksSummaryComponent implements OnInit {
   protected updateChartData(): void {
     const projects = this.projectService.loadedProjects();
 
-    if (!projects) return;
-
     const taskStatusCounts: Record<TaskStatus, number> = {
       [TaskStatus.NOT_STARTED]: 0,
       [TaskStatus.IN_PROGRESS]: 0,

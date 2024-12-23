@@ -21,10 +21,10 @@ import { TranslationService } from '../../../../features/services/translation.se
 import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 
 interface TaskEditForm {
-  description: FormControl<string | null>;
-  status: FormControl<TaskStatus | null>;
-  priority: FormControl<Priority | null>;
-  dueDate: FormControl<string | null>;
+  readonly description: FormControl<string | null>;
+  readonly status: FormControl<TaskStatus | null>;
+  readonly priority: FormControl<Priority | null>;
+  readonly dueDate: FormControl<string | null>;
 }
 
 @Component({
@@ -71,7 +71,7 @@ export class TaskEditFormComponent implements OnInit {
     return this.form.invalid || !this.isFormChanged() || this.loading;
   }
 
-  protected get task(): Task | undefined {
+  protected get task(): Task | null {
     return this.taskService.loadedTask();
   }
 

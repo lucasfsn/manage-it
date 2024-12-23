@@ -23,7 +23,7 @@ export class UserProjectsListComponent implements OnInit {
     return ProjectStatus;
   }
 
-  protected get user(): User | undefined {
+  protected get user(): User | null {
     return this.userService.loadedUser();
   }
 

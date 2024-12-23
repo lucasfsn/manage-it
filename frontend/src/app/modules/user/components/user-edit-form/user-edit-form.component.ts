@@ -22,29 +22,29 @@ import {
 } from '../../../../shared/validators';
 
 interface PasswordsForm {
-  password: FormControl<string | null>;
-  confirmPassword: FormControl<string | null>;
+  readonly password: FormControl<string | null>;
+  readonly confirmPassword: FormControl<string | null>;
 }
 
-interface EditProfileForm {
-  firstName: FormControl<string | null>;
-  lastName: FormControl<string | null>;
-  email: FormControl<string | null>;
-  passwords: FormGroup<PasswordsForm>;
+interface UserEditForm {
+  readonly firstName: FormControl<string | null>;
+  readonly lastName: FormControl<string | null>;
+  readonly email: FormControl<string | null>;
+  readonly passwords: FormGroup<PasswordsForm>;
 }
 
 @Component({
-  selector: 'app-edit-profile-form',
+  selector: 'app-user-edit-form',
   standalone: true,
   imports: [ReactiveFormsModule, MatIconModule, TranslateModule],
-  templateUrl: './edit-profile-form.component.html',
-  styleUrl: './edit-profile-form.component.scss',
+  templateUrl: './user-edit-form.component.html',
+  styleUrl: './user-edit-form.component.scss',
 })
-export class EditProfileFormComponent implements OnInit {
+export class UserEditFormComponent implements OnInit {
   protected showPasswordFields = false;
 
   public constructor(
-    private dialogRef: MatDialogRef<EditProfileFormComponent>,
+    private dialogRef: MatDialogRef<UserEditFormComponent>,
     private userService: UserService,
     private toastrService: ToastrService,
     private translationService: TranslationService,
@@ -52,11 +52,11 @@ export class EditProfileFormComponent implements OnInit {
     private loadingService: LoadingService
   ) {}
 
-  protected get userData(): User | undefined {
+  protected get userData(): User | null {
     return this.userService.loadedUser();
   }
 
-  protected form: FormGroup<EditProfileForm> = new FormGroup<EditProfileForm>({
+  protected form: FormGroup<UserEditForm> = new FormGroup<UserEditForm>({
     firstName: new FormControl('', {
       validators: [
         Validators.required,
@@ -92,7 +92,7 @@ export class EditProfileFormComponent implements OnInit {
   });
 
   protected get disabled(): boolean {
-    return this.form.invalid || !this.isFormChanged();
+    return this.form.invalid || !this.hasFormChanged();
   }
 
   protected get firstNameIsInvalid(): boolean {
@@ -235,7 +235,17 @@ export class EditProfileFormComponent implements OnInit {
 
   protected togglePasswordFields(event: Event): void {
     this.showPasswordFields = (event.target as HTMLInputElement).checked;
-    if (!this.showPasswordFields) this.form.controls.passwords.reset();
+
+    const passwordControl = this.form.controls.passwords.get('password');
+
+    if (this.showPasswordFields) {
+      passwordControl?.addValidators(Validators.required);
+    } else {
+      passwordControl?.removeValidators(Validators.required);
+      this.form.controls.passwords.reset();
+    }
+
+    passwordControl?.updateValueAndValidity();
   }
 
   protected closeDialog(): void {
@@ -258,7 +268,7 @@ export class EditProfileFormComponent implements OnInit {
       }),
     };
 
-    if (!this.isFormChanged()) return;
+    if (!this.hasFormChanged()) return;
 
     this.loadingService.loadingOn();
     this.userService.updateUser(updatedUserData).subscribe({
@@ -274,7 +284,7 @@ export class EditProfileFormComponent implements OnInit {
     this.closeDialog();
   }
 
-  private isFormChanged(): boolean {
+  private hasFormChanged(): boolean {
     if (!this.userData) return false;
 
     return !!(

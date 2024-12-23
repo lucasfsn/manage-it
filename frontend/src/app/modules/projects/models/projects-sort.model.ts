@@ -16,6 +16,6 @@ export enum SortType {
 }
 
 export interface ProjectsSort {
-  criteria: SortCriteria;
-  order: SortOrder;
+  readonly criteria: SortCriteria;
+  readonly order: SortOrder;
 }

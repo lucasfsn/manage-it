@@ -1,14 +1,12 @@
-import { Component, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { User } from '../../../features/dto/project.model';
-import { LoadingService } from '../../../features/services/loading.service';
+import { Project, User } from '../../../features/dto/project.model';
 import { MapperService } from '../../../features/services/mapper.service';
 import { ProjectService } from '../../../features/services/project.service';
-import { TaskService } from '../../../features/services/task.service';
 import { TranslationService } from '../../../features/services/translation.service';
 import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
 
@@ -20,35 +18,27 @@ import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
   styleUrl: './show-more-members.component.scss',
 })
 export class ShowMoreMembersComponent {
-  protected isOnlyShow = inject<{ isOnlyShow: boolean }>(MAT_DIALOG_DATA)
-    .isOnlyShow;
-  protected isOnProject = inject<{ isOnProject: boolean }>(MAT_DIALOG_DATA)
-    .isOnProject;
   protected loading: boolean = false;
 
   public constructor(
     private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
     private projectService: ProjectService,
-    private taskService: TaskService,
     private toastrService: ToastrService,
-    private loadingService: LoadingService,
     private router: Router,
     private translationService: TranslationService,
     private mapperService: MapperService
   ) {}
 
-  protected get members(): User[] | undefined {
-    return this.isOnProject
-      ? this.projectService.loadedProject()?.members
-      : this.taskService.loadedTask()?.members;
+  protected get project(): Project | null {
+    return this.projectService.loadedProject();
   }
 
-  protected get projectOwner(): User | undefined {
-    return this.projectService.loadedProject()?.owner;
+  protected get members(): User[] {
+    return this.project?.members || [];
   }
 
   protected handleRemove(user: User): void {
-    const projectId = this.projectService.loadedProject()?.id;
+    const projectId = this.project?.id;
     if (!projectId) return;
 
     this.loading = true;
@@ -73,7 +63,7 @@ export class ShowMoreMembersComponent {
     });
   }
 
-  protected onClose(): void {
+  protected handleClose(): void {
     this.dialogRef.close();
   }
 

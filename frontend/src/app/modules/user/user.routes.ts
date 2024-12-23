@@ -1,17 +1,9 @@
 import { Routes } from '@angular/router';
-import { addToProjectGuard } from '../../core/guards/add-to-project.guard';
+import { allowAddUserToProjectGuard } from '../../core/guards/allow-add-user-to-project.guard';
 import { UserComponent } from './pages/user/user.component';
 import { userRedirectResolver, userResolver } from './resolvers/user.resolver';
 
-export interface UserProfileRouteData {
-  routeType: 'profile' | 'addToProject';
-}
-
-interface UserProfileRoutes extends Routes {
-  data?: UserProfileRouteData;
-}
-
-export const USERS_ROUTES: UserProfileRoutes = [
+export const USER_ROUTES: Routes = [
   {
     path: '',
     resolve: {
@@ -27,7 +19,6 @@ export const USERS_ROUTES: UserProfileRoutes = [
     },
     data: {
       title: 'title.PROFILE',
-      routeType: 'profile',
     },
   },
   {
@@ -36,10 +27,9 @@ export const USERS_ROUTES: UserProfileRoutes = [
     resolve: {
       userResolver,
     },
-    canActivate: [addToProjectGuard],
+    canActivate: [allowAddUserToProjectGuard],
     data: {
       title: 'title.PROFILE',
-      routeType: 'addToProject',
     },
   },
 ];

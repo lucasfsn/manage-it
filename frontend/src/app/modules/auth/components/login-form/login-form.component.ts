@@ -16,8 +16,8 @@ import { FormButtonComponent } from '../../../../shared/components/form-button/f
 import { passwordValidator } from '../../../../shared/validators';
 
 interface LoginForm {
-  email: FormControl<string | null>;
-  password: FormControl<string | null>;
+  readonly email: FormControl<string | null>;
+  readonly password: FormControl<string | null>;
 }
 
 @Component({

@@ -8,7 +8,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProjectStatus } from '../../../../features/dto/project.model';
 import { MapperService } from '../../../../features/services/mapper.service';
-import { ProjectFilters } from '../../models/project-filter.model';
+import { ProjectsFilters } from '../../models/projects-filter.model';
 
 @Component({
   selector: 'app-projects-filter',
@@ -26,7 +26,7 @@ import { ProjectFilters } from '../../models/project-filter.model';
   styleUrl: './projects-filter.component.scss',
 })
 export class ProjectsFilterComponent {
-  @Output() public filterChange = new EventEmitter<ProjectFilters>();
+  @Output() public filterChange = new EventEmitter<ProjectsFilters>();
 
   public constructor(private mapperService: MapperService) {}
 

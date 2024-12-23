@@ -8,7 +8,7 @@ import { LoadingService } from '../../../features/services/loading.service';
 import { MapperService } from '../../../features/services/mapper.service';
 import { TaskService } from '../../../features/services/task.service';
 
-export const tasksResolver: ResolveFn<Task | undefined> = (route) => {
+export const taskResolver: ResolveFn<Task | null> = (route) => {
   const loadingService = inject(LoadingService);
   const taskService = inject(TaskService);
   const mapperService = inject(MapperService);
@@ -29,11 +29,11 @@ export const tasksResolver: ResolveFn<Task | undefined> = (route) => {
         toastrService.error(localeMessage);
         location.back();
 
-        return of(undefined);
+        return of(null);
       }),
       finalize(() => loadingService.loadingOff())
     );
   }
 
-  return of(undefined);
+  return of(null);
 };

@@ -14,7 +14,7 @@ export class TaskService {
     private projectService: ProjectService
   ) {}
 
-  private task = signal<Task | undefined>(undefined);
+  private task = signal<Task | null>(null);
 
   public loadedTask = this.task.asReadonly();
 

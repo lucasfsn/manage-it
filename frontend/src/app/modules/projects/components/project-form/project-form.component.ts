@@ -24,19 +24,18 @@ import {
 } from '../../../../shared/validators';
 
 interface RouteData {
-  project?: Project;
-  isEditing?: boolean;
+  readonly isEditing: boolean;
 }
 
 interface DatesForm {
-  startDate: FormControl<string | null>;
-  endDate: FormControl<string | null>;
+  readonly startDate: FormControl<string | null>;
+  readonly endDate: FormControl<string | null>;
 }
 
 interface ProjectForm {
-  name: FormControl<string | null>;
-  description: FormControl<string | null>;
-  dates: FormGroup<DatesForm>;
+  readonly name: FormControl<string | null>;
+  readonly description: FormControl<string | null>;
+  readonly dates: FormGroup<DatesForm>;
 }
 
 @Component({
@@ -66,7 +65,7 @@ export class ProjectFormComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  protected get project(): Project | undefined {
+  protected get project(): Project | null {
     return this.projectService.loadedProject();
   }
 
@@ -277,10 +276,11 @@ export class ProjectFormComponent implements OnInit {
       },
     });
 
-    this.route.data.subscribe((data: RouteData) => {
-      this.isEditing = data['isEditing'] || false;
-      this.fillFormWithDefaultValues();
-    });
+    const { isEditing } = this.route.snapshot.data as RouteData;
+
+    this.isEditing = isEditing;
+
+    this.fillFormWithDefaultValues();
 
     this.addValidatorsIfCreating();
   }

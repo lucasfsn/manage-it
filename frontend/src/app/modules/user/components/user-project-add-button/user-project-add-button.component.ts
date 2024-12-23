@@ -9,13 +9,13 @@ import { TranslationService } from '../../../../features/services/translation.se
 import { UserService } from '../../../../features/services/user.service';
 
 @Component({
-  selector: 'app-add-to-project',
+  selector: 'app-user-project-add-button',
   standalone: true,
   imports: [TranslateModule],
-  templateUrl: './add-to-project.component.html',
-  styleUrl: './add-to-project.component.scss',
+  templateUrl: './user-project-add-button.component.html',
+  styleUrl: './user-project-add-button.component.scss',
 })
-export class AddToProjectComponent implements OnInit {
+export class UserProjectAddButtonComponent implements OnInit {
   protected projectId: string | null = null;
   protected loading: boolean = false;
 
@@ -29,7 +29,7 @@ export class AddToProjectComponent implements OnInit {
     private mapperService: MapperService
   ) {}
 
-  private get user(): User | undefined {
+  private get user(): User | null {
     return this.userService.loadedUser();
   }
 

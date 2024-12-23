@@ -32,18 +32,12 @@
             [routerLink]="'/users/' + member.username"
           />
           } @if (project.members.length > 5) {
-          <button
-            class="text-sky-500 cursor-pointer transition-all"
-            (click)="showAllMembers(true)"
-            tabindex="0"
-          >
-            +{{ project.members.length - 5 }}
-          </button>
+          <p class="text-sky-500">+{{ project.members.length - 5 }}</p>
           } @if (project.status !== ProjectStatus.COMPLETED && isOwner) {
           <div class="flex ml-1.5 gap-0.5 bg-sky-950 rounded-full p-0.5">
             <button
               class="flex justify-center items-center"
-              (click)="showAllMembers(false)"
+              (click)="showAllMembers()"
             >
               <mat-icon
                 class="text-base text-sky-600 hover:text-sky-700 transition-all"

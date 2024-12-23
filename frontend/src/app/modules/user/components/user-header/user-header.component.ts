@@ -16,7 +16,7 @@ import { DatePipe } from '../../../../shared/pipes/date.pipe';
 export class UserHeaderComponent {
   public constructor(private userService: UserService) {}
 
-  protected get user(): User | undefined {
+  protected get user(): User | null {
     return this.userService.loadedUser();
   }
 }

@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
+import { projectsResolver } from '../projects/resolvers/projects.resolver';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { dashboardResolver } from './resolvers/dashboard.resolver';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
     path: '',
     component: DashboardComponent,
     resolve: {
-      dashboardResolver,
+      projectsResolver,
     },
     data: {
       title: 'title.DASHBOARD',

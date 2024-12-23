@@ -44,13 +44,7 @@
             [routerLink]="'/users/' + member.username"
           />
           } @if (task.members.length > 4) {
-          <button
-            class="text-sky-500 cursor-pointer transition-all"
-            (click)="showAllMembers(true)"
-            tabindex="0"
-          >
-            +{{ task.members.length - 4 }}
-          </button>
+          <p class="text-sky-500">+{{ task.members.length - 4 }}</p>
           }
         </ul>
         <p class="flex items-center">

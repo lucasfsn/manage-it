@@ -8,7 +8,6 @@ import { MapperService } from '../../../../features/services/mapper.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
 import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
-import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
 
 @Component({
@@ -36,7 +35,7 @@ export class TaskDetailsComponent {
     return TaskStatus;
   }
 
-  protected get task(): Task | undefined {
+  protected get task(): Task | null {
     return this.taskService.loadedTask();
   }
 
@@ -44,16 +43,5 @@ export class TaskDetailsComponent {
     if (!this.task) return '';
 
     return this.mapperService.taskStatusMapper(this.task.status);
-  }
-
-  protected showAllMembers(isOnlyShow: boolean): void {
-    this.dialog.open(ShowMoreMembersComponent, {
-      width: '600px',
-      backdropClass: 'dialog-backdrop',
-      data: {
-        isOnlyShow,
-        isOnProject: false,
-      },
-    });
   }
 }

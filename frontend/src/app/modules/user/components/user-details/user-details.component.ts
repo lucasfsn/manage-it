@@ -8,27 +8,31 @@ import { ProjectStatus } from '../../../../features/dto/project.model';
 import { User } from '../../../../features/dto/user.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { UserService } from '../../../../features/services/user.service';
-import { UserProfileRouteData } from '../../users.routes';
-import { AddToProjectComponent } from '../add-to-project/add-to-project.component';
-import { EditProfileFormComponent } from '../edit-profile/edit-profile-form.component';
+import { UserEditFormComponent } from '../user-edit-form/user-edit-form.component';
 import { UserHeaderComponent } from '../user-header/user-header.component';
+import { UserProjectAddButtonComponent } from '../user-project-add-button/user-project-add-button.component';
 import { UserProjectsListComponent } from '../user-projects-list/user-projects-list.component';
+
+interface ParamsData {
+  readonly username: string;
+  readonly projectId?: string;
+}
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
   imports: [
     MatIconModule,
-    AddToProjectComponent,
     TranslateModule,
     UserProjectsListComponent,
     UserHeaderComponent,
+    UserProjectAddButtonComponent,
   ],
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.scss',
 })
 export class UserDetailsComponent implements OnInit {
-  protected addToProject = false;
+  protected showAddToProjectButton = false;
 
   public constructor(
     private userService: UserService,
@@ -42,7 +46,7 @@ export class UserDetailsComponent implements OnInit {
     return ProjectStatus;
   }
 
-  protected get user(): User | undefined {
+  protected get user(): User | null {
     return this.userService.loadedUser();
   }
 
@@ -51,7 +55,7 @@ export class UserDetailsComponent implements OnInit {
   }
 
   protected openEditProfileDialog(): void {
-    this.dialog.open(EditProfileFormComponent, {
+    this.dialog.open(UserEditFormComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
       data: {
@@ -61,15 +65,10 @@ export class UserDetailsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const { routeType } = this.route.snapshot.data as UserProfileRouteData;
+    const { username, projectId } = this.route.snapshot.params as ParamsData;
 
-    if (routeType === 'addToProject') this.addToProject = true;
+    if (username) this.titleService.setTitle(`${username} | ManageIt`);
 
-    this.route.paramMap.subscribe((params) => {
-      const username = params.get('username');
-      if (username) {
-        this.titleService.setTitle(`${username} | ManageIt`);
-      }
-    });
+    if (projectId) this.showAddToProjectButton = true;
   }
 }

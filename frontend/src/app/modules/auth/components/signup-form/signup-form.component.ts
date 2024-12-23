@@ -23,16 +23,16 @@ import {
 } from '../../../../shared/validators';
 
 interface PasswordsForm {
-  password: FormControl<string | null>;
-  confirmPassword: FormControl<string | null>;
+  readonly password: FormControl<string | null>;
+  readonly confirmPassword: FormControl<string | null>;
 }
 
 interface SignupForm {
-  firstName: FormControl<string | null>;
-  lastName: FormControl<string | null>;
-  username: FormControl<string | null>;
-  email: FormControl<string | null>;
-  passwords: FormGroup<PasswordsForm>;
+  readonly firstName: FormControl<string | null>;
+  readonly lastName: FormControl<string | null>;
+  readonly username: FormControl<string | null>;
+  readonly email: FormControl<string | null>;
+  readonly passwords: FormGroup<PasswordsForm>;
 }
 
 @Component({
@@ -90,18 +90,10 @@ export class SignupFormComponent {
     passwords: new FormGroup<PasswordsForm>(
       {
         password: new FormControl('', {
-          validators: [
-            Validators.required,
-            Validators.minLength(8),
-            passwordValidator,
-          ],
+          validators: [Validators.required, passwordValidator],
         }),
         confirmPassword: new FormControl('', {
-          validators: [
-            Validators.required,
-            Validators.minLength(8),
-            passwordValidator,
-          ],
+          validators: [Validators.required, passwordValidator],
         }),
       },
       {

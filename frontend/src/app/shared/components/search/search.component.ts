@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -31,7 +31,6 @@ import { UserService } from '../../../features/services/user.service';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent {
-  @ViewChild('searchInput') protected searchInput!: ElementRef;
   protected form = new FormControl<string>('');
   protected searchResults: User[] = [];
 
@@ -44,31 +43,21 @@ export class SearchComponent {
     @Inject(MAT_DIALOG_DATA) protected data?: { projectId?: string }
   ) {}
 
-  protected closeDialog(): void {
-    if (this.data?.projectId)
-      this.projectService.allowAccessToAddToProject = true;
-
+  protected handleClose(): void {
     this.dialogRef.close();
   }
 
   protected handleClick(username: string): void {
-    if (this.data?.projectId) {
-      this.router.navigate([
-        '/users',
-        username,
-        'projects',
-        this.data.projectId,
-        'add',
-      ]);
+    const projectId = this.data?.projectId;
+
+    if (projectId) {
+      this.router.navigate(['/users', username, 'projects', projectId, 'add']);
+      this.projectService.allowAccessToAddToProject();
     } else {
       this.router.navigate(['/users', username]);
     }
 
-    this.closeDialog();
-  }
-
-  protected focusInput(): void {
-    this.searchInput.nativeElement.focus();
+    this.handleClose();
   }
 
   protected onSearch(): void {

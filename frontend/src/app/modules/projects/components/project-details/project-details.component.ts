@@ -67,7 +67,7 @@ export class ProjectDetailsComponent {
     private mapperService: MapperService
   ) {}
 
-  protected get project(): Project | undefined {
+  protected get project(): Project | null {
     return this.projectService.loadedProject();
   }
 
@@ -85,14 +85,10 @@ export class ProjectDetailsComponent {
     this.showChat = !this.showChat;
   }
 
-  protected showAllMembers(isOnlyShow: boolean): void {
+  protected showAllMembers(): void {
     this.dialog.open(ShowMoreMembersComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
-      data: {
-        isOnlyShow,
-        isOnProject: true,
-      },
     });
   }
 

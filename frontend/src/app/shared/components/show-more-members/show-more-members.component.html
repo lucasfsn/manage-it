@@ -4,22 +4,14 @@
       <div
         class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
       >
-        @if (isOnlyShow) {
-        <mat-icon>people</mat-icon>
-        } @else {
         <mat-icon>manage_accounts</mat-icon>
-        }
       </div>
       <p class="font-semibold">
-        @if (isOnlyShow) {
-        {{ "showMoreMembers.ALL_TEXT" | translate }}
-        } @else {
         {{ "showMoreMembers.MANAGE_TEXT" | translate }}
-        }
       </p>
     </div>
     <button
-      (click)="onClose()"
+      (click)="handleClose()"
       class="focus:outline-none focus:text-opacity-90"
     >
       <mat-icon>close</mat-icon>
@@ -45,7 +37,7 @@
             >{{ member.firstName }} {{ member.lastName }}</span
           >
         </p>
-        @if (!isOnlyShow && !(projectOwner?.username === member.username)) {
+        @if (!(project?.owner?.username === member.username)) {
         <button
           class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-0.5 flex justify-center items-center rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
           (click)="handleRemove(member); $event.stopPropagation()"

@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 import { TaskComponent } from './pages/task/task.component';
-import { tasksResolver } from './resolvers/tasks.resolver';
+import { taskResolver } from './resolvers/task.resolver';
 
-export const TASKS_ROUTES: Routes = [
+export const TASK_ROUTES: Routes = [
   {
     path: ':taskId',
     component: TaskComponent,
     resolve: {
-      tasksResolver,
+      taskResolver,
     },
     data: {
       title: 'title.TASK',
