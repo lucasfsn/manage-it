@@ -14,9 +14,17 @@
   &:hover, &:focus {
     transition: all 0.3s;
     color: #0ea5e9;
-    background-color: #101625;
     border-radius: 0.5rem;
     outline: none;
+
+    @media (min-width: 640px) {
+      background-color: #101625;
+    }
+
+    .profile-picture {
+      transition: all 0.3s;
+      background-color: #0ea5e9;
+    }
   }
 
   .sidebar-item {

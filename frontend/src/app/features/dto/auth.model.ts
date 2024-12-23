@@ -6,6 +6,12 @@ export interface UserCredentials {
   readonly username: string;
 }
 
+export interface UpdateUserCredentials {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 export interface LoginCredentials {
   readonly email: string;
   readonly password: string;

@@ -7,6 +7,7 @@ import {
   AuthResponse,
   LoginCredentials,
   RegisterCredentials,
+  UpdateUserCredentials,
   UserCredentials,
 } from '../dto/auth.model';
 
@@ -79,6 +80,14 @@ export class AuthService {
           return throwError(() => err.error);
         })
       );
+  }
+
+  public setUser(updatedData: UpdateUserCredentials): void {
+    const user = this.currentUser();
+
+    if (!user) return;
+
+    this.currentUser.set({ ...user, ...updatedData });
   }
 
   public getLoggedInUsername(): string | undefined {

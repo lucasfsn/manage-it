@@ -6,7 +6,9 @@ import {
 import { Injectable, signal } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { UpdateUserCredentials } from '../dto/auth.model';
 import { UpdateUser, User } from '../dto/user.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +18,10 @@ export class UserService {
 
   public loadedUser = this.user.asReadonly();
 
-  public constructor(private http: HttpClient) {}
+  public constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
   public getUserByUsername(username: string): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/users/${username}`).pipe(
@@ -34,12 +39,20 @@ export class UserService {
       .patch<null>(`${environment.apiUrl}/users`, updatedData)
       .pipe(
         tap(() => {
-          // res: User; // TODO:
+          // user: User; // TODO:
 
-          const prevProject = this.user()!;
+          const user = this.user()!;
 
-          this.user.set({ ...prevProject, ...updatedData });
-          // this.project.set(res)
+          const loggedInUserData: UpdateUserCredentials = {
+            firstName: updatedData.firstName,
+            lastName: updatedData.lastName,
+            email: updatedData.email,
+          };
+
+          this.user.set({ ...user, ...updatedData });
+          this.authService.setUser(loggedInUserData);
+
+          // this.user.set(user)
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);

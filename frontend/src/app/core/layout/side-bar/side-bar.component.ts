@@ -10,6 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { UserCredentials } from '../../../features/dto/auth.model';
+import { AuthService } from '../../../features/services/auth.service';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 
 @Component({
@@ -43,7 +45,14 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
 export class SideBarComponent implements OnInit {
   public isCollapsed = false;
 
-  public constructor(private dialog: MatDialog) {}
+  public constructor(
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {}
+
+  protected get user(): UserCredentials | null {
+    return this.authService.loadedUser();
+  }
 
   protected toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;

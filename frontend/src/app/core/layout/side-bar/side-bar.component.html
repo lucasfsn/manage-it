@@ -58,16 +58,25 @@
         <mat-icon>notifications</mat-icon>
       </p>
       <p
-        class="sidebar-item]"
+        class="sidebar-item"
         [@toggleMenu]="isCollapsed ? 'collapsed' : 'expanded'"
       >
         {{ "sidebar.NOTIFICATIONS" | translate }}
       </p>
     </div>
     <div class="sidebar" routerLink="users" routerLinkActive="text-sky-500">
+      @if (user) {
+      <p
+        class="rounded-full flex justify-center items-center aspect-square w-6 h-6 text-xs bg-white text-slate-950 profile-picture"
+      >
+        {{ user.firstName.charAt(0) + user.lastName.charAt(0) }}
+      </p>
+
+      } @else {
       <p class="sidebar-item">
         <mat-icon>account_circle</mat-icon>
       </p>
+      }
       <p
         class="sidebar-item"
         [@toggleMenu]="isCollapsed ? 'collapsed' : 'expanded'"
