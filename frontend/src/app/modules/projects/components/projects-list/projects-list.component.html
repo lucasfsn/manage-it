@@ -13,10 +13,10 @@
   {{ "projects.list.NO_PROJECTS" | translate }}
 </p>
 }
-<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5 overflow-hidden">
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5">
   @for (project of sortedAndFilteredProjects; track project.id) {
   <div
-    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-opacity-70 transition-all gap-4 justify-between"
+    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-opacity-70 transition-all gap-4 justify-between focus:outline-none active:bg-opacity-70 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-950"
     routerLink="/projects/{{ project.id }}"
   >
     <div class="flex flex-col gap-2 h-full justify-between">

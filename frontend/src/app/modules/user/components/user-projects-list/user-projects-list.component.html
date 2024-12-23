@@ -1,10 +1,9 @@
-@if (commonProjects.length > 0) {
 <div class="flex flex-col gap-2">
   <h3 class="text-xl font-semibold text-center"><ng-content /></h3>
   <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5 px-4">
     @for (project of commonProjects; track project.id) {
     <li
-      class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer transition-all hover:bg-opacity-75 gap-4 justify-between focus:bg-opacity-95 focus:outline-none focus:ring-0 focus-visible:outline-none focus-within:outline-none"
+      class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer transition-all hover:bg-opacity-75 gap-4 justify-between focus:bg-opacity-95 focus:outline-none focus:ring-2 active:text-sky-500 focus:ring-sky-500"
       routerLink="/projects/{{ project.id }}"
     >
       <div class="flex flex-col gap-2 h-full justify-between">
@@ -29,4 +28,3 @@
     }
   </ul>
 </div>
-}

@@ -57,6 +57,7 @@ button {
   @include mat.dialog-overrides(
     (
       content-padding: 1.5rem,
+      container-color: #1e293b,
     )
   );
   @include mat.select-overrides(

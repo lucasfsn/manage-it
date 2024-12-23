@@ -1,5 +1,9 @@
 <div class="flex gap-2 sm:gap-4 flex-col sm:flex-row">
-  <button mat-icon-button [matMenuTriggerFor]="filterMenu">
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="filterMenu"
+    class="flex justify-center items-center focus:outline-none focus:ring-2 active:text-sky-500 focus:ring-sky-500 active:ring-0"
+  >
     <mat-icon>filter_list</mat-icon>
   </button>
   <div class="flex items-center bg-slate-900 rounded-full px-2 py-1 gap-1">

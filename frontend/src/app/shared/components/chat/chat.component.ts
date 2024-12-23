@@ -30,6 +30,7 @@ import { AuthService } from '../../../features/services/auth.service';
 import { ChatService } from '../../../features/services/chat.service';
 import { MapperService } from '../../../features/services/mapper.service';
 import { DatePipe } from '../../pipes/date.pipe';
+import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
 
 @Component({
   selector: 'app-chat',
@@ -40,6 +41,7 @@ import { DatePipe } from '../../pipes/date.pipe';
     FormsModule,
     DatePipe,
     TranslateModule,
+    ProfileIconComponent,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',

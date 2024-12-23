@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-1.5 overflow-hidden">
+<div class="flex flex-col gap-1.5">
   <p class="self-center font-medium text-sky-500">
     {{ "dashboard.ongoingProjects.TITLE" | translate }}
   </p>
@@ -8,7 +8,7 @@
   </p>
   } @for (project of projects; track project.id) {
   <div
-    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-slate-800 transition-all"
+    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-slate-800 transition-all focus:outline-none focus:ring-2 active:text-sky-500 focus:ring-sky-500"
     routerLink="/projects/{{ project.id }}"
   >
     <h3 class="text-lg font-semibold">{{ project.name }}</h3>

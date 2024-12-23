@@ -18,8 +18,8 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
-import { ShowMoreMembersComponent } from '../../../../shared/components/show-more-members/show-more-members.component';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
+import { ProjectManageMembersComponent } from '../project-manage-members/project-manage-members.component';
 import { ProjectMenuComponent } from '../project-menu/project-menu.component';
 
 @Component({
@@ -86,7 +86,7 @@ export class ProjectDetailsComponent {
   }
 
   protected showAllMembers(): void {
-    this.dialog.open(ShowMoreMembersComponent, {
+    this.dialog.open(ProjectManageMembersComponent, {
       width: '600px',
       backdropClass: 'dialog-backdrop',
     });

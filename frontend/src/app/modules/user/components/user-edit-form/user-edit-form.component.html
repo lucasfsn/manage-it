@@ -1,5 +1,5 @@
 <button
-  class="flex justify-end items-center pr-4 pt-4 bg-slate-800 focus:outline-none"
+  class="flex self-end items-center pr-4 pt-4 bg-slate-800 focus:outline-none focus:text-sky-500"
   (click)="closeDialog()"
 >
   <mat-icon>close</mat-icon>
@@ -51,11 +51,11 @@
         }
       </div>
       <div class="flex flex-col gap-2">
-        <label class="flex items-center gap-2">
+        <label class="flex items-center gap-2 self-start">
           <input
             type="checkbox"
             (change)="togglePasswordFields($event)"
-            class="rounded-full"
+            class="rounded-full focus:outline-none focus:ring-2 active:text-sky-500 focus:ring-sky-500"
           />
           {{ "user.editForm.PASSWORD_LABEL" | translate }}
         </label>
@@ -94,14 +94,14 @@
     </div>
     <div class="flex justify-between">
       <button
-        class="bg-gray-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-gray-700 transition-all rounded-full"
+        class="bg-gray-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-gray-700 transition-all rounded-full focus:outline-none focus:ring-2 active:text-gray-100 focus:ring-gray-500"
         (click)="onReset()"
       >
         {{ "user.editForm.RESET_BUTTON" | translate }}
       </button>
       <button
         [disabled]="disabled"
-        class="bg-sky-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full disabled:cursor-not-allowed disabled:bg-gray-500"
+        class="bg-sky-600 text-xs px-2 py-1.5 sm:px-4 sm:py-3 sm:text-sm font-medium text-slate-100 hover:bg-sky-700 transition-all rounded-full disabled:cursor-not-allowed disabled:bg-gray-500 focus:outline-none focus:ring-2 active:text-sky-200 focus:ring-sky-200"
         (click)="onSubmit()"
       >
         {{ "user.editForm.SAVE_BUTTON" | translate }}

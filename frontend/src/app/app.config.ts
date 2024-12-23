@@ -31,7 +31,7 @@ function tokenGetter(): string | null {
 }
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http, './i18n/', '.json');
+  return new TranslateHttpLoader(http);
 }
 
 export const appConfig: ApplicationConfig = {
@@ -46,6 +46,7 @@ export const appConfig: ApplicationConfig = {
         },
       }),
       TranslateModule.forRoot({
+        defaultLanguage: 'pl',
         loader: {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,

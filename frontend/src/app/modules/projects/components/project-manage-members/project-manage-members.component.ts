@@ -4,24 +4,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Project, User } from '../../../features/dto/project.model';
-import { MapperService } from '../../../features/services/mapper.service';
-import { ProjectService } from '../../../features/services/project.service';
-import { TranslationService } from '../../../features/services/translation.service';
-import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
+import { Project, User } from '../../../../features/dto/project.model';
+import { MapperService } from '../../../../features/services/mapper.service';
+import { ProjectService } from '../../../../features/services/project.service';
+import { TranslationService } from '../../../../features/services/translation.service';
+import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 
 @Component({
-  selector: 'app-show-more-members',
+  selector: 'app-project-manage-members',
   standalone: true,
   imports: [MatIconModule, TranslateModule, ProfileIconComponent],
-  templateUrl: './show-more-members.component.html',
-  styleUrl: './show-more-members.component.scss',
+  templateUrl: './project-manage-members.component.html',
+  styleUrl: './project-manage-members.component.scss',
 })
-export class ShowMoreMembersComponent {
+export class ProjectManageMembersComponent {
   protected loading: boolean = false;
 
   public constructor(
-    private dialogRef: MatDialogRef<ShowMoreMembersComponent>,
+    private dialogRef: MatDialogRef<ProjectManageMembersComponent>,
     private projectService: ProjectService,
     private toastrService: ToastrService,
     private router: Router,
