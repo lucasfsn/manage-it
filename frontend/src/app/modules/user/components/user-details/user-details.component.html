@@ -13,6 +13,7 @@
     </button>
     }
   </div>
+  @if (user.projects.length > 0) {
   <app-user-projects-list>
     @if (isLoggedInUser(user.username)) {
     {{ "user.profile.LOGGED_USER_TEXT" | translate }}
@@ -20,5 +21,6 @@
     {{ "user.profile.NOT_LOGGED_USER_TEXT" | translate }}
     }
   </app-user-projects-list>
+  }
 </div>
 }

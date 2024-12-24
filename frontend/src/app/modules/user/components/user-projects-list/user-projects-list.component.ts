@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   ProjectStatus,
   UserProject,
 } from '../../../../features/dto/project.model';
-import { User } from '../../../../features/dto/user.model';
 import { UserService } from '../../../../features/services/user.service';
 
 @Component({
   selector: 'app-user-projects-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, TranslateModule],
   templateUrl: './user-projects-list.component.html',
   styleUrl: './user-projects-list.component.scss',
 })
-export class UserProjectsListComponent implements OnInit {
+export class UserProjectsListComponent {
   protected commonProjects: UserProject[] = [];
 
   public constructor(private userService: UserService) {}
@@ -23,15 +23,7 @@ export class UserProjectsListComponent implements OnInit {
     return ProjectStatus;
   }
 
-  protected get user(): User | null {
-    return this.userService.loadedUser();
-  }
-
-  public ngOnInit(): void {
-    if (!this.user) return;
-
-    this.commonProjects = this.user.projects.filter((project) =>
-      project.members.find((member) => member.username === this.user?.username)
-    );
+  protected get userProjects(): UserProject[] {
+    return this.userService.loadedUser()?.projects || [];
   }
 }

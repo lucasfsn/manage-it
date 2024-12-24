@@ -1,56 +1,44 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   Language,
   LanguageCode,
-  LanguageLabelKey,
   LANGUAGES,
-} from '../../language.config';
+} from '../../config/language.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TranslationService {
-  public currentLanguage: LanguageCode = LanguageCode.EN;
-  public languages: Language[] = LANGUAGES;
-  private languageChangeSubject = new Subject<LanguageCode>();
+  private language = signal<Language>(LANGUAGES[0]);
 
-  public languageChange$ = this.languageChangeSubject.asObservable();
+  public loadedLanguage = this.language.asReadonly();
 
   public constructor(private translateService: TranslateService) {
     const storedLanguage = localStorage.getItem('language');
-    if (this.isLanguageCode(storedLanguage))
-      this.currentLanguage = storedLanguage as LanguageCode;
 
-    this.translateService.setDefaultLang(this.currentLanguage);
-    this.translateService.use(this.currentLanguage);
+    const language = LANGUAGES.find(
+      (lang) => lang.code === (storedLanguage as LanguageCode)
+    );
+
+    if (language) this.language.set(language);
+
+    this.translateService.setDefaultLang(this.language().code);
+    this.translateService.use(this.language().code);
   }
 
-  public changeLanguage(lang: LanguageCode): void {
-    this.translateService.use(lang);
-    this.currentLanguage = lang;
-    localStorage.setItem('language', lang);
-    this.languageChangeSubject.next(lang);
+  public changeLanguage(language: Language): void {
+    this.translateService.use(language.code);
+    this.language.set(language);
+    localStorage.setItem('language', language.code);
   }
 
   public translate(key: string): string {
     return this.translateService.instant(key);
   }
 
-  public getLanguageLabel(key: LanguageLabelKey): string {
-    return this.translateService.instant(key);
-  }
-
-  public get currentSetLanguage(): Language | undefined {
-    return this.languages.find((lang) => lang.code === this.currentLanguage);
-  }
-
-  public getTranslation(key: string): Observable<string> {
+  public get(key: string): Observable<string> {
     return this.translateService.get(key);
-  }
-
-  private isLanguageCode(value: string | null): value is LanguageCode {
-    return Object.values(LanguageCode).includes(value as LanguageCode);
   }
 }

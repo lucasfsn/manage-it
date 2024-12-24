@@ -6,7 +6,7 @@ export enum LanguageCode {
   PL = 'pl',
 }
 
-export enum LanguageLabelKey {
+export enum LanguageHeaderLabelKey {
   EN = 'header.LANGUAGE_EN',
   PL = 'header.LANGUAGE_PL',
 }
@@ -18,19 +18,19 @@ export enum Locale {
 
 export interface Language {
   readonly code: LanguageCode;
-  readonly labelKey: LanguageLabelKey;
   readonly locale: Locale;
+  readonly headerLabelKey: LanguageHeaderLabelKey;
 }
 
 export const LANGUAGES: Language[] = [
   {
     code: LanguageCode.EN,
-    labelKey: LanguageLabelKey.EN,
+    headerLabelKey: LanguageHeaderLabelKey.EN,
     locale: Locale.EN,
   },
   {
     code: LanguageCode.PL,
-    labelKey: LanguageLabelKey.PL,
+    headerLabelKey: LanguageHeaderLabelKey.PL,
     locale: Locale.PL,
   },
 ];

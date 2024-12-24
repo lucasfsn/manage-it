@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { appConfig } from './app/app.config';
-import { ANGULAR_LOCALES, LANGUAGES } from './app/language.config';
+import { ANGULAR_LOCALES, LANGUAGES } from './app/config/language.config';
 
 LANGUAGES.forEach((language) => {
   ANGULAR_LOCALES[language.code]().then((locale) => {

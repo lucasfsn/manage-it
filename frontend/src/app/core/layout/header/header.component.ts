@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../../../features/services/auth.service';
-import { TranslationService } from '../../../features/services/translation.service';
 import {
   Language,
-  LanguageCode,
-  LanguageLabelKey,
-} from '../../../language.config';
+  LanguageHeaderLabelKey,
+  LANGUAGES,
+} from '../../../config/language.config';
+import { AuthService } from '../../../features/services/auth.service';
+import { TranslationService } from '../../../features/services/translation.service';
 
 @Component({
   selector: 'app-header',
@@ -27,15 +27,18 @@ import {
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
-  protected currentLanguage?: LanguageCode;
-  protected languages?: Language[];
+export class HeaderComponent {
+  protected languages: Language[] = LANGUAGES;
 
   public constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
     private translationService: TranslationService
   ) {}
+
+  protected get language(): Language {
+    return this.translationService.loadedLanguage();
+  }
 
   protected get isLoggedIn(): boolean {
     return this.authService.isAuthenticated();
@@ -48,17 +51,11 @@ export class HeaderComponent implements OnInit {
     );
   }
 
-  protected changeLanguage(languageCode: LanguageCode): void {
-    this.translationService.changeLanguage(languageCode);
-    this.currentLanguage = languageCode;
+  protected changeLanguage(language: Language): void {
+    this.translationService.changeLanguage(language);
   }
 
-  protected languageText(labelKey: LanguageLabelKey): string {
-    return this.translationService.getLanguageLabel(labelKey);
-  }
-
-  public ngOnInit(): void {
-    this.currentLanguage = this.translationService.currentLanguage;
-    this.languages = this.translationService.languages;
+  protected languageText(labelKey: LanguageHeaderLabelKey): string {
+    return this.translationService.translate(labelKey);
   }
 }

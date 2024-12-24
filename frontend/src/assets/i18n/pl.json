@@ -69,7 +69,7 @@
       "TITLE": "Trwające projekty",
       "NO_PROJECTS": "Brak trwających projektów",
       "COMPLETED_TASKS_TEXT": "Ukończone zadania:",
-      "NO_TASKS": "Brak zadań."
+      "NO_TASKS": "Brak zadań w tej chwili"
     },
     "upcomingDeadlines": {
       "TITLE": "Nadchodzące terminy",
@@ -83,7 +83,8 @@
       "ONGOING_PROJECTS_TEXT": "Trwające projekty:"
     },
     "tasksSummary": {
-      "TITLE": "Podsumowanie zadań"
+      "TITLE": "Podsumowanie zadań",
+      "NO_TASKS": "Brak zadań w tej chwili"
     }
   },
   "mappers": {
@@ -115,7 +116,7 @@
   "notifications": {
     "TITLE": "Powiadomienia",
     "MARK_ALL_AS_READ": "Oznacz wszystkie jako przeczytane",
-    "NO_NOTIFICATIONS": "Brak powiadomień.",
+    "NO_NOTIFICATIONS": "Brak powiadomień",
     "content": {
       "PROJECT_COMPLETE": "oznaczył(a) () jako ukończony",
       "PROJECT_UPDATE": "zmodyfikował(a) ()",
@@ -175,7 +176,7 @@
       "NO_PROJECTS": "Brak projektów",
       "START_DATE_TEXT": "Data rozpoczęcia:",
       "DEADLINE_TEXT": "Termin:",
-      "NO_TASKS": "Brak zadań.",
+      "NO_TASKS": "Brak zadań w tej chwili",
       "COMPLETED_PERCENTAGE_TEXT": "Ukończono"
     },
     "filter": {

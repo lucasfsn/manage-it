@@ -1,5 +1,6 @@
 import { DatePipe as DatePipeBase } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
+import { Locale } from '../../config/language.config';
 import { TranslationService } from '../../features/services/translation.service';
 
 @Pipe({
@@ -8,7 +9,7 @@ import { TranslationService } from '../../features/services/translation.service'
   pure: false,
 })
 export class DatePipe implements PipeTransform {
-  private datePipe = new DatePipeBase('en-US');
+  private datePipe = new DatePipeBase(Locale.EN);
 
   public constructor(private translationService: TranslationService) {}
 
@@ -18,8 +19,7 @@ export class DatePipe implements PipeTransform {
   ): string | null {
     if (!value) return null;
 
-    const currentLanguage = this.translationService.currentSetLanguage;
-    const locale = currentLanguage?.locale || 'en-US';
+    const { locale } = this.translationService.loadedLanguage();
 
     this.datePipe = new DatePipeBase(locale);
 

@@ -43,7 +43,7 @@ export class ProjectService {
       .post<Project>(`${environment.apiUrl}/projects`, newProject)
       .pipe(
         tap((res: Project) => {
-          this.projects.set([...this.projects(), res]);
+          this.projects.update((projects) => [...projects, res]);
         }),
         map((res: Project) => res.id),
         catchError((err: HttpErrorResponse) => {
@@ -108,11 +108,11 @@ export class ProjectService {
       })
       .pipe(
         tap(() => {
+          // res: Project; // TODO:
           this.project.set({ ...project, status: ProjectStatus.COMPLETED });
+          // this.project.set(res)
         }),
         catchError((err: HttpErrorResponse) => {
-          this.project.set(project);
-
           return throwError(() => err);
         })
       );

@@ -34,6 +34,7 @@ export const routes: Routes = [
       authResolver,
     },
     canActivate: [authGuard],
+    canActivateChild: [authGuard],
     children: [
       {
         path: 'dashboard',

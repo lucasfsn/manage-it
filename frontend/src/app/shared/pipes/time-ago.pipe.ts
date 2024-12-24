@@ -5,12 +5,8 @@ import {
   PipeTransform,
 } from '@angular/core';
 import { formatDistanceToNow } from 'date-fns';
+import { DATE_FNS_LOCALES } from '../../config/language.config';
 import { TranslationService } from '../../features/services/translation.service';
-import {
-  DATE_FNS_LOCALES,
-  LanguageCode,
-  LANGUAGES,
-} from '../../language.config';
 
 @Pipe({
   name: 'timeAgo',
@@ -29,21 +25,16 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
     }, 60000);
   }
 
-  public ngOnDestroy(): void {
-    clearInterval(this.intervalId);
-  }
-
   public transform(value: Date | string | number | null): string | null {
     if (!value) return null;
 
-    const currentLanguage = LANGUAGES.find(
-      (lang) => lang.code === this.translationService.currentSetLanguage?.code
-    );
-
-    const locale = currentLanguage
-      ? DATE_FNS_LOCALES[currentLanguage.code]
-      : DATE_FNS_LOCALES[LanguageCode.EN];
+    const locale =
+      DATE_FNS_LOCALES[this.translationService.loadedLanguage().code];
 
     return formatDistanceToNow(new Date(value), { addSuffix: true, locale });
+  }
+
+  public ngOnDestroy(): void {
+    clearInterval(this.intervalId);
   }
 }

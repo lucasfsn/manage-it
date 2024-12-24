@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { TaskStatus } from '../../../../features/dto/project.model';
+import { Project, TaskStatus } from '../../../../features/dto/project.model';
 import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
 
@@ -18,6 +18,12 @@ export class TasksSummaryComponent implements OnInit {
     private projectService: ProjectService,
     private mapperService: MapperService
   ) {}
+
+  protected get taskCount(): number {
+    return this.projectService
+      .loadedProjects()
+      .reduce((prev, curr: Project) => prev + curr.totalTasks, 0);
+  }
 
   protected barChartData: ChartData<'bar'> = {
     labels: [],

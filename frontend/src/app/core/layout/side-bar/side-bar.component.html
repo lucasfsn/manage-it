@@ -64,7 +64,11 @@
         {{ "sidebar.NOTIFICATIONS" | translate }}
       </p>
     </div>
-    <div class="sidebar" routerLink="users" routerLinkActive="text-sky-500">
+    <div
+      class="sidebar"
+      routerLink="users"
+      routerLinkActive="text-sky-500 profile-active"
+    >
       @if (user) {
       <p
         class="rounded-full flex justify-center items-center aspect-square w-6 h-6 text-xs bg-slate-300 text-slate-950 profile-picture"

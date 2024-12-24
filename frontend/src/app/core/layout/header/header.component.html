@@ -13,10 +13,10 @@
       <mat-icon>language</mat-icon>
     </button>
     <mat-menu #languageMenu="matMenu">
-      @for (language of languages; track language.code) {
-      <button mat-menu-item (click)="changeLanguage(language.code)">
-        <span [class.text-sky-500]="currentLanguage === language.code">{{
-          languageText(language.labelKey)
+      @for (lang of languages; track lang.code) {
+      <button mat-menu-item (click)="changeLanguage(lang)">
+        <span [class.text-sky-500]="language.code === lang.code">{{
+          languageText(lang.headerLabelKey)
         }}</span>
       </button>
       }
