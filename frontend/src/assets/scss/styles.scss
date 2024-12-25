@@ -12,7 +12,7 @@
 body {
   font-family: "Poppins", sans-serif;
   height: 100vh;
-  color: #cbd5e1;
+  color: #0f172a;
   margin: 0;
   padding: 0;
 }
@@ -31,33 +31,30 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0b1120;
+  background: #ffedd5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #0f172a;
+  background: #fed7aa;
   border-radius: 5px;
 }
 
 :root {
   @include mat.tooltip-overrides(
     (
-      container-color: #0f172a,
-      // bg-slate-900
-      supporting-text-color: #94a3b8,
-      // text-slate-400
+      container-color: #fdba74,
+      supporting-text-color: #4c525a,
     )
   );
   @include mat.menu-overrides(
     (
-      container-color: #0f172a,
-      // bg-slate-900
+      container-color: #fed7aa,
     )
   );
   @include mat.dialog-overrides(
     (
       content-padding: 1.5rem,
-      container-color: #1e293b,
+      container-color: transparent,
     )
   );
   @include mat.select-overrides(
@@ -67,6 +64,11 @@ button {
       enabled-trigger-text-color: #0ea5e9,
       disabled-arrow-color: #0ea5e9,
       enabled-arrow-color: #0ea5e9,
+    )
+  );
+  @include mat.radio-overrides(
+    (
+      label-text-color: #374151,
     )
   );
 }
@@ -82,4 +84,37 @@ button {
 #toast-container > .toast-error {
   background-color: #831843;
   color: #fbcfe8;
+}
+
+:root.dark {
+  body {
+    color: #cbd5e1;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0b1120;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #0f172a;
+  }
+
+  @include mat.tooltip-overrides(
+    (
+      container-color: #0f172a,
+      supporting-text-color: #94a3b8,
+    )
+  );
+
+  @include mat.menu-overrides(
+    (
+      container-color: #0f172a,
+    )
+  );
+
+  @include mat.radio-overrides(
+    (
+      label-text-color: #d1d5db,
+    )
+  );
 }

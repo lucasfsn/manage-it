@@ -1,10 +1,10 @@
 input,
 select {
-  background-color: #0f172a;
   border: none;
-  color: #94a3b8;
+  color: #16181a;
+  padding: 0.125rem;
   margin-right: auto;
-  color-scheme: dark;
+  color-scheme: light;
   grid-column: span 2 / span 2;
 
   &:focus {
@@ -14,8 +14,21 @@ select {
   &::placeholder {
     color: #64748b;
   }
+}
 
-  &[type="date"] {
-    grid-column: span 1 / span 1;
+label {
+  color: #34373b;
+  grid-column: span 1 / span 1;
+}
+
+:host-context(.dark) {
+  label {
+    color: #94a3b8;
+  }
+
+  input,
+  select {
+    color: #cbd5e1;
+    color-scheme: dark;
   }
 }

@@ -1,7 +1,9 @@
 <div
-  class="bg-slate-950 text-white shadow-lg flex flex-col rounded-2xl overflow-hidden fixed bottom-20 right-4 h-full max-h-[600px] w-[300px] lg:w-[400px]"
+  class="bg-orange-200 dark:bg-slate-950 text-white shadow-lg flex flex-col rounded-2xl overflow-hidden fixed bottom-20 right-4 h-3/4 max-h-[600px] w-[300px] lg:w-[400px]"
 >
-  <div class="p-4 border-none chat-title text-center">
+  <div
+    class="bg-orange-200 dark:bg-slate-950 p-4 border-none text-center dark:text-gray-300 text-gray-700"
+  >
     <h2 class="text-lg font-semibold">{{ "chat.TITLE" | translate }}</h2>
   </div>
   <div
@@ -34,25 +36,19 @@
             }}</span>
           </div>
         </div>
-        <div
-          class="text-sm break-words"
-          [class.text-gray-300]="
-            message.sender.username === currentUser?.username
-          "
-          [class.text-gray-100]="
-            message.sender.username !== currentUser?.username
-          "
-        >
+        <div class="text-sm break-words text-gray-600 dark:text-gray-200">
           {{ message.content }}
         </div>
       </div>
       }
     </div>
     <div
-      class="flex items-center bg-slate-950 text-gray-200 shadow-lg border chat-input rounded-full focus-within:ring-2 focus-within:ring-slate-600 px-4 py-3 h-12 relative"
+      class="flex items-center bg-orange-200 text-gray-800 dark:bg-slate-950 dark:text-gray-200 shadow-lg chat-input rounded-full focus-within:ring-2 dark:focus-within:ring-slate-600 focus-within:ring-orange-300 px-4 py-3 h-12 relative"
     >
       @if (showEmojiPicker) {
-      <div class="absolute bottom-12 right-0 z-50">
+      <div
+        class="absolute bottom-12 right-0 z-50 bg-orange-200 dark:bg-slate-950 shadow-2xl"
+      >
         <emoji-mart
           [darkMode]="true"
           [showPreview]="false"
@@ -60,15 +56,15 @@
           color="#020617"
           [emojiSize]="30"
           [style]="{
-            backgroundColor: '#020617',
-            border: '1px solid #141a25',
+            backgroundColor: 'transparent',
+            border: 'none',
             borderRadius: ' 0.5rem'
           }"
           [i18n]="{
               search: 'Emoji...',
             }"
           (emojiClick)="addEmoji($event)"
-        ></emoji-mart>
+        />
       </div>
       }
       <input
@@ -90,11 +86,13 @@
       @if (message.length > 0) {
       <button
         @buttonAnimation
-        class="focus:outline-none flex justify-center items-center bg-slate-900 rounded-full w-8 h-8 aspect-square hover:bg-slate-800 transition-all disabled:cursor-not-allowed"
+        class="focus:outline-none flex justify-center items-center bg-orange-100 hover:bg-orange-300 dark:bg-slate-900 rounded-full w-8 h-8 aspect-square dark:hover:bg-slate-800 transition-all disabled:cursor-not-allowed"
         [disabled]="isLoading()"
         (click)="sendMessage()"
       >
-        <mat-icon class="text-gray-200 text-base">north</mat-icon>
+        <mat-icon class="text-gray-800 dark:text-gray-200 text-base"
+          >north</mat-icon
+        >
       </button>
       }
     </div>

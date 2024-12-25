@@ -7,7 +7,7 @@
 <ul class="flex flex-col gap-3">
   @for (notification of notifications; track notification.id) {
   <li
-    class="flex gap-3 items-center cursor-pointer mr-auto hover:bg-slate-950 px-5 py-1 rounded-full hover:bg-opacity-25 focus:outline-none focus:ring-2 active:text-sky-500 focus:ring-sky-500"
+    class="flex gap-3 items-center cursor-pointer mr-auto hover:bg-slate-950 px-5 py-1 rounded-full hover:bg-opacity-25 focus:outline-none focus:ring-2 focus:ring-sky-500"
     (click)="markAsReadAndOpen(notification)"
     (keydown.enter)="markAsReadAndOpen(notification)"
     (keydown.space)="markAsReadAndOpen(notification)"
@@ -21,14 +21,16 @@
     />
     <div class="flex flex-col gap-1 text-sm">
       <p>
-        <span class="font-semibold text-sky-500">{{
+        <span class="font-semibold text-sky-700 dark:text-sky-500">{{
           notification.user.firstName + " " + notification.user.lastName + " "
         }}</span>
         <span class="font-light">{{
           localeMessage(notification.message)
         }}</span>
       </p>
-      <p class="text-gray-400">{{ notification.date | timeAgo }}</p>
+      <p class="text-gray-600 dark:text-gray-400">
+        {{ notification.date | timeAgo }}
+      </p>
     </div>
   </li>
   }

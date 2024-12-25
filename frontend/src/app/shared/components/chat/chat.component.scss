@@ -11,28 +11,51 @@
   width: auto;
 }
 
+:host-context(.dark) {
+  ::ng-deep {
+    .emoji-mart-dark {
+      .emoji-mart-category-label {
+        span {
+          background-color: #020617;
+          color: #9ca3af;
+        }
+      }
+
+      .emoji-mart-search {
+        input {
+          background-color: #020617;
+          border-bottom: 1px solid #192231;
+        }
+      }
+    }
+  }
+}
+
 ::ng-deep {
   .emoji-mart-bar {
     display: none;
   }
+
   .emoji-mart-anchors {
     display: none;
   }
+
   .emoji-mart-dark {
     .emoji-mart-category-label {
       span {
-        background-color: #020617;
+        background-color: #fed7aa;
         color: #9ca3af;
         text-transform: uppercase;
         font-size: 0.7rem;
       }
     }
+
     .emoji-mart-search {
       input {
-        background-color: #020617;
+        background-color: #fed7aa;
+        color: black;
         border: none;
         border-radius: 0;
-        border-bottom: 1px solid #192231;
         font-size: 0.85rem;
         margin-bottom: 0.5rem;
 

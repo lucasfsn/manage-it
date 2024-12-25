@@ -1,8 +1,10 @@
-<div class="flex flex-col gap-2 px-4 py-3 rounded-sm bg-slate-900">
+<div
+  class="flex flex-col gap-2 px-4 py-3 shadow-lg rounded-sm bg-orange-200 dark:bg-slate-900"
+>
   <div class="flex justify-between">
     <div class="flex gap-2 items-center">
       <div
-        class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
+        class="bg-orange-100 dark:bg-slate-800 text:slate-800 dark:text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
       >
         <mat-icon>edit_note</mat-icon>
       </div>
@@ -15,7 +17,7 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <form [formGroup]="form" class="grid grid-cols-2 gap-2 bg-slate-900 p-2">
+  <form [formGroup]="form" class="grid grid-cols-2 gap-2 p-2">
     <div class="grid grid-cols-3 gap-2 col-span-2">
       <label for="description">{{
         "task.editForm.DESCRIPTION_LABEL" | translate
@@ -25,7 +27,7 @@
         type="text"
         formControlName="description"
         [placeholder]="'task.editForm.DESCRIPTION_PLACEHOLDER' | translate"
-        class="w-full pl-0.5"
+        class="bg-transparent"
       />
       @if (descriptionIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
@@ -41,7 +43,7 @@
         type="date"
         id="dueDate"
         formControlName="dueDate"
-        class="w-full pl-0.5"
+        class="bg-transparent"
       />
       @if (dueDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
@@ -54,7 +56,7 @@
       <select
         id="status"
         formControlName="status"
-        class="bg-transparent border-none text-slate-300 rounded-full placeholder-slate-500"
+        class="bg-orange-200 dark:bg-slate-900"
       >
         @for (status of statuses; track status) {
         <option [value]="status">
@@ -70,7 +72,7 @@
       <select
         id="priority"
         formControlName="priority"
-        class="bg-transparent border-none text-slate-300 rounded-full placeholder-slate-500"
+        class="bg-orange-200 dark:bg-slate-900"
       >
         @for (priority of priorities; track priority) {
         <option [value]="priority">

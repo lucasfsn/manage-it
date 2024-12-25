@@ -1,4 +1,4 @@
-import { Component, effect, OnInit } from '@angular/core';
+import { Component, effect, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
   ActivatedRoute,
@@ -8,6 +8,7 @@ import {
 } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
 import { HeaderComponent } from './core/layout/header/header.component';
+import { Theme, ThemeService } from './features/services/theme.service';
 import { TranslationService } from './features/services/translation.service';
 
 interface RouteData {
@@ -28,9 +29,12 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private translationService: TranslationService,
     private titleService: Title,
-    private router: Router
+    private router: Router,
+    private themeService: ThemeService,
+    private renderer: Renderer2
   ) {
     effect(() => {
+      this.updateTheme(this.themeService.loadedTheme());
       this.translationService.loadedLanguage();
       this.updateTitle();
     });
@@ -40,6 +44,14 @@ export class AppComponent implements OnInit {
     this.translationService.get(this.title).subscribe((localeTitle: string) => {
       this.titleService.setTitle(`${localeTitle} | ManageIt`);
     });
+  }
+
+  private updateTheme(theme: Theme): void {
+    if (theme === Theme.DARK) {
+      this.renderer.addClass(document.documentElement, 'dark');
+    } else {
+      this.renderer.removeClass(document.documentElement, 'dark');
+    }
   }
 
   public ngOnInit(): void {

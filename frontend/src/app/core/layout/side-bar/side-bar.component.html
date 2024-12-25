@@ -12,7 +12,10 @@
   <div
     class="grid mx-auto lg:mx-0 grid-cols-5 lg:gap-0.5 lg:grid-cols-1 lg:grid-rows-5 items-center"
   >
-    <button class="sidebar" (click)="openSearchDialog()">
+    <button
+      class="sidebar hover:bg-orange-100 dark:hover:bg-slate-900"
+      (click)="openSearchDialog()"
+    >
       <p class="sidebar-item">
         <mat-icon>search</mat-icon>
       </p>
@@ -24,7 +27,7 @@
       </p>
     </button>
     <div
-      class="sidebar"
+      class="sidebar hover:bg-orange-100 dark:hover:bg-slate-900"
       routerLink="/dashboard"
       routerLinkActive="text-sky-500"
     >
@@ -38,7 +41,11 @@
         {{ "sidebar.DASHBOARD" | translate }}
       </p>
     </div>
-    <div class="sidebar" routerLink="projects" routerLinkActive="text-sky-500">
+    <div
+      class="sidebar hover:bg-orange-100 dark:hover:bg-slate-900"
+      routerLink="projects"
+      routerLinkActive="text-sky-500"
+    >
       <p class="sidebar-item">
         <mat-icon>folder_open</mat-icon>
       </p>
@@ -50,7 +57,7 @@
       </p>
     </div>
     <div
-      class="sidebar w-auto"
+      class="sidebar w-auto hover:bg-orange-100 dark:hover:bg-slate-900"
       routerLink="notifications"
       routerLinkActive="text-sky-500"
     >
@@ -65,13 +72,13 @@
       </p>
     </div>
     <div
-      class="sidebar"
+      class="sidebar hover:bg-orange-100 dark:hover:bg-slate-900"
       routerLink="users"
       routerLinkActive="text-sky-500 profile-active"
     >
       @if (user) {
       <p
-        class="rounded-full flex justify-center items-center aspect-square w-6 h-6 text-xs bg-slate-300 text-slate-950 profile-picture"
+        class="rounded-full flex justify-center items-center aspect-square w-6 h-6 text-xs bg-slate-900 text-slate-300 dark:bg-slate-300 dark:text-slate-950 profile-picture"
       >
         {{ user.firstName.charAt(0) + user.lastName.charAt(0) }}
       </p>

@@ -2,11 +2,13 @@
   <button
     mat-icon-button
     [matMenuTriggerFor]="filterMenu"
-    class="flex justify-center items-center focus:outline-none focus:ring-2 active:text-sky-500 focus:ring-sky-500 active:ring-0"
+    class="flex justify-center items-center focus:outline-none focus:ring-0 active:text-sky-500 focus:text-sky-500"
   >
     <mat-icon>filter_list</mat-icon>
   </button>
-  <div class="flex items-center bg-slate-900 rounded-full px-2 py-1 gap-1">
+  <div
+    class="flex items-center bg-orange-200 dark:bg-slate-900 rounded-full px-2 py-1 gap-1"
+  >
     <label for="filterOwner" class="flex items-center">
       <mat-icon>search</mat-icon>
     </label>
@@ -22,7 +24,10 @@
 </div>
 
 <mat-menu #filterMenu="matMenu">
-  <div class="flex flex-col gap-2 px-3 bg-slate-900" matMenuContent>
+  <div
+    class="flex flex-col gap-2 py-2 px-3 bg-orange-200 dark:bg-slate-900"
+    matMenuContent
+  >
     <p class="text-base">
       {{ "projects.filter.MENU_TITLE" | translate }}
     </p>
@@ -50,7 +55,7 @@
         [(ngModel)]="filterOnlyOwnedByMe"
         (click)="$event.stopPropagation()"
       >
-        <span class="text-sm">{{
+        <span class="text-sm text-gray-700 dark:text-gray-300">{{
           "projects.filter.ONLY_LOGGED_USER_PROJECTS" | translate
         }}</span>
       </mat-checkbox>

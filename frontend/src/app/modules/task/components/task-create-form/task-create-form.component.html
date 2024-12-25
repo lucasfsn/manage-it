@@ -1,8 +1,10 @@
-<div class="flex flex-col gap-2 px-4 py-3 rounded-sm bg-slate-900">
+<div
+  class="flex flex-col gap-2 px-4 py-3 shadow-lg rounded-sm bg-orange-200 dark:bg-slate-900"
+>
   <div class="flex justify-between">
     <div class="flex gap-2 items-center">
       <div
-        class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
+        class="bg-orange-100 dark:bg-slate-800 text:slate-800 dark:text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
       >
         <mat-icon>add_task</mat-icon>
       </div>
@@ -12,7 +14,7 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <form [formGroup]="form" class="grid grid-cols-2 gap-2 bg-slate-900 p-2">
+  <form [formGroup]="form" class="grid grid-cols-2 gap-2 p-2">
     <div class="grid grid-cols-3 gap-2 col-span-2">
       <label for="description">{{
         "task.createForm.DESCRIPTION_LABEL" | translate
@@ -22,7 +24,7 @@
         id="description"
         formControlName="description"
         [placeholder]="'task.createForm.DESCRIPTION_PLACEHOLDER' | translate"
-        class="w-full"
+        class="w-full bg-transparent"
       />
       @if (descriptionIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
@@ -39,6 +41,7 @@
         type="date"
         [min]="getToday()"
         formControlName="dueDate"
+        class="bg-transparent"
       />
       @if (dueDateIsInvalid) {
       <p class="text-red-500 text-sm col-span-3">
@@ -50,7 +53,11 @@
       <label for="startDate">{{
         "task.createForm.PRIORITY_LABEL" | translate
       }}</label>
-      <select id="priority" formControlName="priority">
+      <select
+        id="priority"
+        formControlName="priority"
+        class="bg-orange-200 dark:bg-slate-900"
+      >
         <option value="" disabled>
           {{ "task.createForm.PRIORITY_SELECT" | translate }}
         </option>

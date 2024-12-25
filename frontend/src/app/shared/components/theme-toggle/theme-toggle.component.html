@@ -1,0 +1,22 @@
+<button
+  (click)="toggleTheme()"
+  class="flex rounded-full w-16 transition-colors focus:outline-none p-1"
+  [ngClass]="{
+    'bg-slate-800': theme === Theme.DARK,
+    'bg-slate-300': theme === Theme.LIGHT
+  }"
+>
+  <span
+    class="flex justify-center items-center transform rounded-full transition-transform shadow-md p-0.5"
+    [ngClass]="{
+      'translate-x-0 bg-slate-950': theme === Theme.DARK,
+      'translate-x-full bg-slate-200': theme === Theme.LIGHT
+    }"
+  >
+    @if (theme === Theme.DARK) {
+    <mat-icon class="text-slate-300">dark_mode</mat-icon>
+    } @else {
+    <mat-icon class="text-slate-500">light_mode</mat-icon>
+    }
+  </span>
+</button>

@@ -16,7 +16,7 @@
 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5">
   @for (project of sortedAndFilteredProjects; track project.id) {
   <div
-    class="flex flex-col bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-opacity-70 transition-all gap-4 justify-between focus:outline-none active:bg-opacity-70 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-950"
+    class="flex flex-col bg-orange-100 dark:bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-orange-200 dark:hover:bg-opacity-70 transition-all gap-4 justify-between focus:outline-none active:bg-opacity-70 focus:ring-2 focus:ring-sky-500"
     routerLink="/projects/{{ project.id }}"
   >
     <div class="flex flex-col gap-2 h-full justify-between">
@@ -32,10 +32,12 @@
           >
           </span>
         </h3>
-        <p class="text-sm text-gray-400">{{ project.description }}</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          {{ project.description }}
+        </p>
       </div>
       <div
-        class="flex flex-col bg-slate-950 rounded-lg py-1 px-2 text-sm text-gray-400"
+        class="flex flex-col bg-orange-100 dark:bg-slate-950 rounded-lg py-1 px-2 text-sm text-gray-700 dark:text-gray-400"
       >
         <p>
           {{ "projects.list.START_DATE_TEXT" | translate }}

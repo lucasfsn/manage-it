@@ -1,15 +1,20 @@
-<button
-  class="flex self-end items-center pr-4 pt-4 bg-slate-800 focus:outline-none focus:text-sky-500"
-  (click)="closeDialog()"
+<div
+  class="flex justify-end items-center w-full bg-orange-200 dark:bg-slate-800"
 >
-  <mat-icon>close</mat-icon>
-</button>
+  <button
+    class="flex self-end items-center pr-4 pt-4 focus:outline-none focus:text-sky-500"
+    (click)="closeDialog()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 <form
   [formGroup]="form"
-  class="flex flex-col gap-4 p-9 shadow-sm bg-slate-100 text-xs sm:text-base"
-  style="background-color: #1e293b"
+  class="flex flex-col gap-4 p-9 shadow-sm text-xs sm:text-base bg-orange-200 dark:bg-slate-800"
 >
-  <div class="flex flex-col gap-5 border-b pb-5 border-slate-500">
+  <div
+    class="flex flex-col gap-5 border-b pb-5 border-orange-400 dark:border-slate-500"
+  >
     <div class="flex flex-col gap-3">
       <div class="flex flex-col gap-2">
         <input

@@ -1,10 +1,10 @@
 input {
   background-color: transparent;
   border: none;
-  color: #cbd5e1;
+  color: #1e293b;
   padding: 0.125rem;
   margin-right: auto;
-  color-scheme: dark;
+  color-scheme: light;
   grid-column: span 2 / span 2;
 
   &:focus {
@@ -17,5 +17,16 @@ input {
 }
 
 label {
-  color: #94a3b8;
+  color: #475569;
+}
+
+:host-context(.dark) {
+  label {
+    color: #94a3b8;
+  }
+
+  input {
+    color: #cbd5e1;
+    color-scheme: dark;
+  }
 }

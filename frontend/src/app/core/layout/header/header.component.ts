@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +12,9 @@ import {
   LANGUAGES,
 } from '../../../config/language.config';
 import { AuthService } from '../../../features/services/auth.service';
+import { Theme, ThemeService } from '../../../features/services/theme.service';
 import { TranslationService } from '../../../features/services/translation.service';
+import { ThemeToggleComponent } from '../../../shared/components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-header',
@@ -23,6 +26,8 @@ import { TranslationService } from '../../../features/services/translation.servi
     MatMenuModule,
     MatIconModule,
     TranslateModule,
+    ThemeToggleComponent,
+    CommonModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -33,11 +38,16 @@ export class HeaderComponent {
   public constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private themeService: ThemeService
   ) {}
 
   protected get language(): Language {
     return this.translationService.loadedLanguage();
+  }
+
+  protected get isDarkTheme(): boolean {
+    return this.themeService.loadedTheme() === Theme.DARK;
   }
 
   protected get isLoggedIn(): boolean {

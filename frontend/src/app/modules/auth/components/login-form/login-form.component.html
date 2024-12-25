@@ -1,10 +1,11 @@
 <form
   [formGroup]="form"
-  class="flex flex-col gap-4 p-9 rounded-lg shadow-sm bg-slate-100 text-xs sm:text-base w-2/3 max-w-[600px]"
-  style="background-color: #1e293b"
+  class="flex flex-col gap-4 p-9 rounded-lg shadow-sm text-xs sm:text-base w-2/3 max-w-[600px] dark:bg-slate-800 bg-orange-200"
 >
   <div class="flex flex-col gap-5">
-    <div class="flex flex-col gap-3 border-b pb-5 border-slate-500">
+    <div
+      class="flex flex-col gap-3 border-b pb-5 border-orange-300 dark:border-slate-500"
+    >
       <div class="flex flex-col gap-2">
         <input
           id="email"
@@ -50,7 +51,7 @@
     </div>
     <a
       routerLink="/auth/signup"
-      class="text-xs text-sky-400 self-center focus:ring-2 focus:ring-sky-500 focus:outline-none w-auto px-1.5 py-0.5 focus:rounded-full"
+      class="text-xs text-sky-600 dark:text-sky-400 hover:text-sky-500 self-center focus:ring-2 focus:ring-sky-500 focus:outline-none w-auto px-1.5 py-0.5 focus:rounded-full"
       >{{ "loginForm.CREATE_ACCOUNT" | translate }}</a
     >
   </div>
