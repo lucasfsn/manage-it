@@ -46,7 +46,6 @@ export const appConfig: ApplicationConfig = {
         },
       }),
       TranslateModule.forRoot({
-        defaultLanguage: 'pl',
         loader: {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,

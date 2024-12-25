@@ -32,11 +32,9 @@
       @for (lang of languages; track lang.code) {
       <button mat-menu-item (click)="changeLanguage(lang)">
         <span
-          [ngClass]="{
-            'text-sky-500': language.code === lang.code,
-            'text-gray-500': language.code !== lang.code
-          }"
-          >{{ languageText(lang.headerLabelKey) }}</span
+          [class.text-sky-500]="language === lang.code"
+          [class.text-gray-500]="language !== lang.code"
+          >{{ languageText(lang.code) }}</span
         >
       </button>
       }

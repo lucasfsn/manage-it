@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { TranslationService } from '../../../../core/services/translation.service';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { ProjectService } from '../../../../features/services/project.service';
-import { TranslationService } from '../../../../features/services/translation.service';
 import { DatePipe } from '../../../../shared/pipes/date.pipe';
 
 @Component({

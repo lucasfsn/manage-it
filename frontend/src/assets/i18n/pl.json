@@ -247,9 +247,12 @@
       "DUE_DATE": "Termin",
       "PRIORITY": "Prioritet",
       "ASSIGNEES": "Przydzielone osoby",
-      "NO_ASSIGNEES": "Brak",
+      "NO_ASSIGNEES": "Brak"
+    },
+    "assignees": {
       "ASSIGNEE_INPUT_PLACEHOLDER": "Wyszukaj użytkowników",
-      "EMPTY_ASSIGNEES_LIST": "Przydziel nowych użytkowników do zadania lub zacznij pisać, aby wyszukać użytkowników"
+      "EMPTY_ASSIGNEES_LIST": "Przydziel nowych użytkowników do zadania lub zacznij pisać, aby wyszukać użytkowników",
+      "CURRENT_USER_AS_SEARCH_RESULT": "Ty"
     },
     "drag-and-drop": {
       "ADD_BUTTON": "Dodaj nowe zadanie",

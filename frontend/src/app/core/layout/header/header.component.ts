@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,13 +7,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import {
   Language,
-  LanguageHeaderLabelKey,
+  LanguageCode,
   LANGUAGES,
 } from '../../../config/language.config';
 import { AuthService } from '../../../features/services/auth.service';
-import { Theme, ThemeService } from '../../../features/services/theme.service';
-import { TranslationService } from '../../../features/services/translation.service';
 import { ThemeToggleComponent } from '../../../shared/components/theme-toggle/theme-toggle.component';
+import { Theme, ThemeService } from '../../services/theme.service';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-header',
@@ -27,7 +26,6 @@ import { ThemeToggleComponent } from '../../../shared/components/theme-toggle/th
     MatIconModule,
     TranslateModule,
     ThemeToggleComponent,
-    CommonModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -42,7 +40,7 @@ export class HeaderComponent {
     private themeService: ThemeService
   ) {}
 
-  protected get language(): Language {
+  protected get language(): LanguageCode {
     return this.translationService.loadedLanguage();
   }
 
@@ -62,10 +60,12 @@ export class HeaderComponent {
   }
 
   protected changeLanguage(language: Language): void {
-    this.translationService.changeLanguage(language);
+    this.translationService.changeLanguage(language.code);
   }
 
-  protected languageText(labelKey: LanguageHeaderLabelKey): string {
-    return this.translationService.translate(labelKey);
+  protected languageText(code: LanguageCode): string {
+    return this.translationService.translate(
+      `header.LANGUAGE_${code.toUpperCase()}`
+    );
   }
 }

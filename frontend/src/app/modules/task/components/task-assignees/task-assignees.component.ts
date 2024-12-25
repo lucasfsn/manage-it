@@ -1,25 +1,8 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../../features/dto/project.model';
-import { LoadingService } from '../../../../features/services/loading.service';
-import { MapperService } from '../../../../features/services/mapper.service';
 import { TaskService } from '../../../../features/services/task.service';
-import { TranslationService } from '../../../../features/services/translation.service';
-import {
-  PageEvent,
-  PaginatorComponent,
-} from '../../../../shared/components/paginator/paginator.component';
-import { TaskAddUserComponent } from '../task-add-user/task-add-user.component';
+import { TaskAddAssigneeComponent } from '../task-add-assignee/task-add-assignee.component';
 import { TaskAssigneesListComponent } from '../task-assignees-list/task-assignees-list.component';
 
 @Component({
@@ -27,109 +10,19 @@ import { TaskAssigneesListComponent } from '../task-assignees-list/task-assignee
   standalone: true,
   imports: [
     MatIconModule,
-    ReactiveFormsModule,
-    TranslateModule,
-    PaginatorComponent,
-    TaskAddUserComponent,
     TaskAssigneesListComponent,
+    TaskAddAssigneeComponent,
   ],
   templateUrl: './task-assignees.component.html',
   styleUrl: './task-assignees.component.scss',
-  animations: [
-    trigger('toggleDiv', [
-      state(
-        'show',
-        style({
-          visibility: 'visible',
-          opacity: 1,
-        })
-      ),
-      state(
-        'hide',
-        style({
-          visibility: 'hidden',
-          opacity: 0,
-        })
-      ),
-      transition('show <=> hide', [animate('400ms ease-in-out')]),
-    ]),
-  ],
 })
-export class TaskAssigneesComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
-  protected filteredUsers: User[] = [];
-
-  protected browseControl = new FormControl('');
-
-  protected paginatedUsers: User[] = [];
-  protected currentPage = 0;
-  protected pageSize = 5;
+export class TaskAssigneesComponent {
   protected showAssignees = true;
 
-  public constructor(
-    private taskService: TaskService,
-    private loadingService: LoadingService,
-    private toastrService: ToastrService,
-    private translationService: TranslationService,
-    private mapperService: MapperService
-  ) {}
+  public constructor(private taskService: TaskService) {}
 
   protected get members(): User[] {
     return this.taskService.loadedTask()?.members || [];
-  }
-
-  protected handleAdd(user: User): void {
-    const task = this.taskService.loadedTask();
-    if (!task) return;
-
-    this.loadingService.loadingOn();
-    this.taskService.addToTask(task.projectId, task.id, user).subscribe({
-      next: () => {
-        this.toastrService.success(
-          `${user.firstName} ${
-            user.lastName
-          } ${this.translationService.translate(
-            'toast.success.MEMBER_ADDED_TO_TASK'
-          )}`
-        );
-      },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
-        this.toastrService.error(localeMessage);
-        this.loadingService.loadingOff();
-      },
-      complete: () => {
-        this.loadingService.loadingOff();
-      },
-    });
-    this.refreshUsersIn();
-  }
-
-  protected handleRemove(user: User): void {
-    const task = this.taskService.loadedTask();
-    if (!task) return;
-
-    this.loadingService.loadingOn();
-    this.taskService.removeFromTask(task.projectId, task.id, user).subscribe({
-      next: () => {
-        this.toastrService.success(
-          `${user.firstName} ${
-            user.lastName
-          } ${this.translationService.translate(
-            'toast.success.MEMBER_REMOVED_FROM_TASK'
-          )}`
-        );
-      },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
-        this.toastrService.error(localeMessage);
-        this.loadingService.loadingOff();
-      },
-      complete: () => {
-        this.loadingService.loadingOff();
-      },
-    });
-    this.refreshUsersIn();
   }
 
   protected toggleShowAssignees(): void {
@@ -138,43 +31,5 @@ export class TaskAssigneesComponent implements OnInit {
 
   protected toggleShowAddAssignee(): void {
     this.showAssignees = false;
-  }
-
-  protected filterUsers(): void {
-    const value = this.browseControl.value?.toLowerCase() || '';
-
-    this.filteredUsers = this.members.filter(
-      (user) =>
-        user.firstName.toLowerCase().includes(value) ||
-        user.lastName.toLowerCase().includes(value) ||
-        user.username.toLowerCase().includes(value)
-    );
-    this.updatePaginatedUsers();
-  }
-
-  protected pageChanged(event: PageEvent): void {
-    this.currentPage = event.currentPage;
-    this.pageSize = event.pageSize;
-    this.updatePaginatedUsers();
-  }
-
-  private updatePaginatedUsers(): void {
-    const start = this.currentPage * this.pageSize;
-    const end = start + this.pageSize;
-    this.paginatedUsers = this.filteredUsers.slice(start, end);
-  }
-
-  private refreshUsersIn(): void {
-    this.filteredUsers = this.members;
-    this.updatePaginatedUsers();
-  }
-
-  public ngOnInit(): void {
-    this.refreshUsersIn();
-    const subscription = this.browseControl.valueChanges.subscribe(() => {
-      this.filterUsers();
-    });
-
-    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }

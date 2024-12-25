@@ -3,9 +3,9 @@ import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
-import { Task } from '../../../features/dto/project.model';
-import { LoadingService } from '../../../features/services/loading.service';
-import { MapperService } from '../../../features/services/mapper.service';
+import { LoadingService } from '../../../core/services/loading.service';
+import { MapperService } from '../../../core/services/mapper.service';
+import { Task } from '../../../features/dto/task.model';
 import { TaskService } from '../../../features/services/task.service';
 
 export const taskResolver: ResolveFn<Task | null> = (route) => {

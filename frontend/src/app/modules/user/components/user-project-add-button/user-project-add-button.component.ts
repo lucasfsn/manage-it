@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { MapperService } from '../../../../core/services/mapper.service';
+import { TranslationService } from '../../../../core/services/translation.service';
 import { User } from '../../../../features/dto/user.model';
-import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
-import { TranslationService } from '../../../../features/services/translation.service';
 import { UserService } from '../../../../features/services/user.service';
 
 @Component({

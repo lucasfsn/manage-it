@@ -13,6 +13,6 @@ export interface MessageSend {
 }
 
 export interface MessageQueue {
-  destination: string;
-  body: string;
+  readonly destination: string;
+  readonly body: string;
 }

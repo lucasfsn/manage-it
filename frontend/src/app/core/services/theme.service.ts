@@ -31,7 +31,6 @@ export class ThemeService {
   }
 
   public applyTheme(theme: Theme): void {
-    console.log(theme);
     if (theme === Theme.DARK) {
       document.documentElement.classList.add('dark');
     } else {

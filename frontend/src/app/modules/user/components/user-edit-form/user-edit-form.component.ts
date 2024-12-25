@@ -12,9 +12,9 @@ import { UpdateUser, User } from '../../../../features/dto/user.model';
 import { UserService } from '../../../../features/services/user.service';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { LoadingService } from '../../../../features/services/loading.service';
-import { MapperService } from '../../../../features/services/mapper.service';
-import { TranslationService } from '../../../../features/services/translation.service';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { MapperService } from '../../../../core/services/mapper.service';
+import { TranslationService } from '../../../../core/services/translation.service';
 import {
   equalValues,
   nameValidator,

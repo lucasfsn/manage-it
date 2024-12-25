@@ -8,11 +8,11 @@ import {
 } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
 import { HeaderComponent } from './core/layout/header/header.component';
-import { Theme, ThemeService } from './features/services/theme.service';
-import { TranslationService } from './features/services/translation.service';
+import { Theme, ThemeService } from './core/services/theme.service';
+import { TranslationService } from './core/services/translation.service';
 
 interface RouteData {
-  title?: string;
+  readonly title?: string;
 }
 
 @Component({

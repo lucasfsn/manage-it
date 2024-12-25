@@ -1,33 +1,20 @@
-@if (users.length === 0) {
-<p class="text-gray-500 text-center">
-  {{ "task.details.EMPTY_ASSIGNEES_LIST" | translate }}
-</p>
-}
-<ul class="flex flex-col text-sm gap-3">
-  @for (user of users; track user.username) {
-  <li
-    class="flex justify-between items-center gap-1 text-slate-600 dark:text-slate-400"
-  >
-    <div class="flex gap-2 cursor-default focus:outline-none">
-      <app-profile-icon
-        size="lg"
-        [firstName]="user.firstName"
-        [lastName]="user.lastName"
-        [hover]="false"
-      />
-      <p class="flex items-center gap-1">
-        {{ user.firstName }} {{ user.lastName }}
-        <span class="text-slate-400 dark:text-slate-600"
-          >({{ user.username }})</span
-        >
-      </p>
-    </div>
-    <button
-      class="bg-gray-400 text-slate-950 flex justify-center items-center rounded-full p-0.5 hover:bg-gray-500 focus:ring-2 focus:ring-sky-950 focus:outline-none transition-all"
-      (click)="onClick(user)"
-    >
-      <mat-icon class="text-base">{{ iconName }}</mat-icon>
-    </button>
-  </li>
-  }
-</ul>
+<div class="flex flex-col gap-4">
+  <input
+    type="text"
+    [formControl]="form"
+    [placeholder]="'task.assignees.ASSIGNEE_INPUT_PLACEHOLDER' | translate"
+    class="w-full py-2 px-3 border-none bg-orange-200 dark:bg-slate-950 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-300 placeholder-slate-500 text-slate-700"
+  />
+  <app-task-users-list
+    iconName="person_remove"
+    [users]="paginatedUsers"
+    (handleClick)="handleRemove($event)"
+  />
+  <app-paginator
+    [length]="filteredUsersCount"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizes"
+    [currentPage]="currentPage"
+    (page)="pageChanged($event)"
+  />
+</div>

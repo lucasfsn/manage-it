@@ -2,21 +2,22 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Project, Task, TaskData, User } from '../dto/project.model';
+import { Project, User } from '../dto/project.model';
+import { Task, TaskData } from '../dto/task.model';
 import { ProjectService } from './project.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
+  private task = signal<Task | null>(null);
+
+  public loadedTask = this.task.asReadonly();
+
   public constructor(
     private http: HttpClient,
     private projectService: ProjectService
   ) {}
-
-  private task = signal<Task | null>(null);
-
-  public loadedTask = this.task.asReadonly();
 
   public createTask(project: Project, task: TaskData): Observable<Task> {
     return this.http

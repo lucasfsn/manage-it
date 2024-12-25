@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
@@ -16,13 +16,12 @@ export interface PageEvent {
   templateUrl: './paginator.component.html',
   styleUrl: './paginator.component.scss',
 })
-export class PaginatorComponent implements OnInit {
+export class PaginatorComponent {
+  @Input() public pageSize: number = 5;
   @Input() public length: number = 0;
   @Input() public pageSizeOptions: number[] = [];
   @Input() public currentPage: number = 0;
   @Output() public page = new EventEmitter<PageEvent>();
-
-  private pageSize: number = 5;
 
   protected get totalPages(): number {
     return Math.ceil(this.length / this.pageSize);
@@ -55,9 +54,5 @@ export class PaginatorComponent implements OnInit {
       pageSize: this.pageSize,
       length: this.length,
     });
-  }
-
-  public ngOnInit(): void {
-    this.pageSize = this.pageSizeOptions[0];
   }
 }

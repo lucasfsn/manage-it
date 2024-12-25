@@ -8,6 +8,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { User } from '../../../features/dto/project.model';
@@ -26,11 +27,13 @@ import { UserService } from '../../../features/services/user.service';
     MatDialogContent,
     MatIconModule,
     TranslateModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent {
+  protected loading: boolean = false;
   protected form = new FormControl<string>('');
   protected searchResults: User[] = [];
 
@@ -69,12 +72,17 @@ export class SearchComponent {
       return;
     }
 
+    this.loading = true;
     this.userService.searchUsers(query, this.data?.projectId).subscribe({
       next: (res) => {
         this.searchResults = res;
       },
       error: () => {
         this.searchResults = [];
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       },
     });
   }

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { LoadingService } from '../../../features/services/loading.service';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { LoadingService } from '../../services/loading.service';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 
 @Component({

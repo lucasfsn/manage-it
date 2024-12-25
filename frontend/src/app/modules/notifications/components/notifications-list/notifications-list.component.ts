@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { MapperService } from '../../../../core/services/mapper.service';
 import { Notification } from '../../../../features/dto/notification.model';
-import { MapperService } from '../../../../features/services/mapper.service';
 import { NotificationService } from '../../../../features/services/notification.service';
 import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 import { TimeAgoPipe } from '../../../../shared/pipes/time-ago.pipe';
@@ -22,9 +22,7 @@ export class NotificationsListComponent {
   ) {}
 
   protected get notifications(): Notification[] {
-    return this.notificationService
-      .loadedNotifications()
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return this.notificationService.loadedNotifications();
   }
 
   protected localeMessage(message: string): string {

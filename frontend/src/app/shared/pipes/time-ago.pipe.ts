@@ -4,9 +4,9 @@ import {
   Pipe,
   PipeTransform,
 } from '@angular/core';
-import { formatDistanceToNow } from 'date-fns';
-import { DATE_FNS_LOCALES } from '../../config/language.config';
-import { TranslationService } from '../../features/services/translation.service';
+import { formatDistanceToNow, Locale } from 'date-fns';
+import { DATE_FNS_LOCALES, LanguageCode } from '../../config/language.config';
+import { TranslationService } from '../../core/services/translation.service';
 
 @Pipe({
   name: 'timeAgo',
@@ -14,6 +14,7 @@ import { TranslationService } from '../../features/services/translation.service'
   pure: false,
 })
 export class TimeAgoPipe implements PipeTransform, OnDestroy {
+  private languagesDateFns: Record<LanguageCode, Locale> = DATE_FNS_LOCALES;
   private intervalId: ReturnType<typeof setInterval>;
 
   public constructor(
@@ -29,7 +30,7 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
     if (!value) return null;
 
     const locale =
-      DATE_FNS_LOCALES[this.translationService.loadedLanguage().code];
+      this.languagesDateFns[this.translationService.loadedLanguage()];
 
     return formatDistanceToNow(new Date(value), { addSuffix: true, locale });
   }

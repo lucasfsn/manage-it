@@ -18,8 +18,6 @@ export class NotificationsMenuComponent {
   }
 
   protected get notifications(): Notification[] {
-    return this.notificationService
-      .loadedNotifications()
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return this.notificationService.loadedNotifications();
   }
 }

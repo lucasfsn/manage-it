@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { MapperService } from '../../../../core/services/mapper.service';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
 
 @Component({

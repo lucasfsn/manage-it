@@ -4,10 +4,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { MapperService } from '../../../../core/services/mapper.service';
+import { TranslationService } from '../../../../core/services/translation.service';
 import { Project, User } from '../../../../features/dto/project.model';
-import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
-import { TranslationService } from '../../../../features/services/translation.service';
 import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
 
 @Component({

@@ -7,9 +7,9 @@ export interface UserCredentials {
 }
 
 export interface UpdateUserCredentials {
-  firstName: string;
-  lastName: string;
-  email: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly email: string;
 }
 
 export interface LoginCredentials {

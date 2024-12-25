@@ -11,13 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import {
-  Project,
-  ProjectStatus,
-  Task,
-  TaskStatus,
-} from '../../../../features/dto/project.model';
-import { MapperService } from '../../../../features/services/mapper.service';
+import { MapperService } from '../../../../core/services/mapper.service';
+import { Project, ProjectStatus } from '../../../../features/dto/project.model';
+import { Task, TaskStatus } from '../../../../features/dto/task.model';
 import { ProjectService } from '../../../../features/services/project.service';
 import { TaskService } from '../../../../features/services/task.service';
 import { PriorityComponent } from '../../../../shared/components/priority/priority.component';

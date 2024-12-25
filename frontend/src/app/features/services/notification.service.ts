@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Notification } from '../dto/notification.model';
 
@@ -8,18 +8,23 @@ import { Notification } from '../dto/notification.model';
   providedIn: 'root',
 })
 export class NotificationService {
-  public constructor(private http: HttpClient) {}
-
   private notifications = signal<Notification[]>([]);
 
   public loadedNotifications = this.notifications.asReadonly();
+
+  public constructor(private http: HttpClient) {}
 
   public getNotifications(): Observable<Notification[]> {
     return this.http
       .get<Notification[]>(`${environment.apiUrl}/notifications`)
       .pipe(
-        tap((res: Notification[]) => {
-          this.notifications.set(res);
+        map((notifications: Notification[]) =>
+          [...notifications].sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          )
+        ),
+        tap((sortedNotifications: Notification[]) => {
+          this.notifications.set(sortedNotifications);
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);

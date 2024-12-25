@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { MapperService } from '../../../../core/services/mapper.service';
+import { TranslationService } from '../../../../core/services/translation.service';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
-import { ConfirmModalService } from '../../../../features/services/confirm-modal.service';
-import { LoadingService } from '../../../../features/services/loading.service';
-import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
-import { TranslationService } from '../../../../features/services/translation.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 

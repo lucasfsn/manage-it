@@ -9,9 +9,9 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
+import { MapperService } from '../../../../core/services/mapper.service';
+import { TranslationService } from '../../../../core/services/translation.service';
 import { AuthService } from '../../../../features/services/auth.service';
-import { MapperService } from '../../../../features/services/mapper.service';
-import { TranslationService } from '../../../../features/services/translation.service';
 import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 import { passwordValidator } from '../../../../shared/validators';
 

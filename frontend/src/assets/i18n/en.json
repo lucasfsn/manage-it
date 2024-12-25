@@ -119,7 +119,7 @@
     "NO_NOTIFICATIONS": "You are up to date",
     "content": {
       "PROJECT_COMPLETE": "marked () as completed",
-      "PROJECT_UPDATED": "modified ()",
+      "PROJECT_UPDATE": "modified ()",
       "PROJECT_JOIN": "joined ()",
       "PROJECT_LEAVE": "left ()",
       "TASK_CREATE": "created task in ()",
@@ -247,9 +247,12 @@
       "DUE_DATE": "Due date",
       "PRIORITY": "Priority",
       "ASSIGNEES": "Assignees",
-      "NO_ASSIGNEES": "No assignees",
+      "NO_ASSIGNEES": "No assignees"
+    },
+    "assignees": {
       "ASSIGNEE_INPUT_PLACEHOLDER": "Search users",
-      "EMPTY_ASSIGNEES_LIST": "Assign new users to the task or start typing to search for users"
+      "EMPTY_ASSIGNEES_LIST": "Assign new users to the task or start typing to search for users",
+      "CURRENT_USER_AS_SEARCH_RESULT": "You"
     },
     "drag-and-drop": {
       "ADD_BUTTON": "Add another task",

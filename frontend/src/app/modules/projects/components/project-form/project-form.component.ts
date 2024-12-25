@@ -9,13 +9,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { MapperService } from '../../../../core/services/mapper.service';
+import { TranslationService } from '../../../../core/services/translation.service';
 import {
   Project,
   ProjectRequest,
 } from '../../../../features/dto/project.model';
-import { MapperService } from '../../../../features/services/mapper.service';
 import { ProjectService } from '../../../../features/services/project.service';
-import { TranslationService } from '../../../../features/services/translation.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 import {

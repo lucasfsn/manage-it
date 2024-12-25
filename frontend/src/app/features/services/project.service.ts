@@ -13,15 +13,14 @@ import {
   providedIn: 'root',
 })
 export class ProjectService {
-  public constructor(private http: HttpClient) {}
-
+  private allowAddToProject: boolean = false;
   private projects = signal<Project[]>([]);
   private project = signal<Project | null>(null);
 
   public loadedProjects = this.projects.asReadonly();
   public loadedProject = this.project.asReadonly();
 
-  private allowAddToProject: boolean = false;
+  public constructor(private http: HttpClient) {}
 
   public get accessAddToProject(): boolean {
     return this.allowAddToProject;

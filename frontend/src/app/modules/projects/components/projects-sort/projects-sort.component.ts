@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MapperService } from '../../../../features/services/mapper.service';
+import { MapperService } from '../../../../core/services/mapper.service';
 import {
   ProjectsSort,
   SortCriteria,
