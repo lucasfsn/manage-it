@@ -15,7 +15,7 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly JWT_TOKEN = 'JWT_TOKEN';
+  private readonly TOKEN = environment.storageKeys.TOKEN;
   private currentUser = signal<UserCredentials | null>(null);
 
   public loadedUser = this.currentUser.asReadonly();
@@ -59,12 +59,12 @@ export class AuthService {
   }
 
   public logout(): void {
-    localStorage.removeItem(this.JWT_TOKEN);
+    localStorage.removeItem(this.TOKEN);
     this.router.navigate(['/']);
   }
 
   public isAuthenticated(): boolean {
-    return !!localStorage.getItem(this.JWT_TOKEN);
+    return !!localStorage.getItem(this.TOKEN);
   }
 
   public getUserByToken(): Observable<UserCredentials> {
@@ -95,6 +95,6 @@ export class AuthService {
   }
 
   private storeJwtToken(jwt: string): void {
-    localStorage.setItem(this.JWT_TOKEN, jwt);
+    localStorage.setItem(this.TOKEN, jwt);
   }
 }

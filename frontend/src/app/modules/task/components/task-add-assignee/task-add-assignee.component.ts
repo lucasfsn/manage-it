@@ -10,7 +10,7 @@ import { TranslationService } from '../../../../core/services/translation.servic
 import { User } from '../../../../features/dto/project.model';
 import { TaskService } from '../../../../features/services/task.service';
 import { UserService } from '../../../../features/services/user.service';
-import { TaskUsersListComponent } from "../task-users-list/task-users-list.component";
+import { UsersListComponent } from '../../../../shared/components/users-list/users-list.component';
 
 @Component({
   selector: 'app-task-add-assignee',
@@ -20,8 +20,8 @@ import { TaskUsersListComponent } from "../task-users-list/task-users-list.compo
     ReactiveFormsModule,
     TranslateModule,
     MatProgressSpinnerModule,
-    TaskUsersListComponent
-],
+    UsersListComponent,
+  ],
   templateUrl: './task-add-assignee.component.html',
   styleUrl: './task-add-assignee.component.scss',
 })

@@ -1,10 +1,3 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,25 +27,6 @@ import { ProjectMenuComponent } from '../project-menu/project-menu.component';
     ProfileIconComponent,
     ChatComponent,
     ProjectMenuComponent,
-  ],
-  animations: [
-    trigger('chatAnimation', [
-      state(
-        'void',
-        style({
-          opacity: 0,
-          transform: 'translateY(20px)',
-        })
-      ),
-      state(
-        '*',
-        style({
-          opacity: 1,
-          transform: 'translateY(0)',
-        })
-      ),
-      transition('void <=> *', animate('300ms ease-in-out')),
-    ]),
   ],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss',

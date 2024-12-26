@@ -12,7 +12,7 @@ import {
   PageEvent,
   PaginatorComponent,
 } from '../../../../shared/components/paginator/paginator.component';
-import { TaskUsersListComponent } from "../task-users-list/task-users-list.component";
+import { UsersListComponent } from '../../../../shared/components/users-list/users-list.component';
 
 @Component({
   selector: 'app-task-assignees-list',
@@ -22,8 +22,8 @@ import { TaskUsersListComponent } from "../task-users-list/task-users-list.compo
     MatIconModule,
     TranslateModule,
     PaginatorComponent,
-    TaskUsersListComponent
-],
+    UsersListComponent,
+  ],
   templateUrl: './task-assignees-list.component.html',
   styleUrl: './task-assignees-list.component.scss',
 })

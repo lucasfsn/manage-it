@@ -11,10 +11,7 @@ import {
   DestroyRef,
   ElementRef,
   inject,
-  Input,
-  OnDestroy,
   OnInit,
-  signal,
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -65,13 +62,14 @@ import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
     ]),
   ],
 })
-export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewChecked {
+  @ViewChild('scroll') private scroll!: ElementRef;
+  private destroyRef = inject(DestroyRef);
   private projectId: string | null = null;
   private taskId: string | null = null;
-  private destroyRef = inject(DestroyRef);
-
-  @Input() public isTaskChat = false;
-  @ViewChild('messageContainer') private messageContainer!: ElementRef;
+  protected message: string = '';
+  protected showEmojiPicker: boolean = false;
+  protected loading: boolean = false;
 
   public constructor(
     private authService: AuthService,
@@ -81,14 +79,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     private mapperService: MapperService
   ) {}
 
-  protected message = '';
-  protected showEmojiPicker = false;
-  protected isLoading = signal(false);
-
   protected get messages(): Message[] {
-    return this.isTaskChat
-      ? this.chatService.loadedTaskMessages()
-      : this.chatService.loadedProjectMessages();
+    return this.chatService.loadedMessages();
   }
 
   protected onTypeMessage(event: Event): void {
@@ -111,11 +103,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   protected sendMessage(): void {
     if (!this.projectId || !this.message.trim()) return;
 
-    if (this.taskId) {
-      this.chatService.sendTaskMessage(this.taskId, this.message);
-    } else {
-      this.chatService.sendProjectMessage(this.projectId, this.message);
-    }
+    this.chatService.sendMessage(this.message, this.projectId, this.taskId);
 
     this.message = '';
   }
@@ -123,53 +111,47 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   private loadMessages(): void {
     if (!this.projectId) return;
 
-    this.isLoading.set(true);
-    if (this.taskId) {
-      this.chatService
-        .getTaskChatHistory(this.projectId, this.taskId)
-        .subscribe({
-          error: () => {
-            const localeMessage = this.mapperService.errorToastMapper();
-            this.toastrService.error(localeMessage);
-            this.isLoading.set(false);
-          },
-          complete: () => {
-            this.isLoading.set(false);
-          },
-        });
-    } else {
-      this.chatService.getProjectChatHistory(this.projectId).subscribe({
-        error: () => {
-          const localeMessage = this.mapperService.errorToastMapper();
-          this.toastrService.error(localeMessage);
-          this.isLoading.set(false);
-        },
-        complete: () => {
-          this.isLoading.set(false);
-        },
-      });
-    }
+    this.loading = true;
+    this.chatService.getChatHistory(this.projectId, this.taskId).subscribe({
+      error: () => {
+        const localeMessage = this.mapperService.errorToastMapper();
+        this.toastrService.error(localeMessage);
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+  private configureSubscription(): void {
+    if (!this.projectId) return;
+
+    const topic = this.taskId
+      ? `/join/tasks/${this.taskId}`
+      : `/join/projects/${this.projectId}`;
+
+    const subscription = this.chatService.rxStomp.watch(topic).subscribe({
+      next: (message) => {
+        const newMessage: Message = JSON.parse(message.body) as Message;
+        this.chatService.updateMessages(newMessage);
+      },
+    });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 
   public ngOnInit(): void {
-    const subscription = this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe((params) => {
       this.projectId = params.get('projectId');
       this.taskId = params.get('taskId');
-
       this.loadMessages();
+      this.configureSubscription();
     });
-
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
-    });
-  }
-
-  public ngOnDestroy(): void {
-    this.chatService.deactivate();
   }
 
   public ngAfterViewChecked(): void {
-    const el = this.messageContainer.nativeElement as HTMLElement;
+    const el = this.scroll.nativeElement as HTMLElement;
     el.scrollTop = el.scrollHeight;
   }
 }

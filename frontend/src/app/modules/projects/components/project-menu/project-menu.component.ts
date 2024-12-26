@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -20,6 +20,8 @@ import { ConfirmModalComponent } from '../../../../shared/components/confirm-mod
   styleUrl: './project-menu.component.scss',
 })
 export class ProjectMenuComponent {
+  private destroyRef = inject(DestroyRef);
+
   public constructor(
     private projectService: ProjectService,
     private confirmModalService: ConfirmModalService,
@@ -64,7 +66,7 @@ export class ProjectMenuComponent {
       this.translationService.translate('project.details.DELETE_MESSAGE')
     );
 
-    confirmation$.subscribe((confirmed) => {
+    const subscription = confirmation$.subscribe((confirmed) => {
       if (!confirmed) return;
 
       this.loadingService.loadingOn();
@@ -85,6 +87,8 @@ export class ProjectMenuComponent {
         },
       });
     });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 
   protected handleComplete(): void {
@@ -96,7 +100,7 @@ export class ProjectMenuComponent {
       this.translationService.translate('project.details.COMPLETE_MESSAGE')
     );
 
-    confirmation$.subscribe((confirmed) => {
+    const subscription = confirmation$.subscribe((confirmed) => {
       if (!confirmed) return;
 
       this.loadingService.loadingOn();
@@ -116,5 +120,7 @@ export class ProjectMenuComponent {
         },
       });
     });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }

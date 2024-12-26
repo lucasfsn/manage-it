@@ -1,11 +1,4 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -17,43 +10,18 @@ import { TranslationService } from '../../../../core/services/translation.servic
 import { Task } from '../../../../features/dto/task.model';
 import { TaskService } from '../../../../features/services/task.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ChatComponent } from '../../../../shared/components/chat/chat.component';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { TaskEditFormComponent } from '../task-edit-form/task-edit-form.component';
 
 @Component({
   selector: 'app-task-menu',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    MatIconModule,
-    ConfirmModalComponent,
-    ChatComponent,
-  ],
-  animations: [
-    trigger('chatAnimation', [
-      state(
-        'void',
-        style({
-          opacity: 0,
-          transform: 'translateY(20px)',
-        })
-      ),
-      state(
-        '*',
-        style({
-          opacity: 1,
-          transform: 'translateY(0)',
-        })
-      ),
-      transition('void <=> *', animate('300ms ease-in-out')),
-    ]),
-  ],
+  imports: [ButtonComponent, MatIconModule, ConfirmModalComponent],
   templateUrl: './task-menu.component.html',
   styleUrl: './task-menu.component.scss',
 })
 export class TaskMenuComponent {
-  protected showChat: boolean = false;
+  private destroyRef = inject(DestroyRef);
 
   public constructor(
     private taskService: TaskService,
@@ -65,10 +33,6 @@ export class TaskMenuComponent {
     private loadingService: LoadingService,
     private dialog: MatDialog
   ) {}
-
-  protected toggleChat(): void {
-    this.showChat = !this.showChat;
-  }
 
   protected get task(): Task | null {
     return this.taskService.loadedTask();
@@ -91,7 +55,7 @@ export class TaskMenuComponent {
       'Are you sure you want to delete this task?'
     );
 
-    confirmation$.subscribe((confirmed) => {
+    const subscription = confirmation$.subscribe((confirmed) => {
       if (!this.task || !confirmed) return;
 
       const { id, projectId } = this.task;
@@ -114,6 +78,8 @@ export class TaskMenuComponent {
         },
       });
     });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 
   protected handleEdit(): void {

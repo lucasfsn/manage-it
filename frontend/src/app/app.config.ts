@@ -23,11 +23,12 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideToastr } from 'ngx-toastr';
+import { environment } from '../environments/environment';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 function tokenGetter(): string | null {
-  return localStorage.getItem('JWT_TOKEN');
+  return localStorage.getItem(environment.storageKeys.TOKEN);
 }
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {

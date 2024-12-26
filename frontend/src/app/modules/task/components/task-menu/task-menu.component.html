@@ -29,18 +29,3 @@
     <mat-icon>arrow_back</mat-icon>
   </app-button>
 </div>
-<app-button
-  textColor="text-sky-100"
-  bgColor="bg-sky-500"
-  hoverBgColor="hover:bg-sky-600"
-  customClass="fixed bottom-4 right-4"
-  [largeSize]="true"
-  (handleClick)="toggleChat()"
->
-  <mat-icon class="transition-transform" [class.rotate-180]="showChat">
-    @if (showChat) { keyboard_arrow_up } @else { chat }
-  </mat-icon>
-</app-button>
-@if (showChat) {
-<app-chat @chatAnimation [isTaskChat]="true" />
-}
