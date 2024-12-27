@@ -27,11 +27,7 @@ import { environment } from '../environments/environment';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
-function tokenGetter(): string | null {
-  return localStorage.getItem(environment.storageKeys.TOKEN);
-}
-
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
 }
 
@@ -42,8 +38,9 @@ export const appConfig: ApplicationConfig = {
       BrowserAnimationsModule,
       JwtModule.forRoot({
         config: {
-          tokenGetter: tokenGetter,
-          allowedDomains: ['http://localhost:8080'],
+          tokenGetter: () =>
+            localStorage.getItem(environment.storageKeys.TOKEN),
+          allowedDomains: ['localhost'],
         },
       }),
       TranslateModule.forRoot({

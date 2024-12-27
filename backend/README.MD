@@ -1,20 +1,35 @@
-# Api 
+## Run Locally
 
+Clone the entire repository
 
-### Rejestracja.
-
-Jest w miare prosta walidacja, póki co. Jeśli wszystko się powiedzie, od razu zwraca token (można to zmienić). W body podajemy to co trzeba, czyli:
-*username*, *password*, *firstName*, *lastName*, *email*
-```
-:8080/api/v1/auth/register
+```bash
+  git clone https://github.com/lucasfsn/manage-it
 ```
 
-### Logowanie
+Go to the backend directory
 
-Podajemy tylko *username*, *password*, jeśli sie powiedzie, zwraca token.
-
-```
-:8080/api/v1/auth/authenticate
+```bash
+  cd backend
 ```
 
-Narazie, jak coś sie nie uda, to nie ma potworzonych różnych wyjątków, tylko zwraca kody.
+If you have made any changes to database or frontend, adjust the configuration in application-dev.yml, otherwise skip this step.
+
+- Datasource Configuration:
+  - **url**
+  - **username**
+  - **password**
+- Application Security Configuration:
+  - **jwt.secret-key**: Update it if you want your own secret key.
+  - **frontend.url**
+
+Install dependencies
+
+```bash
+  mvn clean install
+```
+
+Start the backend:
+
+```bash
+  mvn spring-boot:run
+```

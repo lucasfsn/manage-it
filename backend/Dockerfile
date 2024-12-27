@@ -1,0 +1,23 @@
+FROM maven:3.9.4-eclipse-temurin-21 AS builder
+
+LABEL maintainer="p.zawistowski.630@studms.ug.edu.pl"
+
+WORKDIR /app
+
+COPY pom.xml .
+
+COPY src ./src
+
+USER 0
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jre-jammy
+
+WORKDIR /app
+
+USER 1000
+COPY --from=builder /app/target/manageit-0.0.1-SNAPSHOT.jar /app/manageit.jar
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "/app/manageit.jar"]
