@@ -11,7 +11,7 @@ import { Message, MessageSend } from '../dto/chat.model';
 })
 export class ChatService {
   private readonly TOKEN = environment.storageKeys.TOKEN;
-  public rxStomp: RxStomp;
+  private rxStomp: RxStomp;
 
   private messages = signal<Message[]>([]);
 
@@ -51,6 +51,8 @@ export class ChatService {
     projectId: string,
     taskId: string | null = null
   ): Observable<Message[]> {
+    this.messages.set([]);
+
     const url = taskId
       ? `chat/projects/${projectId}/tasks/${taskId}`
       : `chat/projects/${projectId}`;
@@ -65,7 +67,19 @@ export class ChatService {
     );
   }
 
-  public updateMessages(newMessage: Message): void {
-    this.messages.update((messages) => [...messages, newMessage]);
+  public watchTopic(
+    projectId: string,
+    taskId: string | null = null
+  ): Observable<Message> {
+    const topic = taskId
+      ? `/join/tasks/${taskId}`
+      : `/join/projects/${projectId}`;
+
+    return new Observable<Message>(() =>
+      this.rxStomp.watch(topic).subscribe((message) => {
+        const newMessage: Message = JSON.parse(message.body) as Message;
+        this.messages.update((messages) => [...messages, newMessage]);
+      })
+    );
   }
 }

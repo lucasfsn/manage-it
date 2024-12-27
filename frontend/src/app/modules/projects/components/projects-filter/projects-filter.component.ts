@@ -1,5 +1,13 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,12 +18,18 @@ import { MapperService } from '../../../../core/services/mapper.service';
 import { ProjectStatus } from '../../../../features/dto/project.model';
 import { ProjectsFilters } from '../../models/projects-filter.model';
 
+interface ProjectsFilterForm {
+  readonly name: FormControl<string | null>;
+  readonly status: FormControl<ProjectStatus | null>;
+  readonly onlyOwnedByMe: FormControl<boolean | null>;
+}
+
 @Component({
   selector: 'app-projects-filter',
   standalone: true,
   imports: [
     MatIconModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     MatRadioModule,
     MatMenuModule,
@@ -25,36 +39,31 @@ import { ProjectsFilters } from '../../models/projects-filter.model';
   templateUrl: './projects-filter.component.html',
   styleUrl: './projects-filter.component.scss',
 })
-export class ProjectsFilterComponent {
+export class ProjectsFilterComponent implements OnInit {
+  @Input({ required: true }) public filterName!: string;
+  @Input({ required: true }) public filterStatus!: ProjectStatus | null;
+  @Input({ required: true }) public filterOnlyOwnedByMe!: boolean;
   @Output() public filterChange = new EventEmitter<ProjectsFilters>();
+  private destroyRef = inject(DestroyRef);
 
   public constructor(private mapperService: MapperService) {}
 
-  protected filterProjectName?: string;
-  protected filterStatus?: ProjectStatus;
-  protected filterOnlyOwnedByMe = false;
+  protected form = new FormGroup<ProjectsFilterForm>({
+    name: new FormControl<string>(''),
+    status: new FormControl<ProjectStatus | null>(null),
+    onlyOwnedByMe: new FormControl<boolean>(false),
+  });
 
   protected get ProjectStatus(): typeof ProjectStatus {
     return ProjectStatus;
   }
 
-  private applyFilters(): void {
-    this.filterChange.emit({
-      name: this.filterProjectName?.trim() || undefined,
-      status: this.filterStatus,
-      onlyOwnedByMe: this.filterOnlyOwnedByMe,
+  protected onReset(): void {
+    this.form.reset({
+      name: '',
+      status: null,
+      onlyOwnedByMe: false,
     });
-  }
-
-  protected handleClear(): void {
-    this.filterStatus = undefined;
-    this.filterOnlyOwnedByMe = false;
-    this.filterProjectName = undefined;
-    this.applyFilters();
-  }
-
-  protected handleChange(): void {
-    this.applyFilters();
   }
 
   protected mapStatus(status: ProjectStatus): string {
@@ -63,5 +72,23 @@ export class ProjectsFilterComponent {
 
   protected get projectStatuses(): ProjectStatus[] {
     return Object.values(ProjectStatus);
+  }
+
+  public ngOnInit(): void {
+    this.form.patchValue({
+      name: this.filterName,
+      status: this.filterStatus,
+      onlyOwnedByMe: this.filterOnlyOwnedByMe,
+    });
+
+    const subscription = this.form.valueChanges.subscribe((value) => {
+      this.filterChange.emit({
+        name: value.name?.trim() || '',
+        status: value.status || null,
+        onlyOwnedByMe: value.onlyOwnedByMe ?? false,
+      });
+    });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }

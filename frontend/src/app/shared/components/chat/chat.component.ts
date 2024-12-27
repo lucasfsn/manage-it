@@ -14,7 +14,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
@@ -35,10 +35,10 @@ import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
   imports: [
     MatIconModule,
     PickerComponent,
-    FormsModule,
     DatePipe,
     TranslateModule,
     ProfileIconComponent,
+    ReactiveFormsModule,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
@@ -70,6 +70,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   protected message: string = '';
   protected showEmojiPicker: boolean = false;
   protected loading: boolean = false;
+  protected form = new FormControl<string>('');
 
   public constructor(
     private authService: AuthService,
@@ -83,13 +84,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     return this.chatService.loadedMessages();
   }
 
-  protected onTypeMessage(event: Event): void {
-    this.showEmojiPicker = false;
-    this.message = (event.target as HTMLInputElement).value;
-  }
-
   protected addEmoji(event: EmojiEvent): void {
-    this.message += event.emoji.native;
+    this.form.setValue((this.form.value ?? '') + event.emoji.native);
   }
 
   protected toggleEmojiPicker(): void {
@@ -101,11 +97,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   }
 
   protected sendMessage(): void {
-    if (!this.projectId || !this.message.trim()) return;
+    const message = this.form.value;
 
-    this.chatService.sendMessage(this.message, this.projectId, this.taskId);
+    if (!this.projectId || !message || !message.trim()) return;
 
-    this.message = '';
+    this.chatService.sendMessage(message, this.projectId, this.taskId);
+
+    this.form.reset();
+    this.showEmojiPicker = false;
   }
 
   private loadMessages(): void {
@@ -124,19 +123,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  private configureSubscription(): void {
+  private watchTopic(): void {
     if (!this.projectId) return;
 
-    const topic = this.taskId
-      ? `/join/tasks/${this.taskId}`
-      : `/join/projects/${this.projectId}`;
-
-    const subscription = this.chatService.rxStomp.watch(topic).subscribe({
-      next: (message) => {
-        const newMessage: Message = JSON.parse(message.body) as Message;
-        this.chatService.updateMessages(newMessage);
-      },
-    });
+    const subscription = this.chatService
+      .watchTopic(this.projectId, this.taskId)
+      .subscribe();
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
@@ -146,7 +138,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.projectId = params.get('projectId');
       this.taskId = params.get('taskId');
       this.loadMessages();
-      this.configureSubscription();
+      this.watchTopic();
     });
   }
 

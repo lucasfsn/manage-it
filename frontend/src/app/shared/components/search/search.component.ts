@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialogContent,
@@ -23,7 +23,6 @@ import { UserService } from '../../../features/services/user.service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,
     MatDialogContent,
     MatIconModule,
     TranslateModule,

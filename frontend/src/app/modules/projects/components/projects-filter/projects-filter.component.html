@@ -1,80 +1,76 @@
-<div class="flex gap-2 sm:gap-4 flex-col sm:flex-row">
-  <button
-    mat-icon-button
-    [matMenuTriggerFor]="filterMenu"
-    class="flex justify-center items-center focus:outline-none focus:ring-0 active:text-sky-500 focus:text-sky-500"
-  >
-    <mat-icon>filter_list</mat-icon>
-  </button>
-  <div
-    class="flex items-center bg-orange-200 dark:bg-slate-900 rounded-full px-2 py-1 gap-1"
-  >
-    <label for="filterOwner" class="flex items-center">
-      <mat-icon>search</mat-icon>
-    </label>
-    <input
-      id="filterOwner"
-      type="text"
-      [placeholder]="'projects.filter.INPUT_PLACEHOLDER' | translate"
-      class="focus:outline-none focus:ring-0 bg-transparent"
-      [(ngModel)]="filterProjectName"
-      (input)="handleChange()"
-    />
+<form [formGroup]="form">
+  <div class="flex gap-2 sm:gap-4 flex-col sm:flex-row">
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="filterMenu"
+      class="flex justify-center items-center focus:outline-none focus:ring-0 active:text-sky-500 focus:text-sky-500"
+    >
+      <mat-icon>filter_list</mat-icon>
+    </button>
+    <div
+      class="flex items-center bg-orange-200 dark:bg-slate-900 rounded-full px-2 py-1 gap-1"
+    >
+      <label for="name" class="flex items-center">
+        <mat-icon>search</mat-icon>
+      </label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        [placeholder]="'projects.filter.INPUT_PLACEHOLDER' | translate"
+        class="focus:outline-none focus:ring-0 bg-transparent"
+        [formControl]="form.controls.name"
+      />
+    </div>
   </div>
-</div>
-
-<mat-menu #filterMenu="matMenu">
-  <div
-    class="flex flex-col gap-2 py-2 px-3 bg-orange-200 dark:bg-slate-900"
-    matMenuContent
-  >
-    <p class="text-base">
-      {{ "projects.filter.MENU_TITLE" | translate }}
-    </p>
-    <div class="flex flex-col gap-4 bg-transparent p-2 rounded-md">
-      <div class="flex flex-col gap-1">
-        <p class="text-sm text-center">
-          {{ "projects.filter.MENU_STATUS_TEXT" | translate }}
-        </p>
-        <mat-radio-group
-          [(ngModel)]="filterStatus"
-          class="flex flex-col"
+  <mat-menu #filterMenu="matMenu">
+    <div
+      class="flex flex-col gap-2 py-2 px-3 bg-orange-200 dark:bg-slate-900"
+      matMenuContent
+    >
+      <div class="flex flex-col gap-4 bg-transparent p-2 rounded-md">
+        <div class="flex flex-col gap-1">
+          <p class="text-sm text-center">
+            {{ "projects.filter.MENU_STATUS_TEXT" | translate }}
+          </p>
+          <mat-radio-group
+            id="status"
+            name="status"
+            class="flex flex-col"
+            [formControl]="form.controls.status"
+            (click)="$event.stopPropagation()"
+          >
+            <mat-radio-button [value]="null">{{
+              "projects.filter.ALL_FILTER" | translate
+            }}</mat-radio-button>
+            @for (status of projectStatuses; track status) {
+            <mat-radio-button [value]="status">{{
+              mapStatus(status)
+            }}</mat-radio-button>
+            }
+          </mat-radio-group>
+        </div>
+        <mat-checkbox
+          id="onlyOwnedByMe"
+          name="onlyOwnedByMe"
+          [formControl]="form.controls.onlyOwnedByMe"
           (click)="$event.stopPropagation()"
+          [checked]="true"
         >
-          <mat-radio-button [value]="undefined">{{
-            "projects.filter.ALL_FILTER" | translate
-          }}</mat-radio-button>
-          @for (status of projectStatuses; track status) {
-          <mat-radio-button [value]="status">{{
-            mapStatus(status)
-          }}</mat-radio-button>
-          }
-        </mat-radio-group>
+          <span class="text-sm text-gray-700 dark:text-gray-300">{{
+            "projects.filter.ONLY_LOGGED_USER_PROJECTS" | translate
+          }}</span>
+        </mat-checkbox>
       </div>
-      <mat-checkbox
-        [(ngModel)]="filterOnlyOwnedByMe"
-        (click)="$event.stopPropagation()"
-      >
-        <span class="text-sm text-gray-700 dark:text-gray-300">{{
-          "projects.filter.ONLY_LOGGED_USER_PROJECTS" | translate
-        }}</span>
-      </mat-checkbox>
+      <div class="flex justify-end gap-1">
+        <button
+          mat-button
+          (click)="onReset(); $event.stopPropagation()"
+          class="px-2 py-1"
+        >
+          {{ "projects.filter.CLEAR_BUTTON" | translate }}
+        </button>
+      </div>
     </div>
-    <div class="flex justify-end gap-1">
-      <button
-        mat-button
-        (click)="handleClear(); $event.stopPropagation()"
-        class="px-2 py-1"
-      >
-        {{ "projects.filter.CLEAR_BUTTON" | translate }}
-      </button>
-      <button
-        mat-button
-        (click)="handleChange(); $event.stopPropagation()"
-        class="px-2 py-1 bg-slate-950 rounded-md hover:bg-opacity-80 hover:text-slate-200 transition-all text-slate-200"
-      >
-        {{ "projects.filter.APPLY_BUTTON" | translate }}
-      </button>
-    </div>
-  </div>
-</mat-menu>
+  </mat-menu>
+</form>

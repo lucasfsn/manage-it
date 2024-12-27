@@ -1,5 +1,13 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MapperService } from '../../../../core/services/mapper.service';
 import {
@@ -8,31 +16,30 @@ import {
   SortOrder,
 } from '../../models/projects-sort.model';
 
+interface ProjectsSortForm {
+  readonly criteria: FormControl<SortCriteria | null>;
+  readonly order: FormControl<SortOrder | null>;
+}
+
 @Component({
   selector: 'app-projects-sort',
   standalone: true,
-  imports: [FormsModule, TranslateModule],
+  imports: [ReactiveFormsModule, TranslateModule],
   templateUrl: './projects-sort.component.html',
   styleUrl: './projects-sort.component.scss',
 })
-export class ProjectsSortComponent {
-  @Input() public sortCriteria: SortCriteria = SortCriteria.NAME;
-  @Input() public sortOrder: SortOrder = SortOrder.ASCENDING;
+export class ProjectsSortComponent implements OnInit {
+  @Input({ required: true }) public sortCriteria!: SortCriteria;
+  @Input({ required: true }) public sortOrder!: SortOrder;
   @Output() public sortChange = new EventEmitter<ProjectsSort>();
+  private destroyRef = inject(DestroyRef);
 
   public constructor(private mapperService: MapperService) {}
 
-  protected onSortCriteriaChange(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    this.sortCriteria = selectElement.value as SortCriteria;
-    this.emitSortChange();
-  }
-
-  protected onSortOrderChange(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    this.sortOrder = selectElement.value as SortOrder;
-    this.emitSortChange();
-  }
+  protected form = new FormGroup<ProjectsSortForm>({
+    criteria: new FormControl<SortCriteria>(SortCriteria.NAME),
+    order: new FormControl<SortOrder>(SortOrder.ASCENDING),
+  });
 
   protected get sortCriterias(): SortCriteria[] {
     return Object.values(SortCriteria);
@@ -50,10 +57,21 @@ export class ProjectsSortComponent {
     return this.mapperService.sortCriteriaMapper(criteria);
   }
 
-  private emitSortChange(): void {
-    this.sortChange.emit({
+  public ngOnInit(): void {
+    this.form.patchValue({
       criteria: this.sortCriteria,
       order: this.sortOrder,
     });
+
+    const subscription = this.form.valueChanges.subscribe((value) => {
+      const criteria = value.criteria ?? SortCriteria.NAME;
+      const order = value.order ?? SortOrder.ASCENDING;
+      this.sortChange.emit({
+        criteria,
+        order,
+      });
+    });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }

@@ -1,6 +1,5 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Project, ProjectStatus } from '../../../../features/dto/project.model';
@@ -31,7 +30,6 @@ interface ProjectsParams extends Params {
   imports: [
     RouterLink,
     DecimalPipe,
-    FormsModule,
     TranslateModule,
     DatePipe,
     ProjectsSortComponent,
@@ -46,8 +44,8 @@ export class ProjectsListComponent implements OnInit {
   protected sortCriteria: SortCriteria = SortCriteria.NAME;
   protected sortOrder: SortOrder = SortOrder.ASCENDING;
 
-  protected filterName?: string;
-  protected filterStatus?: ProjectStatus;
+  protected filterName: string = '';
+  protected filterStatus: ProjectStatus | null = null;
   protected filterOnlyOwnedByMe: boolean = false;
 
   public constructor(
@@ -128,9 +126,11 @@ export class ProjectsListComponent implements OnInit {
       queryParams: {
         sort: this.sortCriteria,
         order: this.sortOrder,
-        name: this.filterName,
-        status: this.filterStatus,
-        onlyOwnedByMe: this.filterOnlyOwnedByMe,
+        name: this.filterName ? this.filterName : undefined,
+        status: this.filterStatus ?? undefined,
+        onlyOwnedByMe: this.filterOnlyOwnedByMe
+          ? this.filterOnlyOwnedByMe
+          : undefined,
       },
       queryParamsHandling: 'merge',
     });
@@ -142,7 +142,7 @@ export class ProjectsListComponent implements OnInit {
         enumValueValidator(params.sort, SortCriteria) || SortCriteria.NAME;
       this.sortOrder =
         enumValueValidator(params.order, SortOrder) || SortOrder.ASCENDING;
-      this.filterName = params.name || undefined;
+      this.filterName = params.name || '';
       this.filterStatus = enumValueValidator(params.status, ProjectStatus);
       this.filterOnlyOwnedByMe = params.onlyOwnedByMe === 'true';
       this.applyFiltersAndSort();

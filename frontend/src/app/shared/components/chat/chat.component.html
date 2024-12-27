@@ -71,9 +71,7 @@
         type="text"
         [placeholder]="'chat.INPUT_PLACEHOLDER' | translate"
         class="flex-1 bg-transparent text-sm focus:outline-none placeholder:text-gray-500 disabled:cursor-not-allowed"
-        (input)="onTypeMessage($event)"
-        [(ngModel)]="message"
-        [disabled]="loading"
+        [formControl]="form"
         (keydown.enter)="sendMessage()"
       />
       <button
