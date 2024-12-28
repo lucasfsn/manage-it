@@ -39,22 +39,22 @@ CREATE TABLE tasks (
 
 CREATE TABLE notifications (
     notification_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    assigned_project_id UUID REFERENCES projects(project_id) ON DELETE CASCADE NOT NULL,
-    tasks_task_id UUID REFERENCES tasks(task_id) ON DELETE CASCADE,
+    assigned_project_id UUID,
+    tasks_task_id UUID,
     receiver_id UUID REFERENCES users(user_id) ON DELETE CASCADE NOT NULL,
     sender_id UUID REFERENCES users(user_id) ON DELETE CASCADE NOT NULL,
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
--- tabela pośrednia users-tasks
+-- intermediate table between the users and tasks tables
 CREATE TABLE users_tasks (
     users_user_id UUID REFERENCES users(user_id) ON DELETE CASCADE NOT NULL,
     tasks_task_id UUID REFERENCES tasks(task_id) ON DELETE CASCADE NOT NULL,
     PRIMARY KEY (users_user_id, tasks_task_id)
 );
 
---tabela pośrednia users-projects
+-- intermediate table between the users and projects tables
 CREATE TABLE project_members (
     users_user_id UUID REFERENCES users(user_id) ON DELETE CASCADE NOT NULL,
     projects_project_id UUID REFERENCES projects(project_id) ON DELETE CASCADE NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE chats (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
---tabela pośrednia do users-chats
+-- intermediate table between the users and chats tables
 CREATE TABLE messages (
     message_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES users(user_id) ON DELETE CASCADE NOT NULL,
