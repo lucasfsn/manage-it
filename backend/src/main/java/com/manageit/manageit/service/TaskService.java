@@ -98,7 +98,7 @@ public class TaskService {
         taskRepository.delete(task);
     }
 
-    public void updateTask(String token, UUID taskId, UUID projectId, UpdateTaskRequest request) {
+    public TaskDto updateTask(String token, UUID taskId, UUID projectId, UpdateTaskRequest request) {
         User updater = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(updater.getName()))) {
@@ -121,7 +121,7 @@ public class TaskService {
             task.setDueDate(request.getDueDate());
         }
         task.setUpdatedAt(LocalDateTime.now());
-        taskRepository.save(task);
+        Task updatedTask = taskRepository.save(task);
         notificationService.createAndSendNotification(
                 project.getMembers(),
                 updater,
@@ -129,9 +129,10 @@ public class TaskService {
                 project.getId(),
                 task.getId()
         );
+        return taskMapper.toTaskDto(updatedTask);
      }
 
-    public void addUserToProject(String token, UUID taskId, UUID projectId, BasicUserDto request) {
+    public TaskDto addUserToProject(String token, UUID taskId, UUID projectId, BasicUserDto request) {
         User user = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
         User userToAdd = userService.getUserByUsername(request.getUsername());
@@ -148,7 +149,7 @@ public class TaskService {
         if (!task.getUsers().contains(userToAdd)) {
             task.getUsers().add(userToAdd);
             task.setUpdatedAt(LocalDateTime.now());
-            taskRepository.save(task);
+            Task updatedTask = taskRepository.save(task);
             notificationService.createAndSendNotification(
                     project.getMembers(),
                     userToAdd,
@@ -156,10 +157,13 @@ public class TaskService {
                     project.getId(),
                     task.getId()
             );
+            return taskMapper.toTaskDto(updatedTask);
+        } else {
+            throw new IllegalStateException("User is already a member of the task");
         }
     }
 
-    public void removeUserFromTask(String token, UUID taskId, UUID projectId, BasicUserDto request) {
+    public TaskDto removeUserFromTask(String token, UUID taskId, UUID projectId, BasicUserDto request) {
         User user = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
@@ -173,7 +177,7 @@ public class TaskService {
         if (task.getUsers().contains(userToRemove)) {
             task.getUsers().remove(userToRemove);
             task.setUpdatedAt(LocalDateTime.now());
-            taskRepository.save(task);
+            Task updatedTask = taskRepository.save(task);
             notificationService.createAndSendNotification(
                     project.getMembers(),
                     userToRemove,
@@ -181,6 +185,9 @@ public class TaskService {
                     project.getId(),
                     task.getId()
             );
+            return taskMapper.toTaskDto(updatedTask);
+        } else {
+            throw new IllegalStateException("User is not a member of the task");
         }
     }
 }

@@ -14,9 +14,11 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.manageit.manageit.model.project.Project;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,15 +46,21 @@ public class UserService {
 
     public UserResponseDto findByUsername(String token, String username) {
         String requestUsername = jwtService.extractUsername(token.replace("Bearer ", ""));
+        User requestingUser = getUserByUsername(requestUsername);
         User user = getUserByUsername(username);
+
+        List<Project> filteredProjects = user.getProjects().stream()
+            .filter(project -> project.getMembers().contains(requestingUser))
+            .collect(Collectors.toList());
+
         if (requestUsername.equals(username)) {
-            return userMapper.toUserResponse(user);
+            return userMapper.toUserResponse(user, filteredProjects);
         }
-        return userMapper.toUserResponseWithoutEmail(user);
+        return userMapper.toUserResponseWithoutEmail(user, filteredProjects);
     }
 
 
-    public void updateUser(String token, UpdateUserRequest updatedUser) {
+    public UserResponseDto updateUser(String token, UpdateUserRequest updatedUser) {
         User user = getUserByToken(token);
         if (updatedUser.getFirstName() != null) {
             user.setFirstName(updatedUser.getFirstName());
@@ -66,7 +74,8 @@ public class UserService {
         if (updatedUser.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return userMapper.toUserResponse(savedUser);
     }
 
     public List<BasicUserDto> searchUsers(String pattern, UUID projectId, UUID taskId) {

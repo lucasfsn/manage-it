@@ -86,7 +86,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public void updateProject(String token, UUID projectId, UpdateProjectRequest request) {
+    public ProjectDto updateProject(String token, UUID projectId, UpdateProjectRequest request) {
         User owner = userService.getUserByToken(token);
         Project project = getProjectById(projectId);
         String message;
@@ -110,7 +110,7 @@ public class ProjectService {
             }
         }
         project.setUpdatedAt(LocalDateTime.now());
-        projectRepository.save(project);
+        Project updatedProject = projectRepository.save(project);
         notificationService.createAndSendNotification(
                 project.getMembers(),
                 owner,
@@ -118,6 +118,7 @@ public class ProjectService {
                 project.getId(),
                 null
         );
+        return projectMapper.toProjectDto(updatedProject);
     }
 
     @Transactional
@@ -141,7 +142,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public void removeUserFromProject(String token, UUID projectId, BasicUserDto request) {
+    public ProjectDto removeUserFromProject(String token, UUID projectId, BasicUserDto request) {
         User owner = userService.getUserByToken(token);
         Project project = getProjectById(projectId);
         validateUserIsProjectOwner(owner, project);
@@ -153,7 +154,7 @@ public class ProjectService {
             project.getTasks().forEach(task -> task.getUsers().remove(userToRemove));
             project.getMembers().remove(userToRemove);
             project.setUpdatedAt(LocalDateTime.now());
-            projectRepository.save(project);
+            Project updatedProject = projectRepository.save(project);
             notificationService.createAndSendNotification(
                     project.getMembers(),
                     userToRemove,
@@ -161,6 +162,7 @@ public class ProjectService {
                     project.getId(),
                     null
             );
+            return projectMapper.toProjectDto(updatedProject);
         } else {
             throw new IllegalStateException("User is not a member of the project");
         }

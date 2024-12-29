@@ -6,7 +6,9 @@ import com.manageit.manageit.dto.user.AuthenticatedUserResponse;
 import com.manageit.manageit.model.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.manageit.manageit.model.project.Project;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +39,18 @@ public class UserMapper {
                 .build();
     }
 
+    public UserResponseDto toUserResponse(User user, List<Project> filteredProjects) {
+        return UserResponseDto
+                .builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .username(user.getName())
+                .projects(filteredProjects.stream().map(projectMapper::toUserProfileProjectDto).collect(Collectors.toList()))
+                .createdAt(user.getCreatedAt())
+                .build();
+    }   
+
     public UserResponseDto toUserResponseWithoutEmail(User user) {
         return UserResponseDto
                 .builder()
@@ -44,6 +58,17 @@ public class UserMapper {
                 .lastName(user.getLastName())
                 .username(user.getName())
                 .projects(user.getProjects().stream().map(projectMapper::toUserProfileProjectDto).collect(Collectors.toList()))
+                .createdAt(user.getCreatedAt())
+                .build();
+    }
+
+    public UserResponseDto toUserResponseWithoutEmail(User user, List<Project> filteredProjects) {
+        return UserResponseDto
+                .builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .username(user.getName())
+                .projects(filteredProjects.stream().map(projectMapper::toUserProfileProjectDto).collect(Collectors.toList()))
                 .createdAt(user.getCreatedAt())
                 .build();
     }

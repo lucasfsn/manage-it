@@ -56,36 +56,36 @@ public class TaskController {
     }
 
     @PatchMapping("/{taskId}")
-    public ResponseEntity<Void> updateTask(
+    public ResponseEntity<TaskDto> updateTask(
             @RequestHeader("Authorization") String token,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
             @RequestBody UpdateTaskRequest updateTaskRequest
     ) {
-        taskService.updateTask(token, taskId, projectId, updateTaskRequest);
-        return ResponseEntity.noContent().build();
+        TaskDto updatedTask = taskService.updateTask(token, taskId, projectId, updateTaskRequest);
+        return ResponseEntity.ok(updatedTask);
     }
 
     @PatchMapping("/{taskId}/user/add")
-    public ResponseEntity<Void> addUserToTask(
+    public ResponseEntity<TaskDto> addUserToTask(
             @RequestHeader("Authorization") String token,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
             @RequestBody BasicUserDto request
     ) {
-        taskService.addUserToProject(token, taskId, projectId, request);
-        return ResponseEntity.noContent().build();
+        TaskDto updatedTask = taskService.addUserToProject(token, taskId, projectId, request);
+        return ResponseEntity.ok(updatedTask);
     }
 
     @PatchMapping("/{taskId}/user/remove")
-    public ResponseEntity<Void> removeUserFromProject(
+    public ResponseEntity<TaskDto> removeUserFromProject(
             @RequestHeader("Authorization") String token,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
             @RequestBody BasicUserDto request
     ) {
-        taskService.removeUserFromTask(token, taskId, projectId, request);
-        return ResponseEntity.noContent().build();
+        TaskDto updatedTask = taskService.removeUserFromTask(token, taskId, projectId, request);
+        return ResponseEntity.ok(updatedTask);
     }
 
 }

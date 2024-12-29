@@ -63,13 +63,13 @@ public class ProjectController {
     }
 
     @PatchMapping("{projectId}")
-    public ResponseEntity<Void> updateProject(
+    public ResponseEntity<ProjectDto> updateProject(
             @RequestHeader("Authorization") String token,
             @PathVariable UUID projectId,
             @Valid @RequestBody UpdateProjectRequest request
     ) {
-        projectService.updateProject(token, projectId, request);
-        return ResponseEntity.noContent().build();
+        ProjectDto updatedProject = projectService.updateProject(token, projectId, request);
+        return ResponseEntity.ok(updatedProject);
     }
 
     @PatchMapping("{projectId}/user/add")
@@ -84,12 +84,12 @@ public class ProjectController {
     }
 
     @PatchMapping("{projectId}/user/remove")
-    public ResponseEntity<Void> removeUserFromProject(
+    public ResponseEntity<ProjectDto> removeUserFromProject(
             @RequestHeader("Authorization") String token,
             @PathVariable UUID projectId,
             @RequestBody BasicUserDto user
     ) {
-        projectService.removeUserFromProject(token, projectId, user);
-        return ResponseEntity.noContent().build();
+        ProjectDto updatedProject = projectService.removeUserFromProject(token, projectId, user);
+        return ResponseEntity.ok(updatedProject);
     }
 }

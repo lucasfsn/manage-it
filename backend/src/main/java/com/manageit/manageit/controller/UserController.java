@@ -27,12 +27,12 @@ public class UserController {
     }
 
     @PatchMapping()
-    public ResponseEntity<Void> updateUser(
+    public ResponseEntity<UserResponseDto> updateUser(
             @RequestHeader("Authorization") String token,
             @Valid @RequestBody UpdateUserRequest updatedUser
     ) {
-        userService.updateUser(token, updatedUser);
-        return ResponseEntity.noContent().build();
+        UserResponseDto updatedUserData = userService.updateUser(token, updatedUser);
+        return ResponseEntity.ok(updatedUserData);
     }
 
     @GetMapping("/search")
