@@ -34,25 +34,19 @@ export class UserService {
     );
   }
 
-  public updateUser(updatedData: UpdateUser): Observable<null> {
+  public updateUser(updatedData: UpdateUser): Observable<User> {
     return this.http
-      .patch<null>(`${environment.apiUrl}/users`, updatedData)
+      .patch<User>(`${environment.apiUrl}/users`, updatedData)
       .pipe(
-        tap(() => {
-          // user: User; // TODO:
-
-          const user = this.user()!;
-
+        tap((res: User) => {
           const loggedInUserData: UpdateUserCredentials = {
             firstName: updatedData.firstName,
             lastName: updatedData.lastName,
             email: updatedData.email,
           };
 
-          this.user.set({ ...user, ...updatedData });
           this.authService.setUser(loggedInUserData);
-
-          // this.user.set(user)
+          this.user.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);

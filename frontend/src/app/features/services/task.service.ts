@@ -100,20 +100,15 @@ export class TaskService {
     projectId: string,
     taskId: string,
     updatedTask: TaskData
-  ): Observable<null> {
+  ): Observable<Task> {
     return this.http
-      .patch<null>(
+      .patch<Task>(
         `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`,
         updatedTask
       )
       .pipe(
-        tap(() => {
-          // res: Task  // TODO:
-
-          const task = this.task()!;
-          this.task.set({ ...task, ...updatedTask });
-
-          // this.task.set(res)
+        tap((res: Task) => {
+          this.task.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -125,22 +120,15 @@ export class TaskService {
     projectId: string,
     taskId: string,
     user: User
-  ): Observable<null> {
+  ): Observable<Task> {
     return this.http
-      .patch<null>(
+      .patch<Task>(
         `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/add`,
         user
       )
       .pipe(
-        tap(() => {
-          // res: Task  // TODO:
-
-          const task = this.task()!;
-          const updatedTaskMembers = [...task.members, user];
-          const updatedTask = { ...task, members: updatedTaskMembers };
-          this.task.set(updatedTask);
-
-          // this.task.set(res)
+        tap((res: Task) => {
+          this.task.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -152,24 +140,15 @@ export class TaskService {
     projectId: string,
     taskId: string,
     user: User
-  ): Observable<null> {
+  ): Observable<Task> {
     return this.http
-      .patch<null>(
+      .patch<Task>(
         `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/remove`,
         user
       )
       .pipe(
-        tap(() => {
-          // res: Task  // TODO:
-
-          const task = this.task()!;
-          const updatedTaskMembers = task.members.filter(
-            (u) => u.username !== user.username
-          );
-          const updatedTask = { ...task, members: updatedTaskMembers };
-          this.task.set(updatedTask);
-
-          // this.task.set(res)
+        tap((res: Task) => {
+          this.task.set(res);
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
