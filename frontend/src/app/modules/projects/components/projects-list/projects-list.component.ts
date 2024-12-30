@@ -85,20 +85,20 @@ export class ProjectsListComponent implements OnInit {
     return [...projects].sort((a, b) => {
       let comparison = 0;
       switch (this.sortCriteria) {
-        case SortCriteria.NAME:
-          comparison = a.name.localeCompare(b.name);
-          break;
-        case SortCriteria.START_DATE:
-          comparison =
+      case SortCriteria.NAME:
+        comparison = a.name.localeCompare(b.name);
+        break;
+      case SortCriteria.START_DATE:
+        comparison =
             new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-          break;
-        case SortCriteria.END_DATE:
-          comparison =
+        break;
+      case SortCriteria.END_DATE:
+        comparison =
             new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
-          break;
-        case SortCriteria.COMPLETED_TASKS:
-          comparison = a.completedTasks - b.completedTasks;
-          break;
+        break;
+      case SortCriteria.COMPLETED_TASKS:
+        comparison = a.completedTasks - b.completedTasks;
+        break;
       }
 
       return this.sortOrder === SortOrder.ASCENDING ? comparison : -comparison;

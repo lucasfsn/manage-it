@@ -1,10 +1,10 @@
 <div
-  class="flex flex-col gap-2 px-4 py-3 shadow-lg rounded-sm bg-orange-200 dark:bg-slate-900"
+  class="flex flex-col gap-2 rounded-sm bg-orange-200 px-4 py-3 shadow-lg dark:bg-slate-900"
 >
   <div class="flex justify-between">
-    <div class="flex gap-2 items-center">
+    <div class="flex items-center gap-2">
       <div
-        class="bg-orange-100 dark:bg-slate-800 text:slate-800 dark:text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
+        class="text:slate-800 flex aspect-square h-[40px] w-[40px] items-center justify-center rounded-full bg-orange-100 dark:bg-slate-800 dark:text-slate-300"
       >
         <mat-icon>edit_note</mat-icon>
       </div>
@@ -12,13 +12,13 @@
     </div>
     <button
       (click)="closeDialog()"
-      class="flex justify-center items-center focus:outline-none focus:ring-0 active:text-sky-500 focus:text-sky-300"
+      class="flex items-center justify-center focus:text-sky-300 focus:outline-none focus:ring-0 active:text-sky-500"
     >
       <mat-icon>close</mat-icon>
     </button>
   </div>
   <form [formGroup]="form" class="grid grid-cols-2 gap-2 p-2">
-    <div class="grid grid-cols-3 gap-2 col-span-2">
+    <div class="col-span-2 grid grid-cols-3 gap-2">
       <label for="description">{{
         "task.editForm.DESCRIPTION_LABEL" | translate
       }}</label>
@@ -30,12 +30,12 @@
         class="bg-transparent"
       />
       @if (descriptionIsInvalid) {
-      <p class="text-red-500 text-sm col-span-3">
-        {{ "task.editForm.DESCRIPTION_INVALID" | translate }}
-      </p>
+        <p class="col-span-3 text-sm text-red-500">
+          {{ "task.editForm.DESCRIPTION_INVALID" | translate }}
+        </p>
       }
     </div>
-    <div class="grid grid-cols-3 gap-2 col-span-2">
+    <div class="col-span-2 grid grid-cols-3 gap-2">
       <label for="dueDate">{{
         "task.editForm.DUE_DATE_LABEL" | translate
       }}</label>
@@ -46,12 +46,12 @@
         class="bg-transparent"
       />
       @if (dueDateIsInvalid) {
-      <p class="text-red-500 text-sm col-span-3">
-        {{ "task.editForm.DUE_DATE_INVALID" | translate }}
-      </p>
+        <p class="col-span-3 text-sm text-red-500">
+          {{ "task.editForm.DUE_DATE_INVALID" | translate }}
+        </p>
       }
     </div>
-    <div class="grid grid-cols-3 gap-2 col-span-2">
+    <div class="col-span-2 grid grid-cols-3 gap-2">
       <label for="status">{{ "task.editForm.STATUS_LABEL" | translate }}</label>
       <select
         id="status"
@@ -59,13 +59,13 @@
         class="bg-orange-200 dark:bg-slate-900"
       >
         @for (status of statuses; track status) {
-        <option [value]="status">
-          {{ mapTaskStatus(status) }}
-        </option>
+          <option [value]="status">
+            {{ mapTaskStatus(status) }}
+          </option>
         }
       </select>
     </div>
-    <div class="grid grid-cols-3 gap-2 col-span-2">
+    <div class="col-span-2 grid grid-cols-3 gap-2">
       <label for="priority">{{
         "task.editForm.PRIORITY_LABEL" | translate
       }}</label>
@@ -75,13 +75,13 @@
         class="bg-orange-200 dark:bg-slate-900"
       >
         @for (priority of priorities; track priority) {
-        <option [value]="priority">
-          {{ mapPriority(priority) }}
-        </option>
+          <option [value]="priority">
+            {{ mapPriority(priority) }}
+          </option>
         }
       </select>
     </div>
-    <div class="col-span-2 flex justify-end gap-2 mt-4">
+    <div class="col-span-2 mt-4 flex justify-end gap-2">
       <app-form-button
         buttonType="reset"
         [disabled]="loading"
@@ -95,9 +95,9 @@
         (handleClick)="onSubmit()"
       >
         @if (loading) {
-        {{ "utils.LOADING" | translate }}
+          {{ "utils.LOADING" | translate }}
         } @else {
-        {{ "task.editForm.SAVE_BUTTON" | translate }}
+          {{ "task.editForm.SAVE_BUTTON" | translate }}
         }
       </app-form-button>
     </div>

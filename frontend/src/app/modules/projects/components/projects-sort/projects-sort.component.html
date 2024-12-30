@@ -1,38 +1,38 @@
 <form
-  class="flex flex-col justify-end text-sm gap-2 sm:flex-row"
+  class="flex flex-col justify-end gap-2 text-sm sm:flex-row"
   [formGroup]="form"
 >
-  <div class="flex gap-1.5 items-center text-gray-400">
+  <div class="flex items-center gap-1.5 text-gray-400">
     <label for="criteria" class="hidden sm:block">{{
       "projects.sort.SORT_CRITERIA_TEXT" | translate
     }}</label>
     <select
       id="criteria"
       name="criteria"
-      class="bg-orange-200 dark:bg-slate-900 px-2 py-1 rounded-full w-full sm:w-auto focus:outline-none focus:ring-2 active:text-sky-500 focus:ring-sky-500 active:ring-0"
+      class="w-full rounded-full bg-orange-200 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sky-500 active:text-sky-500 active:ring-0 dark:bg-slate-900 sm:w-auto"
       [formControl]="form.controls.criteria"
     >
       @for (criteria of sortCriterias; track criteria) {
-      <option [value]="criteria">
-        {{ mapCriteria(criteria) }}
-      </option>
+        <option [value]="criteria">
+          {{ mapCriteria(criteria) }}
+        </option>
       }
     </select>
   </div>
-  <div class="flex gap-1.5 items-center text-gray-400">
+  <div class="flex items-center gap-1.5 text-gray-400">
     <label for="order" class="hidden sm:block">{{
       "projects.sort.SORT_ORDER_TEXT" | translate
     }}</label>
     <select
       id="order"
       name="order"
-      class="bg-orange-200 dark:bg-slate-900 px-2 py-1 rounded-full w-full sm:w-auto focus:outline-none focus:ring-2 active:text-sky-500 focus:ring-sky-500 active:ring-0"
+      class="w-full rounded-full bg-orange-200 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sky-500 active:text-sky-500 active:ring-0 dark:bg-slate-900 sm:w-auto"
       [formControl]="form.controls.order"
     >
       @for (order of sortOrders; track order) {
-      <option [value]="order">
-        {{ mapOrder(order) }}
-      </option>
+        <option [value]="order">
+          {{ mapOrder(order) }}
+        </option>
       }
     </select>
   </div>

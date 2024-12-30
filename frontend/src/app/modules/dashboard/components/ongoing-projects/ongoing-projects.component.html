@@ -3,34 +3,37 @@
     {{ "dashboard.ongoingProjects.TITLE" | translate }}
   </p>
   @if (projects.length === 0) {
-  <p class="text-gray-400 text-center">
-    {{ "dashboard.ongoingProjects.NO_PROJECTS" | translate }}
-  </p>
-  } @for (project of projects; track project.id) {
-  <div
-    class="flex flex-col p-4 rounded-lg shadow-sm cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-sky-500 bg-orange-100 hover:bg-orange-200 dark:bg-slate-900 dark:hover:bg-slate-800"
-    routerLink="/projects/{{ project.id }}"
-  >
-    <h3 class="text-lg font-semibold">{{ project.name }}</h3>
-    <div class="flex flex-col gap-2">
-      @if (project.totalTasks === 0) {
-      <p class="text-gray-400 text-sm">
-        {{ "dashboard.ongoingProjects.NO_TASKS" | translate }}
-      </p>
-      } @else {
-      <p class="text-gray-600 dark:text-gray-400 text-sm">
-        {{ "dashboard.ongoingProjects.COMPLETED_TASKS_TEXT" | translate }}
-        {{ project.completedTasks }} /
-        {{ project.totalTasks }}
-      </p>
-      <div class="w-full bg-zinc-300 rounded-full h-4">
-        <div
-          class="bg-sky-600 h-4 rounded-full"
-          [style.width.%]="(project.completedTasks / project.totalTasks) * 100"
-        ></div>
+    <p class="text-center text-gray-400">
+      {{ "dashboard.ongoingProjects.NO_PROJECTS" | translate }}
+    </p>
+  }
+  @for (project of projects; track project.id) {
+    <div
+      class="flex cursor-pointer flex-col rounded-lg bg-orange-100 p-4 shadow-sm transition-all hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-slate-900 dark:hover:bg-slate-800"
+      routerLink="/projects/{{ project.id }}"
+    >
+      <h3 class="text-lg font-semibold">{{ project.name }}</h3>
+      <div class="flex flex-col gap-2">
+        @if (project.totalTasks === 0) {
+          <p class="text-sm text-gray-400">
+            {{ "dashboard.ongoingProjects.NO_TASKS" | translate }}
+          </p>
+        } @else {
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            {{ "dashboard.ongoingProjects.COMPLETED_TASKS_TEXT" | translate }}
+            {{ project.completedTasks }} /
+            {{ project.totalTasks }}
+          </p>
+          <div class="h-4 w-full rounded-full bg-zinc-300">
+            <div
+              class="h-4 rounded-full bg-sky-600"
+              [style.width.%]="
+                (project.completedTasks / project.totalTasks) * 100
+              "
+            ></div>
+          </div>
+        }
       </div>
-      }
     </div>
-  </div>
   }
 </div>

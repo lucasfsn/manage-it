@@ -1,10 +1,10 @@
 <div
-  class="flex flex-col gap-2 px-4 py-3 shadow-lg rounded-sm bg-orange-200 dark:bg-slate-900"
+  class="flex flex-col gap-2 rounded-sm bg-orange-200 px-4 py-3 shadow-lg dark:bg-slate-900"
 >
   <div class="flex justify-between">
-    <div class="flex gap-2 items-center">
+    <div class="flex items-center gap-2">
       <div
-        class="bg-orange-100 dark:bg-slate-800 text:slate-800 dark:text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
+        class="text:slate-800 flex aspect-square h-[40px] w-[40px] items-center justify-center rounded-full bg-orange-100 dark:bg-slate-800 dark:text-slate-300"
       >
         <mat-icon>add_task</mat-icon>
       </div>
@@ -15,7 +15,7 @@
     </button>
   </div>
   <form [formGroup]="form" class="grid grid-cols-2 gap-2 p-2">
-    <div class="grid grid-cols-3 gap-2 col-span-2">
+    <div class="col-span-2 grid grid-cols-3 gap-2">
       <label for="description">{{
         "task.createForm.DESCRIPTION_LABEL" | translate
       }}</label>
@@ -27,12 +27,12 @@
         class="w-full bg-transparent"
       />
       @if (descriptionIsInvalid) {
-      <p class="text-red-500 text-sm col-span-3">
-        {{ "task.createForm.DESCRIPTION_INVALID" | translate }}
-      </p>
+        <p class="col-span-3 text-sm text-red-500">
+          {{ "task.createForm.DESCRIPTION_INVALID" | translate }}
+        </p>
       }
     </div>
-    <div class="grid grid-cols-3 gap-2 col-span-2">
+    <div class="col-span-2 grid grid-cols-3 gap-2">
       <label for="startDate">{{
         "task.createForm.DUE_DATE_LABEL" | translate
       }}</label>
@@ -44,12 +44,12 @@
         class="bg-transparent"
       />
       @if (dueDateIsInvalid) {
-      <p class="text-red-500 text-sm col-span-3">
-        {{ "task.createForm.DUE_DATE_INVALID" | translate }}
-      </p>
+        <p class="col-span-3 text-sm text-red-500">
+          {{ "task.createForm.DUE_DATE_INVALID" | translate }}
+        </p>
       }
     </div>
-    <div class="grid grid-cols-3 gap-2 col-span-2">
+    <div class="col-span-2 grid grid-cols-3 gap-2">
       <label for="startDate">{{
         "task.createForm.PRIORITY_LABEL" | translate
       }}</label>
@@ -62,13 +62,13 @@
           {{ "task.createForm.PRIORITY_SELECT" | translate }}
         </option>
         @for (priority of priorities; track priority) {
-        <option [value]="priority">
-          {{ mapPriority(priority) }}
-        </option>
+          <option [value]="priority">
+            {{ mapPriority(priority) }}
+          </option>
         }
       </select>
     </div>
-    <div class="col-span-2 flex justify-end gap-2 mt-4">
+    <div class="col-span-2 mt-4 flex justify-end gap-2">
       <app-form-button
         buttonType="reset"
         [disabled]="loading"
@@ -82,9 +82,9 @@
         (handleClick)="onSubmit()"
       >
         @if (loading) {
-        {{ "utils.LOADING" | translate }}
+          {{ "utils.LOADING" | translate }}
         } @else {
-        {{ "task.createForm.ADD_BUTTON" | translate }}
+          {{ "task.createForm.ADD_BUTTON" | translate }}
         }
       </app-form-button>
     </div>

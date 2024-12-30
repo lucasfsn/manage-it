@@ -1,8 +1,8 @@
 <form
   [formGroup]="form"
-  class="flex flex-col gap-4 mx-auto p-9 rounded-lg shadow-sm text-xs sm:text-base w-2/3 max-w-[800px] bg-orange-200 dark:bg-slate-800"
+  class="mx-auto flex w-2/3 max-w-[800px] flex-col gap-4 rounded-lg bg-orange-200 p-9 text-xs shadow-sm dark:bg-slate-800 sm:text-base"
 >
-  <div class="flex flex-col gap-5 border-b pb-5 border-slate-500">
+  <div class="flex flex-col gap-5 border-b border-slate-500 pb-5">
     <p class="text-center text-sm text-slate-700 dark:text-slate-300">
       {{ "signupForm.TITLE" | translate }}
     </p>
@@ -14,10 +14,10 @@
           name="first-name"
           formControlName="firstName"
           [placeholder]="'signupForm.FIRST_NAME_PLACEHOLDER' | translate"
-          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         @if (firstNameIsInvalid) {
-        <p class="text-red-500 text-sm">{{ firstNameErrors }}</p>
+          <p class="text-sm text-red-500">{{ firstNameErrors }}</p>
         }
       </div>
       <div class="flex flex-col gap-2">
@@ -27,10 +27,10 @@
           name="last-name"
           formControlName="lastName"
           [placeholder]="'signupForm.LAST_NAME_PLACEHOLDER' | translate"
-          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         @if (lastNameIsInvalid) {
-        <p class="text-red-500 text-sm">{{ lastNameErrors }}</p>
+          <p class="text-sm text-red-500">{{ lastNameErrors }}</p>
         }
       </div>
       <div class="flex flex-col gap-2">
@@ -41,17 +41,17 @@
             name="user-name"
             formControlName="username"
             [placeholder]="'signupForm.USERNAME_PLACEHOLDER' | translate"
-            class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+            class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <span
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-orange-300 dark:text-slate-600 flex justify-center items-center"
+            class="absolute right-3 top-1/2 flex -translate-y-1/2 transform items-center justify-center text-orange-300 dark:text-slate-600"
             [matTooltip]="'signupForm.USERNAME_TOOLTIP' | translate"
           >
             <mat-icon>lock</mat-icon>
           </span>
         </div>
         @if (usernameIsInvalid) {
-        <p class="text-red-500 text-sm">{{ usernameErrors }}</p>
+          <p class="text-sm text-red-500">{{ usernameErrors }}</p>
         }
       </div>
       <div class="flex flex-col gap-2">
@@ -61,10 +61,10 @@
           name="email"
           formControlName="email"
           [placeholder]="'signupForm.EMAIL_PLACEHOLDER' | translate"
-          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         @if (emailIsInvalid) {
-        <p class="text-red-500 text-sm">{{ emailErrors }}</p>
+          <p class="text-sm text-red-500">{{ emailErrors }}</p>
         }
       </div>
       <div class="flex flex-col gap-2">
@@ -75,7 +75,7 @@
             name="password"
             formControlName="password"
             [placeholder]="'signupForm.PASSWORD_PLACEHOLDER' | translate"
-            class="w-1/2 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+            class="w-1/2 rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             id="confirm-password"
@@ -85,21 +85,21 @@
             [placeholder]="
               'signupForm.CONFIRM_PASSWORD_PLACEHOLDER' | translate
             "
-            class="w-1/2 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+            class="w-1/2 rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div class="flex flex-row gap-1">
           @if (passwordIsInvalid) {
-          <p class="text-red-500 text-sm">{{ passwordErrors }}</p>
+            <p class="text-sm text-red-500">{{ passwordErrors }}</p>
           } @else if (!passwordIsInvalid && passwordsDoNotMatch) {
-          <p class="text-red-500 text-sm">
-            {{ "signupForm.PASSWORDS_DO_NOT_MATCH" | translate }}
-          </p>
+            <p class="text-sm text-red-500">
+              {{ "signupForm.PASSWORDS_DO_NOT_MATCH" | translate }}
+            </p>
           }
         </div>
       </div>
     </div>
-    <div class="flex justify-between gap-2 flex-col sm:flex-row">
+    <div class="flex flex-col justify-between gap-2 sm:flex-row">
       <app-form-button
         buttonType="reset"
         (handleClick)="onReset()"
@@ -115,16 +115,16 @@
         [disabled]="form.invalid || loading"
       >
         @if (loading) {
-        {{ "utils.LOADING" | translate }}
+          {{ "utils.LOADING" | translate }}
         } @else {
-        {{ "signupForm.SIGN_UP_BUTTON" | translate }}
+          {{ "signupForm.SIGN_UP_BUTTON" | translate }}
         }
       </app-form-button>
     </div>
   </div>
   <a
     routerLink="/auth/login"
-    class="text-xs text-sky-600 dark:text-sky-400 hover:text-sky-500 self-center focus:ring-2 focus:ring-sky-500 focus:outline-none w-auto px-1.5 py-0.5 focus:rounded-full"
+    class="w-auto self-center px-1.5 py-0.5 text-xs text-sky-600 hover:text-sky-500 focus:rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 dark:text-sky-400"
     >{{ "signupForm.ALREADY_HAVE_ACCOUNT" | translate }}</a
   >
 </form>

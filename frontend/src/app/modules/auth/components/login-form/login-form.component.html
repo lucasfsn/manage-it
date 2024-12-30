@@ -1,10 +1,10 @@
 <form
   [formGroup]="form"
-  class="flex flex-col gap-4 p-9 rounded-lg shadow-sm text-xs sm:text-base w-2/3 max-w-[600px] dark:bg-slate-800 bg-orange-200"
+  class="flex w-2/3 max-w-[600px] flex-col gap-4 rounded-lg bg-orange-200 p-9 text-xs shadow-sm dark:bg-slate-800 sm:text-base"
 >
   <div class="flex flex-col gap-5">
     <div
-      class="flex flex-col gap-3 border-b pb-5 border-orange-300 dark:border-slate-500"
+      class="flex flex-col gap-3 border-b border-orange-300 pb-5 dark:border-slate-500"
     >
       <div class="flex flex-col gap-2">
         <input
@@ -12,12 +12,12 @@
           type="email"
           [formControl]="form.controls.email"
           [placeholder]="'loginForm.EMAIL_PLACEHOLDER' | translate"
-          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         @if (emailIsInvalid) {
-        <p class="text-red-500 text-sm">
-          {{ "loginForm.EMAIL_INVALID" | translate }}
-        </p>
+          <p class="text-sm text-red-500">
+            {{ "loginForm.EMAIL_INVALID" | translate }}
+          </p>
         }
       </div>
       <div class="flex flex-col gap-2">
@@ -26,12 +26,12 @@
           type="password"
           formControlName="password"
           [placeholder]="'loginForm.PASSWORD_PLACEHOLDER' | translate"
-          class="w-full p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-950 placeholder-slate-400"
+          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         @if (passwordIsInvalid) {
-        <p class="text-red-500 text-sm">
-          {{ passwordErrors }}
-        </p>
+          <p class="text-sm text-red-500">
+            {{ passwordErrors }}
+          </p>
         }
       </div>
       <div class="flex justify-center">
@@ -42,16 +42,16 @@
           roundedType="rounded-full"
         >
           @if (loading) {
-          {{ "utils.LOADING" | translate }}
+            {{ "utils.LOADING" | translate }}
           } @else {
-          {{ "loginForm.LOGIN_BUTTON" | translate }}
+            {{ "loginForm.LOGIN_BUTTON" | translate }}
           }
         </app-form-button>
       </div>
     </div>
     <a
       routerLink="/auth/signup"
-      class="text-xs text-sky-600 dark:text-sky-400 hover:text-sky-500 self-center focus:ring-2 focus:ring-sky-500 focus:outline-none w-auto px-1.5 py-0.5 focus:rounded-full"
+      class="w-auto self-center px-1.5 py-0.5 text-xs text-sky-600 hover:text-sky-500 focus:rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 dark:text-sky-400"
       >{{ "loginForm.CREATE_ACCOUNT" | translate }}</a
     >
   </div>

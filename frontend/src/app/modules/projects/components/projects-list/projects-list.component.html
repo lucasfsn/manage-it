@@ -1,5 +1,5 @@
 <div
-  class="flex flex-col lg:flex-row text-sm gap-2 justify-between items-center"
+  class="flex flex-col items-center justify-between gap-2 text-sm lg:flex-row"
 >
   <app-projects-filter
     (filterChange)="onFilterChange($event)"
@@ -14,70 +14,74 @@
   />
 </div>
 @if (sortedAndFilteredProjects.length === 0) {
-<p class="text-gray-400 text-center w-full">
-  {{ "projects.list.NO_PROJECTS" | translate }}
-</p>
+  <p class="w-full text-center text-gray-400">
+    {{ "projects.list.NO_PROJECTS" | translate }}
+  </p>
 }
-<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-1.5">
+<div class="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-4">
   @for (project of sortedAndFilteredProjects; track project.id) {
-  <div
-    class="flex flex-col bg-orange-100 dark:bg-slate-900 p-4 rounded-lg shadow-sm cursor-pointer hover:bg-orange-200 dark:hover:bg-opacity-70 transition-all gap-4 justify-between focus:outline-none active:bg-opacity-70 focus:ring-2 focus:ring-sky-500"
-    routerLink="/projects/{{ project.id }}"
-  >
-    <div class="flex flex-col gap-2 h-full justify-between">
-      <div class="flex flex-col gap-1">
-        <h3
-          class="flex flex-row text-lg font-semibold justify-between items-center"
-        >
-          {{ project.name }}
-          <span
-            class="rounded-full h-[15px] aspect-square"
-            [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
-            [class.bg-orange-400]="project.status === ProjectStatus.IN_PROGRESS"
+    <div
+      class="flex cursor-pointer flex-col justify-between gap-4 rounded-lg bg-orange-100 p-4 shadow-sm transition-all hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-sky-500 active:bg-opacity-70 dark:bg-slate-900 dark:hover:bg-opacity-70"
+      routerLink="/projects/{{ project.id }}"
+    >
+      <div class="flex h-full flex-col justify-between gap-2">
+        <div class="flex flex-col gap-1">
+          <h3
+            class="flex flex-row items-center justify-between text-lg font-semibold"
           >
-          </span>
-        </h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400">
-          {{ project.description }}
-        </p>
+            {{ project.name }}
+            <span
+              class="aspect-square h-[15px] rounded-full"
+              [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
+              [class.bg-orange-400]="
+                project.status === ProjectStatus.IN_PROGRESS
+              "
+            >
+            </span>
+          </h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            {{ project.description }}
+          </p>
+        </div>
+        <div
+          class="flex flex-col rounded-lg bg-orange-100 px-2 py-1 text-sm text-gray-700 dark:bg-slate-950 dark:text-gray-400"
+        >
+          <p>
+            {{ "projects.list.START_DATE_TEXT" | translate }}
+            <span class="text-sky-500">
+              {{ project.startDate | date }}
+            </span>
+          </p>
+          <p>
+            {{ "projects.list.DEADLINE_TEXT" | translate }}
+            <span class="text-pink-500">
+              {{ project.endDate | date }}
+            </span>
+          </p>
+        </div>
       </div>
-      <div
-        class="flex flex-col bg-orange-100 dark:bg-slate-950 rounded-lg py-1 px-2 text-sm text-gray-700 dark:text-gray-400"
-      >
-        <p>
-          {{ "projects.list.START_DATE_TEXT" | translate }}
-          <span class="text-sky-500">
-            {{ project.startDate | date }}
+      @if (project.completedTasks !== 0 && project.totalTasks !== 0) {
+        <div class="relative h-4 w-full rounded-full bg-zinc-300">
+          <div
+            class="h-4 rounded-full bg-sky-600"
+            [style.width.%]="
+              (project.completedTasks / project.totalTasks) * 100
+            "
+          ></div>
+          <span
+            class="absolute inset-0 flex items-center justify-center text-xs text-zinc-950"
+          >
+            {{
+              (project.completedTasks / project.totalTasks) * 100
+                | number: "1.0-0"
+            }}% {{ "projects.list.COMPLETED_PERCENTAGE_TEXT" | translate }}
           </span>
+        </div>
+      } @else {
+        <p class="text-sm text-gray-400">
+          {{ "projects.list.NO_TASKS" | translate }}
         </p>
-        <p>
-          {{ "projects.list.DEADLINE_TEXT" | translate }}
-          <span class="text-pink-500">
-            {{ project.endDate | date }}
-          </span>
-        </p>
-      </div>
+      }
     </div>
-    @if (project.completedTasks !== 0 && project.totalTasks !== 0) {
-    <div class="w-full bg-zinc-300 rounded-full h-4 relative">
-      <div
-        class="bg-sky-600 h-4 rounded-full"
-        [style.width.%]="(project.completedTasks / project.totalTasks) * 100"
-      ></div>
-      <span
-        class="absolute inset-0 flex items-center justify-center text-xs text-zinc-950"
-      >
-        {{
-          (project.completedTasks / project.totalTasks) * 100
-            | number : "1.0-0"
-        }}% {{ "projects.list.COMPLETED_PERCENTAGE_TEXT" | translate }}
-      </span>
-    </div>
-    } @else {
-    <p class="text-gray-400 text-sm">
-      {{ "projects.list.NO_TASKS" | translate }}
-    </p>
-    }
-  </div>
   }
 </div>

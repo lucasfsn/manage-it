@@ -1,26 +1,26 @@
 @if (user) {
-<div class="flex flex-col gap-10 items-center justify-center">
-  <div class="flex flex-col items-center text-center gap-4">
-    <app-user-header />
-    @if (showAddToProjectButton && !isLoggedInUser(user.username)) {
-    <app-user-project-add-button />
-    } @else if (isLoggedInUser(user.username)) {
-    <button
-      class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors mb-4 focus:outline-none focus:ring-2 active:text-sky-200 focus:ring-sky-200"
-      (click)="openEditProfileDialog()"
-    >
-      {{ "user.profile.EDIT_BUTTON" | translate }}
-    </button>
+  <div class="flex flex-col items-center justify-center gap-10">
+    <div class="flex flex-col items-center gap-4 text-center">
+      <app-user-header />
+      @if (showAddToProjectButton && !isLoggedInUser(user.username)) {
+        <app-user-project-add-button />
+      } @else if (isLoggedInUser(user.username)) {
+        <button
+          class="mb-4 rounded-full bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-sky-200 active:text-sky-200"
+          (click)="openEditProfileDialog()"
+        >
+          {{ "user.profile.EDIT_BUTTON" | translate }}
+        </button>
+      }
+    </div>
+    @if (user.projects.length > 0) {
+      <app-user-projects-list>
+        @if (isLoggedInUser(user.username)) {
+          {{ "user.profile.LOGGED_USER_TEXT" | translate }}
+        } @else {
+          {{ "user.profile.NOT_LOGGED_USER_TEXT" | translate }}
+        }
+      </app-user-projects-list>
     }
   </div>
-  @if (user.projects.length > 0) {
-  <app-user-projects-list>
-    @if (isLoggedInUser(user.username)) {
-    {{ "user.profile.LOGGED_USER_TEXT" | translate }}
-    } @else {
-    {{ "user.profile.NOT_LOGGED_USER_TEXT" | translate }}
-    }
-  </app-user-projects-list>
-  }
-</div>
 }

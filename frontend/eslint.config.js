@@ -21,13 +21,7 @@ module.exports = tseslint.config(
     rules: {
       "arrow-parens": ["error", "always"],
       complexity: ["error", 8],
-      indent: [
-        "error",
-        2,
-        {
-          SwitchCase: 1,
-        },
-      ],
+      indent: ["error", 2],
       // "no-console": "error",
       "no-else-return": "error",
       "no-nested-ternary": "error",

@@ -1,19 +1,19 @@
 <div class="flex justify-between">
-  <h1 class="flex gap-2 text-base sm:text-xl font-semibold items-baseline">
+  <h1 class="flex items-baseline gap-2 text-base font-semibold sm:text-xl">
     <span>{{ "notifications.TITLE" | translate }}</span>
     @if (notifications.length > 0) {
-    <span
-      class="flex justify-center items-center text-sm px-3 bg-sky-500 text-slate-950 rounded-lg"
-      >{{ notifications.length }}</span
-    >
+      <span
+        class="flex items-center justify-center rounded-lg bg-sky-500 px-3 text-sm text-slate-950"
+        >{{ notifications.length }}</span
+      >
     }
   </h1>
   @if (notifications.length > 0) {
-  <button
-    class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm hover:text-gray-400 dark:hover:text-gray-500 transition-all focus:outline-none focus:ring-2 active:text-sky-500 focus:ring-sky-500 focus:rounded-full px-1 py-1"
-    (click)="markAllAsRead()"
-  >
-    {{ "notifications.MARK_ALL_AS_READ" | translate }}
-  </button>
+    <button
+      class="px-1 py-1 text-xs text-gray-600 transition-all hover:text-gray-400 focus:rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 active:text-sky-500 dark:text-gray-400 dark:hover:text-gray-500 sm:text-sm"
+      (click)="markAllAsRead()"
+    >
+      {{ "notifications.MARK_ALL_AS_READ" | translate }}
+    </button>
   }
 </div>

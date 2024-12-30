@@ -1,8 +1,8 @@
-<div class="flex flex-col gap-2 px-4 py-3 rounded-sm bg-slate-900">
+<div class="flex flex-col gap-2 rounded-sm bg-slate-900 px-4 py-3">
   <div class="flex justify-between">
-    <div class="flex gap-2 items-center">
+    <div class="flex items-center gap-2">
       <div
-        class="bg-slate-800 text-slate-300 flex justify-center items-center rounded-full w-[40px] h-[40px] aspect-square"
+        class="flex aspect-square h-[40px] w-[40px] items-center justify-center rounded-full bg-slate-800 text-slate-300"
       >
         <mat-icon>manage_accounts</mat-icon>
       </div>
@@ -12,40 +12,40 @@
     </div>
     <button
       (click)="handleClose()"
-      class="focus:outline-none focus:text-opacity-90 focus:text-slate-400"
+      class="focus:text-slate-400 focus:text-opacity-90 focus:outline-none"
     >
       <mat-icon>close</mat-icon>
     </button>
   </div>
   <div>
-    <div class="flex flex-col gap-1 overflow-y-scroll max-h-[400px] px-1">
+    <div class="flex max-h-[400px] flex-col gap-1 overflow-y-scroll px-1">
       @for (member of members; track member.username) {
-      <button
-        class="flex justify-between items-center p-2 hover:bg-slate-700 focus:outline-none focus:bg-slate-700 rounded-full cursor-pointer transition-colors disabled:cursor-not-allowed"
-        (click)="handleNavigateToProfile(member)"
-        [disabled]="loading"
-        tabindex="0"
-      >
-        <p class="flex gap-3 items-center flex-grow">
-          <app-profile-icon
-            size="lg"
-            [firstName]="member.firstName"
-            [lastName]="member.lastName"
-            [hover]="false"
-          />
-          <span class="text-slate-100"
-            >{{ member.firstName }} {{ member.lastName }}</span
-          >
-        </p>
-        @if (!(project?.owner?.username === member.username)) {
         <button
-          class="bg-pink-900 text-pink-200 hover:bg-pink-950 transition-all p-0.5 flex justify-center items-center rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
-          (click)="handleRemove(member); $event.stopPropagation()"
+          class="flex cursor-pointer items-center justify-between rounded-full p-2 transition-colors hover:bg-slate-700 focus:bg-slate-700 focus:outline-none disabled:cursor-not-allowed"
+          (click)="handleNavigateToProfile(member)"
+          [disabled]="loading"
+          tabindex="0"
         >
-          <mat-icon>delete</mat-icon>
+          <p class="flex flex-grow items-center gap-3">
+            <app-profile-icon
+              size="lg"
+              [firstName]="member.firstName"
+              [lastName]="member.lastName"
+              [hover]="false"
+            />
+            <span class="text-slate-100"
+              >{{ member.firstName }} {{ member.lastName }}</span
+            >
+          </p>
+          @if (!(project?.owner?.username === member.username)) {
+            <button
+              class="flex items-center justify-center rounded-full bg-pink-900 p-0.5 text-pink-200 transition-all hover:bg-pink-950 focus:outline-none focus:ring-2 focus:ring-pink-200"
+              (click)="handleRemove(member); $event.stopPropagation()"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
         </button>
-        }
-      </button>
       }
     </div>
   </div>

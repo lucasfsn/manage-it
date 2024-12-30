@@ -1,10 +1,10 @@
 <button
   [disabled]="disabled"
   (click)="onClick()"
-  class="px-4 py-2 flex justify-center items-center cursor-pointer disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-sky-400 active:ring-0"
+  class="flex cursor-pointer items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 active:ring-0 disabled:cursor-not-allowed"
   [ngClass]="{
     'bg-sky-500 text-sky-100 disabled:bg-gray-500': buttonType === 'submit',
-    'bg-slate-900 text-slate-300': buttonType === 'reset'
+    'bg-slate-900 text-slate-300': buttonType === 'reset',
   }"
   [class]="roundedType"
 >

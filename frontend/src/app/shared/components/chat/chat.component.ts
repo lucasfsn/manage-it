@@ -67,7 +67,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   private destroyRef = inject(DestroyRef);
   private projectId: string | null = null;
   private taskId: string | null = null;
-  protected message: string = '';
   protected showEmojiPicker: boolean = false;
   protected loading: boolean = false;
   protected form = new FormControl<string>('');

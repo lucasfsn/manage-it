@@ -1,14 +1,14 @@
 <form [formGroup]="form">
-  <div class="flex gap-2 sm:gap-4 flex-col sm:flex-row">
+  <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
     <button
       mat-icon-button
       [matMenuTriggerFor]="filterMenu"
-      class="flex justify-center items-center focus:outline-none focus:ring-0 active:text-sky-500 focus:text-sky-500"
+      class="flex items-center justify-center focus:text-sky-500 focus:outline-none focus:ring-0 active:text-sky-500"
     >
       <mat-icon>filter_list</mat-icon>
     </button>
     <div
-      class="flex items-center bg-orange-200 dark:bg-slate-900 rounded-full px-2 py-1 gap-1"
+      class="flex items-center gap-1 rounded-full bg-orange-200 px-2 py-1 dark:bg-slate-900"
     >
       <label for="name" class="flex items-center">
         <mat-icon>search</mat-icon>
@@ -18,19 +18,19 @@
         name="name"
         type="text"
         [placeholder]="'projects.filter.INPUT_PLACEHOLDER' | translate"
-        class="focus:outline-none focus:ring-0 bg-transparent"
+        class="bg-transparent focus:outline-none focus:ring-0"
         [formControl]="form.controls.name"
       />
     </div>
   </div>
   <mat-menu #filterMenu="matMenu">
     <div
-      class="flex flex-col gap-2 py-2 px-3 bg-orange-200 dark:bg-slate-900"
+      class="flex flex-col gap-2 bg-orange-200 px-3 py-2 dark:bg-slate-900"
       matMenuContent
     >
-      <div class="flex flex-col gap-4 bg-transparent p-2 rounded-md">
+      <div class="flex flex-col gap-4 rounded-md bg-transparent p-2">
         <div class="flex flex-col gap-1">
-          <p class="text-sm text-center">
+          <p class="text-center text-sm">
             {{ "projects.filter.MENU_STATUS_TEXT" | translate }}
           </p>
           <mat-radio-group
@@ -44,9 +44,9 @@
               "projects.filter.ALL_FILTER" | translate
             }}</mat-radio-button>
             @for (status of projectStatuses; track status) {
-            <mat-radio-button [value]="status">{{
-              mapStatus(status)
-            }}</mat-radio-button>
+              <mat-radio-button [value]="status">{{
+                mapStatus(status)
+              }}</mat-radio-button>
             }
           </mat-radio-group>
         </div>

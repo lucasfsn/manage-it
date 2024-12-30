@@ -2,47 +2,47 @@
   <div class="flex items-center gap-2">
     <label for="searchInput" class="flex items-center">
       <mat-icon
-        class="flex justify-center items-center cursor-text text-slate-600 dark:text-slate-300"
+        class="flex cursor-text items-center justify-center text-slate-600 dark:text-slate-300"
         >search</mat-icon
       >
     </label>
     <input
-      class="bg-transparent border-none focus:outline-none w-full text-gray-600 dark:text-gray-300"
+      class="w-full border-none bg-transparent text-gray-600 focus:outline-none dark:text-gray-300"
       [placeholder]="'searchModal.PLACEHOLDER' | translate"
       [formControl]="form"
       (input)="onSearch()"
       id="searchInput"
     />
     @if (loading) {
-    <mat-spinner diameter="20" />
+      <mat-spinner diameter="20" />
     }
     <button
       (click)="handleClose()"
-      class="px-1.5 py-1 bg-orange-100 dark:bg-slate-500 flex justify-center items-center rounded-md text-slate-800 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400"
+      class="flex items-center justify-center rounded-md bg-orange-100 px-1.5 py-1 text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-slate-500 dark:text-slate-300"
     >
       <p class="text-xs">{{ "searchModal.CLOSE_BUTTON" | translate }}</p>
     </button>
   </div>
 </mat-dialog-content>
 @if (searchResults.length > 0) {
-<ul
-  class="flex flex-col pb-4 divide-y divide-orange-300 dark:divide-slate-600 search-results"
->
-  @for (result of searchResults; track result.username) {
-  <li
-    class="focus:outline-none cursor-pointer px-4 py-2 sm:px-6 sm:py-4 text-slate-500 dark:text-slate-400 text-sm flex items-center gap-2"
-    (click)="handleClick(result.username)"
-    (keydown.enter)="handleClick(result.username)"
-    (keydown.space)="handleClick(result.username)"
-    tabindex="0"
+  <ul
+    class="search-results flex flex-col divide-y divide-orange-300 pb-4 dark:divide-slate-600"
   >
-    {{ result.firstName }} {{ result.lastName }}
-    @if (isLoggedInUser(result.username)) {
-    <span class="text-slate-600">{{
-      "searchModal.CURRENT_USER_AS_RESULT" | translate
-    }}</span>
+    @for (result of searchResults; track result.username) {
+      <li
+        class="flex cursor-pointer items-center gap-2 px-4 py-2 text-sm text-slate-500 focus:outline-none dark:text-slate-400 sm:px-6 sm:py-4"
+        (click)="handleClick(result.username)"
+        (keydown.enter)="handleClick(result.username)"
+        (keydown.space)="handleClick(result.username)"
+        tabindex="0"
+      >
+        {{ result.firstName }} {{ result.lastName }}
+        @if (isLoggedInUser(result.username)) {
+          <span class="text-slate-600">{{
+            "searchModal.CURRENT_USER_AS_RESULT" | translate
+          }}</span>
+        }
+      </li>
     }
-  </li>
-  }
-</ul>
+  </ul>
 }

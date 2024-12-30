@@ -1,18 +1,18 @@
-<h2 class="text-2xl font-bold text-center text-zinc-400">
+<h2 class="text-center text-2xl font-bold text-zinc-400">
   {{ "notFound.TITLE" | translate }}
 </h2>
 @if (!isAuthenticated) {
-<p class="text-base">
-  {{ "notFound.DESCRIPTION_GUEST" | translate }}
-  <a routerLink="/auth/login" class="text-sky-500">{{
-    "notFound.DESCRIPTION_GUEST_LOGIN_TEXT" | translate
-  }}</a>
-</p>
+  <p class="text-base">
+    {{ "notFound.DESCRIPTION_GUEST" | translate }}
+    <a routerLink="/auth/login" class="text-sky-500">{{
+      "notFound.DESCRIPTION_GUEST_LOGIN_TEXT" | translate
+    }}</a>
+  </p>
 } @else {
-<p class="text-base">
-  {{ "notFound.DESCRIPTION_LOGGED_IN" | translate }}
-  <a routerLink="/dashboard" class="text-sky-500">{{
-    "notFound.DESCRIPTION_LOGGED_IN_DASHBOARD_TEXT" | translate
-  }}</a>
-</p>
+  <p class="text-base">
+    {{ "notFound.DESCRIPTION_LOGGED_IN" | translate }}
+    <a routerLink="/dashboard" class="text-sky-500">{{
+      "notFound.DESCRIPTION_LOGGED_IN_DASHBOARD_TEXT" | translate
+    }}</a>
+  </p>
 }

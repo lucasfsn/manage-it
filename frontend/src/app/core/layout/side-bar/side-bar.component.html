@@ -1,16 +1,16 @@
 <nav
-  class="shadow-sm h-full gap-3 grid grid-cols-1 lg:grid-rows-[auto_auto_1fr] justify-start"
+  class="grid h-full grid-cols-1 justify-start gap-3 shadow-sm lg:grid-rows-[auto_auto_1fr]"
 >
   <button
     (click)="toggleSidebar()"
-    class="bg-sky-500 rounded-full hover:bg-sky-600 transition-all hidden xl:flex col-span-2 ml-3 focus:outline-none focus:ring-2 focus:ring-slate-300"
+    class="col-span-2 ml-3 hidden rounded-full bg-sky-500 transition-all hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-slate-300 xl:flex"
     [class.justify-self-end]="!isCollapsed"
     [class.justify-self-start]="isCollapsed"
   >
     <mat-icon>{{ isCollapsed ? "chevron_right" : "chevron_left" }}</mat-icon>
   </button>
   <div
-    class="grid mx-auto lg:mx-0 grid-cols-5 lg:gap-0.5 lg:grid-cols-1 lg:grid-rows-5 items-center"
+    class="mx-auto grid grid-cols-5 items-center lg:mx-0 lg:grid-cols-1 lg:grid-rows-5 lg:gap-0.5"
   >
     <button
       class="sidebar hover:bg-orange-100 dark:hover:bg-slate-900"
@@ -77,16 +77,15 @@
       routerLinkActive="text-sky-500 profile-active"
     >
       @if (user) {
-      <p
-        class="rounded-full flex justify-center items-center aspect-square w-6 h-6 text-xs bg-slate-900 text-slate-300 dark:bg-slate-300 dark:text-slate-950 profile-picture"
-      >
-        {{ user.firstName.charAt(0) + user.lastName.charAt(0) }}
-      </p>
-
+        <p
+          class="profile-picture flex aspect-square h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-xs text-slate-300 dark:bg-slate-300 dark:text-slate-950"
+        >
+          {{ user.firstName.charAt(0) + user.lastName.charAt(0) }}
+        </p>
       } @else {
-      <p class="sidebar-item">
-        <mat-icon>account_circle</mat-icon>
-      </p>
+        <p class="sidebar-item">
+          <mat-icon>account_circle</mat-icon>
+        </p>
       }
       <p
         class="sidebar-item"

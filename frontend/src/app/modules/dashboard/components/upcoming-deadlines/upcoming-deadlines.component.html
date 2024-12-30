@@ -3,28 +3,29 @@
     {{ "dashboard.upcomingDeadlines.TITLE" | translate }}
   </p>
   @if (sortedProjectsByEndDate().length === 0) {
-  <p class="text-gray-400 text-center">
-    {{ "dashboard.upcomingDeadlines.NO_DEADLINES" | translate }}
-  </p>
-  } @for (project of sortedProjectsByEndDate(); track project.id) {
-  <div
-    class="flex flex-col bg-orange-100 hover:bg-orange-200 dark:bg-slate-900 dark:hover:bg-slate-800 p-4 rounded-lg shadow-sm cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-sky-500"
-    routerLink="/projects/{{ project.id }}"
-  >
-    <h3 class="text-lg font-semibold">{{ project.name }}</h3>
-    <div class="flex flex-col">
-      <p class="text-sm text-gray-600 dark:text-gray-400">
-        {{ "dashboard.upcomingDeadlines.DEADLINE_TEXT" | translate }}
-        {{ project.endDate | date }}
-      </p>
-      <p
-        class="text-sm font-semibold {{
-          deadlineClass(project.endDate, project.status)
-        }}"
-      >
-        {{ deadlineMessage(project.endDate, project.status) }}
-      </p>
+    <p class="text-center text-gray-400">
+      {{ "dashboard.upcomingDeadlines.NO_DEADLINES" | translate }}
+    </p>
+  }
+  @for (project of sortedProjectsByEndDate(); track project.id) {
+    <div
+      class="flex cursor-pointer flex-col rounded-lg bg-orange-100 p-4 shadow-sm transition-all hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-slate-900 dark:hover:bg-slate-800"
+      routerLink="/projects/{{ project.id }}"
+    >
+      <h3 class="text-lg font-semibold">{{ project.name }}</h3>
+      <div class="flex flex-col">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          {{ "dashboard.upcomingDeadlines.DEADLINE_TEXT" | translate }}
+          {{ project.endDate | date }}
+        </p>
+        <p
+          class="text-sm font-semibold {{
+            deadlineClass(project.endDate, project.status)
+          }}"
+        >
+          {{ deadlineMessage(project.endDate, project.status) }}
+        </p>
+      </div>
     </div>
-  </div>
   }
 </div>

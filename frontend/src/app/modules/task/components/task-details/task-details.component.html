@@ -1,77 +1,84 @@
 @if (task) {
-<div class="flex flex-col text-gray-600 dark:text-gray-400 gap-5">
-  <div class="flex flex-row justify-between items-center">
-    <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-300">
-      {{ task.description }}
-    </h2>
-  </div>
-  <div class="flex flex-col gap-2">
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1">
-      <div class="grid grid-cols-2 grid-rows-2 gap-2">
-        <p class="flex items-center">
-          <mat-icon class="text-base">task_alt</mat-icon>
-          <span>{{ "task.details.STATUS" | translate }}</span>
-        </p>
-        <div
-          class="rounded-full text-gray-900 font-semibold text-sm px-2 py-1 text-center mr-auto"
-          [class.bg-sky-400]="task.status === TaskStatus.COMPLETED"
-          [class.bg-orange-400]="task.status === TaskStatus.IN_PROGRESS"
-          [class.bg-rose-400]="task.status === TaskStatus.NOT_STARTED"
-        >
-          {{ mapTaskStatus() }}
-        </div>
-        <p class="flex items-center">
-          <mat-icon class="text-base">calendar_today</mat-icon>
-          <span>{{ "task.details.DUE_DATE" | translate }}</span>
-        </p>
-        <div class="text-orange-900 dark:text-slate-300">
-          {{ task.dueDate | date }}
-        </div>
-      </div>
-      <div class="grid grid-cols-2 grid-rows-2 gap-2">
-        <p class="flex items-center">
-          <mat-icon class="text-base">person</mat-icon>
-          <span>{{ "task.details.ASSIGNEES" | translate }}</span>
-        </p>
-        <ul class="flex gap-1 items-center">
-          @if (task.members.length === 0) {
-          <p class="text-orange-900 dark:text-slate-300">
-            {{ "task.details.NO_ASSIGNEES" | translate }}
+  <div class="flex flex-col gap-5 text-gray-600 dark:text-gray-400">
+    <div class="flex flex-row items-center justify-between">
+      <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-300">
+        {{ task.description }}
+      </h2>
+    </div>
+    <div class="flex flex-col gap-2">
+      <div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
+        <div class="grid grid-cols-2 grid-rows-2 gap-2">
+          <p class="flex items-center">
+            <mat-icon class="text-base">task_alt</mat-icon>
+            <span>{{ "task.details.STATUS" | translate }}</span>
           </p>
-          } @for (member of task.members.slice(0,4); track member.username) {
-          <app-profile-icon
-            size="md"
-            [firstName]="member.firstName"
-            [lastName]="member.lastName"
-            [routerLink]="'/users/' + member.username"
-          />
-          } @if (task.members.length > 4) {
-          <p class="text-sky-500">+{{ task.members.length - 4 }}</p>
-          }
-        </ul>
-        <p class="flex items-center">
-          <mat-icon class="text-base">priority_high</mat-icon>
-          <span>{{ "task.details.PRIORITY" | translate }}</span>
-        </p>
-        <div class="mr-auto">
-          <app-priority textSize="text-sm" [priority]="task.priority" />
+          <div
+            class="mr-auto rounded-full px-2 py-1 text-center text-sm font-semibold text-gray-900"
+            [class.bg-sky-400]="task.status === TaskStatus.COMPLETED"
+            [class.bg-orange-400]="task.status === TaskStatus.IN_PROGRESS"
+            [class.bg-rose-400]="task.status === TaskStatus.NOT_STARTED"
+          >
+            {{ mapTaskStatus() }}
+          </div>
+          <p class="flex items-center">
+            <mat-icon class="text-base">calendar_today</mat-icon>
+            <span>{{ "task.details.DUE_DATE" | translate }}</span>
+          </p>
+          <div class="text-orange-900 dark:text-slate-300">
+            {{ task.dueDate | date }}
+          </div>
+        </div>
+        <div class="grid grid-cols-2 grid-rows-2 gap-2">
+          <p class="flex items-center">
+            <mat-icon class="text-base">person</mat-icon>
+            <span>{{ "task.details.ASSIGNEES" | translate }}</span>
+          </p>
+          <ul class="flex items-center gap-1">
+            @if (task.members.length === 0) {
+              <p class="text-orange-900 dark:text-slate-300">
+                {{ "task.details.NO_ASSIGNEES" | translate }}
+              </p>
+            }
+            @for (member of task.members.slice(0, 4); track member.username) {
+              <app-profile-icon
+                size="md"
+                [firstName]="member.firstName"
+                [lastName]="member.lastName"
+                [routerLink]="'/users/' + member.username"
+              />
+            }
+            @if (task.members.length > 4) {
+              <p class="text-sky-500">+{{ task.members.length - 4 }}</p>
+            }
+          </ul>
+          <p class="flex items-center">
+            <mat-icon class="text-base">priority_high</mat-icon>
+            <span>{{ "task.details.PRIORITY" | translate }}</span>
+          </p>
+          <div class="mr-auto">
+            <app-priority textSize="text-sm" [priority]="task.priority" />
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<app-button
-  textColor="text-sky-100"
-  bgColor="bg-sky-500"
-  hoverBgColor="hover:bg-sky-600"
-  customClass="fixed bottom-4 right-4"
-  [largeSize]="true"
-  (handleClick)="toggleChat()"
->
-  <mat-icon class="transition-transform" [class.rotate-180]="showChat">
-    @if (showChat) { keyboard_arrow_up } @else { chat }
-  </mat-icon>
-</app-button>
-} @if (showChat) {
-<app-chat />
+  <app-button
+    textColor="text-sky-100"
+    bgColor="bg-sky-500"
+    hoverBgColor="hover:bg-sky-600"
+    customClass="fixed bottom-4 right-4"
+    [largeSize]="true"
+    (handleClick)="toggleChat()"
+  >
+    <mat-icon class="transition-transform" [class.rotate-180]="showChat">
+      @if (showChat) {
+        keyboard_arrow_up
+      } @else {
+        chat
+      }
+    </mat-icon>
+  </app-button>
+}
+@if (showChat) {
+  <app-chat />
 }

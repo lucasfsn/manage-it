@@ -1,11 +1,11 @@
 <button
   [disabled]="loading"
-  class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors mb-4 disabled:cursor-not-allowed disabled:bg-gray-500"
+  class="mb-4 rounded-full bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-500"
   (click)="handleAdd()"
 >
   @if (loading) {
-  {{ "utils.LOADING" | translate }}
+    {{ "utils.LOADING" | translate }}
   } @else {
-  {{ "user.profile.ADD_TO_PROJECT_BUTTON" | translate }}
+    {{ "user.profile.ADD_TO_PROJECT_BUTTON" | translate }}
   }
 </button>

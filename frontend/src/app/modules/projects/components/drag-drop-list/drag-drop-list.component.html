@@ -1,194 +1,197 @@
 @if (project) {
-<div
-  class="bg-orange-100 dark:bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-lg h-full text-gray-400 p-4 gap-2"
->
-  <h3 class="text-gray-700 dark:text-gray-100 self-start">
-    {{ "task.drag-and-drop.labels.COMPLETED" | translate }}
-  </h3>
   <div
-    cdkDropList
-    #completedList="cdkDropList"
-    [cdkDropListData]="completedTasks"
-    [cdkDropListConnectedTo]="[inProgressList, notStartedList]"
-    [cdkDropListDisabled]="loading"
-    id="completed"
-    class="w-full flex flex-col gap-1 min-h-[10px]"
-    (cdkDropListDropped)="drop($event)"
-    cdkDropListSortingDisabled
+    class="flex h-full flex-1 flex-col items-center justify-start gap-2 rounded-lg bg-orange-100 p-4 text-gray-400 shadow-lg dark:bg-slate-950"
   >
-    @for (task of completedTasks; track task.id) {
+    <h3 class="self-start text-gray-700 dark:text-gray-100">
+      {{ "task.drag-and-drop.labels.COMPLETED" | translate }}
+    </h3>
     <div
-      class="p-3 rounded-lg shadow-lg border-b list-none flex flex-col gap-2 focus:outline-none text-gray-800 dark:text-gray-300 dark:border-slate-900 bg-orange-100 dark:bg-slate-950 border-orange-200"
-      [class.cursor-wait]="loading"
-      [class.cursor-move]="!loading"
-      routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
-      cdkDrag
+      cdkDropList
+      #completedList="cdkDropList"
+      [cdkDropListData]="completedTasks"
+      [cdkDropListConnectedTo]="[inProgressList, notStartedList]"
+      [cdkDropListDisabled]="loading"
+      id="completed"
+      class="flex min-h-[10px] w-full flex-col gap-1"
+      (cdkDropListDropped)="drop($event)"
+      cdkDropListSortingDisabled
     >
-      <div class="flex justify-between items-center">
-        <p class="text-sm">{{ task.description }}</p>
-        <app-priority [priority]="task.priority" />
-      </div>
-      <div class="flex justify-between items-center gap-1">
-        <span class="text-xs text-gray-400 flex items-center gap-1">
-          <mat-icon class="text-base">schedule</mat-icon>
-          {{ task.dueDate | date }}</span
+      @for (task of completedTasks; track task.id) {
+        <div
+          class="flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100 p-3 text-gray-800 shadow-lg focus:outline-none dark:border-slate-900 dark:bg-slate-950 dark:text-gray-300"
+          [class.cursor-wait]="loading"
+          [class.cursor-move]="!loading"
+          routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
+          cdkDrag
         >
-        @if (task.members && task.members.length) {
-        <div class="flex items-center gap-1">
-          @for (user of task.members.slice(0,4); track user.username) {
-          <app-profile-icon
-            size="sm"
-            [firstName]="user.firstName"
-            [lastName]="user.lastName"
-            [hover]="false"
-          />
-          } @if (task.members.length > 4) {
-          <span class="text-xs text-sky-500"
-            >+{{ task.members.length - 4 }}</span
-          >
-          }
+          <div class="flex items-center justify-between">
+            <p class="text-sm">{{ task.description }}</p>
+            <app-priority [priority]="task.priority" />
+          </div>
+          <div class="flex items-center justify-between gap-1">
+            <span class="flex items-center gap-1 text-xs text-gray-400">
+              <mat-icon class="text-base">schedule</mat-icon>
+              {{ task.dueDate | date }}</span
+            >
+            @if (task.members && task.members.length) {
+              <div class="flex items-center gap-1">
+                @for (user of task.members.slice(0, 4); track user.username) {
+                  <app-profile-icon
+                    size="sm"
+                    [firstName]="user.firstName"
+                    [lastName]="user.lastName"
+                    [hover]="false"
+                  />
+                }
+                @if (task.members.length > 4) {
+                  <span class="text-xs text-sky-500"
+                    >+{{ task.members.length - 4 }}</span
+                  >
+                }
+              </div>
+            }
+          </div>
         </div>
-        }
-      </div>
+      }
     </div>
+    @if (project.status !== ProjectStatus.COMPLETED) {
+      <button
+        class="flex w-auto items-center gap-1 self-center p-2 text-sm transition-all hover:text-gray-500 focus:rounded-full active:text-sky-500"
+        (click)="openAddCardDialog(TaskStatus.COMPLETED)"
+      >
+        <mat-icon class="text-base">add</mat-icon>
+        {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
+      </button>
     }
   </div>
-  @if (project.status !== ProjectStatus.COMPLETED) {
-  <button
-    class="self-center flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-auto p-2 focus:rounded-full active:text-sky-500"
-    (click)="openAddCardDialog(TaskStatus.COMPLETED)"
-  >
-    <mat-icon class="text-base">add</mat-icon>
-    {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
-  </button>
-  }
-</div>
-<div
-  class="bg-orange-100 dark:bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2"
->
-  <h3 class="text-gray-700 dark:text-gray-100 self-start">
-    {{ "task.drag-and-drop.labels.IN_PROGRESS" | translate }}
-  </h3>
   <div
-    cdkDropList
-    #inProgressList="cdkDropList"
-    [cdkDropListData]="inProgressTasks"
-    [cdkDropListConnectedTo]="[completedList, notStartedList]"
-    [cdkDropListDisabled]="loading"
-    id="inProgress"
-    class="w-full flex flex-col gap-1 min-h-[10px]"
-    (cdkDropListDropped)="drop($event)"
-    cdkDropListSortingDisabled
+    class="flex h-full flex-1 flex-col items-center justify-start gap-2 rounded-lg bg-orange-100 p-4 text-gray-400 shadow-sm dark:bg-slate-950"
   >
-    @for (task of inProgressTasks; track task.id) {
+    <h3 class="self-start text-gray-700 dark:text-gray-100">
+      {{ "task.drag-and-drop.labels.IN_PROGRESS" | translate }}
+    </h3>
     <div
-      class="p-3 rounded-lg shadow-lg border-b list-none flex flex-col gap-2 focus:outline-none text-gray-800 dark:text-gray-300 dark:border-slate-900 bg-orange-100 dark:bg-slate-950 border-orange-200"
-      [class.cursor-wait]="loading"
-      [class.cursor-move]="!loading"
-      routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
-      cdkDrag
+      cdkDropList
+      #inProgressList="cdkDropList"
+      [cdkDropListData]="inProgressTasks"
+      [cdkDropListConnectedTo]="[completedList, notStartedList]"
+      [cdkDropListDisabled]="loading"
+      id="inProgress"
+      class="flex min-h-[10px] w-full flex-col gap-1"
+      (cdkDropListDropped)="drop($event)"
+      cdkDropListSortingDisabled
     >
-      <div class="flex justify-between items-center">
-        <p class="text-sm">{{ task.description }}</p>
-        <app-priority [priority]="task.priority" />
-      </div>
-      <div class="flex justify-between items-center gap-1">
-        <span class="text-xs text-gray-400 flex items-center gap-1">
-          <mat-icon class="text-base">schedule</mat-icon>
-          {{ task.dueDate | date }}</span
+      @for (task of inProgressTasks; track task.id) {
+        <div
+          class="flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100 p-3 text-gray-800 shadow-lg focus:outline-none dark:border-slate-900 dark:bg-slate-950 dark:text-gray-300"
+          [class.cursor-wait]="loading"
+          [class.cursor-move]="!loading"
+          routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
+          cdkDrag
         >
-        @if (task.members && task.members.length) {
-        <div class="flex items-center gap-1">
-          @for (user of task.members.slice(0,4); track user.username) {
-          <app-profile-icon
-            size="sm"
-            [firstName]="user.firstName"
-            [lastName]="user.lastName"
-            [hover]="false"
-          />
-          } @if (task.members.length > 4) {
-          <span class="text-xs text-sky-500"
-            >+{{ task.members.length - 4 }}</span
-          >
-          }
+          <div class="flex items-center justify-between">
+            <p class="text-sm">{{ task.description }}</p>
+            <app-priority [priority]="task.priority" />
+          </div>
+          <div class="flex items-center justify-between gap-1">
+            <span class="flex items-center gap-1 text-xs text-gray-400">
+              <mat-icon class="text-base">schedule</mat-icon>
+              {{ task.dueDate | date }}</span
+            >
+            @if (task.members && task.members.length) {
+              <div class="flex items-center gap-1">
+                @for (user of task.members.slice(0, 4); track user.username) {
+                  <app-profile-icon
+                    size="sm"
+                    [firstName]="user.firstName"
+                    [lastName]="user.lastName"
+                    [hover]="false"
+                  />
+                }
+                @if (task.members.length > 4) {
+                  <span class="text-xs text-sky-500"
+                    >+{{ task.members.length - 4 }}</span
+                  >
+                }
+              </div>
+            }
+          </div>
         </div>
-        }
-      </div>
+      }
     </div>
+    @if (project.status !== ProjectStatus.COMPLETED) {
+      <button
+        class="flex w-auto items-center gap-1 self-center p-2 text-sm transition-all hover:text-gray-500 focus:rounded-full active:text-sky-500"
+        (click)="openAddCardDialog(TaskStatus.IN_PROGRESS)"
+      >
+        <mat-icon class="text-base">add</mat-icon>
+        {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
+      </button>
     }
   </div>
-  @if (project.status !== ProjectStatus.COMPLETED) {
-  <button
-    class="self-center flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-auto p-2 focus:rounded-full active:text-sky-500"
-    (click)="openAddCardDialog(TaskStatus.IN_PROGRESS)"
-  >
-    <mat-icon class="text-base">add</mat-icon>
-    {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
-  </button>
-  }
-</div>
-<div
-  class="bg-orange-100 dark:bg-slate-950 flex-1 flex flex-col items-center justify-start rounded-lg shadow-sm h-full text-gray-400 p-4 gap-2 focus:outline-none"
->
-  <h3 class="text-gray-700 dark:text-gray-100 self-start">
-    {{ "task.drag-and-drop.labels.NOT_STARTED" | translate }}
-  </h3>
   <div
-    cdkDropList
-    #notStartedList="cdkDropList"
-    [cdkDropListData]="notStartedTasks"
-    [cdkDropListConnectedTo]="[inProgressList, completedList]"
-    [cdkDropListDisabled]="loading"
-    id="notStarted"
-    class="w-full flex flex-col gap-1 min-h-[10px]"
-    (cdkDropListDropped)="drop($event)"
-    cdkDropListSortingDisabled
+    class="flex h-full flex-1 flex-col items-center justify-start gap-2 rounded-lg bg-orange-100 p-4 text-gray-400 shadow-sm focus:outline-none dark:bg-slate-950"
   >
-    @for (task of notStartedTasks; track task.id) {
+    <h3 class="self-start text-gray-700 dark:text-gray-100">
+      {{ "task.drag-and-drop.labels.NOT_STARTED" | translate }}
+    </h3>
     <div
-      class="p-3 rounded-lg shadow-lg border-b list-none flex flex-col gap-2 focus:outline-none text-gray-800 dark:text-gray-300 dark:border-slate-900 bg-orange-100 dark:bg-slate-950 border-orange-200"
-      [class.cursor-wait]="loading"
-      [class.cursor-move]="!loading"
-      routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
-      cdkDrag
+      cdkDropList
+      #notStartedList="cdkDropList"
+      [cdkDropListData]="notStartedTasks"
+      [cdkDropListConnectedTo]="[inProgressList, completedList]"
+      [cdkDropListDisabled]="loading"
+      id="notStarted"
+      class="flex min-h-[10px] w-full flex-col gap-1"
+      (cdkDropListDropped)="drop($event)"
+      cdkDropListSortingDisabled
     >
-      <div class="flex justify-between items-center">
-        <p class="text-sm">{{ task.description }}</p>
-        <app-priority [priority]="task.priority" />
-      </div>
-      <div class="flex justify-between items-center gap-1">
-        <span class="text-xs text-gray-400 flex items-center gap-1">
-          <mat-icon class="text-base">schedule</mat-icon>
-          {{ task.dueDate | date }}</span
+      @for (task of notStartedTasks; track task.id) {
+        <div
+          class="flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100 p-3 text-gray-800 shadow-lg focus:outline-none dark:border-slate-900 dark:bg-slate-950 dark:text-gray-300"
+          [class.cursor-wait]="loading"
+          [class.cursor-move]="!loading"
+          routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
+          cdkDrag
         >
-        @if (task.members && task.members.length) {
-        <div class="flex items-center gap-1">
-          @for (user of task.members.slice(0,4); track user.username) {
-          <app-profile-icon
-            size="sm"
-            [firstName]="user.firstName"
-            [lastName]="user.lastName"
-            [hover]="false"
-          />
-          } @if (task.members.length > 4) {
-          <span class="text-xs text-sky-500"
-            >+{{ task.members.length - 4 }}</span
-          >
-          }
+          <div class="flex items-center justify-between">
+            <p class="text-sm">{{ task.description }}</p>
+            <app-priority [priority]="task.priority" />
+          </div>
+          <div class="flex items-center justify-between gap-1">
+            <span class="flex items-center gap-1 text-xs text-gray-400">
+              <mat-icon class="text-base">schedule</mat-icon>
+              {{ task.dueDate | date }}</span
+            >
+            @if (task.members && task.members.length) {
+              <div class="flex items-center gap-1">
+                @for (user of task.members.slice(0, 4); track user.username) {
+                  <app-profile-icon
+                    size="sm"
+                    [firstName]="user.firstName"
+                    [lastName]="user.lastName"
+                    [hover]="false"
+                  />
+                }
+                @if (task.members.length > 4) {
+                  <span class="text-xs text-sky-500"
+                    >+{{ task.members.length - 4 }}</span
+                  >
+                }
+              </div>
+            }
+          </div>
         </div>
-        }
-      </div>
+      }
     </div>
+    @if (project.status !== ProjectStatus.COMPLETED) {
+      <button
+        class="mx-auto flex w-auto items-center gap-1 self-center p-2 text-sm transition-all hover:text-gray-500 focus:rounded-full active:text-sky-500"
+        (click)="openAddCardDialog(TaskStatus.NOT_STARTED)"
+      >
+        <mat-icon class="text-base">add</mat-icon>
+        {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
+      </button>
     }
   </div>
-  @if (project.status !== ProjectStatus.COMPLETED) {
-  <button
-    class="self-center flex gap-1 items-center text-sm hover:text-gray-500 transition-all w-auto p-2 mx-auto focus:rounded-full active:text-sky-500"
-    (click)="openAddCardDialog(TaskStatus.NOT_STARTED)"
-  >
-    <mat-icon class="text-base">add</mat-icon>
-    {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
-  </button>
-  }
-</div>
 }

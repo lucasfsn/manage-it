@@ -1,92 +1,97 @@
 @if (project) {
-<div class="flex flex-col text-gray-700 dark:text-gray-400 gap-3">
-  <div class="flex flex-row justify-between items-center self-end">
-    <app-project-menu />
-  </div>
-  <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-    {{ project.name }}
-  </h2>
-  <div class="flex flex-col gap-2">
-    <p>{{ project.description }}</p>
-    <div
-      class="grid grid-cols-2 gap-2 sm:items-center sm:justify-center lg:w-2/3"
-    >
-      <p class="flex items-center">
-        <mat-icon class="text-base">person</mat-icon>
-        <span>{{ "project.details.LEADER" | translate }}</span>
-      </p>
-      <div class="text-orange-900 dark:text-slate-300">
-        {{ project.owner.firstName }} {{ project.owner.lastName }}
-      </div>
-      <p class="flex items-center col-span-2 sm:col-span-1">
-        <mat-icon class="text-base">group</mat-icon>
-        <span>{{ "project.details.MEMBERS" | translate }}</span>
-      </p>
-      <div class="flex items-center col-span-2 sm:col-span-1 mx-auto sm:mx-0">
-        <ul class="flex gap-1 justify-center items-center">
-          @for (member of project.members.slice(0,5); track member.username) {
-          <app-profile-icon
-            size="md"
-            [firstName]="member.firstName"
-            [lastName]="member.lastName"
-            [routerLink]="'/users/' + member.username"
-          />
-          } @if (project.members.length > 5) {
-          <p class="text-sky-500">+{{ project.members.length - 5 }}</p>
-          } @if (project.status !== ProjectStatus.COMPLETED && isOwner) {
-          <div
-            class="flex ml-1.5 gap-0.5 bg-orange-200 dark:bg-sky-950 rounded-full p-0.5"
-          >
-            <button
-              class="flex justify-center items-center focus:outline-none active:text-sky-500 focus:text-sky-500"
-              (click)="showAllMembers()"
-            >
-              <mat-icon
-                class="text-base text-sky-900 dark:text-sky-600 hover:text-sky-950 dark:hover:text-sky-700 transition-all"
-                >edit</mat-icon
-              >
-            </button>
-            <button
-              (click)="openSearchDialog()"
-              class="flex justify-center items-center focus:outline-none active:text-sky-500 focus:text-sky-500"
-            >
-              <mat-icon
-                class="text-base text-sky-700 dark:text-sky-200 hover:text-sky-800 dark:hover:text-sky-300 transition-all"
-                >add</mat-icon
-              >
-            </button>
-          </div>
-          }
-        </ul>
-      </div>
-      <p class="flex items-center">
-        <mat-icon class="text-base">task_alt</mat-icon>
-        <span>{{ "project.details.STATUS" | translate }}</span>
-      </p>
+  <div class="flex flex-col gap-3 text-gray-700 dark:text-gray-400">
+    <div class="flex flex-row items-center justify-between self-end">
+      <app-project-menu />
+    </div>
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+      {{ project.name }}
+    </h2>
+    <div class="flex flex-col gap-2">
+      <p>{{ project.description }}</p>
       <div
-        class="rounded-full flex items-center justify-center text-slate-900 font-semibold text-sm px-2 py-1 mr-auto"
-        [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
-        [class.bg-orange-400]="project.status === ProjectStatus.IN_PROGRESS"
+        class="grid grid-cols-2 gap-2 sm:items-center sm:justify-center lg:w-2/3"
       >
-        {{ mapProjectStatus() }}
-      </div>
-      <p class="flex items-center">
-        <mat-icon class="text-base">schedule</mat-icon>
-        <span>{{ "project.details.START_DATE" | translate }}</span>
-      </p>
-      <div class="text-orange-900 dark:text-slate-300">
-        {{ project.startDate | date }}
-      </div>
-      <p class="flex items-center">
-        <mat-icon class="text-base">alarm</mat-icon>
-        <span>{{ "project.details.END_DATE" | translate }}</span>
-      </p>
-      <div class="text-orange-900 dark:text-slate-300">
-        {{ project.endDate | date }}
+        <p class="flex items-center">
+          <mat-icon class="text-base">person</mat-icon>
+          <span>{{ "project.details.LEADER" | translate }}</span>
+        </p>
+        <div class="text-orange-900 dark:text-slate-300">
+          {{ project.owner.firstName }} {{ project.owner.lastName }}
+        </div>
+        <p class="col-span-2 flex items-center sm:col-span-1">
+          <mat-icon class="text-base">group</mat-icon>
+          <span>{{ "project.details.MEMBERS" | translate }}</span>
+        </p>
+        <div class="col-span-2 mx-auto flex items-center sm:col-span-1 sm:mx-0">
+          <ul class="flex items-center justify-center gap-1">
+            @for (
+              member of project.members.slice(0, 5);
+              track member.username
+            ) {
+              <app-profile-icon
+                size="md"
+                [firstName]="member.firstName"
+                [lastName]="member.lastName"
+                [routerLink]="'/users/' + member.username"
+              />
+            }
+            @if (project.members.length > 5) {
+              <p class="text-sky-500">+{{ project.members.length - 5 }}</p>
+            }
+            @if (project.status !== ProjectStatus.COMPLETED && isOwner) {
+              <div
+                class="ml-1.5 flex gap-0.5 rounded-full bg-orange-200 p-0.5 dark:bg-sky-950"
+              >
+                <button
+                  class="flex items-center justify-center focus:text-sky-500 focus:outline-none active:text-sky-500"
+                  (click)="showAllMembers()"
+                >
+                  <mat-icon
+                    class="text-base text-sky-900 transition-all hover:text-sky-950 dark:text-sky-600 dark:hover:text-sky-700"
+                    >edit</mat-icon
+                  >
+                </button>
+                <button
+                  (click)="openSearchDialog()"
+                  class="flex items-center justify-center focus:text-sky-500 focus:outline-none active:text-sky-500"
+                >
+                  <mat-icon
+                    class="text-base text-sky-700 transition-all hover:text-sky-800 dark:text-sky-200 dark:hover:text-sky-300"
+                    >add</mat-icon
+                  >
+                </button>
+              </div>
+            }
+          </ul>
+        </div>
+        <p class="flex items-center">
+          <mat-icon class="text-base">task_alt</mat-icon>
+          <span>{{ "project.details.STATUS" | translate }}</span>
+        </p>
+        <div
+          class="mr-auto flex items-center justify-center rounded-full px-2 py-1 text-sm font-semibold text-slate-900"
+          [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
+          [class.bg-orange-400]="project.status === ProjectStatus.IN_PROGRESS"
+        >
+          {{ mapProjectStatus() }}
+        </div>
+        <p class="flex items-center">
+          <mat-icon class="text-base">schedule</mat-icon>
+          <span>{{ "project.details.START_DATE" | translate }}</span>
+        </p>
+        <div class="text-orange-900 dark:text-slate-300">
+          {{ project.startDate | date }}
+        </div>
+        <p class="flex items-center">
+          <mat-icon class="text-base">alarm</mat-icon>
+          <span>{{ "project.details.END_DATE" | translate }}</span>
+        </p>
+        <div class="text-orange-900 dark:text-slate-300">
+          {{ project.endDate | date }}
+        </div>
       </div>
     </div>
   </div>
-</div>
 }
 <app-button
   textColor="text-sky-100"
@@ -97,9 +102,13 @@
   (handleClick)="toggleChat()"
 >
   <mat-icon class="transition-transform" [class.rotate-180]="showChat">
-    @if (showChat) { keyboard_arrow_up } @else { chat }
+    @if (showChat) {
+      keyboard_arrow_up
+    } @else {
+      chat
+    }
   </mat-icon>
 </app-button>
 @if (showChat) {
-<app-chat />
+  <app-chat />
 }

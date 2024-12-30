@@ -19,72 +19,72 @@ export class MapperService {
 
   public projectStatusMapper(status: ProjectStatus): string {
     switch (status) {
-      case ProjectStatus.IN_PROGRESS:
-        return this.translationService.translate(
-          'mappers.projectStatus.IN_PROGRESS'
-        );
-      case ProjectStatus.COMPLETED:
-        return this.translationService.translate(
-          'mappers.projectStatus.COMPLETED'
-        );
+    case ProjectStatus.IN_PROGRESS:
+      return this.translationService.translate(
+        'mappers.projectStatus.IN_PROGRESS'
+      );
+    case ProjectStatus.COMPLETED:
+      return this.translationService.translate(
+        'mappers.projectStatus.COMPLETED'
+      );
     }
   }
 
   public taskStatusMapper(status: TaskStatus): string {
     switch (status) {
-      case TaskStatus.IN_PROGRESS:
-        return this.translationService.translate(
-          'mappers.taskStatus.IN_PROGRESS'
-        );
-      case TaskStatus.COMPLETED:
-        return this.translationService.translate(
-          'mappers.taskStatus.COMPLETED'
-        );
-      case TaskStatus.NOT_STARTED:
-        return this.translationService.translate(
-          'mappers.taskStatus.NOT_STARTED'
-        );
+    case TaskStatus.IN_PROGRESS:
+      return this.translationService.translate(
+        'mappers.taskStatus.IN_PROGRESS'
+      );
+    case TaskStatus.COMPLETED:
+      return this.translationService.translate(
+        'mappers.taskStatus.COMPLETED'
+      );
+    case TaskStatus.NOT_STARTED:
+      return this.translationService.translate(
+        'mappers.taskStatus.NOT_STARTED'
+      );
     }
   }
 
   public sortCriteriaMapper(criteria: SortCriteria): string {
     switch (criteria) {
-      case SortCriteria.NAME:
-        return this.translationService.translate('mappers.sortCriteria.NAME');
-      case SortCriteria.START_DATE:
-        return this.translationService.translate(
-          'mappers.sortCriteria.START_DATE'
-        );
-      case SortCriteria.END_DATE:
-        return this.translationService.translate(
-          'mappers.sortCriteria.END_DATE'
-        );
-      case SortCriteria.COMPLETED_TASKS:
-        return this.translationService.translate(
-          'mappers.sortCriteria.COMPLETED_TASKS'
-        );
+    case SortCriteria.NAME:
+      return this.translationService.translate('mappers.sortCriteria.NAME');
+    case SortCriteria.START_DATE:
+      return this.translationService.translate(
+        'mappers.sortCriteria.START_DATE'
+      );
+    case SortCriteria.END_DATE:
+      return this.translationService.translate(
+        'mappers.sortCriteria.END_DATE'
+      );
+    case SortCriteria.COMPLETED_TASKS:
+      return this.translationService.translate(
+        'mappers.sortCriteria.COMPLETED_TASKS'
+      );
     }
   }
 
   public sortOrderMapper(order: SortOrder): string {
     switch (order) {
-      case SortOrder.ASCENDING:
-        return this.translationService.translate('mappers.sortOrder.ASCENDING');
-      case SortOrder.DESCENDING:
-        return this.translationService.translate(
-          'mappers.sortOrder.DESCENDING'
-        );
+    case SortOrder.ASCENDING:
+      return this.translationService.translate('mappers.sortOrder.ASCENDING');
+    case SortOrder.DESCENDING:
+      return this.translationService.translate(
+        'mappers.sortOrder.DESCENDING'
+      );
     }
   }
 
   public priorityMapper(priority: Priority): string {
     switch (priority) {
-      case Priority.LOW:
-        return this.translationService.translate('mappers.priority.LOW');
-      case Priority.MEDIUM:
-        return this.translationService.translate('mappers.priority.MEDIUM');
-      case Priority.HIGH:
-        return this.translationService.translate('mappers.priority.HIGH');
+    case Priority.LOW:
+      return this.translationService.translate('mappers.priority.LOW');
+    case Priority.MEDIUM:
+      return this.translationService.translate('mappers.priority.MEDIUM');
+    case Priority.HIGH:
+      return this.translationService.translate('mappers.priority.HIGH');
     }
   }
 
@@ -97,20 +97,20 @@ export class MapperService {
       return this.translationService.translate('toast.error.DEFAULT');
 
     switch (status) {
-      case 401:
-        return this.translationService.translate(
-          errorDescription?.toLowerCase() === 'bad credentials'
-            ? 'toast.error.BAD_CREDENTIALS'
-            : 'toast.error.401'
-        );
-      case 404:
-        return this.translationService.translate('toast.error.404');
-      case 409:
-        return this.translationService.translate(
-          this.getConflictTranslationKey(message)
-        );
-      default:
-        return this.translationService.translate('toast.error.DEFAULT');
+    case 401:
+      return this.translationService.translate(
+        errorDescription?.toLowerCase() === 'bad credentials'
+          ? 'toast.error.BAD_CREDENTIALS'
+          : 'toast.error.401'
+      );
+    case 404:
+      return this.translationService.translate('toast.error.404');
+    case 409:
+      return this.translationService.translate(
+        this.getConflictTranslationKey(message)
+      );
+    default:
+      return this.translationService.translate('toast.error.DEFAULT');
     }
   }
 
@@ -145,33 +145,33 @@ export class MapperService {
 
   private getProjectTranslationKey(operation: NotificationOperation): string {
     switch (operation) {
-      case NotificationOperation.COMPLETE:
-        return 'notifications.content.PROJECT_COMPLETE';
-      case NotificationOperation.UPDATE:
-        return 'notifications.content.PROJECT_UPDATE';
-      case NotificationOperation.JOIN:
-        return 'notifications.content.PROJECT_JOIN';
-      case NotificationOperation.LEAVE:
-        return 'notifications.content.PROJECT_LEAVE';
-      default:
-        return '';
+    case NotificationOperation.COMPLETE:
+      return 'notifications.content.PROJECT_COMPLETE';
+    case NotificationOperation.UPDATE:
+      return 'notifications.content.PROJECT_UPDATE';
+    case NotificationOperation.JOIN:
+      return 'notifications.content.PROJECT_JOIN';
+    case NotificationOperation.LEAVE:
+      return 'notifications.content.PROJECT_LEAVE';
+    default:
+      return '';
     }
   }
 
   private getTaskTranslationKey(operation: NotificationOperation): string {
     switch (operation) {
-      case NotificationOperation.CREATE:
-        return 'notifications.content.TASK_CREATE';
-      case NotificationOperation.DELETE:
-        return 'notifications.content.TASK_DELETE';
-      case NotificationOperation.UPDATE:
-        return 'notifications.content.TASK_UPDATE';
-      case NotificationOperation.JOIN:
-        return 'notifications.content.TASK_JOIN';
-      case NotificationOperation.LEAVE:
-        return 'notifications.content.TASK_LEAVE';
-      default:
-        return '';
+    case NotificationOperation.CREATE:
+      return 'notifications.content.TASK_CREATE';
+    case NotificationOperation.DELETE:
+      return 'notifications.content.TASK_DELETE';
+    case NotificationOperation.UPDATE:
+      return 'notifications.content.TASK_UPDATE';
+    case NotificationOperation.JOIN:
+      return 'notifications.content.TASK_JOIN';
+    case NotificationOperation.LEAVE:
+      return 'notifications.content.TASK_LEAVE';
+    default:
+      return '';
     }
   }
 }

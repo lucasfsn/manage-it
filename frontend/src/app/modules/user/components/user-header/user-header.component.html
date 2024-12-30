@@ -1,33 +1,33 @@
 @if (user) {
-<div class="flex flex-col items-center text-center gap-3">
-  <div
-    class="bg-blue-500 text-white rounded-full w-24 h-24 flex items-center justify-center"
-  >
-    <app-profile-icon
-      size="xl"
-      [firstName]="user.firstName"
-      [lastName]="user.lastName"
-      [hover]="false"
-    />
-  </div>
-  <div class="flex flex-col gap-3">
-    <div class="flex flex-col">
-      <h2 class="text-2xl font-semibold">
-        {{ user.firstName }} {{ user.lastName }}
-      </h2>
-      <p class="text-gray-600 dark:text-gray-400 text-sm">
-        {{ "@" + user.username }}
+  <div class="flex flex-col items-center gap-3 text-center">
+    <div
+      class="flex h-24 w-24 items-center justify-center rounded-full bg-blue-500 text-white"
+    >
+      <app-profile-icon
+        size="xl"
+        [firstName]="user.firstName"
+        [lastName]="user.lastName"
+        [hover]="false"
+      />
+    </div>
+    <div class="flex flex-col gap-3">
+      <div class="flex flex-col">
+        <h2 class="text-2xl font-semibold">
+          {{ user.firstName }} {{ user.lastName }}
+        </h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          {{ "@" + user.username }}
+        </p>
+      </div>
+      <p
+        class="flex items-center justify-center gap-1 text-sm text-gray-600 dark:text-gray-400"
+      >
+        <mat-icon class="text-lg">calendar_month</mat-icon>
+        <span
+          >{{ "user.profile.JOINED_TEXT" | translate }}
+          {{ user.createdAt | date }}</span
+        >
       </p>
     </div>
-    <p
-      class="text-gray-600 dark:text-gray-400 text-sm flex items-center justify-center gap-1"
-    >
-      <mat-icon class="text-lg">calendar_month</mat-icon>
-      <span
-        >{{ "user.profile.JOINED_TEXT" | translate }}
-        {{ user.createdAt | date }}</span
-      >
-    </p>
   </div>
-</div>
 }
