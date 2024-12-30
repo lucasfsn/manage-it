@@ -1,6 +1,6 @@
 package com.manageit.manageit.auth;
 
-import com.manageit.manageit.dto.user.AuthenticatedUserResponse;
+import com.manageit.manageit.dto.user.AuthenticatedUserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String token;
-    private AuthenticatedUserResponse user;
+    private AuthenticatedUserResponseDto user;
 }

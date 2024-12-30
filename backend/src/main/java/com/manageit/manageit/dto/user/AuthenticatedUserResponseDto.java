@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AuthenticatedUserResponse {
+public class AuthenticatedUserResponseDto {
     private String firstName;
     private String lastName;
     private String email;

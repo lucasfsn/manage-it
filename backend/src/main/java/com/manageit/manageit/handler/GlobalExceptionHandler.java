@@ -1,10 +1,11 @@
 package com.manageit.manageit.handler;
 
-//import jakarta.validation.ConstraintViolationException;
+import com.manageit.manageit.exception.TaskNotInProjectException;
 import com.manageit.manageit.exception.TokenUserMismatchException;
-import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
+import com.manageit.manageit.exception.UserNotInProjectException;
+import com.manageit.manageit.exception.UserNotInTaskException;
 import jakarta.persistence.EntityNotFoundException;
-import org.apache.coyote.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.manageit.manageit.handler.Error.*;
-
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+
     @ExceptionHandler(TokenUserMismatchException.class)
     public ResponseEntity<ExceptionResponse> handleException(TokenUserMismatchException exp) {
+
         return ResponseEntity.status(TOKEN_MISMATCH.getHttpStatus())
                 .body(
                         ExceptionResponse.builder()
@@ -35,8 +38,11 @@ public class GlobalExceptionHandler {
                 );
     }
 
-    @ExceptionHandler(UnauthorizedProjectAccessException.class)
-    public ResponseEntity<ExceptionResponse> handleException(UnauthorizedProjectAccessException exp) {
+    @ExceptionHandler({UserNotInProjectException.class, UserNotInTaskException.class})
+    public ResponseEntity<ExceptionResponse> handleException(RuntimeException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
         String message = INSUFFICIENT_PERMISSIONS.getDescription();
         if (exp.getMessage() != null && !exp.getMessage().isEmpty()) {
             message = exp.getMessage();
@@ -53,9 +59,33 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(TaskNotInProjectException.class)
+    public ResponseEntity<ExceptionResponse> handleException(TaskNotInProjectException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
+        String message = TASK_NOT_IN_PROJECT.getDescription();
+        if (exp.getMessage() != null && !exp.getMessage().isEmpty()) {
+            message = exp.getMessage();
+        }
+        return ResponseEntity
+                .status(TASK_NOT_IN_PROJECT.getHttpStatus())
+                .body(
+                        ExceptionResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .httpStatus(TASK_NOT_IN_PROJECT.getHttpStatus())
+                                .errorDescription(exp.getMessage())
+                                .message(message)
+                                .build()
+                );
+    }
+
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ExceptionResponse> handleException(BadCredentialsException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
         return ResponseEntity
                 .status(BAD_CREDENTIALS.getHttpStatus())
                 .body(
@@ -70,6 +100,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleException(EntityNotFoundException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
         String message = ENTITY_NOT_FOUND.getDescription();
         if (exp.getMessage() != null && !exp.getMessage().isEmpty()) {
             message = exp.getMessage();
@@ -88,6 +121,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleException(MethodArgumentNotValidException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
         Set<String> errors = new HashSet<>();
         exp.getBindingResult().getAllErrors().forEach(err -> errors.add(err.getDefaultMessage()));
         return ResponseEntity
@@ -105,6 +141,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
         String message = DATA_INTEGRITY_VIOLATION.getDescription();
         if (exp.getCause() instanceof ConstraintViolationException constraintException) {
             String constraintName = constraintException.getConstraintName();
@@ -126,9 +165,27 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ExceptionResponse> handleException(IllegalStateException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
+        return ResponseEntity
+                .status(ILLEGAL_STATE.getHttpStatus())
+                .body(
+                        ExceptionResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .errorDescription(ILLEGAL_STATE.getDescription())
+                                .message(exp.getMessage())
+                                .build()
+                );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleException(Exception exp) {
-        exp.printStackTrace();
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
         return ResponseEntity
                 .status(INTERNAL_ERROR.getHttpStatus())
                 .body(

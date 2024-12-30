@@ -73,7 +73,7 @@ public class TaskController {
             @PathVariable UUID projectId,
             @RequestBody BasicUserDto request
     ) {
-        TaskDto updatedTask = taskService.addUserToProject(token, taskId, projectId, request);
+        TaskDto updatedTask = taskService.addUserToTask(token, taskId, projectId, request);
         return ResponseEntity.ok(updatedTask);
     }
 

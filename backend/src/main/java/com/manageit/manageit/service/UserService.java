@@ -7,7 +7,7 @@ import com.manageit.manageit.mapper.user.BasicUserMapper;
 import com.manageit.manageit.mapper.user.UserMapper;
 import com.manageit.manageit.repository.UserRepository;
 import com.manageit.manageit.security.JwtService;
-import com.manageit.manageit.dto.user.AuthenticatedUserResponse;
+import com.manageit.manageit.dto.user.AuthenticatedUserResponseDto;
 import com.manageit.manageit.dto.user.UpdateUserRequest;
 import com.manageit.manageit.model.user.User;
 import jakarta.persistence.EntityNotFoundException;
@@ -39,19 +39,19 @@ public class UserService {
         return userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No user found with username: " + username));
     }
 
-    public AuthenticatedUserResponse findByToken(String token) {
+    public AuthenticatedUserResponseDto findByToken(String token) {
         User user = getUserByToken(token);
         return userMapper.toAuthenticatedUserResponse(user);
     }
 
     public UserResponseDto findByUsername(String token, String username) {
         String requestUsername = jwtService.extractUsername(token.replace("Bearer ", ""));
-        User requestingUser = getUserByUsername(requestUsername);
         User user = getUserByUsername(username);
 
         List<Project> filteredProjects = user.getProjects().stream()
-            .filter(project -> project.getMembers().contains(requestingUser))
-            .collect(Collectors.toList());
+                .filter(project -> project.getMembers().stream()
+                        .anyMatch(member -> member.getName().equals(requestUsername)))
+                .collect(Collectors.toList());
 
         if (requestUsername.equals(username)) {
             return userMapper.toUserResponse(user, filteredProjects);
@@ -93,7 +93,6 @@ public class UserService {
                             .toList())
                     .orElseThrow(() -> new EntityNotFoundException("No users found!"));
         }
-        // sprawdz czy podany task nalezy do projektu.
         return userRepository.findByPatternInAllFields(pattern)
                 .map(users -> users.stream()
                         .map(basicUserMapper::toBasicUserDto)

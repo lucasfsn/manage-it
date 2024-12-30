@@ -7,7 +7,8 @@ import com.manageit.manageit.dto.task.TaskMetadataDto;
 import com.manageit.manageit.dto.task.UpdateTaskRequest;
 import com.manageit.manageit.dto.user.BasicUserDto;
 import com.manageit.manageit.exception.TaskNotInProjectException;
-import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
+import com.manageit.manageit.exception.UserNotInProjectException;
+import com.manageit.manageit.exception.UserNotInTaskException;
 import com.manageit.manageit.mapper.task.TaskMapper;
 import com.manageit.manageit.model.project.Project;
 import com.manageit.manageit.repository.TaskRepository;
@@ -34,14 +35,15 @@ public class TaskService {
     private final ChatService chatService;
 
     public Task getTaskById(UUID id) {
-        return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + id));
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No task found with id: " + id));
     }
 
     public TaskDto getTask(String token, UUID projectId, UUID taskId) {
         User user = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
-            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
+            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
         Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
@@ -55,7 +57,7 @@ public class TaskService {
         User owner = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(owner.getName()))) {
-            throw new UnauthorizedProjectAccessException("User " + owner.getName() + " is not member of project");
+            throw new UserNotInProjectException("User " + owner.getName() + " is not member of project");
         }
         Task task = Task.builder()
                 .project(project)
@@ -82,7 +84,7 @@ public class TaskService {
         User user = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
-            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
+            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
         Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
@@ -102,9 +104,11 @@ public class TaskService {
         User updater = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(updater.getName()))) {
-            throw new UnauthorizedProjectAccessException("User " + updater.getName() + " is not member of project");
+            throw new UserNotInProjectException("User " + updater.getName() + " is not member of project");
         }
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
+        Task task = taskRepository
+                .findById(taskId)
+                .orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
@@ -132,15 +136,15 @@ public class TaskService {
         return taskMapper.toTaskDto(updatedTask);
      }
 
-    public TaskDto addUserToProject(String token, UUID taskId, UUID projectId, BasicUserDto request) {
+    public TaskDto addUserToTask(String token, UUID taskId, UUID projectId, BasicUserDto request) {
         User user = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
         User userToAdd = userService.getUserByUsername(request.getUsername());
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
-            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
+            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
         if (!project.getMembers().contains(userToAdd)) {
-            throw new UnauthorizedProjectAccessException("User " + userToAdd.getName() + " is not member of project");
+            throw new UserNotInProjectException("User " + userToAdd.getName() + " is not member of project");
         }
         Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
@@ -167,7 +171,7 @@ public class TaskService {
         User user = userService.getUserByToken(token);
         Project project = projectService.getProjectById(projectId);
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
-            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
+            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
         Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
@@ -187,7 +191,7 @@ public class TaskService {
             );
             return taskMapper.toTaskDto(updatedTask);
         } else {
-            throw new IllegalStateException("User is not a member of the task");
+            throw new UserNotInTaskException("User is not a member of the task");
         }
     }
 }

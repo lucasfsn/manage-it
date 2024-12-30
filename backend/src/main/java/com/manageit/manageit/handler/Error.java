@@ -13,7 +13,9 @@ public enum Error {
     INTERNAL_ERROR(INTERNAL_SERVER_ERROR, "Internal Server Error."),
     ENTITY_NOT_FOUND(NOT_FOUND, "Entity not found."),
     TOKEN_MISMATCH(UNAUTHORIZED, "The user provided does not match the user in the token."),
-    INSUFFICIENT_PERMISSIONS(UNAUTHORIZED, "User does not have sufficient permissions to perform this action");
+    INSUFFICIENT_PERMISSIONS(UNAUTHORIZED, "User does not have sufficient permissions to perform this action"),
+    TASK_NOT_IN_PROJECT(BAD_REQUEST, "The specified task does not belong to the project."),
+    ILLEGAL_STATE(CONFLICT, "The operation could not be performed due to an illegal state");
 
     private final String description;
     private final HttpStatus httpStatus;

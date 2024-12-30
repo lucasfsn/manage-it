@@ -4,7 +4,7 @@ import com.manageit.manageit.security.JwtService;
 import com.manageit.manageit.model.user.User;
 import com.manageit.manageit.mapper.user.UserMapper;
 import com.manageit.manageit.repository.UserRepository;
-import com.manageit.manageit.dto.user.AuthenticatedUserResponse;
+import com.manageit.manageit.dto.user.AuthenticatedUserResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,9 +33,9 @@ public class AuthenticationService {
 //                .role(Role.USER)
                 .build();
         repository.save(user);
-        AuthenticatedUserResponse authenticatedUserResponse = userMapper.toAuthenticatedUserResponse(user);
+        AuthenticatedUserResponseDto authenticatedUserResponseDto = userMapper.toAuthenticatedUserResponse(user);
         String jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().token(jwtToken).user(authenticatedUserResponse).build();
+        return AuthenticationResponse.builder().token(jwtToken).user(authenticatedUserResponseDto).build();
     }
 
     public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
@@ -46,9 +46,9 @@ public class AuthenticationService {
                 )
         );
         User user = ((User) auth.getPrincipal());
-        AuthenticatedUserResponse authenticatedUserResponse = userMapper.toAuthenticatedUserResponse(user);
+        AuthenticatedUserResponseDto authenticatedUserResponseDto = userMapper.toAuthenticatedUserResponse(user);
         String jwtToken  = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().token(jwtToken).user(authenticatedUserResponse).build();
+        return AuthenticationResponse.builder().token(jwtToken).user(authenticatedUserResponseDto).build();
     }
 
 }

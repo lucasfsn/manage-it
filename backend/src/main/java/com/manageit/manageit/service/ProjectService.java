@@ -4,7 +4,7 @@ import com.manageit.manageit.dto.project.ProjectDto;
 import com.manageit.manageit.dto.project.CreateProjectRequest;
 import com.manageit.manageit.dto.project.UpdateProjectRequest;
 import com.manageit.manageit.dto.user.BasicUserDto;
-import com.manageit.manageit.exception.UnauthorizedProjectAccessException;
+import com.manageit.manageit.exception.UserNotInProjectException;
 import com.manageit.manageit.mapper.project.ProjectMapper;
 import com.manageit.manageit.model.project.Project;
 import com.manageit.manageit.model.project.ProjectStatus;
@@ -35,12 +35,6 @@ public class ProjectService {
                 .orElseThrow(() -> new EntityNotFoundException("No project found with id: " + projectId));
     }
 
-    public void validateUserIsProjectOwner(User user, Project project) {
-        if (!project.getOwner().getId().equals(user.getId())) {
-            throw new UnauthorizedProjectAccessException("User is not the owner of the project");
-        }
-    }
-
     public List<ProjectDto> getProjects(String token) {
         User user = userService.getUserByToken(token);
         return projectRepository.findByMembers_Username(user.getName())
@@ -54,7 +48,7 @@ public class ProjectService {
         User user = userService.getUserByToken(token);
         Project project = getProjectById(id);
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
-            throw new UnauthorizedProjectAccessException("User " + user.getName() + " is not member of project");
+            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
         return projectMapper.toProjectDto(project);
     }
@@ -164,7 +158,13 @@ public class ProjectService {
             );
             return projectMapper.toProjectDto(updatedProject);
         } else {
-            throw new IllegalStateException("User is not a member of the project");
+            throw new UserNotInProjectException("User is not a member of the project");
+        }
+    }
+
+    private void validateUserIsProjectOwner(User user, Project project) {
+        if (!project.getOwner().getId().equals(user.getId())) {
+            throw new UserNotInProjectException("User is not the owner of the project");
         }
     }
 }

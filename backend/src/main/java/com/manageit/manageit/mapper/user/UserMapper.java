@@ -2,7 +2,7 @@ package com.manageit.manageit.mapper.user;
 
 import com.manageit.manageit.dto.user.UserResponseDto;
 import com.manageit.manageit.mapper.project.ProjectMapper;
-import com.manageit.manageit.dto.user.AuthenticatedUserResponse;
+import com.manageit.manageit.dto.user.AuthenticatedUserResponseDto;
 import com.manageit.manageit.model.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public class UserMapper {
     private final ProjectMapper projectMapper;
 
-    public AuthenticatedUserResponse toAuthenticatedUserResponse(User user) {
-        return AuthenticatedUserResponse
+    public AuthenticatedUserResponseDto toAuthenticatedUserResponse(User user) {
+        return AuthenticatedUserResponseDto
                 .builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -51,16 +51,16 @@ public class UserMapper {
                 .build();
     }   
 
-    public UserResponseDto toUserResponseWithoutEmail(User user) {
-        return UserResponseDto
-                .builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .username(user.getName())
-                .projects(user.getProjects().stream().map(projectMapper::toUserProfileProjectDto).collect(Collectors.toList()))
-                .createdAt(user.getCreatedAt())
-                .build();
-    }
+//    public UserResponseDto toUserResponseWithoutEmail(User user) {
+//        return UserResponseDto
+//                .builder()
+//                .firstName(user.getFirstName())
+//                .lastName(user.getLastName())
+//                .username(user.getName())
+//                .projects(user.getProjects().stream().map(projectMapper::toUserProfileProjectDto).collect(Collectors.toList()))
+//                .createdAt(user.getCreatedAt())
+//                .build();
+//    }
 
     public UserResponseDto toUserResponseWithoutEmail(User user, List<Project> filteredProjects) {
         return UserResponseDto
