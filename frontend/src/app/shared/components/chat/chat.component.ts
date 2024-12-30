@@ -44,21 +44,14 @@ import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
   styleUrl: './chat.component.scss',
   animations: [
     trigger('buttonAnimation', [
-      state(
-        'void',
-        style({
-          opacity: 0,
-          transform: 'scale(0.8)',
-        })
-      ),
-      state(
-        '*',
-        style({
-          opacity: 1,
-          transform: 'scale(1)',
-        })
-      ),
+      state('void', style({ transform: 'scale(0.8)', opacity: 0 })),
+      state('*', style({ transform: 'scale(1)', opacity: 1 })),
       transition('void <=> *', animate('300ms ease-in-out')),
+    ]),
+    trigger('chatAnimation', [
+      state('void', style({ transform: 'scale(0)', opacity: 0 })),
+      state('*', style({ transform: 'scale(1)', opacity: 1 })),
+      transition('void <=> *', [animate('300ms ease-in-out')]),
     ]),
   ],
 })
@@ -76,7 +69,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     private chatService: ChatService,
     private route: ActivatedRoute,
     private toastrService: ToastrService,
-    private mapperService: MapperService
+    private mapperService: MapperService,
   ) {}
 
   protected get messages(): Message[] {

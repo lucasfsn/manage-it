@@ -20,21 +20,10 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
   imports: [MatIconModule, RouterLink, RouterLinkActive, TranslateModule],
   animations: [
     trigger('toggleMenu', [
-      state(
-        'collapsed',
-        style({
-          width: '0',
-          opacity: 0,
-          padding: 0,
-        })
-      ),
+      state('collapsed', style({ width: '0', opacity: 0, padding: 0 })),
       state(
         'expanded',
-        style({
-          width: '*',
-          opacity: 1,
-          padding: '0 0 0 0.75rem',
-        })
+        style({ width: '*', opacity: 1, padding: '0 0 0 0.75rem' }),
       ),
       transition('collapsed <=> expanded', [animate('300ms ease-in-out')]),
     ]),
@@ -47,7 +36,7 @@ export class SideBarComponent implements OnInit {
 
   public constructor(
     private dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   protected get user(): UserCredentials | null {

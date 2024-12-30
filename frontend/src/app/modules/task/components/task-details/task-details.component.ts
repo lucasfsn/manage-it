@@ -32,7 +32,7 @@ export class TaskDetailsComponent {
 
   public constructor(
     private taskService: TaskService,
-    private mapperService: MapperService
+    private mapperService: MapperService,
   ) {}
 
   protected toggleChat(): void {
