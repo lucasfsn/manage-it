@@ -30,7 +30,7 @@ export class ProjectMenuComponent {
     private loadingService: LoadingService,
     private mapperService: MapperService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   protected get project(): Project | null {
@@ -41,10 +41,6 @@ export class ProjectMenuComponent {
     return (
       this.project?.owner.username === this.authService.getLoggedInUsername()
     );
-  }
-
-  protected get isModalOpen(): boolean {
-    return this.confirmModalService.isModalOpen;
   }
 
   protected get ProjectStatus(): typeof ProjectStatus {
@@ -63,7 +59,7 @@ export class ProjectMenuComponent {
     if (!projectId) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      this.translationService.translate('project.details.DELETE_MESSAGE')
+      this.translationService.translate('project.details.DELETE_MESSAGE'),
     );
 
     const subscription = confirmation$.subscribe((confirmed) => {
@@ -73,7 +69,7 @@ export class ProjectMenuComponent {
       this.projectService.deleteProject(projectId).subscribe({
         next: () => {
           this.toastrService.success(
-            this.translationService.translate('toast.success.PROJECT_DELETED')
+            this.translationService.translate('toast.success.PROJECT_DELETED'),
           );
           this.router.navigate(['/projects']);
         },
@@ -97,7 +93,7 @@ export class ProjectMenuComponent {
     if (!project) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      this.translationService.translate('project.details.COMPLETE_MESSAGE')
+      this.translationService.translate('project.details.COMPLETE_MESSAGE'),
     );
 
     const subscription = confirmation$.subscribe((confirmed) => {
@@ -107,7 +103,9 @@ export class ProjectMenuComponent {
       this.projectService.completeProject(project).subscribe({
         next: () => {
           this.toastrService.success(
-            this.translationService.translate('toast.success.PROJECT_COMPLETED')
+            this.translationService.translate(
+              'toast.success.PROJECT_COMPLETED',
+            ),
           );
         },
         error: () => {

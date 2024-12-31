@@ -52,7 +52,6 @@ interface ProjectForm {
   styleUrl: './project-form.component.scss',
 })
 export class ProjectFormComponent implements OnInit {
-  private today = new Date().toISOString().split('T')[0];
   protected loading = false;
   protected isEditing = false;
 
@@ -62,11 +61,15 @@ export class ProjectFormComponent implements OnInit {
     private toastrService: ToastrService,
     private translationService: TranslationService,
     private mapperService: MapperService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   protected get project(): Project | null {
     return this.projectService.loadedProject();
+  }
+
+  protected get minDate(): string | null {
+    return this.isEditing ? null : this.today();
   }
 
   protected form: FormGroup<ProjectForm> = new FormGroup<ProjectForm>({
@@ -95,7 +98,7 @@ export class ProjectFormComponent implements OnInit {
       },
       {
         validators: [endDateValidator('startDate', 'endDate')],
-      }
+      },
     ),
   });
 
@@ -161,12 +164,8 @@ export class ProjectFormComponent implements OnInit {
     this.router.navigate(['/projects', this.project.id]);
   }
 
-  protected minDate(): string | null {
-    return this.isEditing ? null : this.today;
-  }
-
   protected onReset(): void {
-    if (this.project) {
+    if (this.project && this.isEditing) {
       this.fillFormWithDefaultValues();
 
       return;
@@ -174,8 +173,8 @@ export class ProjectFormComponent implements OnInit {
 
     this.form.reset({
       dates: {
-        startDate: this.minDate(),
-        endDate: this.minDate(),
+        startDate: this.today(),
+        endDate: this.today(),
       },
     });
   }
@@ -200,7 +199,7 @@ export class ProjectFormComponent implements OnInit {
       next: (projectId: string) => {
         this.router.navigate(['/projects', projectId]);
         this.toastrService.success(
-          this.translationService.translate('toast.success.PROJECT_CREATED')
+          this.translationService.translate('toast.success.PROJECT_CREATED'),
         );
       },
       error: () => {
@@ -223,7 +222,7 @@ export class ProjectFormComponent implements OnInit {
       next: () => {
         this.router.navigate(['/projects', projectId]);
         this.toastrService.success(
-          this.translationService.translate('toast.success.PROJECT_UPDATED')
+          this.translationService.translate('toast.success.PROJECT_UPDATED'),
         );
       },
       error: () => {
@@ -263,16 +262,20 @@ export class ProjectFormComponent implements OnInit {
     if (this.project) return;
 
     this.form.controls.dates.controls.startDate.addValidators(
-      startDateValidator
+      startDateValidator,
     );
     this.form.controls.dates.controls.startDate.updateValueAndValidity();
+  }
+
+  private today(): string {
+    return new Date().toISOString().split('T')[0];
   }
 
   public ngOnInit(): void {
     this.form.patchValue({
       dates: {
-        startDate: this.today,
-        endDate: this.today,
+        startDate: this.today(),
+        endDate: this.today(),
       },
     });
 

@@ -1,37 +1,39 @@
-<div
-  class="fixed right-0 top-0 z-50 flex h-full w-full items-center justify-center bg-slate-950/5 backdrop-blur-sm"
->
+@if (message) {
   <div
-    class="flex w-[80dvw] max-w-[500px] flex-col gap-6 rounded-lg bg-orange-200 p-6 text-slate-100 shadow-lg dark:bg-slate-950"
-    #modal
+    class="fixed right-0 top-0 z-50 flex h-full w-full items-center justify-center bg-slate-950/5 backdrop-blur-sm"
   >
-    <div class="flex flex-col gap-2">
-      <p class="text-sm text-gray-700 dark:text-gray-300 sm:text-base">
-        {{ message }}
-      </p>
-      <div
-        class="flex flex-col border-l-4 border-l-orange-500 bg-orange-100 px-2 py-1 text-sm text-red-500"
-      >
-        <div class="flex items-center gap-1 font-bold">
-          <mat-icon>warning</mat-icon>
-          <span>{{ "confirmModal.WARNING_LABEL" | translate }}</span>
+    <div
+      class="flex w-[80dvw] max-w-[500px] flex-col gap-6 rounded-lg bg-orange-200 p-6 text-slate-100 shadow-lg dark:bg-slate-950"
+      #modal
+    >
+      <div class="flex flex-col gap-2">
+        <p class="text-sm text-gray-700 dark:text-gray-300 sm:text-base">
+          {{ message }}
+        </p>
+        <div
+          class="flex flex-col border-l-4 border-l-orange-500 bg-orange-100 px-2 py-1 text-sm text-red-500"
+        >
+          <div class="flex items-center gap-1 font-bold">
+            <mat-icon>warning</mat-icon>
+            <span>{{ "confirmModal.WARNING_LABEL" | translate }}</span>
+          </div>
+          <p>{{ "confirmModal.WARNING_MESSAGE" | translate }}</p>
         </div>
-        <p>{{ "confirmModal.WARNING_MESSAGE" | translate }}</p>
+      </div>
+      <div class="flex justify-between gap-2 text-sm sm:text-base">
+        <button
+          (click)="onCancel()"
+          class="flex items-center justify-center rounded-lg bg-orange-100 px-2 py-0.5 text-slate-950 transition-colors hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-sky-600 dark:bg-slate-900 dark:text-slate-300 sm:px-4 sm:py-1"
+        >
+          {{ "confirmModal.CANCEL_BUTTON" | translate }}
+        </button>
+        <button
+          (click)="onConfirm()"
+          class="flex items-center justify-center rounded-lg bg-sky-500 px-2 py-0.5 text-slate-950 transition-colors hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-sky-700 sm:px-4 sm:py-1"
+        >
+          {{ "confirmModal.CONFIRM_BUTTON" | translate }}
+        </button>
       </div>
     </div>
-    <div class="flex justify-between gap-2 text-sm sm:text-base">
-      <button
-        (click)="onCancel()"
-        class="flex items-center justify-center rounded-lg bg-orange-100 px-2 py-0.5 text-slate-950 transition-colors hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-sky-600 dark:bg-slate-900 dark:text-slate-300 sm:px-4 sm:py-1"
-      >
-        {{ "confirmModal.CANCEL_BUTTON" | translate }}
-      </button>
-      <button
-        (click)="onConfirm()"
-        class="flex items-center justify-center rounded-lg bg-sky-500 px-2 py-0.5 text-slate-950 transition-colors hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-sky-700 sm:px-4 sm:py-1"
-      >
-        {{ "confirmModal.CONFIRM_BUTTON" | translate }}
-      </button>
-    </div>
   </div>
-</div>
+}

@@ -63,7 +63,7 @@
         type="date"
         id="startDate"
         formControlName="startDate"
-        [min]="minDate()"
+        [min]="minDate"
       />
       @if (startDateIsInvalid) {
         <p class="col-span-3 text-sm text-red-500">
@@ -83,7 +83,7 @@
         type="date"
         id="endDate"
         formControlName="endDate"
-        [min]="minDate()"
+        [min]="minDate"
       />
       @if (endDateIsInvalid) {
         <p class="col-span-3 text-sm text-red-500">

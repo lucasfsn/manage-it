@@ -31,15 +31,11 @@ export class TaskMenuComponent {
     private translationService: TranslationService,
     private mapperService: MapperService,
     private loadingService: LoadingService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   protected get task(): Task | null {
     return this.taskService.loadedTask();
-  }
-
-  protected get isModalOpen(): boolean {
-    return this.confirmModalService.isModalOpen;
   }
 
   protected handleGoBack(): void {
@@ -52,7 +48,7 @@ export class TaskMenuComponent {
     if (!this.task) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      'Are you sure you want to delete this task?'
+      'Are you sure you want to delete this task?',
     );
 
     const subscription = confirmation$.subscribe((confirmed) => {
@@ -65,7 +61,7 @@ export class TaskMenuComponent {
         next: () => {
           this.router.navigate(['/projects', this.task?.projectId]);
           this.toastrService.success(
-            this.translationService.translate('toast.success.TASK_DELETED')
+            this.translationService.translate('toast.success.TASK_DELETED'),
           );
         },
         error: () => {

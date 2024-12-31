@@ -15,8 +15,8 @@ export class ConfirmModalComponent {
 
   public constructor(private confirmModalService: ConfirmModalService) {}
 
-  protected get message(): string {
-    return this.confirmModalService.getMessage();
+  protected get message(): string | null {
+    return this.confirmModalService.loadedMessage();
   }
 
   protected onConfirm(): void {

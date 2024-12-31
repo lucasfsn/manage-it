@@ -16,11 +16,19 @@ export class TranslationService {
   public constructor(private translateService: TranslateService) {
     const storedLanguage = localStorage.getItem(this.LANGUAGE);
 
-    const language = LANGUAGES.find(
-      (lang) => lang.code === (storedLanguage as LanguageCode)
-    );
+    if (storedLanguage) {
+      const language = LANGUAGES.find(
+        (lang) => lang.code === (storedLanguage as LanguageCode),
+      );
 
-    if (language) this.language.set(language.code);
+      if (language) this.language.set(language.code);
+    } else {
+      const userDefaultLanguage =
+        navigator.language.split('-')[0] === 'pl'
+          ? LanguageCode.PL
+          : LanguageCode.EN;
+      this.language.set(userDefaultLanguage);
+    }
 
     this.translateService.setDefaultLang(this.language());
     this.translateService.use(this.language());
