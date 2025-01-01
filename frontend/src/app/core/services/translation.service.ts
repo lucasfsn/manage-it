@@ -16,19 +16,11 @@ export class TranslationService {
   public constructor(private translateService: TranslateService) {
     const storedLanguage = localStorage.getItem(this.LANGUAGE);
 
-    if (storedLanguage) {
-      const language = LANGUAGES.find(
-        (lang) => lang.code === (storedLanguage as LanguageCode),
-      );
+    const defaultLanguage = storedLanguage
+      ? this.storedUserLanguage(storedLanguage)
+      : this.userPreferredLanguage();
 
-      if (language) this.language.set(language.code);
-    } else {
-      const userDefaultLanguage =
-        navigator.language.split('-')[0] === 'pl'
-          ? LanguageCode.PL
-          : LanguageCode.EN;
-      this.language.set(userDefaultLanguage);
-    }
+    this.language.set(defaultLanguage);
 
     this.translateService.setDefaultLang(this.language());
     this.translateService.use(this.language());
@@ -46,5 +38,22 @@ export class TranslationService {
 
   public get(key: string): Observable<string> {
     return this.translateService.get(key);
+  }
+
+  private storedUserLanguage(storedLanguage: string): LanguageCode {
+    return (
+      LANGUAGES.find((lang) => lang.code === (storedLanguage as LanguageCode))
+        ?.code || LanguageCode.EN
+    );
+  }
+
+  private userPreferredLanguage(): LanguageCode {
+    return (
+      LANGUAGES.find(
+        (lang) =>
+          lang.localeCode === navigator.language ||
+          lang.code === navigator.language,
+      )?.code || LanguageCode.EN
+    );
   }
 }

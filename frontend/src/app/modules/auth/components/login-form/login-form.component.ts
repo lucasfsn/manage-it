@@ -40,7 +40,7 @@ export class LoginFormComponent implements OnInit {
     private authService: AuthService,
     private toastrService: ToastrService,
     private translationService: TranslationService,
-    private mapperService: MapperService
+    private mapperService: MapperService,
   ) {}
 
   protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>({
@@ -98,13 +98,13 @@ export class LoginFormComponent implements OnInit {
     this.authService.login({ email, password }).subscribe({
       next: () => {
         this.toastrService.success(
-          this.translationService.translate('toast.success.LOGIN')
+          this.translationService.translate('toast.success.LOGIN'),
         );
       },
       error: (error) => {
         const localeMessage = this.mapperService.errorToastMapper(
           error.status,
-          error.error.errorDescription
+          error.error.errorDescription,
         );
         this.toastrService.error(localeMessage);
         this.loading = false;
@@ -116,7 +116,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const savedLoginForm = window.localStorage.getItem('saved-login-form');
+    const savedLoginForm = localStorage.getItem('saved-login-form');
 
     if (savedLoginForm) {
       const loadedData = JSON.parse(savedLoginForm) as { email: string | null };
@@ -127,9 +127,9 @@ export class LoginFormComponent implements OnInit {
       .pipe(debounceTime(500))
       .subscribe({
         next: (value) => {
-          window.localStorage.setItem(
+          localStorage.setItem(
             'saved-login-form',
-            JSON.stringify({ email: value.email })
+            JSON.stringify({ email: value.email }),
           );
         },
       });
