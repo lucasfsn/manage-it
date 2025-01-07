@@ -1,6 +1,5 @@
-import { Location } from '@angular/common';
 import { inject } from '@angular/core';
-import { ResolveFn } from '@angular/router';
+import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
 import { LoadingService } from '../../../core/services/loading.service';
@@ -15,7 +14,7 @@ export const notificationsResolver: ResolveFn<
   const notificationService = inject(NotificationService);
   const mapperService = inject(MapperService);
   const toastrService = inject(ToastrService);
-  const location = inject(Location);
+  const router = inject(Router);
 
   loadingService.loadingOn();
 
@@ -23,10 +22,10 @@ export const notificationsResolver: ResolveFn<
     catchError(() => {
       const localeMessage = mapperService.errorToastMapper();
       toastrService.error(localeMessage);
-      location.back();
+      router.navigate(['/']);
 
       return of(undefined);
     }),
-    finalize(() => loadingService.loadingOff())
+    finalize(() => loadingService.loadingOff()),
   );
 };

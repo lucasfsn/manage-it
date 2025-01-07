@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -27,7 +26,7 @@ export const userResolver: ResolveFn<User | null> = (route) => {
   const userService = inject(UserService);
   const mapperService = inject(MapperService);
   const toastrService = inject(ToastrService);
-  const location = inject(Location);
+  const router = inject(Router);
 
   const username = route.paramMap.get('username');
   if (username) {
@@ -37,11 +36,11 @@ export const userResolver: ResolveFn<User | null> = (route) => {
       catchError((error) => {
         const localeMessage = mapperService.errorToastMapper(error.status);
         toastrService.error(localeMessage);
-        location.back();
+        router.navigate(['/']);
 
         return of(null);
       }),
-      finalize(() => loadingService.loadingOff())
+      finalize(() => loadingService.loadingOff()),
     );
   }
 

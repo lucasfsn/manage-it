@@ -1,6 +1,5 @@
-import { Location } from '@angular/common';
 import { inject } from '@angular/core';
-import { ResolveFn } from '@angular/router';
+import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
 import { LoadingService } from '../../../core/services/loading.service';
@@ -13,7 +12,7 @@ export const projectResolver: ResolveFn<Project | null> = (route) => {
   const projectService = inject(ProjectService);
   const mapperService = inject(MapperService);
   const toastrService = inject(ToastrService);
-  const location = inject(Location);
+  const router = inject(Router);
 
   const projectId = route.paramMap.get('projectId');
   if (projectId) {
@@ -23,11 +22,11 @@ export const projectResolver: ResolveFn<Project | null> = (route) => {
       catchError((error) => {
         const localeMessage = mapperService.errorToastMapper(error.status);
         toastrService.error(localeMessage);
-        location.back();
+        router.navigate(['/projects']);
 
         return of(null);
       }),
-      finalize(() => loadingService.loadingOff())
+      finalize(() => loadingService.loadingOff()),
     );
   }
 

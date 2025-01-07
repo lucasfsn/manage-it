@@ -24,11 +24,13 @@ export class TranslationService {
 
     this.translateService.setDefaultLang(this.language());
     this.translateService.use(this.language());
+    this.changeHtmlLang(this.language());
   }
 
   public changeLanguage(newLangCode: LanguageCode): void {
     this.translateService.use(newLangCode);
     this.language.set(newLangCode);
+    this.changeHtmlLang(newLangCode);
     localStorage.setItem(this.LANGUAGE, newLangCode);
   }
 
@@ -55,5 +57,9 @@ export class TranslationService {
           lang.code === navigator.language,
       )?.code || LanguageCode.EN
     );
+  }
+
+  private changeHtmlLang(lang: LanguageCode): void {
+    document.documentElement.lang = lang;
   }
 }

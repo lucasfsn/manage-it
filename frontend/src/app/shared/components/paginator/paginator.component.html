@@ -23,13 +23,13 @@
     >
       <mat-icon>chevron_left</mat-icon>
     </button>
-    <span
-      >{{ currentPage + 1 }} {{ "paginator.PAGE_INFO" | translate }}
-      {{ totalPages }}</span
+    <span>
+      {{ totalPages === 0 ? currentPage : currentPage + 1 }}
+      {{ "paginator.PAGE_INFO" | translate }} {{ totalPages }}</span
     >
     <button
       (click)="handleNext()"
-      [disabled]="currentPage === totalPages - 1"
+      [disabled]="currentPage === totalPages - 1 || totalPages === 0"
       class="flex items-center justify-center text-sky-700 disabled:text-gray-500 dark:text-sky-500"
     >
       <mat-icon>chevron_right</mat-icon>
