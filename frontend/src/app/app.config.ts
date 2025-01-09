@@ -18,12 +18,10 @@ import {
   withComponentInputBinding,
   withRouterConfig,
 } from '@angular/router';
-import { JwtModule } from '@auth0/angular-jwt';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideToastr } from 'ngx-toastr';
-import { environment } from '../environments/environment';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
@@ -36,20 +34,13 @@ export const appConfig: ApplicationConfig = {
     Title,
     importProvidersFrom(
       BrowserAnimationsModule,
-      JwtModule.forRoot({
-        config: {
-          tokenGetter: () =>
-            localStorage.getItem(environment.storageKeys.TOKEN),
-          allowedDomains: ['localhost'],
-        },
-      }),
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,
           deps: [HttpClient],
         },
-      })
+      }),
     ),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
@@ -57,7 +48,7 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
       withRouterConfig({
         paramsInheritanceStrategy: 'always',
-      })
+      }),
     ),
     provideAnimations(),
     provideToastr({

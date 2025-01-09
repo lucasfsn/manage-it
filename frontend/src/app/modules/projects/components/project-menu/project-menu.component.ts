@@ -10,12 +10,11 @@ import { Project, ProjectStatus } from '../../../../features/dto/project.model';
 import { AuthService } from '../../../../features/services/auth.service';
 import { ProjectService } from '../../../../features/services/project.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-project-menu',
   standalone: true,
-  imports: [ButtonComponent, MatIconModule, ConfirmModalComponent],
+  imports: [ButtonComponent, MatIconModule],
   templateUrl: './project-menu.component.html',
   styleUrl: './project-menu.component.scss',
 })

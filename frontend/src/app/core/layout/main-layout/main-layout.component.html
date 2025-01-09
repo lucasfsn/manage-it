@@ -4,5 +4,8 @@
 } @else {
   <div class="flex-1 px-2">
     <router-outlet />
+    @if (message) {
+      <app-confirm-modal />
+    }
   </div>
 }

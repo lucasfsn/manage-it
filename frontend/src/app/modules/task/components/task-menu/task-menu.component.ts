@@ -10,13 +10,12 @@ import { TranslationService } from '../../../../core/services/translation.servic
 import { Task } from '../../../../features/dto/task.model';
 import { TaskService } from '../../../../features/services/task.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { TaskEditFormComponent } from '../task-edit-form/task-edit-form.component';
 
 @Component({
   selector: 'app-task-menu',
   standalone: true,
-  imports: [ButtonComponent, MatIconModule, ConfirmModalComponent],
+  imports: [ButtonComponent, MatIconModule],
   templateUrl: './task-menu.component.html',
   styleUrl: './task-menu.component.scss',
 })

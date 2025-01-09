@@ -20,7 +20,7 @@ export class UserService {
 
   public constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   public getUserByUsername(username: string): Observable<User> {
@@ -30,11 +30,13 @@ export class UserService {
       }),
       catchError((err: HttpErrorResponse) => {
         return throwError(() => err);
-      })
+      }),
     );
   }
 
   public updateUser(updatedData: UpdateUser): Observable<User> {
+    console.log(updatedData);
+
     return this.http
       .patch<User>(`${environment.apiUrl}/users`, updatedData)
       .pipe(
@@ -50,14 +52,14 @@ export class UserService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
   public searchUsers(
     pattern: string,
     projectId?: string,
-    taskId?: string
+    taskId?: string,
   ): Observable<User[]> {
     let params = new HttpParams().set('pattern', pattern);
 
@@ -70,7 +72,7 @@ export class UserService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 }

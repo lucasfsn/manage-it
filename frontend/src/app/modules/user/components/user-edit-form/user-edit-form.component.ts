@@ -30,7 +30,7 @@ interface UserEditForm {
   readonly firstName: FormControl<string | null>;
   readonly lastName: FormControl<string | null>;
   readonly email: FormControl<string | null>;
-  readonly passwords: FormGroup<PasswordsForm>;
+  readonly passwords?: FormGroup<PasswordsForm>;
 }
 
 @Component({
@@ -49,7 +49,7 @@ export class UserEditFormComponent implements OnInit {
     private toastrService: ToastrService,
     private translationService: TranslationService,
     private mapperService: MapperService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
   ) {}
 
   protected get userData(): User | null {
@@ -76,19 +76,6 @@ export class UserEditFormComponent implements OnInit {
     email: new FormControl('', {
       validators: [Validators.required, Validators.email],
     }),
-    passwords: new FormGroup<PasswordsForm>(
-      {
-        password: new FormControl('', {
-          validators: [passwordValidator],
-        }),
-        confirmPassword: new FormControl('', {
-          validators: [passwordValidator],
-        }),
-      },
-      {
-        validators: [equalValues('password', 'confirmPassword')],
-      }
-    ),
   });
 
   protected get disabled(): boolean {
@@ -120,16 +107,13 @@ export class UserEditFormComponent implements OnInit {
   }
 
   protected get passwordIsInvalid(): boolean {
-    return !!(
-      this.form.controls.passwords.get('password')?.value &&
-      this.form.controls.passwords.get('password')?.dirty &&
-      this.form.controls.passwords.get('password')?.touched &&
-      this.form.controls.passwords.get('password')?.invalid
-    );
+    const control = this.form.controls.passwords?.get('password');
+
+    return (control?.dirty && control.touched && control.invalid) || false;
   }
 
   protected get passwordsDoNotMatch(): boolean {
-    return this.form.controls.passwords.hasError('equalValues');
+    return !!this.form.controls.passwords?.hasError('equalValues');
   }
 
   protected get firstNameErrors(): string | null {
@@ -137,30 +121,30 @@ export class UserEditFormComponent implements OnInit {
     if (control.errors) {
       if (control.errors['required']) {
         return this.translationService.translate(
-          'user.editForm.FIRST_NAME_REQUIRED'
+          'user.editForm.FIRST_NAME_REQUIRED',
         );
       }
       if (control.errors['minlength']) {
         return `${this.translationService.translate(
-          'user.editForm.FIRST_NAME_MIN_LENGTH_BEFORE'
+          'user.editForm.FIRST_NAME_MIN_LENGTH_BEFORE',
         )} ${
           control.errors['minlength'].requiredLength
         } ${this.translationService.translate(
-          'user.editForm.FIRST_NAME_MIN_LENGTH_AFTER'
+          'user.editForm.FIRST_NAME_MIN_LENGTH_AFTER',
         )}`;
       }
       if (control.errors['maxlength']) {
         return `${this.translationService.translate(
-          'user.editForm.FIRST_NAME_MAX_LENGTH_BEFORE'
+          'user.editForm.FIRST_NAME_MAX_LENGTH_BEFORE',
         )} ${
           control.errors['maxlength'].requiredLength
         } ${this.translationService.translate(
-          'user.editForm.FIRST_NAME_MAX_LENGTH_AFTER'
+          'user.editForm.FIRST_NAME_MAX_LENGTH_AFTER',
         )}`;
       }
       if (control.errors['invalidName']) {
         return this.translationService.translate(
-          'user.editForm.FIRST_NAME_INVALID'
+          'user.editForm.FIRST_NAME_INVALID',
         );
       }
     }
@@ -173,30 +157,30 @@ export class UserEditFormComponent implements OnInit {
     if (control.errors) {
       if (control.errors['required']) {
         return this.translationService.translate(
-          'user.editForm.LAST_NAME_REQUIRED'
+          'user.editForm.LAST_NAME_REQUIRED',
         );
       }
       if (control.errors['minlength']) {
         return `${this.translationService.translate(
-          'user.editForm.LAST_NAME_MIN_LENGTH_BEFORE'
+          'user.editForm.LAST_NAME_MIN_LENGTH_BEFORE',
         )} ${
           control.errors['minlength'].requiredLength
         } ${this.translationService.translate(
-          'user.editForm.LAST_NAME_MIN_LENGTH_AFTER'
+          'user.editForm.LAST_NAME_MIN_LENGTH_AFTER',
         )}`;
       }
       if (control.errors['maxlength']) {
         return `${this.translationService.translate(
-          'user.editForm.LAST_NAME_MAX_LENGTH_BEFORE'
+          'user.editForm.LAST_NAME_MAX_LENGTH_BEFORE',
         )} ${
           control.errors['maxlength'].requiredLength
         } ${this.translationService.translate(
-          'user.editForm.LAST_NAME_MAX_LENGTH_AFTER'
+          'user.editForm.LAST_NAME_MAX_LENGTH_AFTER',
         )}`;
       }
       if (control.errors['invalidName']) {
         return this.translationService.translate(
-          'user.editForm.LAST_NAME_INVALID'
+          'user.editForm.LAST_NAME_INVALID',
         );
       }
     }
@@ -209,7 +193,7 @@ export class UserEditFormComponent implements OnInit {
     if (control.errors) {
       if (control.errors['required']) {
         return this.translationService.translate(
-          'user.editForm.EMAIL_REQUIRED'
+          'user.editForm.EMAIL_REQUIRED',
         );
       }
       if (control.errors['email']) {
@@ -221,11 +205,11 @@ export class UserEditFormComponent implements OnInit {
   }
 
   protected get passwordErrors(): string | null {
-    const control = this.form.controls.passwords.get('password');
+    const control = this.form.controls.passwords?.get('password');
     if (control?.errors) {
       if (control.errors['invalidPassword']) {
         return this.translationService.translate(
-          'user.editForm.PASSWORD_INVALID'
+          'user.editForm.PASSWORD_INVALID',
         );
       }
     }
@@ -236,16 +220,28 @@ export class UserEditFormComponent implements OnInit {
   protected togglePasswordFields(event: Event): void {
     this.showPasswordFields = (event.target as HTMLInputElement).checked;
 
-    const passwordControl = this.form.controls.passwords.get('password');
+    if (!this.showPasswordFields) {
+      this.form.removeControl('passwords');
 
-    if (this.showPasswordFields) {
-      passwordControl?.addValidators(Validators.required);
-    } else {
-      passwordControl?.removeValidators(Validators.required);
-      this.form.controls.passwords.reset();
+      return;
     }
 
-    passwordControl?.updateValueAndValidity();
+    this.form.addControl(
+      'passwords',
+      new FormGroup<PasswordsForm>(
+        {
+          password: new FormControl('', {
+            validators: [Validators.required, passwordValidator],
+          }),
+          confirmPassword: new FormControl('', {
+            validators: [Validators.required, passwordValidator],
+          }),
+        },
+        {
+          validators: [equalValues('password', 'confirmPassword')],
+        },
+      ),
+    );
   }
 
   protected closeDialog(): void {
@@ -253,6 +249,10 @@ export class UserEditFormComponent implements OnInit {
   }
 
   protected onReset(): void {
+    if (this.form.controls.passwords) {
+      this.form.controls.passwords.reset();
+    }
+
     this.fillFormWithDefaultValues();
   }
 
@@ -302,10 +302,6 @@ export class UserEditFormComponent implements OnInit {
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
       email: this.userData.email,
-      passwords: {
-        password: '',
-        confirmPassword: '',
-      },
     });
   }
 
