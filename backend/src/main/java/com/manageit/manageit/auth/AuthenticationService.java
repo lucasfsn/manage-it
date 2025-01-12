@@ -1,10 +1,10 @@
 package com.manageit.manageit.auth;
 
-import com.manageit.manageit.security.JwtService;
-import com.manageit.manageit.model.user.User;
-import com.manageit.manageit.mapper.user.UserMapper;
-import com.manageit.manageit.repository.UserRepository;
-import com.manageit.manageit.dto.user.AuthenticatedUserResponseDto;
+import com.manageit.manageit.configuration.security.JwtService;
+import com.manageit.manageit.feature.user.model.User;
+import com.manageit.manageit.feature.user.mapper.UserMapper;
+import com.manageit.manageit.feature.user.repository.UserRepository;
+import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,7 +30,6 @@ public class AuthenticationService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-//                .role(Role.USER)
                 .build();
         repository.save(user);
         AuthenticatedUserResponseDto authenticatedUserResponseDto = userMapper.toAuthenticatedUserResponse(user);

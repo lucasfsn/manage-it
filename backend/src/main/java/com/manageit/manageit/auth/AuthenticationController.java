@@ -1,7 +1,7 @@
 package com.manageit.manageit.auth;
 
-import com.manageit.manageit.dto.user.AuthenticatedUserResponseDto;
-import com.manageit.manageit.service.UserService;
+import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
+import com.manageit.manageit.feature.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

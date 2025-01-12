@@ -1,10 +1,7 @@
 package com.manageit.manageit.auth;
 
-import com.manageit.manageit.dto.user.AuthenticatedUserResponseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
+import lombok.*;
 
 @Data
 @Builder
