@@ -35,8 +35,6 @@ export class UserService {
   }
 
   public updateUser(updatedData: UpdateUser): Observable<User> {
-    console.log(updatedData);
-
     return this.http
       .patch<User>(`${environment.apiUrl}/users`, updatedData)
       .pipe(
