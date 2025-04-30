@@ -9,11 +9,11 @@ import {
   Language,
   LanguageCode,
   LANGUAGES,
-} from '../../../config/language.config';
-import { AuthService } from '../../../features/services/auth.service';
-import { ThemeToggleComponent } from '../../../shared/components/theme-toggle/theme-toggle.component';
-import { Theme, ThemeService } from '../../services/theme.service';
-import { TranslationService } from '../../services/translation.service';
+} from '@/app/config/language.config';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ThemeToggleComponent } from '@/app/shared/components/theme-toggle/theme-toggle.component';
+import { Theme, ThemeService } from '@/app/core/services/theme.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 
 @Component({
   selector: 'app-header',

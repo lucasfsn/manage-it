@@ -2,6 +2,7 @@
 const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
+const noRelativeImportPaths = require("eslint-plugin-no-relative-import-paths");
 
 module.exports = tseslint.config(
   {
@@ -11,6 +12,7 @@ module.exports = tseslint.config(
         projectService: true,
       },
     },
+
     extends: [
       eslint.configs.recommended,
       ...tseslint.configs.recommended,
@@ -18,7 +20,14 @@ module.exports = tseslint.config(
       ...angular.configs.tsRecommended,
     ],
     processor: angular.processInlineTemplates,
+    plugins: {
+      "no-relative-import-paths": noRelativeImportPaths,
+    },
     rules: {
+      "no-relative-import-paths/no-relative-import-paths": [
+        "warn",
+        { allowSameFolder: false, rootDir: "src", prefix: "@" },
+      ],
       "arrow-parens": ["error", "always"],
       complexity: ["error", 8],
       indent: ["error", 2],
@@ -186,5 +195,5 @@ module.exports = tseslint.config(
       ...angular.configs.templateAccessibility,
     ],
     rules: {},
-  }
+  },
 );

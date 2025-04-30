@@ -4,8 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   ProjectStatus,
   UserProject,
-} from '../../../../features/dto/project.model';
-import { UserService } from '../../../../features/services/user.service';
+} from '@/app/features/dto/project.model';
+import { UserService } from '@/app/features/services/user.service';
 
 @Component({
   selector: 'app-user-projects-list',

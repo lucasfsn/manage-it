@@ -1,8 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { LanguageCode, LANGUAGES } from '../../config/language.config';
+import { environment } from '@/environments/environment';
+import { LanguageCode, LANGUAGES } from '@/app/config/language.config';
 
 @Injectable({
   providedIn: 'root',

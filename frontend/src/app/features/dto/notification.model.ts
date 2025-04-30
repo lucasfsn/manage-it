@@ -1,4 +1,4 @@
-import { User } from '../../features/dto/project.model';
+import { User } from '@/app/features/dto/project.model';
 
 export interface Notification {
   readonly id: string;

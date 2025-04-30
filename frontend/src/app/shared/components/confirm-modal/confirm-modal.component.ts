@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { ConfirmModalService } from '../../../core/services/confirm-modal.service';
+import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 
 @Component({
   selector: 'app-confirm-modal',

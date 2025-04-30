@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { MapperService } from '../../../core/services/mapper.service';
-import { Priority } from '../../../features/dto/task.model';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { Priority } from '@/app/features/dto/task.model';
 
 @Component({
   selector: 'app-priority',

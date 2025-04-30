@@ -3,16 +3,16 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { User } from '../../../../features/dto/project.model';
-import { TaskService } from '../../../../features/services/task.service';
+import { LoadingService } from '@/app/core/services/loading.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { User } from '@/app/features/dto/project.model';
+import { TaskService } from '@/app/features/services/task.service';
 import {
   PageEvent,
   PaginatorComponent,
-} from '../../../../shared/components/paginator/paginator.component';
-import { UsersListComponent } from '../../../../shared/components/users-list/users-list.component';
+} from '@/app/shared/components/paginator/paginator.component';
+import { UsersListComponent } from '@/app/shared/components/users-list/users-list.component';
 
 @Component({
   selector: 'app-task-assignees-list',

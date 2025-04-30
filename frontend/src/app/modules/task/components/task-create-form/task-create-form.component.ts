@@ -14,18 +14,18 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import {
   Priority,
   Task,
   TaskData,
   TaskStatus,
-} from '../../../../features/dto/task.model';
-import { ProjectService } from '../../../../features/services/project.service';
-import { TaskService } from '../../../../features/services/task.service';
-import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
-import { dueDateValidator } from '../../../../shared/validators';
+} from '@/app/features/dto/task.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { TaskService } from '@/app/features/services/task.service';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { dueDateValidator } from '@/app/shared/validators';
 
 interface TaskCreateForm {
   readonly description: FormControl<string | null>;

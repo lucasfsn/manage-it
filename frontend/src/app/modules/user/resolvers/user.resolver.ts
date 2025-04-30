@@ -2,11 +2,11 @@ import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
-import { LoadingService } from '../../../core/services/loading.service';
-import { MapperService } from '../../../core/services/mapper.service';
-import { User } from '../../../features/dto/user.model';
-import { AuthService } from '../../../features/services/auth.service';
-import { UserService } from '../../../features/services/user.service';
+import { LoadingService } from '@/app/core/services/loading.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { User } from '@/app/features/dto/user.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { UserService } from '@/app/features/services/user.service';
 
 export const userRedirectResolver: ResolveFn<void> = () => {
   const authService = inject(AuthService);

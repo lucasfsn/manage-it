@@ -5,8 +5,8 @@ import {
   PipeTransform,
 } from '@angular/core';
 import { formatDistanceToNow, Locale } from 'date-fns';
-import { DATE_FNS_LOCALES, LanguageCode } from '../../config/language.config';
-import { TranslationService } from '../../core/services/translation.service';
+import { DATE_FNS_LOCALES, LanguageCode } from '@/app/config/language.config';
+import { TranslationService } from '@/app/core/services/translation.service';
 
 @Pipe({
   name: 'timeAgo',

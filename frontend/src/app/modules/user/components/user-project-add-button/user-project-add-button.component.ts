@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { User } from '../../../../features/dto/user.model';
-import { ProjectService } from '../../../../features/services/project.service';
-import { UserService } from '../../../../features/services/user.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { User } from '@/app/features/dto/user.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { UserService } from '@/app/features/services/user.service';
 
 @Component({
   selector: 'app-user-project-add-button',

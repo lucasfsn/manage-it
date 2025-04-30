@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { ProjectService } from '../../../../features/services/project.service';
-import { DatePipe } from '../../../../shared/pipes/date.pipe';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
 
 @Component({
   selector: 'app-upcoming-deadlines',

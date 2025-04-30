@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { Task, TaskStatus } from '../../../../features/dto/task.model';
-import { TaskService } from '../../../../features/services/task.service';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ChatComponent } from '../../../../shared/components/chat/chat.component';
-import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
-import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
-import { DatePipe } from '../../../../shared/pipes/date.pipe';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { Task, TaskStatus } from '@/app/features/dto/task.model';
+import { TaskService } from '@/app/features/services/task.service';
+import { ButtonComponent } from '@/app/shared/components/button/button.component';
+import { ChatComponent } from '@/app/shared/components/chat/chat.component';
+import { PriorityComponent } from '@/app/shared/components/priority/priority.component';
+import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
 
 @Component({
   selector: 'app-task-details',

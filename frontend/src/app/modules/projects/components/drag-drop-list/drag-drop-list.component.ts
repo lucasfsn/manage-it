@@ -11,15 +11,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { Task, TaskStatus } from '../../../../features/dto/task.model';
-import { ProjectService } from '../../../../features/services/project.service';
-import { TaskService } from '../../../../features/services/task.service';
-import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
-import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
-import { DatePipe } from '../../../../shared/pipes/date.pipe';
-import { TaskCreateFormComponent } from '../../../task/components/task-create-form/task-create-form.component';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { Task, TaskStatus } from '@/app/features/dto/task.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { TaskService } from '@/app/features/services/task.service';
+import { PriorityComponent } from '@/app/shared/components/priority/priority.component';
+import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { TaskCreateFormComponent } from '@/app/modules/task/components/task-create-form/task-create-form.component';
 
 @Component({
   selector: 'app-drag-drop-list',

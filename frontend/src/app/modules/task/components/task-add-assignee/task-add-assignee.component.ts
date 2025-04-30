@@ -4,13 +4,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { User } from '../../../../features/dto/project.model';
-import { TaskService } from '../../../../features/services/task.service';
-import { UserService } from '../../../../features/services/user.service';
-import { UsersListComponent } from '../../../../shared/components/users-list/users-list.component';
+import { LoadingService } from '@/app/core/services/loading.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { User } from '@/app/features/dto/project.model';
+import { TaskService } from '@/app/features/services/task.service';
+import { UserService } from '@/app/features/services/user.service';
+import { UsersListComponent } from '@/app/shared/components/users-list/users-list.component';
 
 @Component({
   selector: 'app-task-add-assignee',

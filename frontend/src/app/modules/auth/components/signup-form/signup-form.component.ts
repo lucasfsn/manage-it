@@ -10,17 +10,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { RegisterCredentials } from '../../../../features/dto/auth.model';
-import { AuthService } from '../../../../features/services/auth.service';
-import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { RegisterCredentials } from '@/app/features/dto/auth.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
 import {
   equalValues,
   nameValidator,
   passwordValidator,
   usernameValidator,
-} from '../../../../shared/validators';
+} from '@/app/shared/validators';
 
 interface PasswordsForm {
   readonly password: FormControl<string | null>;

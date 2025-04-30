@@ -11,10 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { User } from '../../../features/dto/project.model';
-import { AuthService } from '../../../features/services/auth.service';
-import { ProjectService } from '../../../features/services/project.service';
-import { UserService } from '../../../features/services/user.service';
+import { User } from '@/app/features/dto/project.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ProjectService } from '@/app/features/services/project.service';
+import { UserService } from '@/app/features/services/user.service';
 
 @Component({
   selector: 'app-search',

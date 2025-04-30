@@ -1,6 +1,6 @@
+import { NotificationsComponent } from '@/app/modules/notifications/pages/notifications/notifications.component';
+import { notificationsResolver } from '@/app/modules/notifications/resolvers/notifications.resolver';
 import { Routes } from '@angular/router';
-import { NotificationsComponent } from './pages/notifications/notifications.component';
-import { notificationsResolver } from './resolvers/notifications.resolver';
 
 export const NOTIFICATIONS_ROUTES: Routes = [
   {

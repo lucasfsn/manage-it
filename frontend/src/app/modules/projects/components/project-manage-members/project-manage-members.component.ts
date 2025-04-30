@@ -4,11 +4,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { Project, User } from '../../../../features/dto/project.model';
-import { ProjectService } from '../../../../features/services/project.service';
-import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { Project, User } from '@/app/features/dto/project.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
 
 @Component({
   selector: 'app-project-manage-members',

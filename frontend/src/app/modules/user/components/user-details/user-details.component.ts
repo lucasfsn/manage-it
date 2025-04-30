@@ -4,14 +4,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ProjectStatus } from '../../../../features/dto/project.model';
-import { User } from '../../../../features/dto/user.model';
-import { AuthService } from '../../../../features/services/auth.service';
-import { UserService } from '../../../../features/services/user.service';
-import { UserEditFormComponent } from '../user-edit-form/user-edit-form.component';
-import { UserHeaderComponent } from '../user-header/user-header.component';
-import { UserProjectAddButtonComponent } from '../user-project-add-button/user-project-add-button.component';
-import { UserProjectsListComponent } from '../user-projects-list/user-projects-list.component';
+import { ProjectStatus } from '@/app/features/dto/project.model';
+import { User } from '@/app/features/dto/user.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { UserService } from '@/app/features/services/user.service';
+import { UserEditFormComponent } from '@/app/modules/user/components/user-edit-form/user-edit-form.component';
+import { UserHeaderComponent } from '@/app/modules/user/components/user-header/user-header.component';
+import { UserProjectAddButtonComponent } from '@/app/modules/user/components/user-project-add-button/user-project-add-button.component';
+import { UserProjectsListComponent } from '@/app/modules/user/components/user-projects-list/user-projects-list.component';
 
 interface ParamsData {
   readonly username: string;

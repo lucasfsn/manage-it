@@ -1,13 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '@/environments/environment';
 import {
   Project,
   ProjectRequest,
   ProjectStatus,
   User,
-} from '../dto/project.model';
+} from '@/app/features/dto/project.model';
 
 @Injectable({
   providedIn: 'root',

@@ -3,14 +3,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { Task } from '../../../../features/dto/task.model';
-import { TaskService } from '../../../../features/services/task.service';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { TaskEditFormComponent } from '../task-edit-form/task-edit-form.component';
+import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
+import { LoadingService } from '@/app/core/services/loading.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { Task } from '@/app/features/dto/task.model';
+import { TaskService } from '@/app/features/services/task.service';
+import { ButtonComponent } from '@/app/shared/components/button/button.component';
+import { TaskEditFormComponent } from '@/app/modules/task/components/task-edit-form/task-edit-form.component';
 
 @Component({
   selector: 'app-task-menu',

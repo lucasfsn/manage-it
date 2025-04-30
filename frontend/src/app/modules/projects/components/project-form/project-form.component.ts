@@ -9,19 +9,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import {
   Project,
   ProjectRequest,
-} from '../../../../features/dto/project.model';
-import { ProjectService } from '../../../../features/services/project.service';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
+} from '@/app/features/dto/project.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { ButtonComponent } from '@/app/shared/components/button/button.component';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
 import {
   endDateValidator,
   startDateValidator,
-} from '../../../../shared/validators';
+} from '@/app/shared/validators';
 
 interface RouteData {
   readonly isEditing: boolean;

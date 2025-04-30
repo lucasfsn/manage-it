@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { User } from '../../../../features/dto/user.model';
-import { UserService } from '../../../../features/services/user.service';
-import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
-import { DatePipe } from '../../../../shared/pipes/date.pipe';
+import { User } from '@/app/features/dto/user.model';
+import { UserService } from '@/app/features/services/user.service';
+import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
 
 @Component({
   selector: 'app-user-header',

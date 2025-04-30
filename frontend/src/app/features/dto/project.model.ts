@@ -1,4 +1,4 @@
-import { Task } from './task.model';
+import { Task } from '@/app/features/dto/task.model';
 
 export enum ProjectStatus {
   IN_PROGRESS = 'IN_PROGRESS',

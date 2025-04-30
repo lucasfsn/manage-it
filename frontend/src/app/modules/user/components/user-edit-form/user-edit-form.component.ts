@@ -8,18 +8,18 @@ import {
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
-import { UpdateUser, User } from '../../../../features/dto/user.model';
-import { UserService } from '../../../../features/services/user.service';
+import { UpdateUser, User } from '@/app/features/dto/user.model';
+import { UserService } from '@/app/features/services/user.service';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
+import { LoadingService } from '@/app/core/services/loading.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import {
   equalValues,
   nameValidator,
   passwordValidator,
-} from '../../../../shared/validators';
+} from '@/app/shared/validators';
 
 interface PasswordsForm {
   readonly password: FormControl<string | null>;

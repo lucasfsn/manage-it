@@ -21,13 +21,13 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../core/services/mapper.service';
-import { UserCredentials } from '../../../features/dto/auth.model';
-import { Message } from '../../../features/dto/chat.model';
-import { AuthService } from '../../../features/services/auth.service';
-import { ChatService } from '../../../features/services/chat.service';
-import { DatePipe } from '../../pipes/date.pipe';
-import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { UserCredentials } from '@/app/features/dto/auth.model';
+import { Message } from '@/app/features/dto/chat.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ChatService } from '@/app/features/services/chat.service';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
 
 @Component({
   selector: 'app-chat',

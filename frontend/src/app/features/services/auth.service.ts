@@ -2,14 +2,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '@/environments/environment';
 import {
   AuthResponse,
   LoginCredentials,
   RegisterCredentials,
   UpdateUserCredentials,
   UserCredentials,
-} from '../dto/auth.model';
+} from '@/app/features/dto/auth.model';
 
 @Injectable({
   providedIn: 'root',

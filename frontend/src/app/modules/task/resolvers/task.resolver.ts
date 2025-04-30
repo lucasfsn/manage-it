@@ -2,10 +2,10 @@ import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
-import { LoadingService } from '../../../core/services/loading.service';
-import { MapperService } from '../../../core/services/mapper.service';
-import { Task } from '../../../features/dto/task.model';
-import { TaskService } from '../../../features/services/task.service';
+import { LoadingService } from '@/app/core/services/loading.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { Task } from '@/app/features/dto/task.model';
+import { TaskService } from '@/app/features/services/task.service';
 
 export const taskResolver: ResolveFn<Task | null> = (route) => {
   const loadingService = inject(LoadingService);

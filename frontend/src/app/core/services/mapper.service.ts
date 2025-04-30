@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { TranslationService } from '../../core/services/translation.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import {
   NotificationOperation,
   NotificationType,
-} from '../../features/dto/notification.model';
-import { ProjectStatus } from '../../features/dto/project.model';
-import { Priority, TaskStatus } from '../../features/dto/task.model';
+} from '@/app/features/dto/notification.model';
+import { ProjectStatus } from '@/app/features/dto/project.model';
+import { Priority, TaskStatus } from '@/app/features/dto/task.model';
 import {
   SortCriteria,
   SortOrder,
-} from '../../modules/projects/models/projects-sort.model';
+} from '@/app/modules/projects/models/projects-sort.model';
 
 @Injectable({
   providedIn: 'root',

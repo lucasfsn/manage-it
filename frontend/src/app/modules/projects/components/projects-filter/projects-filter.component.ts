@@ -14,9 +14,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { TranslateModule } from '@ngx-translate/core';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { ProjectStatus } from '../../../../features/dto/project.model';
-import { ProjectsFilters } from '../../models/projects-filter.model';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectsFilters } from '@/app/modules/projects/models/projects-filter.model';
 
 interface ProjectsFilterForm {
   readonly name: FormControl<string | null>;

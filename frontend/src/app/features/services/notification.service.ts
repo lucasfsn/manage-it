@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { Notification } from '../dto/notification.model';
+import { environment } from '@/environments/environment';
+import { Notification } from '@/app/features/dto/notification.model';
 
 @Injectable({
   providedIn: 'root',

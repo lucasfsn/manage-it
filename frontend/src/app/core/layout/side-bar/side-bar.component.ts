@@ -10,9 +10,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserCredentials } from '../../../features/dto/auth.model';
-import { AuthService } from '../../../features/services/auth.service';
-import { SearchComponent } from '../../../shared/components/search/search.component';
+import { UserCredentials } from '@/app/features/dto/auth.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { SearchComponent } from '@/app/shared/components/search/search.component';
 
 @Component({
   selector: 'app-side-bar',

@@ -1,7 +1,10 @@
+import { allowAddUserToProjectGuard } from '@/app/core/guards/allow-add-user-to-project.guard';
+import { UserComponent } from '@/app/modules/user/pages/user/user.component';
+import {
+  userRedirectResolver,
+  userResolver,
+} from '@/app/modules/user/resolvers/user.resolver';
 import { Routes } from '@angular/router';
-import { allowAddUserToProjectGuard } from '../../core/guards/allow-add-user-to-project.guard';
-import { UserComponent } from './pages/user/user.component';
-import { userRedirectResolver, userResolver } from './resolvers/user.resolver';
 
 export const USER_ROUTES: Routes = [
   {

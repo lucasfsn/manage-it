@@ -1,10 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { Project, User } from '../dto/project.model';
-import { Task, TaskData } from '../dto/task.model';
-import { ProjectService } from './project.service';
+import { environment } from '@/environments/environment';
+import { Project, User } from '@/app/features/dto/project.model';
+import { Task, TaskData } from '@/app/features/dto/task.model';
+import { ProjectService } from '@/app/features/services/project.service';
 
 @Injectable({
   providedIn: 'root',

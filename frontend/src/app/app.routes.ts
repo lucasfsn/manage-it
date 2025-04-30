@@ -1,10 +1,10 @@
+import { authGuard } from '@/app/core/guards/auth.guard';
+import { guestGuard } from '@/app/core/guards/guest.guard';
+import { MainLayoutComponent } from '@/app/core/layout/main-layout/main-layout.component';
+import { authResolver } from '@/app/modules/auth/resolvers/auth.resolver';
+import { HomeComponent } from '@/app/modules/home/pages/home/home.component';
+import { NotFoundComponent } from '@/app/modules/not-found/pages/not-found/not-found.component';
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
-import { guestGuard } from './core/guards/guest.guard';
-import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
-import { authResolver } from './modules/auth/resolvers/auth.resolver';
-import { HomeComponent } from './modules/home/pages/home/home.component';
-import { NotFoundComponent } from './modules/not-found/pages/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -40,21 +40,21 @@ export const routes: Routes = [
         path: 'dashboard',
         loadChildren: () =>
           import('./modules/dashboard/dashboard.routes').then(
-            (r) => r.DASHBOARD_ROUTES
+            (r) => r.DASHBOARD_ROUTES,
           ),
       },
       {
         path: 'notifications',
         loadChildren: () =>
           import('./modules/notifications/notifications.routes').then(
-            (r) => r.NOTIFICATIONS_ROUTES
+            (r) => r.NOTIFICATIONS_ROUTES,
           ),
       },
       {
         path: 'projects',
         loadChildren: () =>
           import('./modules/projects/projects.routes').then(
-            (r) => r.PROJECTS_ROUTES
+            (r) => r.PROJECTS_ROUTES,
           ),
       },
       {

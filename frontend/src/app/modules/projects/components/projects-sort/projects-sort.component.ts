@@ -9,12 +9,12 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MapperService } from '../../../../core/services/mapper.service';
+import { MapperService } from '@/app/core/services/mapper.service';
 import {
   ProjectsSort,
   SortCriteria,
   SortOrder,
-} from '../../models/projects-sort.model';
+} from '@/app/modules/projects/models/projects-sort.model';
 
 interface ProjectsSortForm {
   readonly criteria: FormControl<SortCriteria | null>;

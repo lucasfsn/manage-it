@@ -1,7 +1,7 @@
 import { DatePipe as DatePipeBase } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
-import { Language, LANGUAGES, LocaleCode } from '../../config/language.config';
-import { TranslationService } from '../../core/services/translation.service';
+import { Language, LANGUAGES, LocaleCode } from '@/app/config/language.config';
+import { TranslationService } from '@/app/core/services/translation.service';
 
 @Pipe({
   name: 'date',

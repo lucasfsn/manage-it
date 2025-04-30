@@ -9,16 +9,16 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import {
   Priority,
   Task,
   TaskData,
   TaskStatus,
-} from '../../../../features/dto/task.model';
-import { TaskService } from '../../../../features/services/task.service';
-import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
+} from '@/app/features/dto/task.model';
+import { TaskService } from '@/app/features/services/task.service';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
 
 interface TaskEditForm {
   readonly description: FormControl<string | null>;

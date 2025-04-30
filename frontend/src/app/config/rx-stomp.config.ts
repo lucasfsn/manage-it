@@ -1,5 +1,5 @@
 import { RxStompConfig } from '@stomp/rx-stomp';
-import { environment } from '../../environments/environment';
+import { environment } from '@/environments/environment';
 
 export const rxStompConfig: RxStompConfig = {
   brokerURL: `${environment.socketUrl}?token=${encodeURIComponent(

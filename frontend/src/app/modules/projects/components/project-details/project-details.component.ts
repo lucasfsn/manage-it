@@ -3,17 +3,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { AuthService } from '../../../../features/services/auth.service';
-import { ProjectService } from '../../../../features/services/project.service';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ChatComponent } from '../../../../shared/components/chat/chat.component';
-import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
-import { SearchComponent } from '../../../../shared/components/search/search.component';
-import { DatePipe } from '../../../../shared/pipes/date.pipe';
-import { ProjectManageMembersComponent } from '../project-manage-members/project-manage-members.component';
-import { ProjectMenuComponent } from '../project-menu/project-menu.component';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ProjectService } from '@/app/features/services/project.service';
+import { ButtonComponent } from '@/app/shared/components/button/button.component';
+import { ChatComponent } from '@/app/shared/components/chat/chat.component';
+import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
+import { SearchComponent } from '@/app/shared/components/search/search.component';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { ProjectManageMembersComponent } from '@/app/modules/projects/components/project-manage-members/project-manage-members.component';
+import { ProjectMenuComponent } from '@/app/modules/projects/components/project-menu/project-menu.component';
 
 @Component({
   selector: 'app-project-details',

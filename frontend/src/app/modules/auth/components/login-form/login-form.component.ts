@@ -9,11 +9,11 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { AuthService } from '../../../../features/services/auth.service';
-import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
-import { passwordValidator } from '../../../../shared/validators';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { AuthService } from '@/app/features/services/auth.service';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { passwordValidator } from '@/app/shared/validators';
 
 interface LoginForm {
   readonly email: FormControl<string | null>;
