@@ -12,7 +12,7 @@
     </div>
     <button
       (click)="handleClose()"
-      class="focus:text-slate-400 focus:text-opacity-90 focus:outline-none"
+      class="focus-visible:text-slate-400 focus-visible:text-opacity-90 focus-visible:outline-none"
     >
       <mat-icon>close</mat-icon>
     </button>
@@ -21,7 +21,7 @@
     <div class="flex max-h-[400px] flex-col gap-1 overflow-y-scroll px-1">
       @for (member of members; track member.username) {
         <button
-          class="flex cursor-pointer items-center justify-between rounded-full p-2 transition-colors hover:bg-slate-700 focus:bg-slate-700 focus:outline-none disabled:cursor-not-allowed"
+          class="flex cursor-pointer items-center justify-between rounded-full p-2 transition-colors hover:bg-slate-700 focus-visible:bg-slate-700 focus-visible:outline-none disabled:cursor-not-allowed"
           (click)="handleNavigateToProfile(member)"
           [disabled]="loading"
           tabindex="0"
@@ -39,7 +39,7 @@
           </p>
           @if (!(project?.owner?.username === member.username)) {
             <button
-              class="flex items-center justify-center rounded-full bg-pink-900 p-0.5 text-pink-200 transition-all hover:bg-pink-950 focus:outline-none focus:ring-2 focus:ring-pink-200"
+              class="flex items-center justify-center rounded-full bg-pink-900 p-0.5 text-pink-200 transition-all hover:bg-pink-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-200"
               (click)="handleRemove(member); $event.stopPropagation()"
             >
               <mat-icon>delete</mat-icon>

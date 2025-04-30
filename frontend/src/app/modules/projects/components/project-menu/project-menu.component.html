@@ -6,7 +6,7 @@
           bgColor="bg-sky-300"
           textColor="text-slate-900"
           hoverBgColor="hover:bg-sky-400"
-          customClass="focus:outline-none focus:ring-2 focus:ring-sky-300 active:ring-0 active:text-slate-950"
+          customClass="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 active:ring-0 active:text-slate-950"
           [routerLink]="'/projects/' + project?.id + '/edit'"
         >
           <mat-icon>edit</mat-icon>
@@ -15,7 +15,7 @@
           bgColor="bg-green-300"
           textColor="text-slate-900"
           hoverBgColor="hover:bg-green-400"
-          customClass="focus:outline-none focus:ring-2 focus:ring-green-700 active:ring-0 active:text-slate-950"
+          customClass="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 active:ring-0 active:text-slate-950"
           (handleClick)="handleComplete()"
         >
           <mat-icon>done</mat-icon>
@@ -25,7 +25,7 @@
         bgColor="bg-pink-900"
         textColor="text-pink-200"
         hoverBgColor="hover:bg-pink-950"
-        customClass="focus:outline-none focus:ring-2 focus:ring-pink-500 active:ring-0 active:text-slate-950"
+        customClass="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 active:ring-0 active:text-slate-950"
         (handleClick)="handleDelete()"
       >
         <mat-icon>delete</mat-icon>

@@ -14,7 +14,7 @@
           name="first-name"
           formControlName="firstName"
           [placeholder]="'signupForm.FIRST_NAME_PLACEHOLDER' | translate"
-          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         />
         @if (firstNameIsInvalid) {
           <p class="text-sm text-red-500">{{ firstNameErrors }}</p>
@@ -27,7 +27,7 @@
           name="last-name"
           formControlName="lastName"
           [placeholder]="'signupForm.LAST_NAME_PLACEHOLDER' | translate"
-          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         />
         @if (lastNameIsInvalid) {
           <p class="text-sm text-red-500">{{ lastNameErrors }}</p>
@@ -41,7 +41,7 @@
             name="user-name"
             formControlName="username"
             [placeholder]="'signupForm.USERNAME_PLACEHOLDER' | translate"
-            class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           />
           <span
             class="absolute right-3 top-1/2 flex -translate-y-1/2 transform items-center justify-center text-orange-300 dark:text-slate-600"
@@ -61,7 +61,7 @@
           name="email"
           formControlName="email"
           [placeholder]="'signupForm.EMAIL_PLACEHOLDER' | translate"
-          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         />
         @if (emailIsInvalid) {
           <p class="text-sm text-red-500">{{ emailErrors }}</p>
@@ -75,7 +75,7 @@
             name="password"
             formControlName="password"
             [placeholder]="'signupForm.PASSWORD_PLACEHOLDER' | translate"
-            class="w-1/2 rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-1/2 rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           />
           <input
             id="confirm-password"
@@ -85,7 +85,7 @@
             [placeholder]="
               'signupForm.CONFIRM_PASSWORD_PLACEHOLDER' | translate
             "
-            class="w-1/2 rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-1/2 rounded-full border border-gray-300 p-2 text-slate-950 placeholder-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           />
         </div>
         <div class="flex flex-row gap-1">
@@ -124,7 +124,7 @@
   </div>
   <a
     routerLink="/auth/login"
-    class="w-auto self-center px-1.5 py-0.5 text-xs text-sky-600 hover:text-sky-500 focus:rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 dark:text-sky-400"
+    class="w-auto self-center px-1.5 py-0.5 text-xs text-sky-600 hover:text-sky-500 focus-visible:rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:text-sky-400"
     >{{ "signupForm.ALREADY_HAVE_ACCOUNT" | translate }}</a
   >
 </form>

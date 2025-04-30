@@ -150,7 +150,6 @@ module.exports = tseslint.config(
       "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/no-var-requires": "error",
       "@typescript-eslint/no-unnecessary-condition": "error",
-      "@typescript-eslint/no-unsafe-assignment": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

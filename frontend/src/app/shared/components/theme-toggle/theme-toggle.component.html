@@ -1,6 +1,6 @@
 <button
   (click)="toggleTheme()"
-  class="flex w-16 rounded-full p-1 transition-colors focus:outline-none"
+  class="flex w-16 rounded-full p-1 transition-colors focus-visible:outline-none"
   [ngClass]="{
     'bg-slate-800': theme === Theme.DARK,
     'bg-slate-300': theme === Theme.LIGHT,
