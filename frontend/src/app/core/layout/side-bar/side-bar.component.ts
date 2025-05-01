@@ -15,21 +15,17 @@ import { AuthService } from '@/app/features/services/auth.service';
 import { SearchComponent } from '@/app/shared/components/search/search.component';
 
 @Component({
-  selector: 'app-side-bar',
-  standalone: true,
-  imports: [MatIconModule, RouterLink, RouterLinkActive, TranslateModule],
-  animations: [
-    trigger('toggleMenu', [
-      state('collapsed', style({ width: '0', opacity: 0, padding: 0 })),
-      state(
-        'expanded',
-        style({ width: '*', opacity: 1, padding: '0 0 0 0.75rem' }),
-      ),
-      transition('collapsed <=> expanded', [animate('300ms ease-in-out')]),
-    ]),
-  ],
-  templateUrl: './side-bar.component.html',
-  styleUrl: './side-bar.component.scss',
+    selector: 'app-side-bar',
+    imports: [MatIconModule, RouterLink, RouterLinkActive, TranslateModule],
+    animations: [
+        trigger('toggleMenu', [
+            state('collapsed', style({ width: '0', opacity: 0, padding: 0 })),
+            state('expanded', style({ width: '*', opacity: 1, padding: '0 0 0 0.75rem' })),
+            transition('collapsed <=> expanded', [animate('300ms ease-in-out')]),
+        ]),
+    ],
+    templateUrl: './side-bar.component.html',
+    styleUrl: './side-bar.component.scss'
 })
 export class SideBarComponent implements OnInit {
   public isCollapsed = false;

@@ -15,17 +15,16 @@ import {
 import { UsersListComponent } from '@/app/shared/components/users-list/users-list.component';
 
 @Component({
-  selector: 'app-task-assignees-list',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatIconModule,
-    TranslateModule,
-    PaginatorComponent,
-    UsersListComponent,
-  ],
-  templateUrl: './task-assignees-list.component.html',
-  styleUrl: './task-assignees-list.component.scss',
+    selector: 'app-task-assignees-list',
+    imports: [
+        ReactiveFormsModule,
+        MatIconModule,
+        TranslateModule,
+        PaginatorComponent,
+        UsersListComponent,
+    ],
+    templateUrl: './task-assignees-list.component.html',
+    styleUrl: './task-assignees-list.component.scss'
 })
 export class TaskAssigneesListComponent implements OnInit {
   private destroyRef = inject(DestroyRef);

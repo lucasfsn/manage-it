@@ -13,11 +13,10 @@ import { ButtonComponent } from '@/app/shared/components/button/button.component
 import { TaskEditFormComponent } from '@/app/modules/task/components/task-edit-form/task-edit-form.component';
 
 @Component({
-  selector: 'app-task-menu',
-  standalone: true,
-  imports: [ButtonComponent, MatIconModule],
-  templateUrl: './task-menu.component.html',
-  styleUrl: './task-menu.component.scss',
+    selector: 'app-task-menu',
+    imports: [ButtonComponent, MatIconModule],
+    templateUrl: './task-menu.component.html',
+    styleUrl: './task-menu.component.scss'
 })
 export class TaskMenuComponent {
   private destroyRef = inject(DestroyRef);

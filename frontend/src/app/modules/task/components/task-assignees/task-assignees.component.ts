@@ -6,15 +6,14 @@ import { TaskAddAssigneeComponent } from '@/app/modules/task/components/task-add
 import { TaskAssigneesListComponent } from '@/app/modules/task/components/task-assignees-list/task-assignees-list.component';
 
 @Component({
-  selector: 'app-task-assignees',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    TaskAssigneesListComponent,
-    TaskAddAssigneeComponent,
-  ],
-  templateUrl: './task-assignees.component.html',
-  styleUrl: './task-assignees.component.scss',
+    selector: 'app-task-assignees',
+    imports: [
+        MatIconModule,
+        TaskAssigneesListComponent,
+        TaskAddAssigneeComponent,
+    ],
+    templateUrl: './task-assignees.component.html',
+    styleUrl: './task-assignees.component.scss'
 })
 export class TaskAssigneesComponent {
   protected showAssignees = true;

@@ -28,16 +28,15 @@ interface TaskEditForm {
 }
 
 @Component({
-  selector: 'app-task-edit-form',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatIconModule,
-    TranslateModule,
-    FormButtonComponent,
-  ],
-  templateUrl: './task-edit-form.component.html',
-  styleUrl: './task-edit-form.component.scss',
+    selector: 'app-task-edit-form',
+    imports: [
+        ReactiveFormsModule,
+        MatIconModule,
+        TranslateModule,
+        FormButtonComponent,
+    ],
+    templateUrl: './task-edit-form.component.html',
+    styleUrl: './task-edit-form.component.scss'
 })
 export class TaskEditFormComponent implements OnInit {
   protected loading = false;

@@ -3,11 +3,10 @@ import { MapperService } from '@/app/core/services/mapper.service';
 import { Priority } from '@/app/features/dto/task.model';
 
 @Component({
-  selector: 'app-priority',
-  standalone: true,
-  imports: [],
-  templateUrl: './priority.component.html',
-  styleUrl: './priority.component.scss',
+    selector: 'app-priority',
+    imports: [],
+    templateUrl: './priority.component.html',
+    styleUrl: './priority.component.scss'
 })
 export class PriorityComponent {
   @Input() public priority!: Priority;

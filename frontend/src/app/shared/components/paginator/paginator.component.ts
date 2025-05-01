@@ -10,11 +10,10 @@ export interface PageEvent {
 }
 
 @Component({
-  selector: 'app-paginator',
-  standalone: true,
-  imports: [MatIconModule, MatTooltipModule, TranslateModule],
-  templateUrl: './paginator.component.html',
-  styleUrl: './paginator.component.scss',
+    selector: 'app-paginator',
+    imports: [MatIconModule, MatTooltipModule, TranslateModule],
+    templateUrl: './paginator.component.html',
+    styleUrl: './paginator.component.scss'
 })
 export class PaginatorComponent {
   @Input() public pageSize: number = 5;

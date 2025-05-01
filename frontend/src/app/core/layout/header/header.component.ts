@@ -16,19 +16,18 @@ import { Theme, ThemeService } from '@/app/core/services/theme.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [
-    RouterLink,
-    RouterLinkActive,
-    MatButtonModule,
-    MatMenuModule,
-    MatIconModule,
-    TranslateModule,
-    ThemeToggleComponent,
-  ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+    selector: 'app-header',
+    imports: [
+        RouterLink,
+        RouterLinkActive,
+        MatButtonModule,
+        MatMenuModule,
+        MatIconModule,
+        TranslateModule,
+        ThemeToggleComponent,
+    ],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   protected languages: Language[] = LANGUAGES;

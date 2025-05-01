@@ -16,20 +16,19 @@ import { ProjectManageMembersComponent } from '@/app/modules/projects/components
 import { ProjectMenuComponent } from '@/app/modules/projects/components/project-menu/project-menu.component';
 
 @Component({
-  selector: 'app-project-details',
-  standalone: true,
-  imports: [
-    RouterLink,
-    MatIconModule,
-    DatePipe,
-    TranslateModule,
-    ButtonComponent,
-    ProfileIconComponent,
-    ChatComponent,
-    ProjectMenuComponent,
-  ],
-  templateUrl: './project-details.component.html',
-  styleUrl: './project-details.component.scss',
+    selector: 'app-project-details',
+    imports: [
+        RouterLink,
+        MatIconModule,
+        DatePipe,
+        TranslateModule,
+        ButtonComponent,
+        ProfileIconComponent,
+        ChatComponent,
+        ProjectMenuComponent,
+    ],
+    templateUrl: './project-details.component.html',
+    styleUrl: './project-details.component.scss'
 })
 export class ProjectDetailsComponent {
   protected showChat: boolean = false;

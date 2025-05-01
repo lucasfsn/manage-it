@@ -19,17 +19,16 @@ interface ParamsData {
 }
 
 @Component({
-  selector: 'app-user-details',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    TranslateModule,
-    UserProjectsListComponent,
-    UserHeaderComponent,
-    UserProjectAddButtonComponent,
-  ],
-  templateUrl: './user-details.component.html',
-  styleUrl: './user-details.component.scss',
+    selector: 'app-user-details',
+    imports: [
+        MatIconModule,
+        TranslateModule,
+        UserProjectsListComponent,
+        UserHeaderComponent,
+        UserProjectAddButtonComponent,
+    ],
+    templateUrl: './user-details.component.html',
+    styleUrl: './user-details.component.scss'
 })
 export class UserDetailsComponent implements OnInit {
   protected showAddToProjectButton = false;

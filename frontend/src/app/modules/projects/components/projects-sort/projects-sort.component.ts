@@ -22,11 +22,10 @@ interface ProjectsSortForm {
 }
 
 @Component({
-  selector: 'app-projects-sort',
-  standalone: true,
-  imports: [ReactiveFormsModule, TranslateModule],
-  templateUrl: './projects-sort.component.html',
-  styleUrl: './projects-sort.component.scss',
+    selector: 'app-projects-sort',
+    imports: [ReactiveFormsModule, TranslateModule],
+    templateUrl: './projects-sort.component.html',
+    styleUrl: './projects-sort.component.scss'
 })
 export class ProjectsSortComponent implements OnInit {
   @Input({ required: true }) public sortCriteria!: SortCriteria;

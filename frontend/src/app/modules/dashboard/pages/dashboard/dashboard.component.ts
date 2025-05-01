@@ -5,15 +5,14 @@ import { TasksSummaryComponent } from '@/app/modules/dashboard/components/tasks-
 import { UpcomingDeadlinesComponent } from '@/app/modules/dashboard/components/upcoming-deadlines/upcoming-deadlines.component';
 
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
-  imports: [
-    UpcomingDeadlinesComponent,
-    OngoingProjectsComponent,
-    ProjectsSummaryComponent,
-    TasksSummaryComponent,
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+    selector: 'app-dashboard',
+    imports: [
+        UpcomingDeadlinesComponent,
+        OngoingProjectsComponent,
+        ProjectsSummaryComponent,
+        TasksSummaryComponent,
+    ],
+    templateUrl: './dashboard.component.html',
+    styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {}

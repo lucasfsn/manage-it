@@ -6,11 +6,10 @@ import { AuthService } from '@/app/features/services/auth.service';
 import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
 
 @Component({
-  selector: 'app-users-list',
-  standalone: true,
-  imports: [ProfileIconComponent, MatIconModule, TranslateModule],
-  templateUrl: './users-list.component.html',
-  styleUrl: './users-list.component.scss',
+    selector: 'app-users-list',
+    imports: [ProfileIconComponent, MatIconModule, TranslateModule],
+    templateUrl: './users-list.component.html',
+    styleUrl: './users-list.component.scss'
 })
 export class UsersListComponent {
   @Input({ required: true }) public iconName!: string;

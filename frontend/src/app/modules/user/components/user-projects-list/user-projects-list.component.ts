@@ -8,11 +8,10 @@ import {
 import { UserService } from '@/app/features/services/user.service';
 
 @Component({
-  selector: 'app-user-projects-list',
-  standalone: true,
-  imports: [RouterLink, TranslateModule],
-  templateUrl: './user-projects-list.component.html',
-  styleUrl: './user-projects-list.component.scss',
+    selector: 'app-user-projects-list',
+    imports: [RouterLink, TranslateModule],
+    templateUrl: './user-projects-list.component.html',
+    styleUrl: './user-projects-list.component.scss'
 })
 export class UserProjectsListComponent {
   protected commonProjects: UserProject[] = [];

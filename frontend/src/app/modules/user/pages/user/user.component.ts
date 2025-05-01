@@ -2,10 +2,9 @@ import { UserDetailsComponent } from '@/app/modules/user/components/user-details
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-user',
-  standalone: true,
-  imports: [UserDetailsComponent],
-  templateUrl: './user.component.html',
-  styleUrl: './user.component.scss',
+    selector: 'app-user',
+    imports: [UserDetailsComponent],
+    templateUrl: './user.component.html',
+    styleUrl: './user.component.scss'
 })
 export class UserComponent {}

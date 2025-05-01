@@ -3,11 +3,10 @@ import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-profile-icon',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
-  templateUrl: './profile-icon.component.html',
-  styleUrl: './profile-icon.component.scss',
+    selector: 'app-profile-icon',
+    imports: [CommonModule, RouterLink],
+    templateUrl: './profile-icon.component.html',
+    styleUrl: './profile-icon.component.scss'
 })
 export class ProfileIconComponent {
   @Input() public size: 'sm' | 'md' | 'lg' | 'xl' = 'md';

@@ -4,11 +4,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 
 @Component({
-  selector: 'app-confirm-modal',
-  standalone: true,
-  imports: [MatIconModule, TranslateModule],
-  templateUrl: './confirm-modal.component.html',
-  styleUrl: './confirm-modal.component.scss',
+    selector: 'app-confirm-modal',
+    imports: [MatIconModule, TranslateModule],
+    templateUrl: './confirm-modal.component.html',
+    styleUrl: './confirm-modal.component.scss'
 })
 export class ConfirmModalComponent {
   @ViewChild('modal') protected modal?: ElementRef;

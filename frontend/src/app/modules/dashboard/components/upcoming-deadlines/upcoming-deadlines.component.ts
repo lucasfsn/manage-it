@@ -7,11 +7,10 @@ import { ProjectService } from '@/app/features/services/project.service';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
 
 @Component({
-  selector: 'app-upcoming-deadlines',
-  standalone: true,
-  imports: [DatePipe, RouterLink, TranslateModule],
-  templateUrl: './upcoming-deadlines.component.html',
-  styleUrl: './upcoming-deadlines.component.scss',
+    selector: 'app-upcoming-deadlines',
+    imports: [DatePipe, RouterLink, TranslateModule],
+    templateUrl: './upcoming-deadlines.component.html',
+    styleUrl: './upcoming-deadlines.component.scss'
 })
 export class UpcomingDeadlinesComponent {
   public constructor(

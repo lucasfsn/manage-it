@@ -8,11 +8,10 @@ import { TaskStatus } from '@/app/features/dto/task.model';
 import { ProjectService } from '@/app/features/services/project.service';
 
 @Component({
-  selector: 'app-tasks-summary',
-  standalone: true,
-  imports: [BaseChartDirective, TranslateModule],
-  templateUrl: './tasks-summary.component.html',
-  styleUrl: './tasks-summary.component.scss',
+    selector: 'app-tasks-summary',
+    imports: [BaseChartDirective, TranslateModule],
+    templateUrl: './tasks-summary.component.html',
+    styleUrl: './tasks-summary.component.scss'
 })
 export class TasksSummaryComponent implements OnInit {
   public constructor(

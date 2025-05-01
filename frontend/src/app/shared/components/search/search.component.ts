@@ -17,19 +17,18 @@ import { ProjectService } from '@/app/features/services/project.service';
 import { UserService } from '@/app/features/services/user.service';
 
 @Component({
-  selector: 'app-search',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogContent,
-    MatIconModule,
-    TranslateModule,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
+    selector: 'app-search',
+    imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDialogContent,
+        MatIconModule,
+        TranslateModule,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
   protected loading: boolean = false;

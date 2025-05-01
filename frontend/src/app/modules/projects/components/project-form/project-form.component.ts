@@ -39,17 +39,16 @@ interface ProjectForm {
 }
 
 @Component({
-  selector: 'app-project-form',
-  standalone: true,
-  imports: [
-    TranslateModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    FormButtonComponent,
-    ButtonComponent,
-  ],
-  templateUrl: './project-form.component.html',
-  styleUrl: './project-form.component.scss',
+    selector: 'app-project-form',
+    imports: [
+        TranslateModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        FormButtonComponent,
+        ButtonComponent,
+    ],
+    templateUrl: './project-form.component.html',
+    styleUrl: './project-form.component.scss'
 })
 export class ProjectFormComponent implements OnInit {
   protected loading = false;

@@ -36,18 +36,17 @@ interface SignupForm {
 }
 
 @Component({
-  selector: 'app-signup-form',
-  standalone: true,
-  templateUrl: './signup-form.component.html',
-  styleUrl: './signup-form.component.scss',
-  imports: [
-    ReactiveFormsModule,
-    RouterLink,
-    MatIconModule,
-    MatTooltipModule,
-    TranslateModule,
-    FormButtonComponent,
-  ],
+    selector: 'app-signup-form',
+    templateUrl: './signup-form.component.html',
+    styleUrl: './signup-form.component.scss',
+    imports: [
+        ReactiveFormsModule,
+        RouterLink,
+        MatIconModule,
+        MatTooltipModule,
+        TranslateModule,
+        FormButtonComponent,
+    ]
 })
 export class SignupFormComponent {
   protected loading: boolean = false;

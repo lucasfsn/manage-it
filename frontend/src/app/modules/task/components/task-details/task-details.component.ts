@@ -12,20 +12,19 @@ import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profi
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
 
 @Component({
-  selector: 'app-task-details',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    RouterLink,
-    PriorityComponent,
-    TranslateModule,
-    DatePipe,
-    ProfileIconComponent,
-    ChatComponent,
-    ButtonComponent,
-  ],
-  templateUrl: './task-details.component.html',
-  styleUrl: './task-details.component.scss',
+    selector: 'app-task-details',
+    imports: [
+        MatIconModule,
+        RouterLink,
+        PriorityComponent,
+        TranslateModule,
+        DatePipe,
+        ProfileIconComponent,
+        ChatComponent,
+        ButtonComponent,
+    ],
+    templateUrl: './task-details.component.html',
+    styleUrl: './task-details.component.scss'
 })
 export class TaskDetailsComponent {
   protected showChat: boolean = false;
