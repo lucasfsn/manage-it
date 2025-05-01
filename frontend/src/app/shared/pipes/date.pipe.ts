@@ -1,11 +1,10 @@
-import { DatePipe as DatePipeBase } from '@angular/common';
-import { Pipe, PipeTransform } from '@angular/core';
 import { Language, LANGUAGES, LocaleCode } from '@/app/config/language.config';
 import { TranslationService } from '@/app/core/services/translation.service';
+import { DatePipe as DatePipeBase } from '@angular/common';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'date',
-  standalone: true,
   pure: false,
 })
 export class DatePipe implements PipeTransform {
@@ -16,7 +15,7 @@ export class DatePipe implements PipeTransform {
 
   public transform(
     value: Date | string | number | null,
-    format: string = 'mediumDate'
+    format: string = 'mediumDate',
   ): string | null {
     if (!value) return null;
 

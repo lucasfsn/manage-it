@@ -1,3 +1,5 @@
+import { DATE_FNS_LOCALES, LanguageCode } from '@/app/config/language.config';
+import { TranslationService } from '@/app/core/services/translation.service';
 import {
   ChangeDetectorRef,
   OnDestroy,
@@ -5,12 +7,9 @@ import {
   PipeTransform,
 } from '@angular/core';
 import { formatDistanceToNow, Locale } from 'date-fns';
-import { DATE_FNS_LOCALES, LanguageCode } from '@/app/config/language.config';
-import { TranslationService } from '@/app/core/services/translation.service';
 
 @Pipe({
   name: 'timeAgo',
-  standalone: true,
   pure: false,
 })
 export class TimeAgoPipe implements PipeTransform, OnDestroy {
@@ -19,7 +18,7 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
 
   public constructor(
     private translationService: TranslationService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.intervalId = setInterval(() => {
       this.changeDetectorRef.markForCheck();
