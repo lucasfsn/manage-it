@@ -1,0 +1,57 @@
+@use "./tailwind.css";
+@use "@angular/material" as mat;
+
+:root {
+  @include mat.tooltip-overrides(
+    (
+      container-color: #fdba74,
+      supporting-text-color: #4c525a,
+    )
+  );
+  @include mat.menu-overrides(
+    (
+      container-color: #fed7aa,
+    )
+  );
+  @include mat.dialog-overrides(
+    (
+      content-padding: 1.5rem,
+      container-color: transparent,
+    )
+  );
+  @include mat.select-overrides(
+    (
+      panel-background-color: #020617,
+      focused-arrow-color: #0ea5e9,
+      enabled-trigger-text-color: #0ea5e9,
+      disabled-arrow-color: #0ea5e9,
+      enabled-arrow-color: #0ea5e9,
+    )
+  );
+  @include mat.radio-overrides(
+    (
+      label-text-color: #374151,
+    )
+  );
+}
+
+:root.dark {
+  @include mat.tooltip-overrides(
+    (
+      container-color: #0f172a,
+      supporting-text-color: #94a3b8,
+    )
+  );
+
+  @include mat.menu-overrides(
+    (
+      container-color: #0f172a,
+    )
+  );
+
+  @include mat.radio-overrides(
+    (
+      label-text-color: #d1d5db,
+    )
+  );
+}

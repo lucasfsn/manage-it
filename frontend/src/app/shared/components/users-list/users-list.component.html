@@ -8,7 +8,7 @@
     <li
       class="flex items-center justify-between gap-1 text-slate-600 dark:text-slate-400"
     >
-      <div class="flex cursor-default gap-2 focus-visible:outline-none">
+      <div class="flex cursor-default gap-2 focus-visible:outline-hidden">
         <app-profile-icon
           size="lg"
           [firstName]="user.firstName"
@@ -29,7 +29,7 @@
         </p>
       </div>
       <button
-        class="flex items-center justify-center rounded-full bg-gray-400 p-0.5 text-slate-950 transition-all hover:bg-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-950"
+        class="flex items-center justify-center rounded-full bg-gray-400 p-0.5 text-slate-950 transition-all hover:bg-gray-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-950"
         (click)="onClick(user)"
       >
         <mat-icon class="text-base">{{ iconName }}</mat-icon>
