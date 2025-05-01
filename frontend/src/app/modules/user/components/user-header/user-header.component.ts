@@ -7,10 +7,10 @@ import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profi
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
 
 @Component({
-    selector: 'app-user-header',
-    imports: [MatIconModule, ProfileIconComponent, TranslateModule, DatePipe],
-    templateUrl: './user-header.component.html',
-    styleUrl: './user-header.component.scss'
+  selector: 'app-user-header',
+  imports: [MatIconModule, ProfileIconComponent, TranslateModule, DatePipe],
+  templateUrl: './user-header.component.html',
+  styleUrl: './user-header.component.scss'
 })
 export class UserHeaderComponent {
   public constructor(private userService: UserService) {}

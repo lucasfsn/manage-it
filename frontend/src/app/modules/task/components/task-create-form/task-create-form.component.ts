@@ -34,16 +34,16 @@ interface TaskCreateForm {
 }
 
 @Component({
-    selector: 'app-task-create-form',
-    imports: [
-        MatIconModule,
-        ReactiveFormsModule,
-        MatDialogModule,
-        TranslateModule,
-        FormButtonComponent,
-    ],
-    templateUrl: './task-create-form.component.html',
-    styleUrl: './task-create-form.component.scss'
+  selector: 'app-task-create-form',
+  imports: [
+    MatIconModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    TranslateModule,
+    FormButtonComponent,
+  ],
+  templateUrl: './task-create-form.component.html',
+  styleUrl: './task-create-form.component.scss'
 })
 export class TaskCreateFormComponent {
   protected loading = false;

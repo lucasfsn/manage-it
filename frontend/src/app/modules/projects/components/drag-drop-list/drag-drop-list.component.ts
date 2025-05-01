@@ -22,19 +22,19 @@ import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import { TaskCreateFormComponent } from '@/app/modules/task/components/task-create-form/task-create-form.component';
 
 @Component({
-    selector: 'app-drag-drop-list',
-    imports: [
-        MatIconModule,
-        DatePipe,
-        CdkDropList,
-        CdkDrag,
-        PriorityComponent,
-        RouterLink,
-        TranslateModule,
-        ProfileIconComponent,
-    ],
-    templateUrl: './drag-drop-list.component.html',
-    styleUrl: './drag-drop-list.component.scss'
+  selector: 'app-drag-drop-list',
+  imports: [
+    MatIconModule,
+    DatePipe,
+    CdkDropList,
+    CdkDrag,
+    PriorityComponent,
+    RouterLink,
+    TranslateModule,
+    ProfileIconComponent,
+  ],
+  templateUrl: './drag-drop-list.component.html',
+  styleUrl: './drag-drop-list.component.scss'
 })
 export class DragDropListComponent implements OnInit {
   protected loading: boolean = false;

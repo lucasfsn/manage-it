@@ -5,10 +5,10 @@ import { Project, ProjectStatus } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 
 @Component({
-    selector: 'app-ongoing-projects',
-    imports: [RouterLink, TranslateModule],
-    templateUrl: './ongoing-projects.component.html',
-    styleUrl: './ongoing-projects.component.scss'
+  selector: 'app-ongoing-projects',
+  imports: [RouterLink, TranslateModule],
+  templateUrl: './ongoing-projects.component.html',
+  styleUrl: './ongoing-projects.component.scss'
 })
 export class OngoingProjectsComponent {
   public constructor(private projectService: ProjectService) {}

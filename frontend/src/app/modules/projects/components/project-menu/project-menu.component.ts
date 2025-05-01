@@ -12,10 +12,10 @@ import { ProjectService } from '@/app/features/services/project.service';
 import { ButtonComponent } from '@/app/shared/components/button/button.component';
 
 @Component({
-    selector: 'app-project-menu',
-    imports: [ButtonComponent, MatIconModule],
-    templateUrl: './project-menu.component.html',
-    styleUrl: './project-menu.component.scss'
+  selector: 'app-project-menu',
+  imports: [ButtonComponent, MatIconModule],
+  templateUrl: './project-menu.component.html',
+  styleUrl: './project-menu.component.scss'
 })
 export class ProjectMenuComponent {
   private destroyRef = inject(DestroyRef);

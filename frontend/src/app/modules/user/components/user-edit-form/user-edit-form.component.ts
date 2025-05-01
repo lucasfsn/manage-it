@@ -34,10 +34,10 @@ interface UserEditForm {
 }
 
 @Component({
-    selector: 'app-user-edit-form',
-    imports: [ReactiveFormsModule, MatIconModule, TranslateModule],
-    templateUrl: './user-edit-form.component.html',
-    styleUrl: './user-edit-form.component.scss'
+  selector: 'app-user-edit-form',
+  imports: [ReactiveFormsModule, MatIconModule, TranslateModule],
+  templateUrl: './user-edit-form.component.html',
+  styleUrl: './user-edit-form.component.scss'
 })
 export class UserEditFormComponent implements OnInit {
   protected showPasswordFields = false;

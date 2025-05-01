@@ -11,10 +11,10 @@ import { ProjectService } from '@/app/features/services/project.service';
 import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
 
 @Component({
-    selector: 'app-project-manage-members',
-    imports: [MatIconModule, TranslateModule, ProfileIconComponent],
-    templateUrl: './project-manage-members.component.html',
-    styleUrl: './project-manage-members.component.scss'
+  selector: 'app-project-manage-members',
+  imports: [MatIconModule, TranslateModule, ProfileIconComponent],
+  templateUrl: './project-manage-members.component.html',
+  styleUrl: './project-manage-members.component.scss'
 })
 export class ProjectManageMembersComponent {
   protected loading: boolean = false;

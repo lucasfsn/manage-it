@@ -21,15 +21,15 @@ interface LoginForm {
 }
 
 @Component({
-    selector: 'app-login-form',
-    imports: [
-        ReactiveFormsModule,
-        RouterLink,
-        TranslateModule,
-        FormButtonComponent,
-    ],
-    templateUrl: './login-form.component.html',
-    styleUrl: './login-form.component.scss'
+  selector: 'app-login-form',
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    TranslateModule,
+    FormButtonComponent,
+  ],
+  templateUrl: './login-form.component.html',
+  styleUrl: './login-form.component.scss'
 })
 export class LoginFormComponent implements OnInit {
   private destroyRef = inject(DestroyRef);

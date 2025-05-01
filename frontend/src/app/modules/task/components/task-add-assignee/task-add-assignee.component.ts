@@ -13,16 +13,16 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-    selector: 'app-task-add-assignee',
-    imports: [
-        MatIconModule,
-        ReactiveFormsModule,
-        TranslateModule,
-        MatProgressSpinnerModule,
-        UsersListComponent,
-    ],
-    templateUrl: './task-add-assignee.component.html',
-    styleUrl: './task-add-assignee.component.scss'
+  selector: 'app-task-add-assignee',
+  imports: [
+    MatIconModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    MatProgressSpinnerModule,
+    UsersListComponent,
+  ],
+  templateUrl: './task-add-assignee.component.html',
+  styleUrl: './task-add-assignee.component.scss'
 })
 export class TaskAddAssigneeComponent {
   protected loading: boolean = false;

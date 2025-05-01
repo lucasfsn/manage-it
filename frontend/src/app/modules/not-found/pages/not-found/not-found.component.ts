@@ -4,10 +4,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '@/app/features/services/auth.service';
 
 @Component({
-    selector: 'app-not-found',
-    imports: [RouterLink, TranslateModule],
-    templateUrl: './not-found.component.html',
-    styleUrl: './not-found.component.scss'
+  selector: 'app-not-found',
+  imports: [RouterLink, TranslateModule],
+  templateUrl: './not-found.component.html',
+  styleUrl: './not-found.component.scss'
 })
 export class NotFoundComponent {
   public constructor(private authService: AuthService) {}

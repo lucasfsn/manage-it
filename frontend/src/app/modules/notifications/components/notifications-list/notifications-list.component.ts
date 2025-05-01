@@ -8,10 +8,10 @@ import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profi
 import { TimeAgoPipe } from '@/app/shared/pipes/time-ago.pipe';
 
 @Component({
-    selector: 'app-notifications-list',
-    imports: [TimeAgoPipe, ProfileIconComponent, TranslateModule],
-    templateUrl: './notifications-list.component.html',
-    styleUrl: './notifications-list.component.scss'
+  selector: 'app-notifications-list',
+  imports: [TimeAgoPipe, ProfileIconComponent, TranslateModule],
+  templateUrl: './notifications-list.component.html',
+  styleUrl: './notifications-list.component.scss'
 })
 export class NotificationsListComponent {
   public constructor(

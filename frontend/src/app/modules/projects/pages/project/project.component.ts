@@ -4,9 +4,9 @@ import { DragDropListComponent } from '@/app/modules/projects/components/drag-dr
 import { ProjectDetailsComponent } from '@/app/modules/projects/components/project-details/project-details.component';
 
 @Component({
-    selector: 'app-project',
-    imports: [MatIconModule, ProjectDetailsComponent, DragDropListComponent],
-    templateUrl: './project.component.html',
-    styleUrl: './project.component.scss'
+  selector: 'app-project',
+  imports: [MatIconModule, ProjectDetailsComponent, DragDropListComponent],
+  templateUrl: './project.component.html',
+  styleUrl: './project.component.scss'
 })
 export class ProjectComponent {}

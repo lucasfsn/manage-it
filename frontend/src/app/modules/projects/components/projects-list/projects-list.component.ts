@@ -25,17 +25,17 @@ interface ProjectsParams extends Params {
 }
 
 @Component({
-    selector: 'app-projects-list',
-    imports: [
-        RouterLink,
-        DecimalPipe,
-        TranslateModule,
-        DatePipe,
-        ProjectsSortComponent,
-        ProjectsFilterComponent,
-    ],
-    templateUrl: './projects-list.component.html',
-    styleUrl: './projects-list.component.scss'
+  selector: 'app-projects-list',
+  imports: [
+    RouterLink,
+    DecimalPipe,
+    TranslateModule,
+    DatePipe,
+    ProjectsSortComponent,
+    ProjectsFilterComponent,
+  ],
+  templateUrl: './projects-list.component.html',
+  styleUrl: './projects-list.component.scss'
 })
 export class ProjectsListComponent implements OnInit {
   protected sortedAndFilteredProjects: Project[] = [];

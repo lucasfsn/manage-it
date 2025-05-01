@@ -7,10 +7,10 @@ import { Project, ProjectStatus } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 
 @Component({
-    selector: 'app-projects-summary',
-    imports: [BaseChartDirective, TranslateModule],
-    templateUrl: './projects-summary.component.html',
-    styleUrl: './projects-summary.component.scss'
+  selector: 'app-projects-summary',
+  imports: [BaseChartDirective, TranslateModule],
+  templateUrl: './projects-summary.component.html',
+  styleUrl: './projects-summary.component.scss'
 })
 export class ProjectsSummaryComponent implements OnInit {
   public constructor(

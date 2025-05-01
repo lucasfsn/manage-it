@@ -30,29 +30,29 @@ import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
 
 @Component({
-    selector: 'app-chat',
-    imports: [
-        MatIconModule,
-        PickerComponent,
-        DatePipe,
-        TranslateModule,
-        ProfileIconComponent,
-        ReactiveFormsModule,
-    ],
-    templateUrl: './chat.component.html',
-    styleUrl: './chat.component.scss',
-    animations: [
-        trigger('buttonAnimation', [
-            state('void', style({ transform: 'scale(0.8)', opacity: 0 })),
-            state('*', style({ transform: 'scale(1)', opacity: 1 })),
-            transition('void <=> *', animate('300ms ease-in-out')),
-        ]),
-        trigger('chatAnimation', [
-            state('void', style({ transform: 'scale(0)', opacity: 0 })),
-            state('*', style({ transform: 'scale(1)', opacity: 1 })),
-            transition('void <=> *', [animate('300ms ease-in-out')]),
-        ]),
-    ]
+  selector: 'app-chat',
+  imports: [
+    MatIconModule,
+    PickerComponent,
+    DatePipe,
+    TranslateModule,
+    ProfileIconComponent,
+    ReactiveFormsModule,
+  ],
+  templateUrl: './chat.component.html',
+  styleUrl: './chat.component.scss',
+  animations: [
+    trigger('buttonAnimation', [
+      state('void', style({ transform: 'scale(0.8)', opacity: 0 })),
+      state('*', style({ transform: 'scale(1)', opacity: 1 })),
+      transition('void <=> *', animate('300ms ease-in-out')),
+    ]),
+    trigger('chatAnimation', [
+      state('void', style({ transform: 'scale(0)', opacity: 0 })),
+      state('*', style({ transform: 'scale(1)', opacity: 1 })),
+      transition('void <=> *', [animate('300ms ease-in-out')]),
+    ]),
+  ]
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
   @ViewChild('scroll') private scroll!: ElementRef;

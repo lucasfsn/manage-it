@@ -5,9 +5,9 @@ import { ProjectsListComponent } from '@/app/modules/projects/components/project
 import { ButtonComponent } from '@/app/shared/components/button/button.component';
 
 @Component({
-    selector: 'app-projects',
-    imports: [ProjectsListComponent, MatIconModule, RouterLink, ButtonComponent],
-    templateUrl: './projects.component.html',
-    styleUrl: './projects.component.scss'
+  selector: 'app-projects',
+  imports: [ProjectsListComponent, MatIconModule, RouterLink, ButtonComponent],
+  templateUrl: './projects.component.html',
+  styleUrl: './projects.component.scss'
 })
 export class ProjectsComponent {}

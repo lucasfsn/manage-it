@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-    selector: 'app-form-button',
-    imports: [CommonModule],
-    templateUrl: './form-button.component.html',
-    styleUrl: './form-button.component.scss'
+  selector: 'app-form-button',
+  imports: [CommonModule],
+  templateUrl: './form-button.component.html',
+  styleUrl: './form-button.component.scss'
 })
 export class FormButtonComponent {
   @Input({ required: true }) public buttonType!: 'submit' | 'reset';

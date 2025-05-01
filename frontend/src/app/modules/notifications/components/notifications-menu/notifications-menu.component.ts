@@ -4,10 +4,10 @@ import { Notification } from '@/app/features/dto/notification.model';
 import { NotificationService } from '@/app/features/services/notification.service';
 
 @Component({
-    selector: 'app-notifications-menu',
-    imports: [TranslateModule],
-    templateUrl: './notifications-menu.component.html',
-    styleUrl: './notifications-menu.component.scss'
+  selector: 'app-notifications-menu',
+  imports: [TranslateModule],
+  templateUrl: './notifications-menu.component.html',
+  styleUrl: './notifications-menu.component.scss'
 })
 export class NotificationsMenuComponent {
   public constructor(private notificationService: NotificationService) {}

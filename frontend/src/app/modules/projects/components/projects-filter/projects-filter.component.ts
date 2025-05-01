@@ -25,18 +25,18 @@ interface ProjectsFilterForm {
 }
 
 @Component({
-    selector: 'app-projects-filter',
-    imports: [
-        MatIconModule,
-        ReactiveFormsModule,
-        MatDialogModule,
-        MatRadioModule,
-        MatMenuModule,
-        MatCheckboxModule,
-        TranslateModule,
-    ],
-    templateUrl: './projects-filter.component.html',
-    styleUrl: './projects-filter.component.scss'
+  selector: 'app-projects-filter',
+  imports: [
+    MatIconModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatRadioModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    TranslateModule,
+  ],
+  templateUrl: './projects-filter.component.html',
+  styleUrl: './projects-filter.component.scss'
 })
 export class ProjectsFilterComponent implements OnInit {
   @Input({ required: true }) public filterName!: string;

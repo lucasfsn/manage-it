@@ -8,15 +8,15 @@ import { LoadingService } from '@/app/core/services/loading.service';
 import { SideBarComponent } from '@/app/core/layout/side-bar/side-bar.component';
 
 @Component({
-    selector: 'app-main-layout',
-    imports: [
-        SideBarComponent,
-        RouterOutlet,
-        SpinnerComponent,
-        ConfirmModalComponent,
-    ],
-    templateUrl: './main-layout.component.html',
-    styleUrl: './main-layout.component.scss'
+  selector: 'app-main-layout',
+  imports: [
+    SideBarComponent,
+    RouterOutlet,
+    SpinnerComponent,
+    ConfirmModalComponent,
+  ],
+  templateUrl: './main-layout.component.html',
+  styleUrl: './main-layout.component.scss'
 })
 export class MainLayoutComponent {
   public constructor(

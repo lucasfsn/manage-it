@@ -9,10 +9,10 @@ import { ProjectService } from '@/app/features/services/project.service';
 import { UserService } from '@/app/features/services/user.service';
 
 @Component({
-    selector: 'app-user-project-add-button',
-    imports: [TranslateModule],
-    templateUrl: './user-project-add-button.component.html',
-    styleUrl: './user-project-add-button.component.scss'
+  selector: 'app-user-project-add-button',
+  imports: [TranslateModule],
+  templateUrl: './user-project-add-button.component.html',
+  styleUrl: './user-project-add-button.component.scss'
 })
 export class UserProjectAddButtonComponent implements OnInit {
   protected projectId: string | null = null;
