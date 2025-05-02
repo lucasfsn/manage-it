@@ -89,4 +89,8 @@
   .search-dialog .mat-mdc-dialog-surface {
     border-radius: 0.75rem;
   }
+
+  .scroll-lock {
+    overflow: hidden;
+  }
 }

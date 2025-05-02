@@ -17,6 +17,7 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  HostListener,
   inject,
   OnDestroy,
   OnInit,
@@ -125,6 +126,19 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 
+  @HostListener('window:resize')
+  protected onResize(): void {
+    this.checkWindowSizeAndToggleLock();
+  }
+
+  private checkWindowSizeAndToggleLock(): void {
+    if (window.innerWidth < 400) {
+      document.body.classList.add('scroll-lock');
+    } else {
+      document.body.classList.remove('scroll-lock');
+    }
+  }
+
   public ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.projectId = params.get('projectId');
@@ -132,7 +146,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.loadMessages();
       this.watchTopic();
     });
-    if (window.innerWidth < 400) document.body.style.overflow = 'hidden';
+    this.checkWindowSizeAndToggleLock();
   }
 
   public ngAfterViewChecked(): void {
@@ -141,6 +155,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    document.body.style.overflow = 'auto';
+    document.body.classList.remove('scroll-lock');
   }
 }
