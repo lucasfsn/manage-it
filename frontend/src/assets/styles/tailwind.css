@@ -9,6 +9,7 @@
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
   --font-display: "Poppins", sans-serif;
+  --breakpoint-xs: 25rem;
 }
 
 :root {
@@ -18,8 +19,6 @@
   --secondary: #0f172a;
   --scrollbar-track: #ffedd5;
   --scrollbar-thumb: #fed7aa;
-  --scrollbar-track: #0b1120;
-  --scrollbar-thumb: #0f172a;
   --toast-success: #0ea5e9;
   --toast-error: #831843;
   --toast-error-text: #fbcfe8;

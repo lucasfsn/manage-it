@@ -1,3 +1,10 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { UserCredentials } from '@/app/features/dto/auth.model';
+import { Message } from '@/app/features/dto/chat.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ChatService } from '@/app/features/services/chat.service';
+import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import {
   animate,
   state,
@@ -11,6 +18,7 @@ import {
   DestroyRef,
   ElementRef,
   inject,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -21,13 +29,6 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { UserCredentials } from '@/app/features/dto/auth.model';
-import { Message } from '@/app/features/dto/chat.model';
-import { AuthService } from '@/app/features/services/auth.service';
-import { ChatService } from '@/app/features/services/chat.service';
-import { DatePipe } from '@/app/shared/pipes/date.pipe';
-import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
 
 @Component({
   selector: 'app-chat',
@@ -52,9 +53,9 @@ import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profi
       state('*', style({ transform: 'scale(1)', opacity: 1 })),
       transition('void <=> *', [animate('300ms ease-in-out')]),
     ]),
-  ]
+  ],
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('scroll') private scroll!: ElementRef;
   private destroyRef = inject(DestroyRef);
   private projectId: string | null = null;
@@ -131,10 +132,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.loadMessages();
       this.watchTopic();
     });
+    if (window.innerWidth < 400) document.body.style.overflow = 'hidden';
   }
 
   public ngAfterViewChecked(): void {
     const el = this.scroll.nativeElement as HTMLElement;
     el.scrollTop = el.scrollHeight;
+  }
+
+  public ngOnDestroy(): void {
+    document.body.style.overflow = 'auto';
   }
 }

@@ -71,7 +71,7 @@
       {{ "task.drag-and-drop.labels.IN_PROGRESS" | translate }}
     </h3>
     <div
-      class="flex min-h-[10px] w-full flex-col gap-1"
+      class="flex min-h-2.5 w-full flex-col gap-1"
       #inProgressList="cdkDropList"
       [cdkDropListData]="inProgressTasks"
       [cdkDropListConnectedTo]="[completedList, notStartedList]"
@@ -136,7 +136,7 @@
       {{ "task.drag-and-drop.labels.NOT_STARTED" | translate }}
     </h3>
     <div
-      class="flex min-h-[10px] w-full flex-col gap-1"
+      class="flex min-h-2.5 w-full flex-col gap-1"
       #notStartedList="cdkDropList"
       [cdkDropListData]="notStartedTasks"
       [cdkDropListConnectedTo]="[inProgressList, completedList]"

@@ -2,7 +2,7 @@
   <div class="flex justify-between">
     <div class="flex items-center gap-2">
       <div
-        class="flex aspect-square h-[40px] w-[40px] items-center justify-center rounded-full bg-slate-800 text-slate-300"
+        class="flex aspect-square size-10 items-center justify-center rounded-full bg-slate-800 text-slate-300"
       >
         <mat-icon>manage_accounts</mat-icon>
       </div>
@@ -12,13 +12,13 @@
     </div>
     <button
       (click)="handleClose()"
-      class="focus-visible:text-slate-400 focus-visible:text-opacity-90 focus-visible:outline-hidden"
+      class="focus-visible:text-slate-400/90 focus-visible:outline-hidden"
     >
       <mat-icon>close</mat-icon>
     </button>
   </div>
   <div>
-    <div class="flex max-h-[400px] flex-col gap-1 overflow-y-scroll px-1">
+    <div class="flex max-h-96 flex-col gap-1 overflow-y-auto px-1">
       @for (member of members; track member.username) {
         <button
           class="flex cursor-pointer items-center justify-between rounded-full p-2 transition-colors hover:bg-slate-700 focus-visible:bg-slate-700 focus-visible:outline-hidden disabled:cursor-not-allowed"
@@ -39,7 +39,7 @@
           </p>
           @if (!(project?.owner?.username === member.username)) {
             <button
-              class="flex items-center justify-center rounded-full bg-pink-900 p-0.5 text-pink-200 transition-all hover:bg-pink-950 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-200"
+              class="flex items-center justify-center rounded-full bg-pink-900 p-0.5 text-pink-200 transition-all hover:bg-pink-950 focus-visible:ring-2 focus-visible:ring-pink-200 focus-visible:outline-hidden"
               (click)="handleRemove(member); $event.stopPropagation()"
             >
               <mat-icon>delete</mat-icon>

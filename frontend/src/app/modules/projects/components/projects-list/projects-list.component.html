@@ -21,7 +21,7 @@
 <div class="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-4">
   @for (project of sortedAndFilteredProjects; track project.id) {
     <div
-      class="flex cursor-pointer flex-col justify-between gap-4 rounded-lg bg-orange-100 p-4 shadow-xs transition-all hover:bg-orange-200 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 active:bg-opacity-70 dark:bg-slate-900 dark:hover:bg-opacity-70"
+      class="flex cursor-pointer flex-col justify-between gap-4 rounded-lg bg-orange-100 p-4 shadow-xs transition-all hover:bg-orange-200 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-hidden active:bg-orange-100/70 dark:bg-slate-900 dark:hover:bg-slate-900/70 dark:active:bg-slate-900/70"
       routerLink="/projects/{{ project.id }}"
     >
       <div class="flex h-full flex-col justify-between gap-2">
@@ -31,7 +31,7 @@
           >
             {{ project.name }}
             <span
-              class="aspect-square h-[15px] rounded-full"
+              class="size-3.75 self-start rounded-full"
               [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
               [class.bg-orange-400]="
                 project.status === ProjectStatus.IN_PROGRESS
@@ -44,7 +44,7 @@
           </p>
         </div>
         <div
-          class="flex flex-col rounded-lg bg-orange-100 px-2 py-1 text-sm text-gray-700 dark:bg-slate-950 dark:text-gray-400"
+          class="flex flex-col rounded-lg bg-orange-200/30 px-2 py-1 text-sm text-gray-700 dark:bg-slate-950 dark:text-gray-400"
         >
           <p>
             {{ "projects.list.START_DATE_TEXT" | translate }}
