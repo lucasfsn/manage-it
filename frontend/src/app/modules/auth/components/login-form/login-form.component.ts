@@ -1,3 +1,8 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { AuthService } from '@/app/features/services/auth.service';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { passwordValidator } from '@/app/shared/validators';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -9,11 +14,6 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
-import { AuthService } from '@/app/features/services/auth.service';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
-import { passwordValidator } from '@/app/shared/validators';
 
 interface LoginForm {
   readonly email: FormControl<string | null>;
@@ -29,7 +29,7 @@ interface LoginForm {
     FormButtonComponent,
   ],
   templateUrl: './login-form.component.html',
-  styleUrl: './login-form.component.scss'
+  styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
@@ -42,18 +42,21 @@ export class LoginFormComponent implements OnInit {
     private mapperService: MapperService,
   ) {}
 
-  protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>({
-    email: new FormControl('', {
-      validators: [Validators.required, Validators.email],
-    }),
-    password: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(8),
-        passwordValidator,
-      ],
-    }),
-  });
+  protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>(
+    {
+      email: new FormControl('', {
+        validators: [Validators.required, Validators.email],
+      }),
+      password: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(8),
+          passwordValidator,
+        ],
+      }),
+    },
+    { updateOn: 'blur' },
+  );
 
   protected get emailIsInvalid(): boolean {
     return (

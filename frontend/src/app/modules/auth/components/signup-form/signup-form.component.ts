@@ -1,3 +1,14 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { RegisterCredentials } from '@/app/features/dto/auth.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import {
+  equalValues,
+  nameValidator,
+  passwordValidator,
+  usernameValidator,
+} from '@/app/shared/validators';
 import { Component } from '@angular/core';
 import {
   FormControl,
@@ -10,17 +21,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
-import { RegisterCredentials } from '@/app/features/dto/auth.model';
-import { AuthService } from '@/app/features/services/auth.service';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
-import {
-  equalValues,
-  nameValidator,
-  passwordValidator,
-  usernameValidator,
-} from '@/app/shared/validators';
 
 interface PasswordsForm {
   readonly password: FormControl<string | null>;
@@ -46,7 +46,7 @@ interface SignupForm {
     MatTooltipModule,
     TranslateModule,
     FormButtonComponent,
-  ]
+  ],
 })
 export class SignupFormComponent {
   protected loading: boolean = false;
@@ -55,51 +55,54 @@ export class SignupFormComponent {
     private authService: AuthService,
     private toastrService: ToastrService,
     private mapperService: MapperService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
   ) {}
 
-  protected form: FormGroup<SignupForm> = new FormGroup<SignupForm>({
-    firstName: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50),
-        nameValidator,
-      ],
-    }),
-    lastName: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50),
-        nameValidator,
-      ],
-    }),
-    username: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(30),
-        usernameValidator,
-      ],
-    }),
-    email: new FormControl('', {
-      validators: [Validators.required, Validators.email],
-    }),
-    passwords: new FormGroup<PasswordsForm>(
-      {
-        password: new FormControl('', {
-          validators: [Validators.required, passwordValidator],
-        }),
-        confirmPassword: new FormControl('', {
-          validators: [Validators.required, passwordValidator],
-        }),
-      },
-      {
-        validators: [equalValues('password', 'confirmPassword')],
-      }
-    ),
-  });
+  protected form: FormGroup<SignupForm> = new FormGroup<SignupForm>(
+    {
+      firstName: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          nameValidator,
+        ],
+      }),
+      lastName: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          nameValidator,
+        ],
+      }),
+      username: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(30),
+          usernameValidator,
+        ],
+      }),
+      email: new FormControl('', {
+        validators: [Validators.required, Validators.email],
+      }),
+      passwords: new FormGroup<PasswordsForm>(
+        {
+          password: new FormControl('', {
+            validators: [Validators.required, passwordValidator],
+          }),
+          confirmPassword: new FormControl('', {
+            validators: [Validators.required, passwordValidator],
+          }),
+        },
+        {
+          validators: [equalValues('password', 'confirmPassword')],
+        },
+      ),
+    },
+    { updateOn: 'blur' },
+  );
 
   protected get firstNameIsInvalid(): boolean {
     return (
@@ -147,136 +150,103 @@ export class SignupFormComponent {
 
   protected get firstNameErrors(): string | null {
     const control = this.form.controls.firstName;
-    if (control.errors) {
-      if (control.errors['required']) {
-        return this.translationService.translate(
-          'signupForm.FIRST_NAME_REQUIRED'
-        );
-      }
-      if (control.errors['minlength']) {
-        return `${this.translationService.translate(
-          'signupForm.FIRST_NAME_MIN_LENGTH_BEFORE'
-        )} ${
-          control.errors['minlength'].requiredLength
-        } ${this.translationService.translate(
-          'signupForm.FIRST_NAME_MIN_LENGTH_AFTER'
-        )}`;
-      }
-      if (control.errors['maxlength']) {
-        return `${this.translationService.translate(
-          'signupForm.FIRST_NAME_MAX_LENGTH_BEFORE'
-        )} ${
-          control.errors['maxlength'].requiredLength
-        } ${this.translationService.translate(
-          'signupForm.FIRST_NAME_MAX_LENGTH_AFTER'
-        )}`;
-      }
-      if (control.errors['invalidName']) {
-        return this.translationService.translate(
-          'signupForm.FIRST_NAME_INVALID'
-        );
-      }
-    }
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate(
+        'signupForm.FIRST_NAME_REQUIRED',
+      );
+
+    if (control.errors['minlength'])
+      return this.translationService.translate(
+        'signupForm.FIRST_NAME_MIN_LENGTH',
+        { minLength: control.errors['minlength'].requiredLength },
+      );
+
+    if (control.errors['maxlength'])
+      return this.translationService.translate(
+        'signupForm.FIRST_NAME_MAX_LENGTH',
+        { maxLength: control.errors['maxlength'].requiredLength },
+      );
+
+    if (control.errors['invalidName'])
+      return this.translationService.translate('signupForm.FIRST_NAME_INVALID');
 
     return null;
   }
 
   protected get lastNameErrors(): string | null {
     const control = this.form.controls.lastName;
-    if (control.errors) {
-      if (control.errors['required']) {
-        return this.translationService.translate(
-          'signupForm.LAST_NAME_REQUIRED'
-        );
-      }
-      if (control.errors['minlength']) {
-        return `${this.translationService.translate(
-          'signupForm.LAST_NAME_MIN_LENGTH_BEFORE'
-        )} ${
-          control.errors['minlength'].requiredLength
-        } ${this.translationService.translate(
-          'signupForm.LAST_NAME_MIN_LENGTH_AFTER'
-        )}`;
-      }
-      if (control.errors['maxlength']) {
-        return `${this.translationService.translate(
-          'signupForm.LAST_NAME_MAX_LENGTH_BEFORE'
-        )} ${
-          control.errors['maxlength'].requiredLength
-        } ${this.translationService.translate(
-          'signupForm.LAST_NAME_MAX_LENGTH_AFTER'
-        )}`;
-      }
-      if (control.errors['invalidName']) {
-        return this.translationService.translate(
-          'signupForm.LAST_NAME_INVALID'
-        );
-      }
-    }
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate('signupForm.LAST_NAME_REQUIRED');
+
+    if (control.errors['minlength'])
+      return this.translationService.translate(
+        'signupForm.LAST_NAME_MIN_LENGTH',
+        { minLength: control.errors['minlength'].requiredLength },
+      );
+
+    if (control.errors['maxlength'])
+      return this.translationService.translate(
+        'signupForm.LAST_NAME_MAX_LENGTH',
+        { minLength: control.errors['maxlength'].requiredLength },
+      );
+
+    if (control.errors['invalidName'])
+      return this.translationService.translate('signupForm.LAST_NAME_INVALID');
 
     return null;
   }
 
   protected get usernameErrors(): string | null {
     const control = this.form.controls.username;
-    if (control.errors) {
-      if (control.errors['required']) {
-        return this.translationService.translate(
-          'signupForm.USERNAME_REQUIRED'
-        );
-      }
-      if (control.errors['minlength']) {
-        return `${this.translationService.translate(
-          'signupForm.USERNAME_MIN_LENGTH_BEFORE'
-        )} ${
-          control.errors['minlength'].requiredLength
-        } ${this.translationService.translate(
-          'signupForm.USERNAME_MIN_LENGTH_AFTER'
-        )}`;
-      }
-      if (control.errors['maxlength']) {
-        return `${this.translationService.translate(
-          'signupForm.USERNAME_MAX_LENGTH_BEFORE'
-        )} ${
-          control.errors['maxlength'].requiredLength
-        } ${this.translationService.translate(
-          'signupForm.USERNAME_MAX_LENGTH_AFTER'
-        )}`;
-      }
-      if (control.errors['invalidUsername']) {
-        return this.translationService.translate('signupForm.USERNAME_INVALID');
-      }
-    }
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate('signupForm.USERNAME_REQUIRED');
+
+    if (control.errors['minlength'])
+      return this.translationService.translate(
+        'signupForm.USERNAME_MIN_LENGTH',
+        { minLength: control.errors['minlength'].requiredLength },
+      );
+
+    if (control.errors['maxlength'])
+      return this.translationService.translate(
+        'signupForm.USERNAME_MIN_LENGTH',
+        { minLength: control.errors['maxlength'].requiredLength },
+      );
+
+    if (control.errors['invalidUsername'])
+      return this.translationService.translate('signupForm.USERNAME_INVALID');
 
     return null;
   }
 
   protected get emailErrors(): string | null {
     const control = this.form.controls.email;
-    if (control.errors) {
-      if (control.errors['required']) {
-        return this.translationService.translate('signupForm.EMAIL_REQUIRED');
-      }
-      if (control.errors['email']) {
-        return this.translationService.translate('signupForm.EMAIL_INVALID');
-      }
-    }
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate('signupForm.EMAIL_REQUIRED');
+
+    if (control.errors['email'])
+      return this.translationService.translate('signupForm.EMAIL_INVALID');
 
     return null;
   }
 
   protected get passwordErrors(): string | null {
     const control = this.form.controls.passwords.get('password');
-    if (control?.errors) {
-      if (control.errors['required']) {
-        return this.translationService.translate(
-          'signupForm.PASSWORD_REQUIRED'
-        );
-      }
-      if (control.errors['invalidPassword']) {
-        return this.translationService.translate('signupForm.PASSWORD_INVALID');
-      }
-    }
+    if (!control?.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate('signupForm.PASSWORD_REQUIRED');
+
+    if (control.errors['invalidPassword'])
+      return this.translationService.translate('signupForm.PASSWORD_INVALID');
 
     return null;
   }
@@ -298,14 +268,14 @@ export class SignupFormComponent {
     this.authService.register(registerCredentials).subscribe({
       next: () => {
         this.toastrService.success(
-          this.translationService.translate('toast.success.SIGNUP')
+          this.translationService.translate('toast.success.SIGNUP'),
         );
       },
       error: (error) => {
         const localeMessage = this.mapperService.errorToastMapper(
           error.status,
           error.error.errorDescription,
-          error.error.message
+          error.error.message,
         );
         this.toastrService.error(localeMessage);
         this.loading = false;
