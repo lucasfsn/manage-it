@@ -8,8 +8,16 @@
   /* Main color palette */
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
+
+  /* Fonts */
   --font-display: "Poppins", sans-serif;
+
+  /* Breakpoints */
   --breakpoint-xs: 25rem;
+
+  /* Background Images */
+  --background-image-main-gradient: url("/assets/images/bg.webp");
+  --background-image-main-gradient-light: url("/assets/images/bg-light.webp");
 }
 
 :root {

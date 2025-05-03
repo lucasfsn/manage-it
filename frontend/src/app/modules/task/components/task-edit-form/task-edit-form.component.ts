@@ -1,3 +1,13 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import {
+  Priority,
+  Task,
+  TaskData,
+  TaskStatus,
+} from '@/app/features/dto/task.model';
+import { TaskService } from '@/app/features/services/task.service';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -9,16 +19,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
-import {
-  Priority,
-  Task,
-  TaskData,
-  TaskStatus,
-} from '@/app/features/dto/task.model';
-import { TaskService } from '@/app/features/services/task.service';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
 
 interface TaskEditForm {
   readonly description: FormControl<string | null>;
@@ -36,7 +36,7 @@ interface TaskEditForm {
     FormButtonComponent,
   ],
   templateUrl: './task-edit-form.component.html',
-  styleUrl: './task-edit-form.component.scss'
+  styleUrl: './task-edit-form.component.scss',
 })
 export class TaskEditFormComponent implements OnInit {
   protected loading = false;
@@ -46,25 +46,28 @@ export class TaskEditFormComponent implements OnInit {
     private toastrService: ToastrService,
     private dialogRef: MatDialogRef<TaskEditFormComponent>,
     private mapperService: MapperService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
   ) {}
 
-  protected form: FormGroup<TaskEditForm> = new FormGroup<TaskEditForm>({
-    description: new FormControl('', [
-      Validators.minLength(2),
-      Validators.maxLength(120),
-      Validators.required,
-    ]),
-    status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED, {
-      validators: [Validators.required],
-    }),
-    priority: new FormControl<Priority | null>(Priority.LOW, {
-      validators: [Validators.required],
-    }),
-    dueDate: new FormControl('', {
-      validators: [Validators.required],
-    }),
-  });
+  protected form: FormGroup<TaskEditForm> = new FormGroup<TaskEditForm>(
+    {
+      description: new FormControl('', [
+        Validators.minLength(2),
+        Validators.maxLength(120),
+        Validators.required,
+      ]),
+      status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED, {
+        validators: [Validators.required],
+      }),
+      priority: new FormControl<Priority | null>(Priority.LOW, {
+        validators: [Validators.required],
+      }),
+      dueDate: new FormControl('', {
+        validators: [Validators.required],
+      }),
+    },
+    { updateOn: 'blur' },
+  );
 
   protected get disabled(): boolean {
     return this.form.invalid || !this.isFormChanged() || this.loading;
@@ -162,7 +165,7 @@ export class TaskEditFormComponent implements OnInit {
     this.taskService.updateTask(projectId, id, updatedTask).subscribe({
       next: () => {
         this.toastrService.success(
-          this.translationService.translate('toast.success.TASK_UPDATED')
+          this.translationService.translate('toast.success.TASK_UPDATED'),
         );
         this.closeDialog();
       },

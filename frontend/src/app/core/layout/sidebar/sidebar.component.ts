@@ -1,3 +1,6 @@
+import { UserCredentials } from '@/app/features/dto/auth.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { SearchComponent } from '@/app/shared/components/search/search.component';
 import {
   animate,
   state,
@@ -10,24 +13,24 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserCredentials } from '@/app/features/dto/auth.model';
-import { AuthService } from '@/app/features/services/auth.service';
-import { SearchComponent } from '@/app/shared/components/search/search.component';
 
 @Component({
-  selector: 'app-side-bar',
+  selector: 'app-sidebar',
   imports: [MatIconModule, RouterLink, RouterLinkActive, TranslateModule],
   animations: [
     trigger('toggleMenu', [
       state('collapsed', style({ width: '0', opacity: 0, padding: 0 })),
-      state('expanded', style({ width: '*', opacity: 1, padding: '0 0 0 0.75rem' })),
+      state(
+        'expanded',
+        style({ width: '*', opacity: 1, padding: '0 0 0 0.75rem' }),
+      ),
       transition('collapsed <=> expanded', [animate('300ms ease-in-out')]),
     ]),
   ],
-  templateUrl: './side-bar.component.html',
-  styleUrl: './side-bar.component.scss'
+  templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.scss',
 })
-export class SideBarComponent implements OnInit {
+export class SidebarComponent implements OnInit {
   public isCollapsed = false;
 
   public constructor(

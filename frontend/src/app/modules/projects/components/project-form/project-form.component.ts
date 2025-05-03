@@ -1,3 +1,10 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { Project, ProjectRequest } from '@/app/features/dto/project.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { ButtonComponent } from '@/app/shared/components/button/button.component';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { endDateValidator, startDateValidator } from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -9,19 +16,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
-import {
-  Project,
-  ProjectRequest,
-} from '@/app/features/dto/project.model';
-import { ProjectService } from '@/app/features/services/project.service';
-import { ButtonComponent } from '@/app/shared/components/button/button.component';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
-import {
-  endDateValidator,
-  startDateValidator,
-} from '@/app/shared/validators';
 
 interface RouteData {
   readonly isEditing: boolean;
@@ -48,7 +42,7 @@ interface ProjectForm {
     ButtonComponent,
   ],
   templateUrl: './project-form.component.html',
-  styleUrl: './project-form.component.scss'
+  styleUrl: './project-form.component.scss',
 })
 export class ProjectFormComponent implements OnInit {
   protected loading = false;
@@ -71,35 +65,38 @@ export class ProjectFormComponent implements OnInit {
     return this.isEditing ? null : this.today();
   }
 
-  protected form: FormGroup<ProjectForm> = new FormGroup<ProjectForm>({
-    name: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50),
-      ],
-    }),
-    description: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(120),
-      ],
-    }),
-    dates: new FormGroup<DatesForm>(
-      {
-        startDate: new FormControl('', {
-          validators: [Validators.required],
-        }),
-        endDate: new FormControl('', {
-          validators: [Validators.required],
-        }),
-      },
-      {
-        validators: [endDateValidator('startDate', 'endDate')],
-      },
-    ),
-  });
+  protected form: FormGroup<ProjectForm> = new FormGroup<ProjectForm>(
+    {
+      name: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      }),
+      description: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(120),
+        ],
+      }),
+      dates: new FormGroup<DatesForm>(
+        {
+          startDate: new FormControl('', {
+            validators: [Validators.required],
+          }),
+          endDate: new FormControl('', {
+            validators: [Validators.required],
+          }),
+        },
+        {
+          validators: [endDateValidator('startDate', 'endDate')],
+        },
+      ),
+    },
+    { updateOn: 'blur' },
+  );
 
   protected get disabled(): boolean {
     return (

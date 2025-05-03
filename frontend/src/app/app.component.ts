@@ -1,4 +1,4 @@
-import { HeaderComponent } from '@/app/core/layout/header/header.component';
+import { NavbarComponent } from '@/app/core/layout/navbar/navbar.component';
 import { Theme, ThemeService } from '@/app/core/services/theme.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { Component, effect, OnInit, Renderer2 } from '@angular/core';
@@ -17,7 +17,7 @@ interface RouteData {
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

@@ -1,3 +1,12 @@
+import {
+  Language,
+  LanguageCode,
+  LANGUAGES,
+} from '@/app/config/language.config';
+import { Theme, ThemeService } from '@/app/core/services/theme.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ThemeToggleComponent } from '@/app/shared/components/theme-toggle/theme-toggle.component';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -5,18 +14,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import {
-  Language,
-  LanguageCode,
-  LANGUAGES,
-} from '@/app/config/language.config';
-import { AuthService } from '@/app/features/services/auth.service';
-import { ThemeToggleComponent } from '@/app/shared/components/theme-toggle/theme-toggle.component';
-import { Theme, ThemeService } from '@/app/core/services/theme.service';
-import { TranslationService } from '@/app/core/services/translation.service';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-navbar',
   imports: [
     RouterLink,
     RouterLinkActive,
@@ -26,17 +26,17 @@ import { TranslationService } from '@/app/core/services/translation.service';
     TranslateModule,
     ThemeToggleComponent,
   ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.scss',
 })
-export class HeaderComponent {
+export class NavbarComponent {
   protected languages: Language[] = LANGUAGES;
 
   public constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
     private translationService: TranslationService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
   ) {}
 
   protected get language(): LanguageCode {
@@ -54,7 +54,7 @@ export class HeaderComponent {
   protected logout(): void {
     this.authService.logout();
     this.toastrService.success(
-      this.translationService.translate('toast.success.LOGOUT')
+      this.translationService.translate('toast.success.LOGOUT'),
     );
   }
 
@@ -64,7 +64,7 @@ export class HeaderComponent {
 
   protected languageText(code: LanguageCode): string {
     return this.translationService.translate(
-      `header.LANGUAGE_${code.toUpperCase()}`
+      `header.LANGUAGE_${code.toUpperCase()}`,
     );
   }
 }

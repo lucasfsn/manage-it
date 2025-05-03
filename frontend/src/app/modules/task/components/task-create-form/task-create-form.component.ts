@@ -1,3 +1,15 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import {
+  Priority,
+  Task,
+  TaskData,
+  TaskStatus,
+} from '@/app/features/dto/task.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { TaskService } from '@/app/features/services/task.service';
+import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { dueDateValidator } from '@/app/shared/validators';
 import { Component, inject } from '@angular/core';
 import {
   FormControl,
@@ -14,18 +26,6 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
-import {
-  Priority,
-  Task,
-  TaskData,
-  TaskStatus,
-} from '@/app/features/dto/task.model';
-import { ProjectService } from '@/app/features/services/project.service';
-import { TaskService } from '@/app/features/services/task.service';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
-import { dueDateValidator } from '@/app/shared/validators';
 
 interface TaskCreateForm {
   readonly description: FormControl<string | null>;
@@ -43,12 +43,12 @@ interface TaskCreateForm {
     FormButtonComponent,
   ],
   templateUrl: './task-create-form.component.html',
-  styleUrl: './task-create-form.component.scss'
+  styleUrl: './task-create-form.component.scss',
 })
 export class TaskCreateFormComponent {
   protected loading = false;
   protected selectedStatus = inject<{ selectedStatus: TaskStatus }>(
-    MAT_DIALOG_DATA
+    MAT_DIALOG_DATA,
   ).selectedStatus;
 
   public constructor(
@@ -58,7 +58,7 @@ export class TaskCreateFormComponent {
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<TaskCreateFormComponent>,
     private mapperService: MapperService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
   ) {}
 
   protected get TaskStatus(): typeof TaskStatus {
@@ -73,21 +73,24 @@ export class TaskCreateFormComponent {
     return new Date().toISOString().split('T')[0];
   }
 
-  protected form: FormGroup<TaskCreateForm> = new FormGroup<TaskCreateForm>({
-    description: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(120),
-      ],
-    }),
-    dueDate: new FormControl(this.getToday(), {
-      validators: [Validators.required, dueDateValidator],
-    }),
-    priority: new FormControl<Priority | null>(Priority.LOW, {
-      validators: [Validators.required],
-    }),
-  });
+  protected form: FormGroup<TaskCreateForm> = new FormGroup<TaskCreateForm>(
+    {
+      description: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(120),
+        ],
+      }),
+      dueDate: new FormControl(this.getToday(), {
+        validators: [Validators.required, dueDateValidator],
+      }),
+      priority: new FormControl<Priority | null>(Priority.LOW, {
+        validators: [Validators.required],
+      }),
+    },
+    { updateOn: 'blur' },
+  );
 
   protected get descriptionIsInvalid(): boolean {
     return (
@@ -145,7 +148,7 @@ export class TaskCreateFormComponent {
         this.loading = false;
         this.dialogRef.close(newTask);
         this.toastrService.success(
-          this.translationService.translate('toast.success.TASK_ADDED')
+          this.translationService.translate('toast.success.TASK_ADDED'),
         );
       },
       error: () => {
