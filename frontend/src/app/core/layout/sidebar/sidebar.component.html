@@ -1,9 +1,9 @@
 <nav
-  class="grid h-full grid-cols-1 justify-start gap-3 shadow-xs lg:grid-rows-[auto_auto_1fr]"
+  class="grid h-full grid-cols-1 justify-start gap-3 overflow-hidden shadow-xs lg:grid-rows-[auto_auto_1fr]"
 >
   <button
     (click)="toggleSidebar()"
-    class="col-span-2 ml-3 hidden rounded-full bg-sky-500 transition-all hover:bg-sky-600 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-slate-300 xl:flex"
+    class="col-span-2 ml-3 hidden rounded-full bg-sky-500 transition-all hover:bg-sky-600 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-hidden xl:flex"
     [class.justify-self-end]="!isCollapsed"
     [class.justify-self-start]="isCollapsed"
   >
