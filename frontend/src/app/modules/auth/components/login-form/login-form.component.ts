@@ -2,7 +2,6 @@ import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { AuthService } from '@/app/features/services/auth.service';
 import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
-import { passwordValidator } from '@/app/shared/validators';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -48,11 +47,7 @@ export class LoginFormComponent implements OnInit {
         validators: [Validators.required, Validators.email],
       }),
       password: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.minLength(8),
-          passwordValidator,
-        ],
+        validators: [Validators.required],
       }),
     },
     { updateOn: 'blur' },
@@ -76,22 +71,16 @@ export class LoginFormComponent implements OnInit {
 
   protected get passwordErrors(): string | null {
     const control = this.form.controls.password;
-    if (control.errors) {
-      if (control.errors['required']) {
-        return this.translationService.translate('loginForm.PASSWORD_REQUIRED');
-      }
-      if (control.errors['invalidPassword']) {
-        return this.translationService.translate('loginForm.PASSWORD_INVALID');
-      }
-    }
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate('loginForm.PASSWORD_REQUIRED');
 
     return null;
   }
 
   protected onSubmit(): void {
-    if (this.form.invalid) {
-      return;
-    }
+    if (this.form.invalid) return;
 
     const email = this.form.value.email ?? '';
     const password = this.form.value.password ?? '';
