@@ -10,7 +10,7 @@ test('check if chat is working correctly', async ({ page }) => {
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + 31);
 
-  const formatDate = (date: Date) => date.toISOString().split('T')[0];
+  const formatDate = (date: Date): string => date.toISOString().split('T')[0];
   const startDateStr = formatDate(startDate);
   const endDateStr = formatDate(endDate);
 
@@ -94,7 +94,6 @@ test('check if chat is working correctly', async ({ page }) => {
   await page.getByRole('button').filter({ hasText: 'delete' }).click();
   await expect(page.locator('div').filter({ hasText: 'Are you sure you want to' }).nth(2)).toBeVisible();
   await page.getByRole('button', { name: 'Yes' }).click();
-  // await expect(page.getByLabel('Project has been deleted')).toContainText('Project has been deleted');
   await expect(page.getByRole('alert', { name: 'Project has been deleted' })).toBeVisible();
 
   // usunięcie powiadomień (jeśli są)

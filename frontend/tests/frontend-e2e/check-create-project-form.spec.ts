@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../helpers/login';
 
-const global_today = new Date().toISOString().split('T')[0];
+const globalToday = new Date().toISOString().split('T')[0];
 
 test('create project form with invalid data', async ({ page }) => {
   await login(page, 'johndoe@mail.com', '1qazXSW@');
@@ -26,7 +26,7 @@ test('create project form with invalid data', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Start Date' }).fill('2025-03-01');
   await expect(page.locator('form')).toContainText('Start date must be at least today.');
   await page.getByRole('textbox', { name: 'End Date' }).fill('2025-03-26');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill(global_today);
+  await page.getByRole('textbox', { name: 'Start Date' }).fill(globalToday);
   await expect(page.locator('form')).toContainText('End date cannot be earlier than the start date.');
 
   await page.getByRole('button', { name: 'Create Project' }).waitFor();
@@ -57,13 +57,13 @@ test('check if reset form button is working', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Start Date' }).fill('2025-03-01');
   await expect(page.locator('form')).toContainText('Start date must be at least today.');
   await page.getByRole('textbox', { name: 'End Date' }).fill('2025-03-26');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill(global_today);
+  await page.getByRole('textbox', { name: 'Start Date' }).fill(globalToday);
   await expect(page.locator('form')).toContainText('End date cannot be earlier than the start date.');
 
   // sprawdź działanie przycisku do resetowania danych
   await page.getByRole('button', { name: 'Reset' }).click();
   await expect(page.getByRole('textbox', { name: 'Title' })).toBeEmpty();
   await expect(page.getByRole('textbox', { name: 'Description' })).toBeEmpty();
-  await expect(page.getByRole('textbox', { name: 'Start Date' })).toHaveValue(global_today);
-  await expect(page.getByRole('textbox', { name: 'End Date' })).toHaveValue(global_today);
+  await expect(page.getByRole('textbox', { name: 'Start Date' })).toHaveValue(globalToday);
+  await expect(page.getByRole('textbox', { name: 'End Date' })).toHaveValue(globalToday);
 });
