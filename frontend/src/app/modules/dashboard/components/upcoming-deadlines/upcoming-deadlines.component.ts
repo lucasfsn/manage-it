@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { Project, ProjectStatus } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-upcoming-deadlines',
   imports: [DatePipe, RouterLink, TranslateModule],
   templateUrl: './upcoming-deadlines.component.html',
-  styleUrl: './upcoming-deadlines.component.scss'
+  styleUrl: './upcoming-deadlines.component.scss',
 })
 export class UpcomingDeadlinesComponent {
   public constructor(
     private projectService: ProjectService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
   ) {}
 
   protected get projects(): Project[] {
@@ -24,30 +24,24 @@ export class UpcomingDeadlinesComponent {
       .filter(
         (project) =>
           this.isUpcomingDeadline(project.endDate) &&
-          project.status !== ProjectStatus.COMPLETED
+          project.status !== ProjectStatus.COMPLETED,
       );
   }
 
   protected sortedProjectsByEndDate(): Project[] {
-    return [...this.projects].sort(
-      (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+    return this.projects.toSorted(
+      (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime(),
     );
   }
 
   protected deadlineClass(endDate: string, status: ProjectStatus): string {
-    if (status === ProjectStatus.COMPLETED) {
-      return 'text-sky-500';
-    }
+    if (status === ProjectStatus.COMPLETED) return 'text-sky-500';
 
     const daysLeft = this.calculateDaysLeft(endDate);
 
-    if (daysLeft <= 3) {
-      return 'text-red-500';
-    }
+    if (daysLeft <= 1) return 'text-red-500';
 
-    if (daysLeft <= 7) {
-      return 'text-yellow-500';
-    }
+    if (daysLeft <= 7) return 'text-yellow-500';
 
     return 'text-green-500';
   }
@@ -57,15 +51,22 @@ export class UpcomingDeadlinesComponent {
 
     const daysLeft = this.calculateDaysLeft(endDate);
 
-    if (daysLeft === 1) {
+    if (daysLeft === 0)
       return this.translationService.translate(
-        'dashboard.upcomingDeadlines.DAY_LEFT'
+        'dashboard.upcomingDeadlines.TODAY',
       );
-    }
 
-    return `${daysLeft} ${this.translationService.translate(
-      'dashboard.upcomingDeadlines.DAYS_LEFT'
-    )}`;
+    if (daysLeft === 1)
+      return this.translationService.translate(
+        'dashboard.upcomingDeadlines.DAY_LEFT',
+      );
+
+    return this.translationService.translate(
+      'dashboard.upcomingDeadlines.DAYS_LEFT',
+      {
+        daysLeft,
+      },
+    );
   }
 
   protected calculateDaysLeft(endDate: string): number {
@@ -79,6 +80,6 @@ export class UpcomingDeadlinesComponent {
   private isUpcomingDeadline(endDate: string): boolean {
     const daysLeft = this.calculateDaysLeft(endDate);
 
-    return daysLeft > 0 && daysLeft <= 30;
+    return daysLeft >= 0 && daysLeft <= 30;
   }
 }

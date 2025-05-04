@@ -69,8 +69,9 @@
       "TITLE": "Nadchodzące terminy",
       "NO_DEADLINES": "Brak nadchodzących terminów",
       "DEADLINE_TEXT": "Termin:",
-      "DAY_LEFT": "1 dzień",
-      "DAYS_LEFT": "dni"
+      "DAY_LEFT": "Jutro",
+      "DAYS_LEFT": "{{daysLeft}} dni",
+      "TODAY": "Dzisiaj"
     },
     "projectsSummary": {
       "TITLE": "Podsumowanie projektów",

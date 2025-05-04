@@ -1,8 +1,8 @@
+import { Notification } from '@/app/features/dto/notification.model';
+import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
-import { environment } from '@/environments/environment';
-import { Notification } from '@/app/features/dto/notification.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,16 +19,16 @@ export class NotificationService {
       .get<Notification[]>(`${environment.apiUrl}/notifications`)
       .pipe(
         map((notifications: Notification[]) =>
-          [...notifications].sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-          )
+          notifications.toSorted(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+          ),
         ),
         tap((sortedNotifications: Notification[]) => {
           this.notifications.set(sortedNotifications);
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -36,7 +36,7 @@ export class NotificationService {
     const prevNotifications = this.notifications();
 
     const updatedNotifications = this.notifications().filter(
-      (notification) => notification.id !== notificationId
+      (notification) => notification.id !== notificationId,
     );
 
     this.notifications.set(updatedNotifications);
@@ -50,7 +50,7 @@ export class NotificationService {
           this.notifications.set(prevNotifications);
 
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -68,7 +68,7 @@ export class NotificationService {
           this.notifications.set(prevNotifications);
 
           return throwError(() => err);
-        })
+        }),
       );
   }
 }

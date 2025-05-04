@@ -1,20 +1,20 @@
-import { DecimalPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { Project, ProjectStatus } from '@/app/features/dto/project.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
-import { DatePipe } from '@/app/shared/pipes/date.pipe';
-import { enumValueValidator } from '@/app/shared/validators';
+import { ProjectsFilterComponent } from '@/app/modules/projects/components/projects-filter/projects-filter.component';
+import { ProjectsSortComponent } from '@/app/modules/projects/components/projects-sort/projects-sort.component';
 import { ProjectsFilters } from '@/app/modules/projects/models/projects-filter.model';
 import {
   ProjectsSort,
   SortCriteria,
   SortOrder,
 } from '@/app/modules/projects/models/projects-sort.model';
-import { ProjectsFilterComponent } from '@/app/modules/projects/components/projects-filter/projects-filter.component';
-import { ProjectsSortComponent } from '@/app/modules/projects/components/projects-sort/projects-sort.component';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { enumValueValidator } from '@/app/shared/validators';
+import { DecimalPipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface ProjectsParams extends Params {
   readonly sort?: SortCriteria;
@@ -35,7 +35,7 @@ interface ProjectsParams extends Params {
     ProjectsFilterComponent,
   ],
   templateUrl: './projects-list.component.html',
-  styleUrl: './projects-list.component.scss'
+  styleUrl: './projects-list.component.scss',
 })
 export class ProjectsListComponent implements OnInit {
   protected sortedAndFilteredProjects: Project[] = [];
@@ -51,7 +51,7 @@ export class ProjectsListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
   ) {}
 
   protected get projects(): Project[] {
@@ -81,7 +81,7 @@ export class ProjectsListComponent implements OnInit {
   }
 
   private sortProjects(projects: Project[]): Project[] {
-    return [...projects].sort((a, b) => {
+    return projects.toSorted((a, b) => {
       let comparison = 0;
       switch (this.sortCriteria) {
       case SortCriteria.NAME:

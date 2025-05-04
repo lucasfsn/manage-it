@@ -69,8 +69,9 @@
       "TITLE": "Upcoming deadlines",
       "NO_DEADLINES": "No upcoming deadlines",
       "DEADLINE_TEXT": "Deadline:",
-      "DAY_LEFT": "1 day left",
-      "DAYS_LEFT": "days left"
+      "DAY_LEFT": "Tomorrow",
+      "DAYS_LEFT": "{{daysLeft}} days left",
+      "TODAY": "Today"
     },
     "projectsSummary": {
       "TITLE": "Projects summary",
