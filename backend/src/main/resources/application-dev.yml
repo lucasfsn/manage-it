@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/manageit_database
+    url: jdbc:postgresql://database:5432/manageit_database
     username: my_user
     password: my_password
     driver-class-name: org.postgresql.Driver

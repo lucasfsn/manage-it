@@ -22,6 +22,9 @@ If you have made any changes to database or frontend, adjust the configuration i
   - **jwt.secret-key**: Update it if you want your own secret key.
   - **frontend.url**
 
+> **Note:** If you want to run the backend outside of the container, make sure to adjust the `spring.datasource.url` in `application-dev.yml` to use `localhost` instead of the service name `database`.
+
+
 Install dependencies
 
 ```bash

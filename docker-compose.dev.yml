@@ -1,0 +1,66 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    restart: on-failure
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend/package.json
+        - action: sync
+          path: ./frontend
+          target: /app
+          ignore:
+            - node_modules
+    ports:
+      - '4200:4200'
+    depends_on:
+      - backend
+    networks:
+      - dev-client-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    restart: on-failure
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend/pom.xml
+        - action: sync+restart
+          path: ./backend
+          target: /app
+          ignore:
+            - .mvn/
+            - target/
+    ports:
+      - '8080:8080'
+    networks:
+      - dev-client-network
+      - dev-server-network
+    depends_on:
+      - database
+
+  database:
+    image: postgres:latest
+    container_name: manageit_database
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=my_user
+      - POSTGRES_PASSWORD=my_password
+      - POSTGRES_DB=manageit_database
+    volumes:
+      - dev-postgresql-data:/var/lib/postgresql/data
+      - ./database/data.sql:/docker-entrypoint-initdb.d/data.sql
+    networks:
+      - dev-server-network
+
+networks:
+  dev-client-network:
+  dev-server-network:
+
+volumes:
+  dev-postgresql-data:

@@ -62,7 +62,14 @@ Create a .env file with the following content:
 Build and run the application using Docker Compose:
 
 ```bash
-  docker compose up --build
+  docker compose -f docker-compose.prod.yml up --build
 ```
 
-#### If you want to run the application in development mode, you can find the steps in the directories for the frontend, backend, and database.
+### Running in Development Mode 🚀
+
+To run the application in **development mode**, use the following command:
+
+```bash
+  docker compose -f docker-compose.dev.yml up --build --watch
+```
+
