@@ -34,7 +34,7 @@ Project Management App that allows you to easily organize work in your team.
 ![SpringBoot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
-## Run locally
+## Run Locally
 
 Clone the project
 
@@ -48,28 +48,29 @@ Go to the project directory
   cd manage-it
 ```
 
-Create a .env file with the following content:
-
-```properties
-  POSTGRES_USER=         # The username for the PostgreSQL database
-  POSTGRES_PASSWORD=     # The password for the PostgreSQL database
-  POSTGRES_DB=           # The name of the PostgreSQL database (e.g., manageit_database)
-  DATABASE_URL=          # The JDBC URL for the PostgreSQL database (e.g., jdbc:postgresql://database:5432/manageit_database)
-  JWT_SECRET_KEY=        # The secret key used for signing JWT tokens
-  FRONTEND_URL=          # The URL where the frontend is hosted (e.g., http://frontend:80)
-```
+Create `.env` file to set environment variables. Use the provided `.env.example` file as a reference.
 
 Build and run the application using Docker Compose:
-
-```bash
-  docker compose -f docker-compose.prod.yml up --build
-```
-
-### Running in Development Mode 🚀
-
-To run the application in **development mode**, use the following command:
 
 ```bash
   docker compose -f docker-compose.dev.yml up --build --watch
 ```
 
+The --watch flag enables automatic reload of the server when source files change.
+
+Once started, the application will be available at:
+http://localhost:4200
+
+## Run in Production Mode
+
+To run the application in **production mode**, use the following command:
+
+```bash
+  docker compose -f docker-compose.prod.yml up --build
+```
+
+> **Note:** Before running the application in production mode, make sure to update the `.env` file with production-specific values. These values may differ from those used in development mode (e.g., database credentials, API URLs, JWT secret key, etc.).
+
+### Contact
+
+For questions please contact [lukasz.nowosielski02@gmail.com](mailto:lukasz.nowosielski02@gmail.com).

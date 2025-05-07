@@ -12,7 +12,7 @@ Go to the backend directory
   cd backend
 ```
 
-If you have made any changes to database or frontend, adjust the configuration in application-dev.yml, otherwise skip this step.
+Adjust the configuration in application.yml:
 
 - Datasource Configuration:
   - **url**
@@ -23,7 +23,6 @@ If you have made any changes to database or frontend, adjust the configuration i
   - **frontend.url**
 
 > **Note:** If you want to run the backend outside of the container, make sure to adjust the `spring.datasource.url` in `application-dev.yml` to use `localhost` instead of the service name `database`.
-
 
 Install dependencies
 

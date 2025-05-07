@@ -12,6 +12,13 @@ Go to the frontend directory
   cd frontend
 ```
 
+Create a .env file with the following content:
+
+```properties
+  NG_APP_API_URL=          # The base URL of the backend API (e.g., http://localhost:8080/api/v1)
+  NG_APP_SOCKET_URL=       # The WebSocket URL for real-time communication (e.g., http://localhost:8080/api/v1/ws)
+```
+
 Install dependencies
 
 ```bash
