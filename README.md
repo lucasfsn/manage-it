@@ -8,6 +8,8 @@ Project Management App that allows you to easily organize work in your team.
   - [Main Features](#main-features)
   - [Technologies Used](#technologies-used)
 - [Run Locally](#run-locally)
+- [Run in Production](#run-in-production)
+- [Contact](#contact)
 
 ## Overview
 
@@ -61,7 +63,7 @@ The --watch flag enables automatic reload of the server when source files change
 Once started, the application will be available at:
 http://localhost:4200
 
-## Run in Production Mode
+## Run in Production
 
 To run the application in **production mode**, use the following command:
 
