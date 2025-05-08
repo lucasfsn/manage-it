@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../helpers/login';
-import { delete_notifications } from '../helpers/delete_notifications';
+import { login } from './helpers/login';
+import { delete_notifications } from './helpers/delete_notifications';
 
 test('create project, add new tasks and edit task', async ({ page }) => {
   // Dynamiczne daty
@@ -135,8 +135,8 @@ test('create project with tasks and add new members to task', async ({ page }) =
   // tworzenie projektu
   await expect(page).toHaveURL(/\/projects(\?.*)?/);
   await page.getByRole('button').filter({ hasText: 'add' }).click();
-  await page.getByRole('textbox', { name: 'Title' }).fill('Testowy projekt');
-  await page.getByRole('textbox', { name: 'Description' }).fill('Projekt do testowania tasków');
+  await page.getByRole('textbox', { name: 'Title' }).fill('Taskowy projekt');
+  await page.getByRole('textbox', { name: 'Description' }).fill('Projekt do tasków');
   await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);
   await page.getByRole('textbox', { name: 'End Date' }).fill(endDateStr);
   await page.getByRole('button', { name: 'Create Project' }).click();
@@ -160,7 +160,6 @@ test('create project with tasks and add new members to task', async ({ page }) =
   await page.getByText('Sophia Jones').click();
   await expect(page.getByText('SJ Sophia Jones @sophia_jones')).toBeVisible();
   await page.getByRole('button', { name: 'Add to Project' }).click();
-  // await expect(page.getByRole('list')).toContainText('SJ JD editadd');
 
   await page.getByText(`Add member to task Low schedule ${task1DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`).click();
   await expect(page).toHaveURL(/\/projects\/[a-f0-9-]{36}\/tasks\/[a-f0-9-]{36}/);    
@@ -176,7 +175,7 @@ test('create project with tasks and add new members to task', async ({ page }) =
   await expect(page.getByRole('alert', { name: 'Sophia Jones has been added' })).toBeVisible();
 
   await page.getByRole('button').filter({ hasText: 'arrow_back' }).click();
-  await expect(page.locator('h2')).toContainText('Testowy projekt');
+  await expect(page.locator('h2')).toContainText('Taskowy projekt');
 
   // dodanie nowego członka do projektu
   await page.getByRole('button').filter({ hasText: /^add$/ }).click();
@@ -206,7 +205,7 @@ test('create project with tasks and add new members to task', async ({ page }) =
   await expect(page.locator('app-users-list')).toContainText('ED Emily Davis (emily_davis) person_remove');
 
   await page.getByRole('button').filter({ hasText: 'arrow_back' }).click();
-  await expect(page.locator('h2')).toContainText('Testowy projekt');
+  await expect(page.locator('h2')).toContainText('Taskowy projekt');
   await expect(page.locator('#inProgress')).toContainText(`Add member to task Low schedule ${task1DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} SJ ED`);
   
   // usunięcie Emily Davis

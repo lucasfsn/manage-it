@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../helpers/login';
-import { delete_notifications } from '../helpers/delete_notifications';
+import { login } from './helpers/login';
+import { delete_notifications } from './helpers/delete_notifications';
 
 test('check if chat is working correctly', async ({ page }) => {
   // Dynamiczne daty
@@ -20,7 +20,7 @@ test('check if chat is working correctly', async ({ page }) => {
   await page.getByText('Projects', { exact: true }).click();
   await page.getByRole('button').filter({ hasText: 'add' }).click();
   await page.getByRole('textbox', { name: 'Title' }).click();
-  await page.getByRole('textbox', { name: 'Title' }).fill('Projekt testowy');
+  await page.getByRole('textbox', { name: 'Title' }).fill('Chatowy projekt');
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Projekt do testowania czatu');
   await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);
@@ -55,9 +55,9 @@ test('check if chat is working correctly', async ({ page }) => {
 
   // wejście do projektu i sprawdzenie czatu projektu 
   await page.getByText('folder_open Projects').click();
-  await expect(page.locator('div').filter({ hasText: 'Projekt testowy Projekt do' }).nth(2)).toBeVisible();
-  await page.locator('div').filter({ hasText: 'Projekt testowy Projekt do' }).nth(2).click();
-  await expect(page.locator('h2')).toContainText('Projekt testowy');
+  await expect(page.locator('div').filter({ hasText: 'Chatowy projekt Projekt do' }).nth(2)).toBeVisible();
+  await page.locator('div').filter({ hasText: 'Chatowy projekt Projekt do' }).nth(2).click();
+  await expect(page.locator('h2')).toContainText('Chatowy projekt');
   await expect(page.locator('app-project-details')).toContainText('Projekt do testowania czatu');
   await page.getByRole('button').filter({ hasText: 'chat' }).click();
   await expect(page.locator('app-chat')).toContainText('dzień dobry');
@@ -80,7 +80,7 @@ test('check if chat is working correctly', async ({ page }) => {
   await page.getByRole('button', { name: 'Log out' }).click();
   await login(page, 'johndoe@mail.com', '1qazXSW@'); 
   await page.getByText('folder_open Projects').click();
-  await page.locator('div').filter({ hasText: 'Projekt testowy Projekt do' }).nth(2).click();
+  await page.locator('div').filter({ hasText: 'Chatowy projekt Projekt do' }).nth(2).click();
   await page.getByRole('button').filter({ hasText: 'chat' }).click();
 
   // sprawdzenie wyświetlania wiadomości w czacie jako John Doe

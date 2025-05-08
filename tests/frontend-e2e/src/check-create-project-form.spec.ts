@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../helpers/login';
+import { login } from './helpers/login';
 
 const globalToday = new Date().toISOString().split('T')[0];
 
