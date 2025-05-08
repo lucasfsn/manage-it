@@ -7,7 +7,13 @@ import {
   TaskStatus,
 } from '@/app/features/dto/task.model';
 import { TaskService } from '@/app/features/services/task.service';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
+import {
+  FormSelectControlComponent,
+  SelectOption,
+} from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -34,6 +40,9 @@ interface TaskEditForm {
     MatIconModule,
     TranslateModule,
     FormButtonComponent,
+    FormDateInputControlComponent,
+    FormSelectControlComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './task-edit-form.component.html',
   styleUrl: './task-edit-form.component.scss',
@@ -77,44 +86,18 @@ export class TaskEditFormComponent implements OnInit {
     return this.taskService.loadedTask();
   }
 
-  protected get Priority(): typeof Priority {
-    return Priority;
+  protected get priorities(): SelectOption[] {
+    return Object.values(Priority).map((priority) => ({
+      value: priority,
+      label: this.mapperService.priorityMapper(priority),
+    }));
   }
 
-  protected get TaskStatus(): typeof TaskStatus {
-    return TaskStatus;
-  }
-
-  protected get priorities(): Priority[] {
-    return Object.values(Priority);
-  }
-
-  protected get statuses(): TaskStatus[] {
-    return Object.values(TaskStatus);
-  }
-
-  protected mapTaskStatus(taskStatus: TaskStatus): string {
-    return this.mapperService.taskStatusMapper(taskStatus);
-  }
-
-  protected mapPriority(priority: Priority): string {
-    return this.mapperService.priorityMapper(priority);
-  }
-
-  protected get descriptionIsInvalid(): boolean {
-    return (
-      this.form.controls['description'].dirty &&
-      this.form.controls['description'].touched &&
-      this.form.controls['description'].invalid
-    );
-  }
-
-  protected get dueDateIsInvalid(): boolean {
-    return (
-      this.form.controls['dueDate'].dirty &&
-      this.form.controls['dueDate'].touched &&
-      this.form.controls['dueDate'].invalid
-    );
+  protected get statuses(): SelectOption[] {
+    return Object.values(TaskStatus).map((status) => ({
+      value: status,
+      label: this.mapperService.taskStatusMapper(status),
+    }));
   }
 
   private isFormChanged(): boolean {

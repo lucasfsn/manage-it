@@ -14,6 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
+import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import {
   equalValues,
   nameValidator,
@@ -35,7 +37,13 @@ interface UserEditForm {
 
 @Component({
   selector: 'app-user-edit-form',
-  imports: [ReactiveFormsModule, MatIconModule, TranslateModule],
+  imports: [
+    ReactiveFormsModule,
+    MatIconModule,
+    TranslateModule,
+    FormCheckboxControlComponent,
+    FormTextInputControlComponent,
+  ],
   templateUrl: './user-edit-form.component.html',
   styleUrl: './user-edit-form.component.scss',
 })
@@ -82,30 +90,6 @@ export class UserEditFormComponent implements OnInit {
 
   protected get disabled(): boolean {
     return this.form.invalid || !this.hasFormChanged();
-  }
-
-  protected get firstNameIsInvalid(): boolean {
-    return (
-      this.form.controls.firstName.dirty &&
-      this.form.controls.firstName.touched &&
-      this.form.controls.firstName.invalid
-    );
-  }
-
-  protected get lastNameIsInvalid(): boolean {
-    return (
-      this.form.controls.lastName.dirty &&
-      this.form.controls.lastName.touched &&
-      this.form.controls.lastName.invalid
-    );
-  }
-
-  protected get emailIsInvalid(): boolean {
-    return (
-      this.form.controls.email.dirty &&
-      this.form.controls.email.touched &&
-      this.form.controls.email.invalid
-    );
   }
 
   protected get passwordIsInvalid(): boolean {
@@ -217,9 +201,7 @@ export class UserEditFormComponent implements OnInit {
           password: new FormControl('', {
             validators: [Validators.required, passwordValidator],
           }),
-          confirmPassword: new FormControl('', {
-            validators: [Validators.required, passwordValidator],
-          }),
+          confirmPassword: new FormControl(''),
         },
         {
           validators: [equalValues('password', 'confirmPassword')],

@@ -140,8 +140,11 @@
       "ADD_TO_PROJECT_BUTTON": "Add to Project"
     },
     "editForm": {
+      "FIRST_NAME_LABEL": "First name",
       "FIRST_NAME_PLACEHOLDER": "Enter first name",
+      "LAST_NAME_LABEL": "Last name",
       "LAST_NAME_PLACEHOLDER": "Enter last name",
+      "EMAIL_LABEL": "Email",
       "EMAIL_PLACEHOLDER": "Enter new email",
       "PASSWORD_LABEL": "Edit password",
       "PASSWORD_PLACEHOLDER": "Enter new password",

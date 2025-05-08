@@ -1,23 +1,23 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { Notification } from '@/app/features/dto/notification.model';
 import { NotificationService } from '@/app/features/services/notification.service';
-import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
+import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { TimeAgoPipe } from '@/app/shared/pipes/time-ago.pipe';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-notifications-list',
   imports: [TimeAgoPipe, ProfileIconComponent, TranslateModule],
   templateUrl: './notifications-list.component.html',
-  styleUrl: './notifications-list.component.scss'
+  styleUrl: './notifications-list.component.scss',
 })
 export class NotificationsListComponent {
   public constructor(
     private notificationService: NotificationService,
     private mapperService: MapperService,
-    private router: Router
+    private router: Router,
   ) {}
 
   protected get notifications(): Notification[] {

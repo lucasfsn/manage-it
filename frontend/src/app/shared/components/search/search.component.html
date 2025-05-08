@@ -1,17 +1,17 @@
 <mat-dialog-content>
   <div class="flex items-center gap-2">
-    <label for="searchInput" class="flex items-center">
+    <label for="search-input" class="flex items-center">
       <mat-icon
         class="flex cursor-text items-center justify-center text-slate-600! dark:text-slate-300"
         >search</mat-icon
       >
     </label>
-    <input
-      class="w-full border-none bg-transparent text-gray-600 focus-visible:outline-hidden dark:text-gray-300"
+    <app-form-text-input-control
+      identifier="search-input"
+      [control]="form"
       [placeholder]="'searchModal.PLACEHOLDER' | translate"
-      [formControl]="form"
+      className="w-full border-none bg-transparent text-gray-600 focus-visible:outline-hidden dark:text-gray-300"
       (input)="onSearch()"
-      id="searchInput"
     />
     @if (loading) {
       <mat-spinner diameter="20" />

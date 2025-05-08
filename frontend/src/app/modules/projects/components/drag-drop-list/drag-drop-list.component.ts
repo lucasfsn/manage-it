@@ -1,3 +1,12 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { Task, TaskStatus } from '@/app/features/dto/task.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { TaskService } from '@/app/features/services/task.service';
+import { TaskCreateFormComponent } from '@/app/modules/task/components/task-create-form/task-create-form.component';
+import { PriorityComponent } from '@/app/shared/components/ui/priority/priority.component';
+import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -11,15 +20,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { Project, ProjectStatus } from '@/app/features/dto/project.model';
-import { Task, TaskStatus } from '@/app/features/dto/task.model';
-import { ProjectService } from '@/app/features/services/project.service';
-import { TaskService } from '@/app/features/services/task.service';
-import { PriorityComponent } from '@/app/shared/components/priority/priority.component';
-import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
-import { DatePipe } from '@/app/shared/pipes/date.pipe';
-import { TaskCreateFormComponent } from '@/app/modules/task/components/task-create-form/task-create-form.component';
 
 @Component({
   selector: 'app-drag-drop-list',
@@ -34,7 +34,7 @@ import { TaskCreateFormComponent } from '@/app/modules/task/components/task-crea
     ProfileIconComponent,
   ],
   templateUrl: './drag-drop-list.component.html',
-  styleUrl: './drag-drop-list.component.scss'
+  styleUrl: './drag-drop-list.component.scss',
 })
 export class DragDropListComponent implements OnInit {
   protected loading: boolean = false;
@@ -44,7 +44,7 @@ export class DragDropListComponent implements OnInit {
     private projectService: ProjectService,
     private taskService: TaskService,
     private mapperService: MapperService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
   ) {}
 
   protected completedTasks: Task[] = [];
@@ -68,14 +68,14 @@ export class DragDropListComponent implements OnInit {
       moveItemInArray(
         event.container.data,
         event.previousIndex,
-        event.currentIndex
+        event.currentIndex,
       );
     } else {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex
+        event.currentIndex,
       );
     }
 
@@ -89,12 +89,12 @@ export class DragDropListComponent implements OnInit {
 
   private getNewStatus(containerId: string): TaskStatus {
     switch (containerId) {
-    case 'completed':
-      return TaskStatus.COMPLETED;
-    case 'inProgress':
-      return TaskStatus.IN_PROGRESS;
-    default:
-      return TaskStatus.NOT_STARTED;
+      case 'completed':
+        return TaskStatus.COMPLETED;
+      case 'inProgress':
+        return TaskStatus.IN_PROGRESS;
+      default:
+        return TaskStatus.NOT_STARTED;
     }
   }
 
@@ -109,7 +109,7 @@ export class DragDropListComponent implements OnInit {
         data: {
           selectedStatus,
         },
-      }
+      },
     );
 
     dialogRef.afterClosed().subscribe((newTask: Task | null) => {
@@ -119,15 +119,15 @@ export class DragDropListComponent implements OnInit {
 
   private addTaskToList(task: Task): void {
     switch (task.status) {
-    case TaskStatus.COMPLETED:
-      this.completedTasks.push(task);
-      break;
-    case TaskStatus.IN_PROGRESS:
-      this.inProgressTasks.push(task);
-      break;
-    case TaskStatus.NOT_STARTED:
-      this.notStartedTasks.push(task);
-      break;
+      case TaskStatus.COMPLETED:
+        this.completedTasks.push(task);
+        break;
+      case TaskStatus.IN_PROGRESS:
+        this.inProgressTasks.push(task);
+        break;
+      case TaskStatus.NOT_STARTED:
+        this.notStartedTasks.push(task);
+        break;
     }
   }
 
@@ -150,33 +150,33 @@ export class DragDropListComponent implements OnInit {
 
   private restoreTaskState(task: Task, prevStatus: TaskStatus): void {
     switch (task.status) {
-    case TaskStatus.COMPLETED:
-      this.completedTasks = this.completedTasks.filter(
-        (t) => t.id !== task.id
-      );
-      break;
-    case TaskStatus.IN_PROGRESS:
-      this.inProgressTasks = this.inProgressTasks.filter(
-        (t) => t.id !== task.id
-      );
-      break;
-    case TaskStatus.NOT_STARTED:
-      this.notStartedTasks = this.notStartedTasks.filter(
-        (t) => t.id !== task.id
-      );
-      break;
+      case TaskStatus.COMPLETED:
+        this.completedTasks = this.completedTasks.filter(
+          (t) => t.id !== task.id,
+        );
+        break;
+      case TaskStatus.IN_PROGRESS:
+        this.inProgressTasks = this.inProgressTasks.filter(
+          (t) => t.id !== task.id,
+        );
+        break;
+      case TaskStatus.NOT_STARTED:
+        this.notStartedTasks = this.notStartedTasks.filter(
+          (t) => t.id !== task.id,
+        );
+        break;
     }
 
     switch (prevStatus) {
-    case TaskStatus.COMPLETED:
-      this.completedTasks.push(task);
-      break;
-    case TaskStatus.IN_PROGRESS:
-      this.inProgressTasks.push(task);
-      break;
-    case TaskStatus.NOT_STARTED:
-      this.notStartedTasks.push(task);
-      break;
+      case TaskStatus.COMPLETED:
+        this.completedTasks.push(task);
+        break;
+      case TaskStatus.IN_PROGRESS:
+        this.inProgressTasks.push(task);
+        break;
+      case TaskStatus.NOT_STARTED:
+        this.notStartedTasks.push(task);
+        break;
     }
   }
 
@@ -184,13 +184,13 @@ export class DragDropListComponent implements OnInit {
     if (!this.project) return;
 
     this.completedTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.COMPLETED
+      (task) => task.status === TaskStatus.COMPLETED,
     );
     this.inProgressTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.IN_PROGRESS
+      (task) => task.status === TaskStatus.IN_PROGRESS,
     );
     this.notStartedTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.NOT_STARTED
+      (task) => task.status === TaskStatus.NOT_STARTED,
     );
   }
 }

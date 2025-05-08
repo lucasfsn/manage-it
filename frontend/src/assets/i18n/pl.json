@@ -140,8 +140,11 @@
       "ADD_TO_PROJECT_BUTTON": "Dodaj do Projektu"
     },
     "editForm": {
+      "FIRST_NAME_LABEL": "Imię",
       "FIRST_NAME_PLACEHOLDER": "Wprowadź swoje imię",
+      "LAST_NAME_LABEL": "Nazwisko",
       "LAST_NAME_PLACEHOLDER": "Wprowadź swoje nazwisko",
+      "EMAIL_LABEL": "Email",
       "EMAIL_PLACEHOLDER": "Wprowadź nowy email",
       "PASSWORD_LABEL": "Edytuj hasło",
       "PASSWORD_PLACEHOLDER": "Wprowadź nowe hasło",
