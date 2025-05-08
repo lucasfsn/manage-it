@@ -10,7 +10,7 @@
       identifier="search-input"
       [control]="form"
       [placeholder]="'searchModal.PLACEHOLDER' | translate"
-      className="w-full border-none bg-transparent text-gray-600 focus-visible:outline-hidden dark:text-gray-300"
+      customClass="focus-visible:ring-0! p-0! border-none rounded-none"
       (input)="onSearch()"
     />
     @if (loading) {

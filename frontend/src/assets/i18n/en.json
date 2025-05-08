@@ -183,8 +183,8 @@
       "ALL_FILTER": "All"
     },
     "sort": {
-      "SORT_CRITERIA_TEXT": "Sort by:",
-      "SORT_ORDER_TEXT": "Order:"
+      "SORT_CRITERIA_TEXT": "Sort by",
+      "SORT_ORDER_TEXT": "Order"
     }
   },
   "project": {

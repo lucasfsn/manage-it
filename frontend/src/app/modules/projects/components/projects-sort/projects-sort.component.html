@@ -1,39 +1,19 @@
 <form
-  class="flex flex-col justify-end gap-2 text-sm sm:flex-row"
+  class="flex w-fit flex-col justify-end gap-2.5 text-sm sm:flex-row"
   [formGroup]="form"
 >
-  <div class="flex items-center gap-1.5 text-gray-400">
-    <label for="criteria" class="hidden sm:block">{{
-      "projects.sort.SORT_CRITERIA_TEXT" | translate
-    }}</label>
-    <select
-      id="criteria"
-      name="criteria"
-      class="w-full rounded-full bg-orange-200 px-2 py-1 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-hidden active:text-sky-500 active:ring-0 sm:w-auto dark:bg-slate-900"
-      [formControl]="form.controls.criteria"
-    >
-      @for (criteria of sortCriterias; track criteria) {
-        <option [value]="criteria">
-          {{ mapCriteria(criteria) }}
-        </option>
-      }
-    </select>
-  </div>
-  <div class="flex items-center gap-1.5 text-gray-400">
-    <label for="order" class="hidden sm:block">{{
-      "projects.sort.SORT_ORDER_TEXT" | translate
-    }}</label>
-    <select
-      id="order"
-      name="order"
-      class="w-full rounded-full bg-orange-200 px-2 py-1 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-hidden active:text-sky-500 active:ring-0 sm:w-auto dark:bg-slate-900"
-      [formControl]="form.controls.order"
-    >
-      @for (order of sortOrders; track order) {
-        <option [value]="order">
-          {{ mapOrder(order) }}
-        </option>
-      }
-    </select>
-  </div>
+  <app-form-select-control
+    identifier="status"
+    [control]="form.controls.criteria"
+    [label]="'projects.sort.SORT_CRITERIA_TEXT' | translate"
+    [options]="criterias"
+    customClass="px-2 py-1"
+  />
+  <app-form-select-control
+    identifier="order"
+    [control]="form.controls.order"
+    [label]="'projects.sort.SORT_ORDER_TEXT' | translate"
+    [options]="orders"
+    customClass="px-2 py-1"
+  />
 </form>

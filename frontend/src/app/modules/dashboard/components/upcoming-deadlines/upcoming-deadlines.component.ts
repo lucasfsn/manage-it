@@ -39,11 +39,11 @@ export class UpcomingDeadlinesComponent {
 
     const daysLeft = this.calculateDaysLeft(endDate);
 
-    if (daysLeft <= 1) return 'text-red-500';
+    if (daysLeft <= 1) return 'text-red-700 dark:text-red-500';
 
-    if (daysLeft <= 7) return 'text-yellow-500';
+    if (daysLeft <= 7) return 'text-yellow-700 dark:text-yellow-500';
 
-    return 'text-green-500';
+    return 'text-green-700 dark:text-green-500';
   }
 
   protected deadlineMessage(endDate: string, status: ProjectStatus): string {

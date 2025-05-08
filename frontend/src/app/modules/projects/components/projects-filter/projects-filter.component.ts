@@ -1,3 +1,13 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectsFilters } from '@/app/modules/projects/models/projects-filter.model';
+import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
+import {
+  FormRadioControlComponent,
+  RadioOption,
+} from '@/app/shared/components/form-controls/form-radio-control/form-radio-control.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import {
   Component,
   DestroyRef,
@@ -8,15 +18,10 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatRadioModule } from '@angular/material/radio';
 import { TranslateModule } from '@ngx-translate/core';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { ProjectStatus } from '@/app/features/dto/project.model';
-import { ProjectsFilters } from '@/app/modules/projects/models/projects-filter.model';
 
 interface ProjectsFilterForm {
   readonly name: FormControl<string | null>;
@@ -30,13 +35,14 @@ interface ProjectsFilterForm {
     MatIconModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatRadioModule,
     MatMenuModule,
-    MatCheckboxModule,
     TranslateModule,
+    FormTextInputControlComponent,
+    FormCheckboxControlComponent,
+    FormRadioControlComponent,
   ],
   templateUrl: './projects-filter.component.html',
-  styleUrl: './projects-filter.component.scss'
+  styleUrl: './projects-filter.component.scss',
 })
 export class ProjectsFilterComponent implements OnInit {
   @Input({ required: true }) public filterName!: string;
@@ -45,7 +51,10 @@ export class ProjectsFilterComponent implements OnInit {
   @Output() public filterChange = new EventEmitter<ProjectsFilters>();
   private destroyRef = inject(DestroyRef);
 
-  public constructor(private mapperService: MapperService) {}
+  public constructor(
+    private mapperService: MapperService,
+    private translationService: TranslationService,
+  ) {}
 
   protected form = new FormGroup<ProjectsFilterForm>({
     name: new FormControl<string>(''),
@@ -53,8 +62,17 @@ export class ProjectsFilterComponent implements OnInit {
     onlyOwnedByMe: new FormControl<boolean>(false),
   });
 
-  protected get ProjectStatus(): typeof ProjectStatus {
-    return ProjectStatus;
+  protected get statuses(): RadioOption[] {
+    return [
+      {
+        value: null,
+        label: this.translationService.translate('projects.filter.ALL_FILTER'),
+      },
+      ...Object.values(ProjectStatus).map((status) => ({
+        value: status,
+        label: this.mapperService.projectStatusMapper(status),
+      })),
+    ];
   }
 
   protected onReset(): void {
@@ -63,14 +81,6 @@ export class ProjectsFilterComponent implements OnInit {
       status: null,
       onlyOwnedByMe: false,
     });
-  }
-
-  protected mapStatus(status: ProjectStatus): string {
-    return this.mapperService.projectStatusMapper(status);
-  }
-
-  protected get projectStatuses(): ProjectStatus[] {
-    return Object.values(ProjectStatus);
   }
 
   public ngOnInit(): void {

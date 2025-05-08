@@ -8,7 +8,7 @@ export abstract class FormControlDirective {
   @Input() public placeholder: string = '';
   @Input() public label: string | null = null;
   @Input() public errorMessage: string | null = null;
-  @Input() public className: string | null = null;
+  @Input() public customClass: string = '';
 
   protected get isInvalid(): boolean {
     return this.control.dirty && this.control.touched && this.control.invalid;
