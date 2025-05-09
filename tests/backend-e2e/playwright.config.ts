@@ -4,7 +4,7 @@ import { defineConfig, devices } from '@playwright/test';
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-export const baseUrl = `http://localhost:8080`;
+export const baseUrl = `http://localhost:8080/api/v1`;
 
 export default defineConfig({
   testDir: './src',
