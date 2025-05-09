@@ -6,6 +6,8 @@
     (
       container-color: #fdba74,
       supporting-text-color: #4c525a,
+      supporting-text-font: "Poppins",
+      supporting-text-tracking: 0rem,
     )
   );
   @include mat.menu-overrides(
