@@ -140,6 +140,7 @@
       "ADD_TO_PROJECT_BUTTON": "Dodaj do Projektu"
     },
     "editForm": {
+      "TITLE": "Edytuj profil",
       "FIRST_NAME_LABEL": "Imię",
       "FIRST_NAME_PLACEHOLDER": "Wprowadź swoje imię",
       "LAST_NAME_LABEL": "Nazwisko",

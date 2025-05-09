@@ -5,11 +5,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'app-form-button',
   imports: [CommonModule],
   templateUrl: './form-button.component.html',
-  styleUrl: './form-button.component.scss'
+  styleUrl: './form-button.component.scss',
 })
 export class FormButtonComponent {
-  @Input({ required: true }) public buttonType!: 'submit' | 'reset';
-  @Input() public roundedType: 'rounded-lg' | 'rounded-full' = 'rounded-lg';
+  @Input() public type: 'submit' | 'reset' = 'submit';
+  @Input() public customClass: string = '';
   @Input() public disabled: boolean = false;
   @Output() public handleClick = new EventEmitter<void>();
 

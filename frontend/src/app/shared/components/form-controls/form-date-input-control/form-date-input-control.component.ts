@@ -12,11 +12,5 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class FormDateInputControlComponent extends FormControlDirective {
   @Input() public min: string | null = null;
   @Input() public max: string | null = null;
-  @Input() public customIsInvalid: boolean | null = null;
-
-  protected override get isInvalid(): boolean {
-    if (this.customIsInvalid !== null) return this.customIsInvalid;
-
-    return super.isInvalid;
-  }
+  @Input() public placeholder: string = '';
 }

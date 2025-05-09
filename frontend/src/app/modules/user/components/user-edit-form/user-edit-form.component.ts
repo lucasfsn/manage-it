@@ -1,6 +1,6 @@
 import { UpdateUser, User } from '@/app/features/dto/user.model';
 import { UserService } from '@/app/features/services/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -16,6 +16,7 @@ import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import {
   equalValues,
   nameValidator,
@@ -32,6 +33,7 @@ interface UserEditForm {
   readonly firstName: FormControl<string | null>;
   readonly lastName: FormControl<string | null>;
   readonly email: FormControl<string | null>;
+  readonly changePassword: FormControl<boolean | null>;
   readonly passwords?: FormGroup<PasswordsForm>;
 }
 
@@ -43,12 +45,13 @@ interface UserEditForm {
     TranslateModule,
     FormCheckboxControlComponent,
     FormTextInputControlComponent,
+    FormButtonComponent,
   ],
   templateUrl: './user-edit-form.component.html',
   styleUrl: './user-edit-form.component.scss',
 })
 export class UserEditFormComponent implements OnInit {
-  protected showPasswordFields = false;
+  private destroyRef = inject(DestroyRef);
 
   public constructor(
     private dialogRef: MatDialogRef<UserEditFormComponent>,
@@ -84,9 +87,16 @@ export class UserEditFormComponent implements OnInit {
       email: new FormControl('', {
         validators: [Validators.required, Validators.email],
       }),
+      changePassword: new FormControl(false, {
+        updateOn: 'change',
+      }),
     },
     { updateOn: 'blur' },
   );
+
+  protected get showPasswordFields(): boolean {
+    return this.form.controls.changePassword.value === true;
+  }
 
   protected get disabled(): boolean {
     return this.form.invalid || !this.hasFormChanged();
@@ -94,8 +104,9 @@ export class UserEditFormComponent implements OnInit {
 
   protected get passwordIsInvalid(): boolean {
     const control = this.form.controls.passwords?.get('password');
+    if (!control) return false;
 
-    return (control?.dirty && control.touched && control.invalid) || false;
+    return control.dirty && control.touched && control.invalid;
   }
 
   protected get passwordsDoNotMatch(): boolean {
@@ -185,31 +196,6 @@ export class UserEditFormComponent implements OnInit {
     return null;
   }
 
-  protected togglePasswordFields(event: Event): void {
-    this.showPasswordFields = (event.target as HTMLInputElement).checked;
-
-    if (!this.showPasswordFields) {
-      this.form.removeControl('passwords');
-
-      return;
-    }
-
-    this.form.addControl(
-      'passwords',
-      new FormGroup<PasswordsForm>(
-        {
-          password: new FormControl('', {
-            validators: [Validators.required, passwordValidator],
-          }),
-          confirmPassword: new FormControl(''),
-        },
-        {
-          validators: [equalValues('password', 'confirmPassword')],
-        },
-      ),
-    );
-  }
-
   protected closeDialog(): void {
     this.dialogRef.close();
   }
@@ -245,12 +231,12 @@ export class UserEditFormComponent implements OnInit {
       },
       complete: () => {
         this.loadingService.loadingOff();
+        this.closeDialog();
       },
     });
-    this.closeDialog();
   }
 
-  private hasFormChanged(): boolean {
+  protected hasFormChanged(): boolean {
     if (!this.userData) return false;
 
     return !!(
@@ -268,10 +254,38 @@ export class UserEditFormComponent implements OnInit {
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
       email: this.userData.email,
+      changePassword: false,
     });
+  }
+
+  private addPasswordsControl(): FormGroup<PasswordsForm> {
+    return new FormGroup<PasswordsForm>(
+      {
+        password: new FormControl('', {
+          validators: [Validators.required, passwordValidator],
+        }),
+        confirmPassword: new FormControl(''),
+      },
+      {
+        validators: [equalValues('password', 'confirmPassword')],
+      },
+    );
   }
 
   public ngOnInit(): void {
     this.fillFormWithDefaultValues();
+
+    const changePasswordControl = this.form.get('changePassword');
+    const subscription = changePasswordControl?.valueChanges.subscribe(
+      (isChecked) => {
+        if (isChecked) {
+          this.form.addControl('passwords', this.addPasswordsControl());
+        } else {
+          this.form.removeControl('passwords');
+        }
+      },
+    );
+
+    this.destroyRef.onDestroy(() => subscription?.unsubscribe());
   }
 }

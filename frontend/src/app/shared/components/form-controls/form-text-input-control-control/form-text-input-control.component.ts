@@ -13,11 +13,5 @@ type TextInputType = 'text' | 'email' | 'password';
 })
 export class FormTextInputControlComponent extends FormControlDirective {
   @Input() public type: TextInputType = 'text';
-  @Input() public customIsInvalid: boolean | null = null;
-
-  protected override get isInvalid(): boolean {
-    if (this.customIsInvalid !== null) return this.customIsInvalid;
-
-    return super.isInvalid;
-  }
+  @Input() public placeholder: string = '';
 }

@@ -17,11 +17,4 @@ export interface SelectOption {
 })
 export class FormSelectControlComponent extends FormControlDirective {
   @Input() public options: SelectOption[] = [];
-  @Input() public customIsInvalid: boolean | null = null;
-
-  protected override get isInvalid(): boolean {
-    if (this.customIsInvalid !== null) return this.customIsInvalid;
-
-    return super.isInvalid;
-  }
 }

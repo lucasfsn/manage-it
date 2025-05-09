@@ -45,19 +45,13 @@
     />
     <div class="mt-4 flex flex-wrap justify-between gap-2">
       <app-form-button
-        buttonType="reset"
+        type="reset"
         [disabled]="loading"
         (handleClick)="onReset()"
-        roundedType="rounded-full"
       >
         {{ "task.editForm.RESET_BUTTON" | translate }}
       </app-form-button>
-      <app-form-button
-        buttonType="submit"
-        [disabled]="disabled"
-        (handleClick)="onSubmit()"
-        roundedType="rounded-full"
-      >
+      <app-form-button [disabled]="disabled" (handleClick)="onSubmit()">
         @if (loading) {
           {{ "utils.LOADING" | translate }}
         } @else {

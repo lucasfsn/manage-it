@@ -1,20 +1,23 @@
 <div
-  class="flex w-full items-center justify-end bg-orange-200 dark:bg-slate-800"
+  class="flex flex-col gap-2 rounded-xs bg-orange-200 px-4 py-3 shadow-lg dark:bg-slate-900"
 >
-  <button
-    class="flex items-center self-end pt-4 pr-4 focus-visible:text-sky-500 focus-visible:outline-hidden"
-    (click)="closeDialog()"
-  >
-    <mat-icon>close</mat-icon>
-  </button>
-</div>
-<form
-  [formGroup]="form"
-  class="flex flex-col gap-4 bg-orange-200 p-9 text-xs shadow-xs sm:text-base dark:bg-slate-800"
->
-  <div
-    class="flex flex-col gap-5 border-b border-orange-400 pb-5 dark:border-slate-500"
-  >
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div
+        class="text:slate-800 flex aspect-square size-10 items-center justify-center rounded-full bg-orange-100 dark:bg-slate-800 dark:text-slate-300"
+      >
+        <mat-icon>settings</mat-icon>
+      </div>
+      <p class="font-semibold">{{ "user.editForm.TITLE" | translate }}</p>
+    </div>
+    <button
+      (click)="closeDialog()"
+      class="flex items-center justify-center focus-visible:text-sky-300 focus-visible:ring-0 focus-visible:outline-hidden active:text-sky-500"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="form" class="flex flex-col gap-2 px-3 py-2">
     <div class="flex flex-col gap-3">
       <app-form-text-input-control
         identifier="first-name"
@@ -40,8 +43,8 @@
       />
       <div class="flex flex-col gap-2">
         <app-form-checkbox-control
-          identifier="passwords"
-          (change)="togglePasswordFields($event)"
+          identifier="change-password"
+          [control]="form.controls.changePassword"
           [label]="'user.editForm.PASSWORD_LABEL' | translate"
         />
         @if (showPasswordFields) {
@@ -74,19 +77,16 @@
       </div>
     </div>
     <div class="flex justify-between">
-      <button
-        class="rounded-full bg-gray-600 px-2 py-1.5 text-xs font-medium text-slate-100 transition-all hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:outline-hidden active:text-gray-100 sm:px-4 sm:py-3 sm:text-sm"
-        (click)="onReset()"
+      <app-form-button
+        type="reset"
+        [disabled]="!hasFormChanged()"
+        (handleClick)="onReset()"
       >
         {{ "user.editForm.RESET_BUTTON" | translate }}
-      </button>
-      <button
-        [disabled]="disabled"
-        class="rounded-full bg-sky-600 px-2 py-1.5 text-xs font-medium text-slate-100 transition-all hover:bg-sky-700 focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:outline-hidden active:text-sky-200 disabled:cursor-not-allowed disabled:bg-gray-500 sm:px-4 sm:py-3 sm:text-sm"
-        (click)="onSubmit()"
-      >
+      </app-form-button>
+      <app-form-button [disabled]="disabled" (handleClick)="onSubmit()">
         {{ "user.editForm.SAVE_BUTTON" | translate }}
-      </button>
+      </app-form-button>
     </div>
-  </div>
-</form>
+  </form>
+</div>
