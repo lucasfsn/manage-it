@@ -10,9 +10,7 @@ import {
   MatDialogContent,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,8 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-search',
   imports: [
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatDialogContent,
     MatIconModule,
     TranslateModule,
