@@ -178,7 +178,7 @@
       "INPUT_PLACEHOLDER": "Filter by project name",
       "MENU_TITLE": "Filters",
       "MENU_STATUS_TEXT": "Status",
-      "ONLY_LOGGED_USER_PROJECTS": "Only managed by me",
+      "ONLY_LOGGED_USER_PROJECTS": "Managed by me",
       "CLEAR_BUTTON": "Clear",
       "APPLY_BUTTON": "Apply",
       "ALL_FILTER": "All"

@@ -26,7 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
 interface ProjectsFilterForm {
   readonly name: FormControl<string | null>;
   readonly status: FormControl<ProjectStatus | null>;
-  readonly onlyOwnedByMe: FormControl<boolean | null>;
+  readonly ownedByCurrentUser: FormControl<boolean | null>;
 }
 
 @Component({
@@ -47,7 +47,7 @@ interface ProjectsFilterForm {
 export class ProjectsFilterComponent implements OnInit {
   @Input({ required: true }) public filterName!: string;
   @Input({ required: true }) public filterStatus!: ProjectStatus | null;
-  @Input({ required: true }) public filterOnlyOwnedByMe!: boolean;
+  @Input({ required: true }) public filterOwnedByCurrentUser!: boolean;
   @Output() public filterChange = new EventEmitter<ProjectsFilters>();
   private destroyRef = inject(DestroyRef);
 
@@ -59,7 +59,7 @@ export class ProjectsFilterComponent implements OnInit {
   protected form = new FormGroup<ProjectsFilterForm>({
     name: new FormControl<string>(''),
     status: new FormControl<ProjectStatus | null>(null),
-    onlyOwnedByMe: new FormControl<boolean>(false),
+    ownedByCurrentUser: new FormControl<boolean>(false),
   });
 
   protected get statuses(): RadioOption[] {
@@ -79,7 +79,7 @@ export class ProjectsFilterComponent implements OnInit {
     this.form.reset({
       name: '',
       status: null,
-      onlyOwnedByMe: false,
+      ownedByCurrentUser: false,
     });
   }
 
@@ -87,14 +87,14 @@ export class ProjectsFilterComponent implements OnInit {
     this.form.patchValue({
       name: this.filterName,
       status: this.filterStatus,
-      onlyOwnedByMe: this.filterOnlyOwnedByMe,
+      ownedByCurrentUser: this.filterOwnedByCurrentUser,
     });
 
     const subscription = this.form.valueChanges.subscribe((value) => {
       this.filterChange.emit({
         name: value.name?.trim() || '',
         status: value.status || null,
-        onlyOwnedByMe: value.onlyOwnedByMe ?? false,
+        ownedByCurrentUser: value.ownedByCurrentUser ?? false,
       });
     });
 
