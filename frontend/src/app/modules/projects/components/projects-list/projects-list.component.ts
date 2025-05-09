@@ -21,7 +21,7 @@ interface ProjectsParams extends Params {
   readonly order?: SortOrder;
   readonly name?: string;
   readonly status?: ProjectStatus;
-  readonly onlyOwnedByMe?: string;
+  readonly ownedByCurrentUser?: string;
 }
 
 @Component({
@@ -45,7 +45,7 @@ export class ProjectsListComponent implements OnInit {
 
   protected filterName: string = '';
   protected filterStatus: ProjectStatus | null = null;
-  protected filterOnlyOwnedByMe: boolean = false;
+  protected filterOwnedByCurrentUser: boolean = false;
 
   public constructor(
     private route: ActivatedRoute,
@@ -71,7 +71,7 @@ export class ProjectsListComponent implements OnInit {
   protected onFilterChange(filters: ProjectsFilters): void {
     this.filterName = filters.name;
     this.filterStatus = filters.status;
-    this.filterOnlyOwnedByMe = filters.onlyOwnedByMe;
+    this.filterOwnedByCurrentUser = filters.ownedByCurrentUser;
     this.applyFiltersAndSort();
   }
 
@@ -112,7 +112,7 @@ export class ProjectsListComponent implements OnInit {
       const matchesStatus =
         !this.filterStatus || project.status === this.filterStatus;
       const matchesOwner =
-        !this.filterOnlyOwnedByMe ||
+        !this.filterOwnedByCurrentUser ||
         project.owner.username === this.authService.getLoggedInUsername();
 
       return matchesName && matchesStatus && matchesOwner;
@@ -127,8 +127,8 @@ export class ProjectsListComponent implements OnInit {
         order: this.sortOrder,
         name: this.filterName ? this.filterName : undefined,
         status: this.filterStatus ?? undefined,
-        onlyOwnedByMe: this.filterOnlyOwnedByMe
-          ? this.filterOnlyOwnedByMe
+        ownedByCurrentUser: this.filterOwnedByCurrentUser
+          ? this.filterOwnedByCurrentUser
           : undefined,
       },
       queryParamsHandling: 'merge',
@@ -143,7 +143,7 @@ export class ProjectsListComponent implements OnInit {
         enumValueValidator(params.order, SortOrder) || SortOrder.ASCENDING;
       this.filterName = params.name || '';
       this.filterStatus = enumValueValidator(params.status, ProjectStatus);
-      this.filterOnlyOwnedByMe = params.onlyOwnedByMe === 'true';
+      this.filterOwnedByCurrentUser = params.ownedByCurrentUser === 'true';
       this.applyFiltersAndSort();
     });
   }
