@@ -46,6 +46,8 @@ services:
             - target/
     ports:
       - '8080:8080'
+    volumes:
+      - manage-it-maven-repo:/root/.m2
     networks:
       - manage-it-client-network
       - manage-it-server-network
@@ -72,3 +74,4 @@ networks:
 
 volumes:
   manage-it-postgresql-data:
+  manage-it-maven-repo:
