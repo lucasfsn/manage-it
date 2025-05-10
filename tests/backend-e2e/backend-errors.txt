@@ -2,7 +2,8 @@ można utworzyć projekt, gdy startDate jest później niż endDate - do poprawy
 dla updatowania projektu to samo.
 
 dla np. pobierania projektu po id, gdy id nie jest w formacie UUID to wyrzuca 500. Powinno wyrzucać 400.
-Występuje także dla delete i update. Prawdopodobnie pojawi się też przy taskach ten błąd.
+Występuje także dla delete, update, dodawania/usuwania członka projektu. 
+Prawdopodobnie pojawi się też przy taskach ten błąd tam gdzie używamy id.
 
 czy dopuszczamy tworzenie projektów o tej samej nazwie? bo na razie tak jest zrobione
 
