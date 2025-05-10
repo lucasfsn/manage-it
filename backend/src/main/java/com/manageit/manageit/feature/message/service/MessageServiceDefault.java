@@ -1,6 +1,6 @@
 package com.manageit.manageit.feature.message.service;
 
-import com.manageit.manageit.feature.message.dto.MessageDto;
+import com.manageit.manageit.feature.message.dto.MessageResponseDto;
 import com.manageit.manageit.feature.user.service.UserService;
 import com.manageit.manageit.feature.message.mapper.MessageMapper;
 import com.manageit.manageit.feature.chat.model.Chat;
@@ -25,12 +25,12 @@ public class MessageServiceDefault implements MessageService {
 
 
     @Override
-    public List<MessageDto> getMessagesByChat(Chat chat) {
+    public List<MessageResponseDto> getMessagesByChat(Chat chat) {
         return chat.getMessages().stream().map(messageMapper::toMessageDto).toList();
     }
 
     @Override
-    public MessageDto saveMessageToProjectChat(UUID projectId, String token, String content) {
+    public MessageResponseDto saveMessageToProjectChat(UUID projectId, String token, String content) {
         Chat chat = chatService.getChatByProjectIdAndTaskId(projectId, null);
         Message message = Message.builder()
                 .chat(chat)
@@ -43,7 +43,7 @@ public class MessageServiceDefault implements MessageService {
     }
 
     @Override
-    public MessageDto saveMessageToTaskChat(UUID taskId, String token, String content) {
+    public MessageResponseDto saveMessageToTaskChat(UUID taskId, String token, String content) {
         Chat chat = chatService.getChatByTaskId(taskId);
         Message message = Message.builder()
                 .chat(chat)

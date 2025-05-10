@@ -1,10 +1,10 @@
 package com.manageit.manageit.feature.task.controller;
 
 import com.manageit.manageit.feature.task.dto.CreateTaskRequest;
-import com.manageit.manageit.feature.task.dto.TaskDto;
-import com.manageit.manageit.feature.task.dto.TaskMetadataDto;
+import com.manageit.manageit.feature.task.dto.TaskResponseDto;
+import com.manageit.manageit.feature.task.dto.TaskDetailsResponseDto;
 import com.manageit.manageit.feature.task.dto.UpdateTaskRequest;
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping("/{taskId}")
-    public ResponseEntity<TaskDto> getTask(
+    public ResponseEntity<TaskResponseDto> getTask(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId
@@ -33,12 +33,12 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskMetadataDto> addTaskToProject(
+    public ResponseEntity<TaskDetailsResponseDto> addTaskToProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
             @RequestBody CreateTaskRequest createTaskRequest
     ) {
-        TaskMetadataDto task = taskService.createAndAddTaskToProject(userDetails, projectId ,createTaskRequest);
+        TaskDetailsResponseDto task = taskService.createAndAddTaskToProject(userDetails, projectId ,createTaskRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -58,35 +58,35 @@ public class TaskController {
     }
 
     @PatchMapping("/{taskId}")
-    public ResponseEntity<TaskDto> updateTask(
+    public ResponseEntity<TaskResponseDto> updateTask(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
             @RequestBody UpdateTaskRequest updateTaskRequest
     ) {
-        TaskDto updatedTask = taskService.updateTask(userDetails, taskId, projectId, updateTaskRequest);
+        TaskResponseDto updatedTask = taskService.updateTask(userDetails, taskId, projectId, updateTaskRequest);
         return ResponseEntity.ok(updatedTask);
     }
 
     @PatchMapping("/{taskId}/user/add")
-    public ResponseEntity<TaskDto> addUserToTask(
+    public ResponseEntity<TaskResponseDto> addUserToTask(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
-            @RequestBody BasicUserDto request
+            @RequestBody UserResponseDto request
     ) {
-        TaskDto updatedTask = taskService.addUserToTask(userDetails, taskId, projectId, request);
+        TaskResponseDto updatedTask = taskService.addUserToTask(userDetails, taskId, projectId, request);
         return ResponseEntity.ok(updatedTask);
     }
 
     @PatchMapping("/{taskId}/user/remove")
-    public ResponseEntity<TaskDto> removeUserFromProject(
+    public ResponseEntity<TaskResponseDto> removeUserFromProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
-            @RequestBody BasicUserDto request
+            @RequestBody UserResponseDto request
     ) {
-        TaskDto updatedTask = taskService.removeUserFromTask(userDetails, taskId, projectId, request);
+        TaskResponseDto updatedTask = taskService.removeUserFromTask(userDetails, taskId, projectId, request);
         return ResponseEntity.ok(updatedTask);
     }
 

@@ -1,10 +1,10 @@
 package com.manageit.manageit.feature.project.service;
 
 import com.manageit.manageit.feature.project.dto.CreateProjectRequest;
-import com.manageit.manageit.feature.project.dto.ProjectDto;
+import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
 import com.manageit.manageit.feature.project.dto.UpdateProjectRequest;
 import com.manageit.manageit.feature.project.model.Project;
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 
 import java.util.List;
@@ -14,17 +14,17 @@ public interface ProjectService {
 
     Project getProjectById(UUID projectId);
 
-    List<ProjectDto> getProjects(User user);
+    List<ProjectResponseDto> getProjects(User user);
 
-    ProjectDto getProject(UUID id, User user);
+    ProjectResponseDto getProject(UUID id, User user);
 
-    ProjectDto createProject(User owner, CreateProjectRequest createProjectRequest);
+    ProjectResponseDto createProject(User owner, CreateProjectRequest createProjectRequest);
 
     void deleteProject(User user, UUID projectId);
 
-    ProjectDto updateProject(User owner, UUID projectId, UpdateProjectRequest request);
+    ProjectResponseDto updateProject(User owner, UUID projectId, UpdateProjectRequest request);
 
-    void addUserToProject(User user, UUID projectId, BasicUserDto request);
+    void addUserToProject(User user, UUID projectId, UserResponseDto request);
 
-    ProjectDto removeUserFromProject(User owner, UUID projectId, BasicUserDto request);
+    ProjectResponseDto removeUserFromProject(User owner, UUID projectId, UserResponseDto request);
 }

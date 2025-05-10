@@ -1,10 +1,10 @@
 package com.manageit.manageit.feature.project.service;
 
-import com.manageit.manageit.feature.project.dto.ProjectDto;
+import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
 import com.manageit.manageit.feature.project.dto.CreateProjectRequest;
 import com.manageit.manageit.feature.project.dto.UpdateProjectRequest;
 import com.manageit.manageit.feature.task.repository.TaskRepository;
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.feature.user.service.UserService;
 import com.manageit.manageit.feature.project.mapper.ProjectMapper;
@@ -45,26 +45,26 @@ public class ProjectServiceDefault implements ProjectService {
     }
 
     @Override
-    public List<ProjectDto> getProjects(User user) {
+    public List<ProjectResponseDto> getProjects(User user) {
         return projectRepository.findByMembers_Username(user.getName())
                 .map(projects -> projects.stream()
-                        .map(projectMapper::toProjectDto)
+                        .map(projectMapper::toProjectResponseDto)
                         .toList())
                 .orElseThrow(() -> new EntityNotFoundException("No projects found"));
     }
 
     @Override
-    public ProjectDto getProject(UUID id, User user) {
+    public ProjectResponseDto getProject(UUID id, User user) {
         Project project = getProjectById(id);
         if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
             throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
-        return projectMapper.toProjectDto(project);
+        return projectMapper.toProjectResponseDto(project);
     }
 
     @Override
     @Transactional
-    public ProjectDto createProject(User owner, CreateProjectRequest createProjectRequest) {
+    public ProjectResponseDto createProject(User owner, CreateProjectRequest createProjectRequest) {
         User managedOwner = entityManager.merge(owner);
         Project project = Project.builder()
                 .owner(managedOwner)
@@ -78,7 +78,7 @@ public class ProjectServiceDefault implements ProjectService {
                 .build();
         Project newProject = projectRepository.save(project);
         chatService.saveChat(newProject);
-        return projectMapper.toProjectDto(project);
+        return projectMapper.toProjectResponseDto(project);
 
     }
 
@@ -93,7 +93,7 @@ public class ProjectServiceDefault implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectDto updateProject(User owner, UUID projectId, UpdateProjectRequest request) {
+    public ProjectResponseDto updateProject(User owner, UUID projectId, UpdateProjectRequest request) {
         User managedOwner = entityManager.merge(owner);
         Project project = getProjectById(projectId);
         String message;
@@ -125,12 +125,12 @@ public class ProjectServiceDefault implements ProjectService {
                 project.getId(),
                 null
         );
-        return projectMapper.toProjectDto(updatedProject);
+        return projectMapper.toProjectResponseDto(updatedProject);
     }
 
     @Override
     @Transactional
-    public void addUserToProject(User user, UUID projectId, BasicUserDto request) {
+    public void addUserToProject(User user, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
         validateUserIsProjectOwner(user, project);
         User userToAdd = userService.getUserByUsername(request.getUsername());
@@ -150,7 +150,7 @@ public class ProjectServiceDefault implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectDto removeUserFromProject(User owner, UUID projectId, BasicUserDto request) {
+    public ProjectResponseDto removeUserFromProject(User owner, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
         validateUserIsProjectOwner(owner, project);
         if (project.getOwner().getName().equals(request.getUsername())) {
@@ -170,7 +170,7 @@ public class ProjectServiceDefault implements ProjectService {
                     project.getId(),
                     null
             );
-            return projectMapper.toProjectDto(updatedProject);
+            return projectMapper.toProjectResponseDto(updatedProject);
         } else {
             throw new UserNotInProjectException("User is not a member of the project");
         }

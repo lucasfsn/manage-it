@@ -1,6 +1,6 @@
 package com.manageit.manageit.feature.notification.service;
 
-import com.manageit.manageit.feature.notification.dto.NotificationDto;
+import com.manageit.manageit.feature.notification.dto.NotificationResponseDto;
 import com.manageit.manageit.feature.notification.mapper.NotificationMapper;
 import com.manageit.manageit.feature.notification.model.Notification;
 import com.manageit.manageit.feature.notification.repository.NotificationRepository;
@@ -21,7 +21,7 @@ public class NotificationServiceDefault implements NotificationService {
     private final NotificationMapper notificationMapper;
 
     @Override
-    public List<NotificationDto> getNotifications(User user) {
+    public List<NotificationResponseDto> getNotifications(User user) {
         return notificationRepository.findByReceiver(user)
                 .stream().map(notificationMapper::toNotificationDto)
                 .toList();

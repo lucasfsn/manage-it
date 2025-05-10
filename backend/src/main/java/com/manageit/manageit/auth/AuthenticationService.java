@@ -1,8 +1,8 @@
 package com.manageit.manageit.auth;
 
 import com.manageit.manageit.configuration.security.JwtService;
-import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.mapper.UserMapper;
+import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.repository.UserRepository;
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
 import jakarta.validation.Valid;

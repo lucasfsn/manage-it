@@ -1,10 +1,10 @@
 package com.manageit.manageit.feature.project.controller;
 
 
-import com.manageit.manageit.feature.project.dto.ProjectDto;
+import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
 import com.manageit.manageit.feature.project.dto.CreateProjectRequest;
 import com.manageit.manageit.feature.project.dto.UpdateProjectRequest;
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.project.service.ProjectService;
 import jakarta.validation.Valid;
@@ -26,14 +26,14 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<List<ProjectDto>> getProjects(
+    public ResponseEntity<List<ProjectResponseDto>> getProjects(
             @AuthenticationPrincipal User userDetails
     ) {
         return ResponseEntity.ok(projectService.getProjects(userDetails));
     }
 
     @GetMapping("{projectId}")
-    public ResponseEntity<ProjectDto> getProject(
+    public ResponseEntity<ProjectResponseDto> getProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId
     ) {
@@ -41,11 +41,11 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectDto> createProject(
+    public ResponseEntity<ProjectResponseDto> createProject(
             @AuthenticationPrincipal User userDetails,
             @Valid @RequestBody CreateProjectRequest createProjectRequest
     ) {
-        ProjectDto project = projectService.createProject(userDetails, createProjectRequest);
+        ProjectResponseDto project = projectService.createProject(userDetails, createProjectRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -65,12 +65,12 @@ public class ProjectController {
     }
 
     @PatchMapping("{projectId}")
-    public ResponseEntity<ProjectDto> updateProject(
+    public ResponseEntity<ProjectResponseDto> updateProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
             @Valid @RequestBody UpdateProjectRequest request
     ) {
-        ProjectDto updatedProject = projectService.updateProject(userDetails, projectId, request);
+        ProjectResponseDto updatedProject = projectService.updateProject(userDetails, projectId, request);
         return ResponseEntity.ok(updatedProject);
     }
 
@@ -78,7 +78,7 @@ public class ProjectController {
     public ResponseEntity<Void> addUserToProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
-            @RequestBody BasicUserDto user
+            @RequestBody UserResponseDto user
 
     ) {
         projectService.addUserToProject(userDetails, projectId, user);
@@ -86,12 +86,12 @@ public class ProjectController {
     }
 
     @PatchMapping("{projectId}/user/remove")
-    public ResponseEntity<ProjectDto> removeUserFromProject(
+    public ResponseEntity<ProjectResponseDto> removeUserFromProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
-            @RequestBody BasicUserDto user
+            @RequestBody UserResponseDto user
     ) {
-        ProjectDto updatedProject = projectService.removeUserFromProject(userDetails, projectId, user);
+        ProjectResponseDto updatedProject = projectService.removeUserFromProject(userDetails, projectId, user);
         return ResponseEntity.ok(updatedProject);
     }
 }

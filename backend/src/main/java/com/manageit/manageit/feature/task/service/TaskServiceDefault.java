@@ -2,10 +2,10 @@ package com.manageit.manageit.feature.task.service;
 
 
 import com.manageit.manageit.feature.task.dto.CreateTaskRequest;
-import com.manageit.manageit.feature.task.dto.TaskDto;
-import com.manageit.manageit.feature.task.dto.TaskMetadataDto;
+import com.manageit.manageit.feature.task.dto.TaskResponseDto;
+import com.manageit.manageit.feature.task.dto.TaskDetailsResponseDto;
 import com.manageit.manageit.feature.task.dto.UpdateTaskRequest;
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInTaskException;
@@ -50,19 +50,19 @@ public class TaskServiceDefault implements TaskService {
     }
 
     @Override
-    public TaskDto getTask(User user, UUID projectId, UUID taskId) {
+    public TaskResponseDto getTask(User user, UUID projectId, UUID taskId) {
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(user, project);
         Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
-        return taskMapper.toTaskDto(task);
+        return taskMapper.toTaskResponseDto(task);
     }
 
     @Override
     @Transactional
-    public TaskMetadataDto createAndAddTaskToProject(User owner, UUID projectId, CreateTaskRequest createTaskRequest) {
+    public TaskDetailsResponseDto createAndAddTaskToProject(User owner, UUID projectId, CreateTaskRequest createTaskRequest) {
         User managedOwner = entityManager.merge(owner);
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(owner, project);
@@ -84,7 +84,7 @@ public class TaskServiceDefault implements TaskService {
                 task.getId()
         );
         chatService.saveChat(project, savedTask);
-        return taskMapper.toTaskMetadataDto(task);
+        return taskMapper.toTaskDetailsResponseDto(task);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class TaskServiceDefault implements TaskService {
 
     @Override
     @Transactional
-    public TaskDto updateTask(User updater, UUID taskId, UUID projectId, UpdateTaskRequest request) {
+    public TaskResponseDto updateTask(User updater, UUID taskId, UUID projectId, UpdateTaskRequest request) {
         User managedUpdater = entityManager.merge(updater);
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(updater, project);
@@ -141,11 +141,11 @@ public class TaskServiceDefault implements TaskService {
                 project.getId(),
                 task.getId()
         );
-        return taskMapper.toTaskDto(updatedTask);
+        return taskMapper.toTaskResponseDto(updatedTask);
      }
 
     @Override
-    public TaskDto addUserToTask(User user, UUID taskId, UUID projectId, BasicUserDto request) {
+    public TaskResponseDto addUserToTask(User user, UUID taskId, UUID projectId, UserResponseDto request) {
         Project project = projectService.getProjectById(projectId);
         User userToAdd = userService.getUserByUsername(request.getUsername());
         checkIfUserIsMemberOfProject(user, project);
@@ -167,7 +167,7 @@ public class TaskServiceDefault implements TaskService {
                     project.getId(),
                     task.getId()
             );
-            return taskMapper.toTaskDto(updatedTask);
+            return taskMapper.toTaskResponseDto(updatedTask);
         } else {
             throw new IllegalStateException("User is already a member of the task");
         }
@@ -175,7 +175,7 @@ public class TaskServiceDefault implements TaskService {
 
     @Override
     @Transactional
-    public TaskDto removeUserFromTask(User user, UUID taskId, UUID projectId, BasicUserDto request) {
+    public TaskResponseDto removeUserFromTask(User user, UUID taskId, UUID projectId, UserResponseDto request) {
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(user, project);
         Task task = getTaskById(taskId);
@@ -194,7 +194,7 @@ public class TaskServiceDefault implements TaskService {
                     project.getId(),
                     task.getId()
             );
-            return taskMapper.toTaskDto(updatedTask);
+            return taskMapper.toTaskResponseDto(updatedTask);
         } else {
             throw new UserNotInTaskException("User is not a member of the task");
         }
