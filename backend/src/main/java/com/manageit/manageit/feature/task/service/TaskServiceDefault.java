@@ -84,7 +84,7 @@ public class TaskServiceDefault implements TaskService {
                 task.getId()
         );
         chatService.saveChat(project, savedTask);
-        return taskMapper.toTaskDetailsResponseDto(task);
+        return taskMapper.toTaskDetailsResponseDto(savedTask);
     }
 
     @Override

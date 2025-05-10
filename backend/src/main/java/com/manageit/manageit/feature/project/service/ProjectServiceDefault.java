@@ -78,7 +78,7 @@ public class ProjectServiceDefault implements ProjectService {
                 .build();
         Project newProject = projectRepository.save(project);
         chatService.saveChat(newProject);
-        return projectMapper.toProjectResponseDto(project);
+        return projectMapper.toProjectResponseDto(newProject);
 
     }
 

@@ -13,5 +13,7 @@ public interface TaskMapper {
     @Mapping(target = "members", source = "users")
     TaskResponseDto toTaskResponseDto(Task task);
 
+    @Mapping(target = "projectId", expression = "java(task.getProject().getId())")
+    @Mapping(target = "members", source = "users")
     TaskDetailsResponseDto toTaskDetailsResponseDto(Task task);
 }
