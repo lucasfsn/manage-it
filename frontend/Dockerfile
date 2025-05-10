@@ -1,4 +1,4 @@
-FROM node:latest as builder
+FROM node:22 as builder
 
 LABEL maintainer="l.nowosielski.680@studms.ug.edu.pl"
 
@@ -14,7 +14,7 @@ USER 1000
 COPY . .
 
 USER 0
-RUN npm run build --production
+RUN npm run build
 
 FROM nginx:alpine
 

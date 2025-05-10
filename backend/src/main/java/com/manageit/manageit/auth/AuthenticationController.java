@@ -1,7 +1,7 @@
 package com.manageit.manageit.auth;
 
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
-import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.feature.user.service.UserServiceDefault;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Authentication")
 public class AuthenticationController {
 
-    private final UserService userService;
+    private final UserServiceDefault userService;
     private final AuthenticationService authService;
 
     @PostMapping("/register")

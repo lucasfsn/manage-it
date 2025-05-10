@@ -5,6 +5,7 @@ import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.dto.UpdateUserRequest;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.feature.user.service.UserServiceDefault;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,14 @@ public class UserController {
             @RequestParam(value = "taskId", required = false) UUID taskId
     ) {
         return ResponseEntity.ok(userService.searchUsers(pattern, projectId, taskId));
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteUser(
+            @AuthenticationPrincipal User userDetails
+    ) {
+        userService.removeUser(userDetails);
+        return ResponseEntity.noContent().build();
     }
 
 }
