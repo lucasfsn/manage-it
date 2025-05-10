@@ -1,6 +1,6 @@
-import { test, expect } from '../src/fixtures/project-data';
-import { authenticateUser } from '../src/helpers/auth';
-import { baseUrl } from '../playwright.config';
+import { test, expect } from '../fixtures/project-data';
+import { authenticateUser } from '../helpers/auth';
+import { baseUrl } from '../../playwright.config';
 
 test('should return a list of projects for user with projects', async ({ playwright }) => {
   const authResponse = await authenticateUser('johndoe@mail.com', '1qazXSW@');
