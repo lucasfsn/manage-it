@@ -6,7 +6,7 @@ import com.manageit.manageit.feature.project.dto.UpdateProjectRequest;
 import com.manageit.manageit.feature.task.repository.TaskRepository;
 import com.manageit.manageit.feature.user.dto.BasicUserDto;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
-import com.manageit.manageit.feature.user.service.UserServiceDefault;
+import com.manageit.manageit.feature.user.service.UserService;
 import com.manageit.manageit.feature.project.mapper.ProjectMapper;
 import com.manageit.manageit.feature.project.model.Project;
 import com.manageit.manageit.feature.project.model.ProjectStatus;
@@ -32,7 +32,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
     private final NotificationService notificationService;
-    private final UserServiceDefault userService;
+    private final UserService userService;
     private final ChatService chatService;
     private final TaskRepository taskRepository;
     @PersistenceContext
