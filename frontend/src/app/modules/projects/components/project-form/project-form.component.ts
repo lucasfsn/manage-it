@@ -2,8 +2,10 @@ import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { Project, ProjectRequest } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
-import { ButtonComponent } from '@/app/shared/components/button/button.component';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { endDateValidator, startDateValidator } from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -40,6 +42,8 @@ interface ProjectForm {
     MatIconModule,
     FormButtonComponent,
     ButtonComponent,
+    FormDateInputControlComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss',
@@ -85,9 +89,11 @@ export class ProjectFormComponent implements OnInit {
         {
           startDate: new FormControl('', {
             validators: [Validators.required],
+            updateOn: 'change',
           }),
           endDate: new FormControl('', {
             validators: [Validators.required],
+            updateOn: 'change',
           }),
         },
         {
@@ -114,30 +120,6 @@ export class ProjectFormComponent implements OnInit {
       this.form.value.description !== this.project.description ||
       this.form.value.dates?.startDate !== this.project.startDate ||
       this.form.value.dates.endDate !== this.project.endDate
-    );
-  }
-
-  protected get nameIsInvalid(): boolean {
-    return (
-      this.form.controls.name.dirty &&
-      this.form.controls.name.touched &&
-      this.form.controls.name.invalid
-    );
-  }
-
-  protected get descriptionIsInvalid(): boolean {
-    return (
-      this.form.controls.description.dirty &&
-      this.form.controls.description.touched &&
-      this.form.controls.description.invalid
-    );
-  }
-
-  protected get startDateIsInvalid(): boolean {
-    return !!(
-      this.form.controls.dates.get('startDate')?.dirty &&
-      this.form.controls.dates.get('startDate')?.touched &&
-      this.form.controls.dates.get('startDate')?.invalid
     );
   }
 

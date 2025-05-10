@@ -4,7 +4,7 @@ import { TranslationService } from '@/app/core/services/translation.service';
 import { User } from '@/app/features/dto/project.model';
 import { TaskService } from '@/app/features/services/task.service';
 import { UserService } from '@/app/features/services/user.service';
-import { UsersListComponent } from '@/app/shared/components/users-list/users-list.component';
+import { UsersListComponent } from '@/app/shared/components/ui/users-list/users-list.component';
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +22,7 @@ import { ToastrService } from 'ngx-toastr';
     UsersListComponent,
   ],
   templateUrl: './task-add-assignee.component.html',
-  styleUrl: './task-add-assignee.component.scss'
+  styleUrl: './task-add-assignee.component.scss',
 })
 export class TaskAddAssigneeComponent {
   protected loading: boolean = false;

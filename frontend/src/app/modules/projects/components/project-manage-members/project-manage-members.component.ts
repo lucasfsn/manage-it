@@ -1,20 +1,20 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { Project, User } from '@/app/features/dto/project.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
-import { Project, User } from '@/app/features/dto/project.model';
-import { ProjectService } from '@/app/features/services/project.service';
-import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
 
 @Component({
   selector: 'app-project-manage-members',
   imports: [MatIconModule, TranslateModule, ProfileIconComponent],
   templateUrl: './project-manage-members.component.html',
-  styleUrl: './project-manage-members.component.scss'
+  styleUrl: './project-manage-members.component.scss',
 })
 export class ProjectManageMembersComponent {
   protected loading: boolean = false;
@@ -25,7 +25,7 @@ export class ProjectManageMembersComponent {
     private toastrService: ToastrService,
     private router: Router,
     private translationService: TranslationService,
-    private mapperService: MapperService
+    private mapperService: MapperService,
   ) {}
 
   protected get project(): Project | null {
@@ -47,8 +47,8 @@ export class ProjectManageMembersComponent {
           `${user.firstName} ${
             user.lastName
           } ${this.translationService.translate(
-            'toast.success.MEMBER_REMOVED_FROM_PROJECT'
-          )}`
+            'toast.success.MEMBER_REMOVED_FROM_PROJECT',
+          )}`,
         );
       },
       error: () => {

@@ -2,7 +2,8 @@ import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { RegisterCredentials } from '@/app/features/dto/auth.model';
 import { AuthService } from '@/app/features/services/auth.service';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import {
   equalValues,
   nameValidator,
@@ -46,6 +47,7 @@ interface SignupForm {
     MatTooltipModule,
     TranslateModule,
     FormButtonComponent,
+    FormTextInputControlComponent,
   ],
 })
 export class SignupFormComponent {
@@ -92,9 +94,7 @@ export class SignupFormComponent {
           password: new FormControl('', {
             validators: [Validators.required, passwordValidator],
           }),
-          confirmPassword: new FormControl('', {
-            validators: [Validators.required, passwordValidator],
-          }),
+          confirmPassword: new FormControl(''),
         },
         {
           validators: [equalValues('password', 'confirmPassword')],
@@ -103,38 +103,6 @@ export class SignupFormComponent {
     },
     { updateOn: 'blur' },
   );
-
-  protected get firstNameIsInvalid(): boolean {
-    return (
-      this.form.controls.firstName.dirty &&
-      this.form.controls.firstName.touched &&
-      this.form.controls.firstName.invalid
-    );
-  }
-
-  protected get lastNameIsInvalid(): boolean {
-    return (
-      this.form.controls.lastName.dirty &&
-      this.form.controls.lastName.touched &&
-      this.form.controls.lastName.invalid
-    );
-  }
-
-  protected get usernameIsInvalid(): boolean {
-    return (
-      this.form.controls.username.dirty &&
-      this.form.controls.username.touched &&
-      this.form.controls.username.invalid
-    );
-  }
-
-  protected get emailIsInvalid(): boolean {
-    return (
-      this.form.controls.email.dirty &&
-      this.form.controls.email.touched &&
-      this.form.controls.email.invalid
-    );
-  }
 
   protected get passwordIsInvalid(): boolean {
     return !!(

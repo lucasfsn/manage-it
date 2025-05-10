@@ -1,7 +1,8 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { AuthService } from '@/app/features/services/auth.service';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -26,6 +27,7 @@ interface LoginForm {
     RouterLink,
     TranslateModule,
     FormButtonComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
@@ -52,22 +54,6 @@ export class LoginFormComponent implements OnInit {
     },
     { updateOn: 'blur' },
   );
-
-  protected get emailIsInvalid(): boolean {
-    return (
-      this.form.controls.email.dirty &&
-      this.form.controls.email.touched &&
-      this.form.controls.email.invalid
-    );
-  }
-
-  protected get passwordIsInvalid(): boolean {
-    return (
-      this.form.controls.password.dirty &&
-      this.form.controls.password.touched &&
-      this.form.controls.password.invalid
-    );
-  }
 
   protected get passwordErrors(): string | null {
     const control = this.form.controls.password;

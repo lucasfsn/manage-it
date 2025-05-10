@@ -140,8 +140,12 @@
       "ADD_TO_PROJECT_BUTTON": "Dodaj do Projektu"
     },
     "editForm": {
+      "TITLE": "Edytuj profil",
+      "FIRST_NAME_LABEL": "Imię",
       "FIRST_NAME_PLACEHOLDER": "Wprowadź swoje imię",
+      "LAST_NAME_LABEL": "Nazwisko",
       "LAST_NAME_PLACEHOLDER": "Wprowadź swoje nazwisko",
+      "EMAIL_LABEL": "Email",
       "EMAIL_PLACEHOLDER": "Wprowadź nowy email",
       "PASSWORD_LABEL": "Edytuj hasło",
       "PASSWORD_PLACEHOLDER": "Wprowadź nowe hasło",
@@ -174,14 +178,14 @@
       "INPUT_PLACEHOLDER": "Filtruj po nazwie",
       "MENU_TITLE": "Filtry",
       "MENU_STATUS_TEXT": "Status",
-      "ONLY_LOGGED_USER_PROJECTS": "Tylko zarządzane przeze mnie",
+      "ONLY_LOGGED_USER_PROJECTS": "Zarządzane przeze mnie",
       "CLEAR_BUTTON": "Wyczyść",
       "APPLY_BUTTON": "Zastosuj",
       "ALL_FILTER": "Wszystkie"
     },
     "sort": {
-      "SORT_CRITERIA_TEXT": "Sortuj według:",
-      "SORT_ORDER_TEXT": "Kolejność:"
+      "SORT_CRITERIA_TEXT": "Sortuj według",
+      "SORT_ORDER_TEXT": "Kolejność"
     }
   },
   "project": {

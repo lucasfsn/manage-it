@@ -14,70 +14,36 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <form [formGroup]="form" class="grid grid-cols-2 gap-2 p-2">
-    <div class="col-span-2 grid grid-cols-3 gap-2">
-      <label for="description">{{
-        "task.createForm.DESCRIPTION_LABEL" | translate
-      }}</label>
-      <input
-        type="text"
-        id="description"
-        formControlName="description"
-        [placeholder]="'task.createForm.DESCRIPTION_PLACEHOLDER' | translate"
-        class="w-full bg-transparent"
-      />
-      @if (descriptionIsInvalid) {
-        <p class="col-span-3 text-sm text-red-500">
-          {{ "task.createForm.DESCRIPTION_INVALID" | translate }}
-        </p>
-      }
-    </div>
-    <div class="col-span-2 grid grid-cols-3 gap-2">
-      <label for="startDate">{{
-        "task.createForm.DUE_DATE_LABEL" | translate
-      }}</label>
-      <input
-        id="dueDate"
-        type="date"
-        [min]="getToday()"
-        formControlName="dueDate"
-        class="bg-transparent"
-      />
-      @if (dueDateIsInvalid) {
-        <p class="col-span-3 text-sm text-red-500">
-          {{ "task.createForm.DUE_DATE_INVALID" | translate }}
-        </p>
-      }
-    </div>
-    <div class="col-span-2 grid grid-cols-3 gap-2">
-      <label for="startDate">{{
-        "task.createForm.PRIORITY_LABEL" | translate
-      }}</label>
-      <select
-        id="priority"
-        formControlName="priority"
-        class="bg-orange-200 dark:bg-slate-900"
-      >
-        <option value="" disabled>
-          {{ "task.createForm.PRIORITY_SELECT" | translate }}
-        </option>
-        @for (priority of priorities; track priority) {
-          <option [value]="priority">
-            {{ mapPriority(priority) }}
-          </option>
-        }
-      </select>
-    </div>
-    <div class="col-span-2 mt-4 flex justify-end gap-2">
+  <form [formGroup]="form" class="flex flex-col gap-2 px-3 py-2">
+    <app-form-text-input-control
+      identifier="description"
+      [control]="form.controls.description"
+      [placeholder]="'task.createForm.DESCRIPTION_PLACEHOLDER' | translate"
+      [errorMessage]="'task.createForm.DESCRIPTION_INVALID' | translate"
+      [label]="'task.createForm.DESCRIPTION_LABEL' | translate"
+    />
+    <app-form-date-input-control
+      identifier="due-date"
+      [control]="form.controls.dueDate"
+      [errorMessage]="'task.createForm.DUE_DATE_INVALID' | translate"
+      [label]="'task.createForm.DUE_DATE_LABEL' | translate"
+      [min]="getToday()"
+    />
+    <app-form-select-control
+      identifier="priority"
+      [control]="form.controls.priority"
+      [label]="'task.createForm.PRIORITY_LABEL' | translate"
+      [options]="priorities"
+    />
+    <div class="mt-4 flex flex-wrap justify-between gap-2">
       <app-form-button
-        buttonType="reset"
+        type="reset"
         [disabled]="loading"
         (handleClick)="onReset()"
       >
         {{ "task.createForm.RESET_BUTTON" | translate }}
       </app-form-button>
       <app-form-button
-        buttonType="submit"
         [disabled]="form.invalid || loading"
         (handleClick)="onSubmit()"
       >

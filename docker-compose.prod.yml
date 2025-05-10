@@ -2,7 +2,10 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
+      args:
+        NG_APP_API_URL: ${NG_APP_API_URL}
+        NG_APP_SOCKET_URL: ${NG_APP_SOCKET_URL}
     ports:
       - '80:80'
     depends_on:
@@ -13,7 +16,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=${DATABASE_URL}

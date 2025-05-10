@@ -8,7 +8,13 @@ import {
 } from '@/app/features/dto/task.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { TaskService } from '@/app/features/services/task.service';
-import { FormButtonComponent } from '@/app/shared/components/form-button/form-button.component';
+import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
+import {
+  FormSelectControlComponent,
+  SelectOption,
+} from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { dueDateValidator } from '@/app/shared/validators';
 import { Component, inject } from '@angular/core';
 import {
@@ -41,6 +47,9 @@ interface TaskCreateForm {
     MatDialogModule,
     TranslateModule,
     FormButtonComponent,
+    FormDateInputControlComponent,
+    FormSelectControlComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './task-create-form.component.html',
   styleUrl: './task-create-form.component.scss',
@@ -65,8 +74,11 @@ export class TaskCreateFormComponent {
     return TaskStatus;
   }
 
-  protected get priorities(): Priority[] {
-    return Object.values(Priority);
+  protected get priorities(): SelectOption[] {
+    return Object.values(Priority).map((priority) => ({
+      value: priority,
+      label: this.mapperService.priorityMapper(priority),
+    }));
   }
 
   protected getToday(): string {
@@ -92,36 +104,8 @@ export class TaskCreateFormComponent {
     { updateOn: 'blur' },
   );
 
-  protected get descriptionIsInvalid(): boolean {
-    return (
-      this.form.controls.description.dirty &&
-      this.form.controls.description.touched &&
-      this.form.controls.description.invalid
-    );
-  }
-
-  protected get dueDateIsInvalid(): boolean {
-    return (
-      this.form.controls.dueDate.dirty &&
-      this.form.controls.dueDate.touched &&
-      this.form.controls.dueDate.invalid
-    );
-  }
-
-  protected get priorityIsInvalid(): boolean {
-    return (
-      this.form.controls.priority.dirty &&
-      this.form.controls.priority.touched &&
-      this.form.controls.priority.invalid
-    );
-  }
-
   protected closeDialog(): void {
     this.dialog.closeAll();
-  }
-
-  protected mapPriority(priority: Priority): string {
-    return this.mapperService.priorityMapper(priority);
   }
 
   protected onReset(): void {

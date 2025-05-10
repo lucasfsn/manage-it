@@ -12,14 +12,14 @@ Go to the backend directory
   cd backend
 ```
 
-If you have made any changes to database or frontend, adjust the configuration in application-dev.yml, otherwise skip this step.
+Adjust the configuration in application.yml:
 
 - Datasource Configuration:
   - **url**
   - **username**
   - **password**
 - Application Security Configuration:
-  - **jwt.secret-key**: Update it if you want your own secret key.
+  - **jwt.secret-key**
   - **frontend.url**
 
 Install dependencies

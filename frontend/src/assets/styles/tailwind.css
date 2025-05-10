@@ -8,6 +8,14 @@
   /* Main color palette */
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
+  --color-gray-dark: var(--gray-dark);
+  --color-gray-light: var(--gray-light);
+  --color-scrollbar-track: var(--scrollbar-track);
+  --color-scrollbar-thumb: var(--scrollbar-thumb);
+  --color-toast-success: var(--toast-success);
+  --color-toast-error: var(--toast-error);
+  --color-toast-error-text: var(--toast-error-text);
 
   /* Fonts */
   --font-display: "Poppins", sans-serif;
@@ -22,9 +30,11 @@
 
 :root {
   /* Main color palette */
-  --primary: #0b1120;
-  --primary-light: #f4eede;
+  --primary: #0b1121;
+  --primary-light: #f4eddd;
   --secondary: #0f172a;
+  --gray-dark: #475569;
+  --gray-light: #94a3b8;
   --scrollbar-track: #ffedd5;
   --scrollbar-thumb: #fed7aa;
   --toast-success: #0ea5e9;

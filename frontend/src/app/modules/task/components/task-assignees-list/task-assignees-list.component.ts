@@ -1,8 +1,3 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
@@ -12,7 +7,12 @@ import {
   PageEvent,
   PaginatorComponent,
 } from '@/app/shared/components/paginator/paginator.component';
-import { UsersListComponent } from '@/app/shared/components/users-list/users-list.component';
+import { UsersListComponent } from '@/app/shared/components/ui/users-list/users-list.component';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-task-assignees-list',
@@ -24,7 +24,7 @@ import { UsersListComponent } from '@/app/shared/components/users-list/users-lis
     UsersListComponent,
   ],
   templateUrl: './task-assignees-list.component.html',
-  styleUrl: './task-assignees-list.component.scss'
+  styleUrl: './task-assignees-list.component.scss',
 })
 export class TaskAssigneesListComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
@@ -40,7 +40,7 @@ export class TaskAssigneesListComponent implements OnInit {
     private loadingService: LoadingService,
     private toastrService: ToastrService,
     private translationService: TranslationService,
-    private mapperService: MapperService
+    private mapperService: MapperService,
   ) {}
 
   protected get members(): User[] {
@@ -58,8 +58,8 @@ export class TaskAssigneesListComponent implements OnInit {
           `${user.firstName} ${
             user.lastName
           } ${this.translationService.translate(
-            'toast.success.MEMBER_REMOVED_FROM_TASK'
-          )}`
+            'toast.success.MEMBER_REMOVED_FROM_TASK',
+          )}`,
         );
       },
       error: () => {
@@ -86,7 +86,7 @@ export class TaskAssigneesListComponent implements OnInit {
       (user) =>
         user.firstName.toLowerCase().includes(value) ||
         user.lastName.toLowerCase().includes(value) ||
-        user.username.toLowerCase().includes(value)
+        user.username.toLowerCase().includes(value),
     );
 
     this.filteredUsersCount = filteredUsers.length;

@@ -1,0 +1,77 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    restart: on-failure
+    environment:
+      - NG_APP_API_URL=${NG_APP_API_URL}
+      - NG_APP_SOCKET_URL=${NG_APP_SOCKET_URL}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend/package.json
+        - action: sync
+          path: ./frontend
+          target: /app
+          ignore:
+            - node_modules
+    ports:
+      - '4200:4200'
+    depends_on:
+      - backend
+    networks:
+      - manage-it-client-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=${DATABASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - FRONTEND_URL=${FRONTEND_URL}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend/pom.xml
+        - action: sync+restart
+          path: ./backend
+          target: /app
+          ignore:
+            - .mvn/
+            - target/
+    ports:
+      - '8080:8080'
+    volumes:
+      - manage-it-maven-repo:/root/.m2
+    networks:
+      - manage-it-client-network
+      - manage-it-server-network
+    depends_on:
+      - database
+
+  database:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - '5432:5432'
+    volumes:
+      - manage-it-postgresql-data:/var/lib/postgresql/data
+      - ./database/data.sql:/docker-entrypoint-initdb.d/data.sql
+    networks:
+      - manage-it-server-network
+
+networks:
+  manage-it-client-network:
+  manage-it-server-network:
+
+volumes:
+  manage-it-postgresql-data:
+  manage-it-maven-repo:

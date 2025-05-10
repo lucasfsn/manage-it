@@ -140,8 +140,12 @@
       "ADD_TO_PROJECT_BUTTON": "Add to Project"
     },
     "editForm": {
+      "TITLE": "Edit profile",
+      "FIRST_NAME_LABEL": "First name",
       "FIRST_NAME_PLACEHOLDER": "Enter first name",
+      "LAST_NAME_LABEL": "Last name",
       "LAST_NAME_PLACEHOLDER": "Enter last name",
+      "EMAIL_LABEL": "Email",
       "EMAIL_PLACEHOLDER": "Enter new email",
       "PASSWORD_LABEL": "Edit password",
       "PASSWORD_PLACEHOLDER": "Enter new password",
@@ -174,14 +178,14 @@
       "INPUT_PLACEHOLDER": "Filter by project name",
       "MENU_TITLE": "Filters",
       "MENU_STATUS_TEXT": "Status",
-      "ONLY_LOGGED_USER_PROJECTS": "Only managed by me",
+      "ONLY_LOGGED_USER_PROJECTS": "Managed by me",
       "CLEAR_BUTTON": "Clear",
       "APPLY_BUTTON": "Apply",
       "ALL_FILTER": "All"
     },
     "sort": {
-      "SORT_CRITERIA_TEXT": "Sort by:",
-      "SORT_ORDER_TEXT": "Order:"
+      "SORT_CRITERIA_TEXT": "Sort by",
+      "SORT_ORDER_TEXT": "Order"
     }
   },
   "project": {

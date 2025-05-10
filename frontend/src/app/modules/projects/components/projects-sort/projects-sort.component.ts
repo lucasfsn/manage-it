@@ -1,3 +1,13 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import {
+  ProjectsSort,
+  SortCriteria,
+  SortOrder,
+} from '@/app/modules/projects/models/projects-sort.model';
+import {
+  FormSelectControlComponent,
+  SelectOption,
+} from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
 import {
   Component,
   DestroyRef,
@@ -9,12 +19,6 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MapperService } from '@/app/core/services/mapper.service';
-import {
-  ProjectsSort,
-  SortCriteria,
-  SortOrder,
-} from '@/app/modules/projects/models/projects-sort.model';
 
 interface ProjectsSortForm {
   readonly criteria: FormControl<SortCriteria | null>;
@@ -23,9 +27,9 @@ interface ProjectsSortForm {
 
 @Component({
   selector: 'app-projects-sort',
-  imports: [ReactiveFormsModule, TranslateModule],
+  imports: [ReactiveFormsModule, TranslateModule, FormSelectControlComponent],
   templateUrl: './projects-sort.component.html',
-  styleUrl: './projects-sort.component.scss'
+  styleUrl: './projects-sort.component.scss',
 })
 export class ProjectsSortComponent implements OnInit {
   @Input({ required: true }) public sortCriteria!: SortCriteria;
@@ -40,20 +44,18 @@ export class ProjectsSortComponent implements OnInit {
     order: new FormControl<SortOrder>(SortOrder.ASCENDING),
   });
 
-  protected get sortCriterias(): SortCriteria[] {
-    return Object.values(SortCriteria);
+  protected get criterias(): SelectOption[] {
+    return Object.values(SortCriteria).map((criteria) => ({
+      value: criteria,
+      label: this.mapperService.sortCriteriaMapper(criteria),
+    }));
   }
 
-  protected get sortOrders(): SortOrder[] {
-    return Object.values(SortOrder);
-  }
-
-  protected mapOrder(order: SortOrder): string {
-    return this.mapperService.sortOrderMapper(order);
-  }
-
-  protected mapCriteria(criteria: SortCriteria): string {
-    return this.mapperService.sortCriteriaMapper(criteria);
+  protected get orders(): SelectOption[] {
+    return Object.values(SortOrder).map((order) => ({
+      value: order,
+      label: this.mapperService.sortOrderMapper(order),
+    }));
   }
 
   public ngOnInit(): void {

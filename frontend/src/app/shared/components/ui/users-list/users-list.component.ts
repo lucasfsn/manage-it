@@ -1,15 +1,15 @@
+import { User } from '@/app/features/dto/project.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { User } from '@/app/features/dto/project.model';
-import { AuthService } from '@/app/features/services/auth.service';
-import { ProfileIconComponent } from '@/app/shared/components/profile-icon/profile-icon.component';
 
 @Component({
   selector: 'app-users-list',
   imports: [ProfileIconComponent, MatIconModule, TranslateModule],
   templateUrl: './users-list.component.html',
-  styleUrl: './users-list.component.scss'
+  styleUrl: './users-list.component.scss',
 })
 export class UsersListComponent {
   @Input({ required: true }) public iconName!: string;

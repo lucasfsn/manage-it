@@ -21,88 +21,50 @@
   </div>
   <form
     [formGroup]="form"
-    class="flex w-full flex-col gap-2 self-center p-2 lg:w-1/2"
+    class="flex w-full flex-col gap-2 self-center p-2 lg:max-w-xl"
   >
-    <div class="grid grid-cols-3 items-center gap-2">
-      <label for="name">{{ "project.form.NAME_LABEL" | translate }}</label>
-      <input
-        id="name"
-        type="text"
-        formControlName="name"
-        [placeholder]="'project.form.NAME_PLACEHOLDER' | translate"
-        class="w-auto"
-      />
-      @if (nameIsInvalid) {
-        <p class="col-span-2 text-sm text-red-500">
-          {{ "project.form.NAME_INVALID" | translate }}
-        </p>
-      }
-    </div>
-    <div class="grid grid-cols-3 items-center gap-2">
-      <label for="description">{{
-        "project.form.DESCRIPTION_LABEL" | translate
-      }}</label>
-      <input
-        type="text"
-        id="description"
-        formControlName="description"
-        [placeholder]="'project.form.DESCRIPTION_PLACEHOLDER' | translate"
-        class="w-full"
-      />
-      @if (descriptionIsInvalid) {
-        <p class="col-span-3 text-sm text-red-500">
-          {{ "project.form.DESCRIPTION_INVALID" | translate }}
-        </p>
-      }
-    </div>
-    <div class="grid grid-cols-3 items-center gap-2" formGroupName="dates">
-      <label for="startDate">{{
-        "project.form.START_DATE_LABEL" | translate
-      }}</label>
-      <input
-        type="date"
-        id="startDate"
-        formControlName="startDate"
-        [min]="minDate"
-      />
-      @if (startDateIsInvalid) {
-        <p class="col-span-3 text-sm text-red-500">
-          @if (isEditing) {
-            {{ "project.form.EDIT_START_DATE_INVALID" | translate }}
-          } @else {
-            {{ "project.form.CREATE_START_DATE_INVALID" | translate }}
-          }
-        </p>
-      }
-    </div>
-    <div class="grid grid-cols-3 items-center gap-2" formGroupName="dates">
-      <label for="endDate">{{
-        "project.form.END_DATE_LABEL" | translate
-      }}</label>
-      <input
-        type="date"
-        id="endDate"
-        formControlName="endDate"
-        [min]="minDate"
-      />
-      @if (endDateIsInvalid) {
-        <p class="col-span-3 text-sm text-red-500">
-          {{ "project.form.END_DATE_INVALID" | translate }}
-        </p>
-      }
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
+    <app-form-text-input-control
+      identifier="name"
+      [control]="form.controls.name"
+      [placeholder]="'project.form.NAME_PLACEHOLDER' | translate"
+      [errorMessage]="'project.form.NAME_INVALID' | translate"
+      [label]="'project.form.NAME_LABEL' | translate"
+    />
+    <app-form-text-input-control
+      identifier="description"
+      [control]="form.controls.description"
+      [placeholder]="'project.form.DESCRIPTION_PLACEHOLDER' | translate"
+      [errorMessage]="'project.form.DESCRIPTION_INVALID' | translate"
+      [label]="'project.form.DESCRIPTION_LABEL' | translate"
+    />
+    <app-form-date-input-control
+      identifier="start-date"
+      [control]="form.controls.dates.controls.startDate"
+      [errorMessage]="
+        (isEditing
+          ? 'project.form.EDIT_START_DATE_INVALID'
+          : 'project.form.CREATE_START_DATE_INVALID'
+        ) | translate
+      "
+      [label]="'project.form.START_DATE_LABEL' | translate"
+      [min]="minDate"
+    />
+    <app-form-date-input-control
+      identifier="end-date"
+      [control]="form.controls.dates.controls.endDate"
+      [errorMessage]="'project.form.END_DATE_INVALID' | translate"
+      [label]="'project.form.END_DATE_LABEL' | translate"
+      [min]="minDate"
+      [customIsInvalid]="endDateIsInvalid"
+    />
+    <div class="mt-2 flex justify-between gap-2">
       <app-form-button
-        buttonType="reset"
+        type="reset"
         [disabled]="loading"
         (handleClick)="onReset()"
         >{{ "project.form.RESET_BUTTON" | translate }}</app-form-button
       >
-      <app-form-button
-        buttonType="submit"
-        [disabled]="disabled"
-        (handleClick)="onSubmit()"
-      >
+      <app-form-button [disabled]="disabled" (handleClick)="onSubmit()">
         @if (loading) {
           {{ "utils.LOADING" | translate }}
         } @else if (isEditing) {

@@ -1,3 +1,8 @@
+import { User } from '@/app/features/dto/project.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ProjectService } from '@/app/features/services/project.service';
+import { UserService } from '@/app/features/services/user.service';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { Component, Inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -5,30 +10,23 @@ import {
   MatDialogContent,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { User } from '@/app/features/dto/project.model';
-import { AuthService } from '@/app/features/services/auth.service';
-import { ProjectService } from '@/app/features/services/project.service';
-import { UserService } from '@/app/features/services/user.service';
 
 @Component({
   selector: 'app-search',
   imports: [
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatDialogContent,
     MatIconModule,
     TranslateModule,
     MatProgressSpinnerModule,
+    FormTextInputControlComponent,
   ],
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent {
   protected loading: boolean = false;
@@ -41,7 +39,7 @@ export class SearchComponent {
     private projectService: ProjectService,
     private userService: UserService,
     private router: Router,
-    @Inject(MAT_DIALOG_DATA) protected data?: { projectId?: string }
+    @Inject(MAT_DIALOG_DATA) protected data?: { projectId?: string },
   ) {}
 
   protected handleClose(): void {
