@@ -22,7 +22,7 @@ test.afterAll(async () => {
   await apiContext.dispose();
 });
 
-test('should delete a project by id', async ({ projectId }) => {
+test('should delete a project by id', async ({ projectId, projectId2 }) => {
   const response = await apiContext.delete(`/api/v1/projects/${projectId}`);
 
   expect(response.status()).toBe(204);
@@ -33,6 +33,9 @@ test('should delete a project by id', async ({ projectId }) => {
   const responseBody = await getResponse.json();
   expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No project found with id: ${projectId}`);
+
+  const response2 = await apiContext.delete(`/api/v1/projects/${projectId2}`);
+  expect(response2.status()).toBe(204);
 });
 
 test('should not delete project with non-existent id', async () => {

@@ -7,7 +7,7 @@ let token: string;
 let apiContext: APIRequestContext;
 
 test.beforeAll(async ({ playwright }) => {
-  const authenticationResponse = await authenticateUser('johndoe@mail.com', '1qazXSW@');
+  const authenticationResponse = await authenticateUser('jan.kowalski@mail.com', '1qazXSW@');
   token = authenticationResponse.token;
 
   apiContext = await playwright.request.newContext({
@@ -23,7 +23,7 @@ test.afterAll(async () => {
 });
 
 test('should add a user (project member) to a task', async ({ projectId, taskId }) => {
-  const username = 'john_doe';
+  const username = 'jan_kowalski';
   const userData = {
     username: username,
   };
@@ -38,7 +38,7 @@ test('should add a user (project member) to a task', async ({ projectId, taskId 
 });
 
 test('should not add user who is already assigned to a task', async ({ projectId, taskId }) => {
-  const username = 'john_doe';
+  const username = 'jan_kowalski';
   const userData = {
     username: username,
   };
@@ -88,7 +88,7 @@ test('should not assign non-existing user to a task', async ({ projectId, taskId
 test('should return 404 if task is not found', async ({ projectId }) => {
   const nonExistentTaskId = '00000000-0000-0000-0000-000000000000';
   const userData = {
-    username: 'john_doe',
+    username: 'jan_kowalski',
   };
 
   const response = await apiContext.patch(`/api/v1/projects/${projectId}/tasks/${nonExistentTaskId}/user/add`, {
@@ -104,7 +104,7 @@ test('should return 404 if task is not found', async ({ projectId }) => {
 test('should return error if task has invalid id', async ({ projectId }) => {
   const invalidTaskId = 'invalid-id';
   const userData = {
-    username: 'john_doe',
+    username: 'jan_kowalski',
   };
 
   const response = await apiContext.patch(`/api/v1/projects/${projectId}/tasks/${invalidTaskId}/user/add`, {

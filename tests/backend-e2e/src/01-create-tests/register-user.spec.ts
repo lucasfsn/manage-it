@@ -17,7 +17,7 @@ test('should register a new user with valid data', async ({ request }) => {
   expect(response.status()).toBe(202);
   const responseBody = await response.json();
   expect(responseBody).toHaveProperty('token');
-  expect(responseBody.username).toBe(userData.username);
+  expect(responseBody.user.username).toBe(userData.username);
 });
 
 test('should return an error when registering with missing username', async ({ request }) => {
@@ -78,7 +78,7 @@ test('should return an error when registering with an already existing username 
 
   expect(response2.status()).toBe(409);
   const responseBody = await response2.json();
-  expect(responseBody.httpStatus).toBe("CONFLICT");
+  expect(responseBody.httpStatus).toBe('CONFLICT');
 });
 
 test('should return an error when registering with invalid password', async ({ request }) => {
