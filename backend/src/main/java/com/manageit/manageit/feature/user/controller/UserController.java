@@ -5,6 +5,7 @@ import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.dto.UpdateUserRequest;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.feature.user.service.UserServiceDefault;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
