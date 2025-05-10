@@ -1,0 +1,9 @@
+<button
+  [ngClass]="[bgColor, textColor, hoverBgColor, customClass]"
+  class="flex aspect-square cursor-pointer items-center justify-center rounded-full p-1 transition-all focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:outline-hidden active:text-sky-200 active:ring-0"
+  [class.h-10]="largeSize"
+  (click)="onClick()"
+  [routerLink]="routerLink"
+>
+  <ng-content />
+</button>

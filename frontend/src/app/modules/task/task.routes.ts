@@ -1,6 +1,6 @@
+import { TaskComponent } from '@/app/modules/task/pages/task/task.component';
+import { taskResolver } from '@/app/modules/task/resolvers/task.resolver';
 import { Routes } from '@angular/router';
-import { TaskComponent } from './pages/task/task.component';
-import { taskResolver } from './resolvers/task.resolver';
 
 export const TASK_ROUTES: Routes = [
   {

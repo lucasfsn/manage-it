@@ -1,20 +1,19 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
-import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
-import { ConfirmModalService } from '../../services/confirm-modal.service';
-import { LoadingService } from '../../services/loading.service';
-import { SideBarComponent } from '../side-bar/side-bar.component';
+import { SidebarComponent } from '@/app/core/layout/sidebar/sidebar.component';
+import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
+import { LoadingService } from '@/app/core/services/loading.service';
+import { ConfirmModalComponent } from '@/app/shared/components/confirm-modal/confirm-modal.component';
+import { SpinnerComponent } from '@/app/shared/components/ui/spinner/spinner.component';
 
 @Component({
   selector: 'app-main-layout',
-  standalone: true,
   imports: [
-    SideBarComponent,
     RouterOutlet,
     SpinnerComponent,
     ConfirmModalComponent,
+    SidebarComponent,
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',

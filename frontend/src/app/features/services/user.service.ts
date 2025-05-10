@@ -1,3 +1,7 @@
+import { UpdateUserCredentials } from '@/app/features/dto/auth.model';
+import { UpdateUser, User } from '@/app/features/dto/user.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { environment } from '@/environments/environment';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -5,10 +9,6 @@ import {
 } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { UpdateUserCredentials } from '../dto/auth.model';
-import { UpdateUser, User } from '../dto/user.model';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',

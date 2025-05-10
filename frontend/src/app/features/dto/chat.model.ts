@@ -1,4 +1,4 @@
-import { User } from './project.model';
+import { User } from '@/app/features/dto/project.model';
 
 export interface Message {
   readonly id: string;

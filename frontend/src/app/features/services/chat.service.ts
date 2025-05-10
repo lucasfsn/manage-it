@@ -2,9 +2,9 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { RxStomp } from '@stomp/rx-stomp';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { rxStompConfig } from '../../config/rx-stomp.config';
-import { Message, MessageSend } from '../dto/chat.model';
+import { environment } from '@/environments/environment';
+import { rxStompConfig } from '@/app/config/rx-stomp.config';
+import { Message, MessageSend } from '@/app/features/dto/chat.model';
 
 @Injectable({
   providedIn: 'root',

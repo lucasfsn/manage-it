@@ -2,17 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { Project } from '../../../../features/dto/project.model';
-import { TaskStatus } from '../../../../features/dto/task.model';
-import { ProjectService } from '../../../../features/services/project.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { Project } from '@/app/features/dto/project.model';
+import { TaskStatus } from '@/app/features/dto/task.model';
+import { ProjectService } from '@/app/features/services/project.service';
 
 @Component({
   selector: 'app-tasks-summary',
-  standalone: true,
   imports: [BaseChartDirective, TranslateModule],
   templateUrl: './tasks-summary.component.html',
-  styleUrl: './tasks-summary.component.scss',
+  styleUrl: './tasks-summary.component.scss'
 })
 export class TasksSummaryComponent implements OnInit {
   public constructor(

@@ -1,4 +1,4 @@
-import { UserProject } from './project.model';
+import { UserProject } from '@/app/features/dto/project.model';
 
 export interface User {
   readonly firstName: string;

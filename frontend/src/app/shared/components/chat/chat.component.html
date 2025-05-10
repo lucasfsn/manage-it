@@ -1,5 +1,5 @@
 <div
-  class="fixed bottom-20 right-4 z-40 flex h-3/4 max-h-[600px] w-[300px] origin-bottom-right flex-col overflow-hidden rounded-2xl bg-orange-200 text-white shadow-lg dark:bg-slate-950 lg:w-[400px]"
+  class="xs:w-xs xs:right-4 xs:h-3/4 xs:max-h-150 xs:rounded-2xl xs:bottom-20 fixed right-0 bottom-0 z-40 flex h-full w-full origin-bottom-right flex-col overflow-hidden bg-orange-200 text-white shadow-lg lg:w-sm dark:bg-slate-950"
   [@chatAnimation]
 >
   <div
@@ -8,14 +8,14 @@
     <h2 class="text-lg font-semibold">{{ "chat.TITLE" | translate }}</h2>
   </div>
   <div
-    class="relative flex flex-grow flex-col justify-between gap-3 overflow-hidden p-4"
+    class="xs:pb-4 relative flex grow flex-col justify-between gap-3 overflow-hidden p-4 pb-16"
   >
     <div
-      class="flex max-h-[80%] flex-col gap-3 overflow-y-scroll px-4 py-3"
+      class="flex max-h-4/5 flex-col gap-3 overflow-y-auto px-4 py-3 drop-shadow-sm"
       #scroll
     >
       @for (message of messages; track message.id) {
-        <div class="flex max-w-[250px] flex-col gap-1 lg:max-w-[350px]">
+        <div class="flex max-w-62.5 flex-col gap-1 lg:max-w-87.5">
           <div class="flex items-center gap-2">
             <app-profile-icon
               size="md"
@@ -37,18 +37,18 @@
               }}</span>
             </div>
           </div>
-          <div class="break-words text-sm text-gray-600 dark:text-gray-200">
+          <div class="text-sm break-words text-gray-600 dark:text-gray-200">
             {{ message.content }}
           </div>
         </div>
       }
     </div>
     <div
-      class="chat-input relative flex h-12 items-center rounded-full bg-orange-200 px-4 py-3 text-gray-800 shadow-lg focus-within:ring-2 focus-within:ring-orange-300 dark:bg-slate-950 dark:text-gray-200 dark:focus-within:ring-slate-600"
+      class="chat-input relative flex h-12 items-center rounded-full bg-orange-200 px-4 py-3 text-gray-800 shadow-sm focus-within:ring-2 focus-within:ring-orange-300 dark:bg-slate-950 dark:text-gray-200 dark:focus-within:ring-slate-600"
     >
       @if (showEmojiPicker) {
         <div
-          class="absolute bottom-12 right-0 z-50 bg-orange-200 shadow-2xl dark:bg-slate-950"
+          class="absolute right-0 bottom-12 z-50 bg-orange-200 shadow-2xl dark:bg-slate-950"
         >
           <emoji-mart
             [darkMode]="true"
@@ -71,7 +71,7 @@
       <input
         type="text"
         [placeholder]="'chat.INPUT_PLACEHOLDER' | translate"
-        class="flex-1 bg-transparent text-sm placeholder:text-gray-500 focus:outline-none disabled:cursor-not-allowed"
+        class="flex-1 bg-transparent text-sm placeholder:text-gray-500 focus-visible:outline-hidden disabled:cursor-not-allowed"
         [formControl]="form"
         (keydown.enter)="sendMessage()"
       />
@@ -85,7 +85,7 @@
       @if (form.value && form.value.length > 0) {
         <button
           @buttonAnimation
-          class="flex aspect-square h-8 w-8 items-center justify-center rounded-full bg-orange-100 transition-all hover:bg-orange-300 focus:outline-none disabled:cursor-not-allowed dark:bg-slate-900 dark:hover:bg-slate-800"
+          class="flex aspect-square h-8 w-8 items-center justify-center rounded-full bg-orange-100 transition-all hover:bg-orange-300 focus-visible:outline-hidden disabled:cursor-not-allowed dark:bg-slate-900 dark:hover:bg-slate-800"
           [disabled]="loading"
           (click)="sendMessage()"
         >

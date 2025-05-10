@@ -1,15 +1,15 @@
-<div class="flex flex-col gap-1.5">
+<div class="flex min-w-64 flex-col gap-1.5">
   <p class="self-center font-medium text-sky-500">
     {{ "dashboard.upcomingDeadlines.TITLE" | translate }}
   </p>
   @if (sortedProjectsByEndDate().length === 0) {
-    <p class="text-center text-gray-400">
+    <p class="text-center text-gray-400 drop-shadow-sm">
       {{ "dashboard.upcomingDeadlines.NO_DEADLINES" | translate }}
     </p>
   }
   @for (project of sortedProjectsByEndDate(); track project.id) {
     <div
-      class="flex cursor-pointer flex-col rounded-lg bg-orange-100 p-4 shadow-sm transition-all hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-slate-900 dark:hover:bg-slate-800"
+      class="flex cursor-pointer flex-col rounded-lg bg-orange-100 p-4 shadow-xs transition-all hover:bg-orange-200 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-hidden dark:bg-slate-900 dark:hover:bg-slate-900/70"
       routerLink="/projects/{{ project.id }}"
     >
       <h3 class="text-lg font-semibold">{{ project.name }}</h3>

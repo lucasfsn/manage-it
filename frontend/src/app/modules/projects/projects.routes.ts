@@ -1,9 +1,9 @@
+import { ProjectFormComponent } from '@/app/modules/projects/components/project-form/project-form.component';
+import { ProjectComponent } from '@/app/modules/projects/pages/project/project.component';
+import { ProjectsComponent } from '@/app/modules/projects/pages/projects/projects.component';
+import { projectResolver } from '@/app/modules/projects/resolvers/project.resolver';
+import { projectsResolver } from '@/app/modules/projects/resolvers/projects.resolver';
 import { Routes } from '@angular/router';
-import { ProjectFormComponent } from './components/project-form/project-form.component';
-import { ProjectComponent } from './pages/project/project.component';
-import { ProjectsComponent } from './pages/projects/projects.component';
-import { projectResolver } from './resolvers/project.resolver';
-import { projectsResolver } from './resolvers/projects.resolver';
 
 export const PROJECTS_ROUTES: Routes = [
   {

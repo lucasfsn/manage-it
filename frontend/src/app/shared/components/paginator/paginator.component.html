@@ -4,7 +4,7 @@
   <select
     (change)="handlePageSizeChange($event)"
     [matTooltip]="'paginator.SELECT_INFO' | translate"
-    class="border-none bg-transparent text-sky-700 outline-none dark:text-sky-300"
+    class="border-none bg-transparent text-sky-700 outline-hidden dark:text-sky-300"
   >
     @for (option of pageSizeOptions; track option) {
       <option

@@ -1,3 +1,8 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { AuthService } from '@/app/features/services/auth.service';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -9,11 +14,6 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { AuthService } from '../../../../features/services/auth.service';
-import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
-import { passwordValidator } from '../../../../shared/validators';
 
 interface LoginForm {
   readonly email: FormControl<string | null>;
@@ -22,12 +22,12 @@ interface LoginForm {
 
 @Component({
   selector: 'app-login-form',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     RouterLink,
     TranslateModule,
     FormButtonComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
@@ -43,53 +43,30 @@ export class LoginFormComponent implements OnInit {
     private mapperService: MapperService,
   ) {}
 
-  protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>({
-    email: new FormControl('', {
-      validators: [Validators.required, Validators.email],
-    }),
-    password: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(8),
-        passwordValidator,
-      ],
-    }),
-  });
-
-  protected get emailIsInvalid(): boolean {
-    return (
-      this.form.controls.email.dirty &&
-      this.form.controls.email.touched &&
-      this.form.controls.email.invalid
-    );
-  }
-
-  protected get passwordIsInvalid(): boolean {
-    return (
-      this.form.controls.password.dirty &&
-      this.form.controls.password.touched &&
-      this.form.controls.password.invalid
-    );
-  }
+  protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>(
+    {
+      email: new FormControl('', {
+        validators: [Validators.required, Validators.email],
+      }),
+      password: new FormControl('', {
+        validators: [Validators.required],
+      }),
+    },
+    { updateOn: 'blur' },
+  );
 
   protected get passwordErrors(): string | null {
     const control = this.form.controls.password;
-    if (control.errors) {
-      if (control.errors['required']) {
-        return this.translationService.translate('loginForm.PASSWORD_REQUIRED');
-      }
-      if (control.errors['invalidPassword']) {
-        return this.translationService.translate('loginForm.PASSWORD_INVALID');
-      }
-    }
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate('loginForm.PASSWORD_REQUIRED');
 
     return null;
   }
 
   protected onSubmit(): void {
-    if (this.form.invalid) {
-      return;
-    }
+    if (this.form.invalid) return;
 
     const email = this.form.value.email ?? '';
     const password = this.form.value.password ?? '';

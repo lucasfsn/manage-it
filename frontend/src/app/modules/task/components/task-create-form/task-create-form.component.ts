@@ -1,3 +1,21 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import {
+  Priority,
+  Task,
+  TaskData,
+  TaskStatus,
+} from '@/app/features/dto/task.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { TaskService } from '@/app/features/services/task.service';
+import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
+import {
+  FormSelectControlComponent,
+  SelectOption,
+} from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { dueDateValidator } from '@/app/shared/validators';
 import { Component, inject } from '@angular/core';
 import {
   FormControl,
@@ -14,18 +32,6 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import {
-  Priority,
-  Task,
-  TaskData,
-  TaskStatus,
-} from '../../../../features/dto/task.model';
-import { ProjectService } from '../../../../features/services/project.service';
-import { TaskService } from '../../../../features/services/task.service';
-import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
-import { dueDateValidator } from '../../../../shared/validators';
 
 interface TaskCreateForm {
   readonly description: FormControl<string | null>;
@@ -35,13 +41,15 @@ interface TaskCreateForm {
 
 @Component({
   selector: 'app-task-create-form',
-  standalone: true,
   imports: [
     MatIconModule,
     ReactiveFormsModule,
     MatDialogModule,
     TranslateModule,
     FormButtonComponent,
+    FormDateInputControlComponent,
+    FormSelectControlComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './task-create-form.component.html',
   styleUrl: './task-create-form.component.scss',
@@ -49,7 +57,7 @@ interface TaskCreateForm {
 export class TaskCreateFormComponent {
   protected loading = false;
   protected selectedStatus = inject<{ selectedStatus: TaskStatus }>(
-    MAT_DIALOG_DATA
+    MAT_DIALOG_DATA,
   ).selectedStatus;
 
   public constructor(
@@ -59,67 +67,45 @@ export class TaskCreateFormComponent {
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<TaskCreateFormComponent>,
     private mapperService: MapperService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
   ) {}
 
   protected get TaskStatus(): typeof TaskStatus {
     return TaskStatus;
   }
 
-  protected get priorities(): Priority[] {
-    return Object.values(Priority);
+  protected get priorities(): SelectOption[] {
+    return Object.values(Priority).map((priority) => ({
+      value: priority,
+      label: this.mapperService.priorityMapper(priority),
+    }));
   }
 
   protected getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
 
-  protected form: FormGroup<TaskCreateForm> = new FormGroup<TaskCreateForm>({
-    description: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(120),
-      ],
-    }),
-    dueDate: new FormControl(this.getToday(), {
-      validators: [Validators.required, dueDateValidator],
-    }),
-    priority: new FormControl<Priority | null>(Priority.LOW, {
-      validators: [Validators.required],
-    }),
-  });
-
-  protected get descriptionIsInvalid(): boolean {
-    return (
-      this.form.controls.description.dirty &&
-      this.form.controls.description.touched &&
-      this.form.controls.description.invalid
-    );
-  }
-
-  protected get dueDateIsInvalid(): boolean {
-    return (
-      this.form.controls.dueDate.dirty &&
-      this.form.controls.dueDate.touched &&
-      this.form.controls.dueDate.invalid
-    );
-  }
-
-  protected get priorityIsInvalid(): boolean {
-    return (
-      this.form.controls.priority.dirty &&
-      this.form.controls.priority.touched &&
-      this.form.controls.priority.invalid
-    );
-  }
+  protected form: FormGroup<TaskCreateForm> = new FormGroup<TaskCreateForm>(
+    {
+      description: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(120),
+        ],
+      }),
+      dueDate: new FormControl(this.getToday(), {
+        validators: [Validators.required, dueDateValidator],
+      }),
+      priority: new FormControl<Priority | null>(Priority.LOW, {
+        validators: [Validators.required],
+      }),
+    },
+    { updateOn: 'blur' },
+  );
 
   protected closeDialog(): void {
     this.dialog.closeAll();
-  }
-
-  protected mapPriority(priority: Priority): string {
-    return this.mapperService.priorityMapper(priority);
   }
 
   protected onReset(): void {
@@ -146,7 +132,7 @@ export class TaskCreateFormComponent {
         this.loading = false;
         this.dialogRef.close(newTask);
         this.toastrService.success(
-          this.translationService.translate('toast.success.TASK_ADDED')
+          this.translationService.translate('toast.success.TASK_ADDED'),
         );
       },
       error: () => {

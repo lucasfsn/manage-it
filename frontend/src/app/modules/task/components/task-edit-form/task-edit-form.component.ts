@@ -1,3 +1,19 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import {
+  Priority,
+  Task,
+  TaskData,
+  TaskStatus,
+} from '@/app/features/dto/task.model';
+import { TaskService } from '@/app/features/services/task.service';
+import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
+import {
+  FormSelectControlComponent,
+  SelectOption,
+} from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -9,16 +25,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import {
-  Priority,
-  Task,
-  TaskData,
-  TaskStatus,
-} from '../../../../features/dto/task.model';
-import { TaskService } from '../../../../features/services/task.service';
-import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
 
 interface TaskEditForm {
   readonly description: FormControl<string | null>;
@@ -29,12 +35,14 @@ interface TaskEditForm {
 
 @Component({
   selector: 'app-task-edit-form',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatIconModule,
     TranslateModule,
     FormButtonComponent,
+    FormDateInputControlComponent,
+    FormSelectControlComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './task-edit-form.component.html',
   styleUrl: './task-edit-form.component.scss',
@@ -47,25 +55,28 @@ export class TaskEditFormComponent implements OnInit {
     private toastrService: ToastrService,
     private dialogRef: MatDialogRef<TaskEditFormComponent>,
     private mapperService: MapperService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
   ) {}
 
-  protected form: FormGroup<TaskEditForm> = new FormGroup<TaskEditForm>({
-    description: new FormControl('', [
-      Validators.minLength(2),
-      Validators.maxLength(120),
-      Validators.required,
-    ]),
-    status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED, {
-      validators: [Validators.required],
-    }),
-    priority: new FormControl<Priority | null>(Priority.LOW, {
-      validators: [Validators.required],
-    }),
-    dueDate: new FormControl('', {
-      validators: [Validators.required],
-    }),
-  });
+  protected form: FormGroup<TaskEditForm> = new FormGroup<TaskEditForm>(
+    {
+      description: new FormControl('', [
+        Validators.minLength(2),
+        Validators.maxLength(120),
+        Validators.required,
+      ]),
+      status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED, {
+        validators: [Validators.required],
+      }),
+      priority: new FormControl<Priority | null>(Priority.LOW, {
+        validators: [Validators.required],
+      }),
+      dueDate: new FormControl('', {
+        validators: [Validators.required],
+      }),
+    },
+    { updateOn: 'blur' },
+  );
 
   protected get disabled(): boolean {
     return this.form.invalid || !this.isFormChanged() || this.loading;
@@ -75,44 +86,18 @@ export class TaskEditFormComponent implements OnInit {
     return this.taskService.loadedTask();
   }
 
-  protected get Priority(): typeof Priority {
-    return Priority;
+  protected get priorities(): SelectOption[] {
+    return Object.values(Priority).map((priority) => ({
+      value: priority,
+      label: this.mapperService.priorityMapper(priority),
+    }));
   }
 
-  protected get TaskStatus(): typeof TaskStatus {
-    return TaskStatus;
-  }
-
-  protected get priorities(): Priority[] {
-    return Object.values(Priority);
-  }
-
-  protected get statuses(): TaskStatus[] {
-    return Object.values(TaskStatus);
-  }
-
-  protected mapTaskStatus(taskStatus: TaskStatus): string {
-    return this.mapperService.taskStatusMapper(taskStatus);
-  }
-
-  protected mapPriority(priority: Priority): string {
-    return this.mapperService.priorityMapper(priority);
-  }
-
-  protected get descriptionIsInvalid(): boolean {
-    return (
-      this.form.controls['description'].dirty &&
-      this.form.controls['description'].touched &&
-      this.form.controls['description'].invalid
-    );
-  }
-
-  protected get dueDateIsInvalid(): boolean {
-    return (
-      this.form.controls['dueDate'].dirty &&
-      this.form.controls['dueDate'].touched &&
-      this.form.controls['dueDate'].invalid
-    );
+  protected get statuses(): SelectOption[] {
+    return Object.values(TaskStatus).map((status) => ({
+      value: status,
+      label: this.mapperService.taskStatusMapper(status),
+    }));
   }
 
   private isFormChanged(): boolean {
@@ -163,7 +148,7 @@ export class TaskEditFormComponent implements OnInit {
     this.taskService.updateTask(projectId, id, updatedTask).subscribe({
       next: () => {
         this.toastrService.success(
-          this.translationService.translate('toast.success.TASK_UPDATED')
+          this.translationService.translate('toast.success.TASK_UPDATED'),
         );
         this.closeDialog();
       },

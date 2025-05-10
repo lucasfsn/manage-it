@@ -1,13 +1,13 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import {
   Project,
   ProjectRequest,
   ProjectStatus,
   User,
-} from '../dto/project.model';
+} from '@/app/features/dto/project.model';
+import { environment } from '@/environments/environment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, signal } from '@angular/core';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +33,7 @@ export class ProjectService {
       }),
       catchError((err: HttpErrorResponse) => {
         return throwError(() => err);
-      })
+      }),
     );
   }
 
@@ -47,7 +47,7 @@ export class ProjectService {
         map((res: Project) => res.id),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -60,7 +60,7 @@ export class ProjectService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -72,18 +72,18 @@ export class ProjectService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
   public updateProject(
     projectId: string,
-    updatedProject: ProjectRequest
+    updatedProject: ProjectRequest,
   ): Observable<Project> {
     return this.http
       .patch<Project>(
         `${environment.apiUrl}/projects/${projectId}`,
-        updatedProject
+        updatedProject,
       )
       .pipe(
         tap((res: Project) => {
@@ -91,7 +91,7 @@ export class ProjectService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -106,7 +106,7 @@ export class ProjectService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -123,7 +123,7 @@ export class ProjectService {
           this.allowAddToProject = false;
 
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -131,7 +131,7 @@ export class ProjectService {
     return this.http
       .patch<Project>(
         `${environment.apiUrl}/projects/${projectId}/user/remove`,
-        user
+        user,
       )
       .pipe(
         tap((res: Project) => {
@@ -139,7 +139,7 @@ export class ProjectService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 

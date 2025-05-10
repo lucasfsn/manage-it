@@ -1,0 +1,29 @@
+<div class="flex flex-col gap-1.5">
+  @if (label) {
+    <label [for]="identifier" class="text-gray-dark dark:text-gray-light">{{
+      label
+    }}</label>
+  }
+  <div [ngClass]="['flex flex-col gap-1', customClass]">
+    @for (option of options; track option.value) {
+      <label
+        [for]="option.value"
+        class="text-gray-dark dark:text-gray-light flex cursor-pointer items-center gap-2 transition-colors active:text-sky-800 dark:active:text-sky-300"
+      >
+        <input
+          type="radio"
+          [id]="option.value"
+          [value]="option.value"
+          [formControl]="control"
+          class="size-4 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-hidden"
+        />
+        {{ option.label }}
+      </label>
+    }
+  </div>
+  @if (isInvalid) {
+    <p class="text-sm text-red-500">
+      {{ errorMessage }}
+    </p>
+  }
+</div>

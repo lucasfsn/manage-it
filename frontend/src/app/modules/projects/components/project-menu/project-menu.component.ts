@@ -1,19 +1,18 @@
+import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
+import { LoadingService } from '@/app/core/services/loading.service';
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ProjectService } from '@/app/features/services/project.service';
+import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmModalService } from '../../../../core/services/confirm-modal.service';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { AuthService } from '../../../../features/services/auth.service';
-import { ProjectService } from '../../../../features/services/project.service';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-project-menu',
-  standalone: true,
   imports: [ButtonComponent, MatIconModule],
   templateUrl: './project-menu.component.html',
   styleUrl: './project-menu.component.scss',

@@ -1,3 +1,5 @@
+import { routes } from '@/app/app.routes';
+import { authInterceptor } from '@/app/core/interceptors/auth.interceptor';
 import {
   HttpClient,
   provideHttpClient,
@@ -22,8 +24,6 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideToastr } from 'ngx-toastr';
-import { routes } from './app.routes';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -53,6 +53,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideToastr({
       timeOut: 2000,
+      positionClass: 'toast-bottom-right',
     }),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideCharts(withDefaultRegisterables()),

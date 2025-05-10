@@ -1,10 +1,10 @@
 <div
-  class="flex flex-col gap-2 rounded-sm bg-orange-200 px-4 py-3 shadow-lg dark:bg-slate-900"
+  class="flex flex-col gap-2 rounded-xs bg-orange-200 px-4 py-3 shadow-lg dark:bg-slate-900"
 >
   <div class="flex justify-between">
     <div class="flex items-center gap-2">
       <div
-        class="text:slate-800 flex aspect-square h-[40px] w-[40px] items-center justify-center rounded-full bg-orange-100 dark:bg-slate-800 dark:text-slate-300"
+        class="text:slate-800 flex aspect-square size-10 items-center justify-center rounded-full bg-orange-100 dark:bg-slate-800 dark:text-slate-300"
       >
         <mat-icon>edit_note</mat-icon>
       </div>
@@ -12,88 +12,46 @@
     </div>
     <button
       (click)="closeDialog()"
-      class="flex items-center justify-center focus:text-sky-300 focus:outline-none focus:ring-0 active:text-sky-500"
+      class="flex items-center justify-center focus-visible:text-sky-300 focus-visible:ring-0 focus-visible:outline-hidden active:text-sky-500"
     >
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <form [formGroup]="form" class="grid grid-cols-2 gap-2 p-2">
-    <div class="col-span-2 grid grid-cols-3 gap-2">
-      <label for="description">{{
-        "task.editForm.DESCRIPTION_LABEL" | translate
-      }}</label>
-      <input
-        id="description"
-        type="text"
-        formControlName="description"
-        [placeholder]="'task.editForm.DESCRIPTION_PLACEHOLDER' | translate"
-        class="bg-transparent"
-      />
-      @if (descriptionIsInvalid) {
-        <p class="col-span-3 text-sm text-red-500">
-          {{ "task.editForm.DESCRIPTION_INVALID" | translate }}
-        </p>
-      }
-    </div>
-    <div class="col-span-2 grid grid-cols-3 gap-2">
-      <label for="dueDate">{{
-        "task.editForm.DUE_DATE_LABEL" | translate
-      }}</label>
-      <input
-        type="date"
-        id="dueDate"
-        formControlName="dueDate"
-        class="bg-transparent"
-      />
-      @if (dueDateIsInvalid) {
-        <p class="col-span-3 text-sm text-red-500">
-          {{ "task.editForm.DUE_DATE_INVALID" | translate }}
-        </p>
-      }
-    </div>
-    <div class="col-span-2 grid grid-cols-3 gap-2">
-      <label for="status">{{ "task.editForm.STATUS_LABEL" | translate }}</label>
-      <select
-        id="status"
-        formControlName="status"
-        class="bg-orange-200 dark:bg-slate-900"
-      >
-        @for (status of statuses; track status) {
-          <option [value]="status">
-            {{ mapTaskStatus(status) }}
-          </option>
-        }
-      </select>
-    </div>
-    <div class="col-span-2 grid grid-cols-3 gap-2">
-      <label for="priority">{{
-        "task.editForm.PRIORITY_LABEL" | translate
-      }}</label>
-      <select
-        id="priority"
-        formControlName="priority"
-        class="bg-orange-200 dark:bg-slate-900"
-      >
-        @for (priority of priorities; track priority) {
-          <option [value]="priority">
-            {{ mapPriority(priority) }}
-          </option>
-        }
-      </select>
-    </div>
-    <div class="col-span-2 mt-4 flex justify-end gap-2">
+  <form [formGroup]="form" class="flex flex-col gap-2 px-3 py-2">
+    <app-form-text-input-control
+      identifier="description"
+      [control]="form.controls.description"
+      [placeholder]="'task.editForm.DESCRIPTION_PLACEHOLDER' | translate"
+      [errorMessage]="'task.editForm.DESCRIPTION_INVALID' | translate"
+      [label]="'task.editForm.DESCRIPTION_LABEL' | translate"
+    />
+    <app-form-date-input-control
+      identifier="due-date"
+      [control]="form.controls.dueDate"
+      [errorMessage]="'task.editForm.DUE_DATE_INVALID' | translate"
+      [label]="'task.editForm.DUE_DATE_LABEL' | translate"
+    />
+    <app-form-select-control
+      identifier="status"
+      [control]="form.controls.status"
+      [label]="'task.editForm.STATUS_LABEL' | translate"
+      [options]="statuses"
+    />
+    <app-form-select-control
+      identifier="priority"
+      [control]="form.controls.priority"
+      [label]="'task.editForm.PRIORITY_LABEL' | translate"
+      [options]="priorities"
+    />
+    <div class="mt-4 flex flex-wrap justify-between gap-2">
       <app-form-button
-        buttonType="reset"
+        type="reset"
         [disabled]="loading"
         (handleClick)="onReset()"
       >
         {{ "task.editForm.RESET_BUTTON" | translate }}
       </app-form-button>
-      <app-form-button
-        buttonType="submit"
-        [disabled]="disabled"
-        (handleClick)="onSubmit()"
-      >
+      <app-form-button [disabled]="disabled" (handleClick)="onSubmit()">
         @if (loading) {
           {{ "utils.LOADING" | translate }}
         } @else {

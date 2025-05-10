@@ -1,3 +1,12 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { Task, TaskStatus } from '@/app/features/dto/task.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { TaskService } from '@/app/features/services/task.service';
+import { TaskCreateFormComponent } from '@/app/modules/task/components/task-create-form/task-create-form.component';
+import { PriorityComponent } from '@/app/shared/components/ui/priority/priority.component';
+import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -11,19 +20,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { Task, TaskStatus } from '../../../../features/dto/task.model';
-import { ProjectService } from '../../../../features/services/project.service';
-import { TaskService } from '../../../../features/services/task.service';
-import { PriorityComponent } from '../../../../shared/components/priority/priority.component';
-import { ProfileIconComponent } from '../../../../shared/components/profile-icon/profile-icon.component';
-import { DatePipe } from '../../../../shared/pipes/date.pipe';
-import { TaskCreateFormComponent } from '../../../task/components/task-create-form/task-create-form.component';
 
 @Component({
   selector: 'app-drag-drop-list',
-  standalone: true,
   imports: [
     MatIconModule,
     DatePipe,
@@ -45,7 +44,7 @@ export class DragDropListComponent implements OnInit {
     private projectService: ProjectService,
     private taskService: TaskService,
     private mapperService: MapperService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
   ) {}
 
   protected completedTasks: Task[] = [];
@@ -69,14 +68,14 @@ export class DragDropListComponent implements OnInit {
       moveItemInArray(
         event.container.data,
         event.previousIndex,
-        event.currentIndex
+        event.currentIndex,
       );
     } else {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex
+        event.currentIndex,
       );
     }
 
@@ -110,7 +109,7 @@ export class DragDropListComponent implements OnInit {
         data: {
           selectedStatus,
         },
-      }
+      },
     );
 
     dialogRef.afterClosed().subscribe((newTask: Task | null) => {
@@ -153,17 +152,17 @@ export class DragDropListComponent implements OnInit {
     switch (task.status) {
     case TaskStatus.COMPLETED:
       this.completedTasks = this.completedTasks.filter(
-        (t) => t.id !== task.id
+        (t) => t.id !== task.id,
       );
       break;
     case TaskStatus.IN_PROGRESS:
       this.inProgressTasks = this.inProgressTasks.filter(
-        (t) => t.id !== task.id
+        (t) => t.id !== task.id,
       );
       break;
     case TaskStatus.NOT_STARTED:
       this.notStartedTasks = this.notStartedTasks.filter(
-        (t) => t.id !== task.id
+        (t) => t.id !== task.id,
       );
       break;
     }
@@ -185,13 +184,13 @@ export class DragDropListComponent implements OnInit {
     if (!this.project) return;
 
     this.completedTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.COMPLETED
+      (task) => task.status === TaskStatus.COMPLETED,
     );
     this.inProgressTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.IN_PROGRESS
+      (task) => task.status === TaskStatus.IN_PROGRESS,
     );
     this.notStartedTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.NOT_STARTED
+      (task) => task.status === TaskStatus.NOT_STARTED,
     );
   }
 }

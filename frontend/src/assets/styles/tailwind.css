@@ -1,0 +1,115 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Main color palette */
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
+  --color-gray-dark: var(--gray-dark);
+  --color-gray-light: var(--gray-light);
+  --color-scrollbar-track: var(--scrollbar-track);
+  --color-scrollbar-thumb: var(--scrollbar-thumb);
+  --color-toast-success: var(--toast-success);
+  --color-toast-error: var(--toast-error);
+  --color-toast-error-text: var(--toast-error-text);
+
+  /* Fonts */
+  --font-display: "Poppins", sans-serif;
+
+  /* Breakpoints */
+  --breakpoint-xs: 25rem;
+
+  /* Background Images */
+  --background-image-main-gradient: url("/assets/images/bg.webp");
+  --background-image-main-gradient-light: url("/assets/images/bg-light.webp");
+}
+
+:root {
+  /* Main color palette */
+  --primary: #0b1121;
+  --primary-light: #f4eddd;
+  --secondary: #0f172a;
+  --gray-dark: #475569;
+  --gray-light: #94a3b8;
+  --scrollbar-track: #ffedd5;
+  --scrollbar-thumb: #fed7aa;
+  --toast-success: #0ea5e9;
+  --toast-error: #831843;
+  --toast-error-text: #fbcfe8;
+}
+
+:root.dark {
+  /* Main color palette - dark mode*/
+  --secondary: #cbd5e1;
+  --scrollbar-track: #0b1120;
+  --scrollbar-thumb: #0f172a;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-display);
+  }
+
+  body {
+    height: 100vh;
+    color: var(--secondary);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  a,
+  button {
+    cursor: pointer;
+  }
+
+  .dialog-backdrop {
+    backdrop-filter: blur(2px);
+  }
+
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 5px;
+  }
+
+  #toast-container > .toast-success {
+    background-color: var(--toast-success);
+  }
+
+  #toast-container > .toast-error {
+    background-color: var(--toast-error);
+    color: var(--toast-error-text);
+  }
+}
+
+@layer components {
+  .search-dialog .mat-mdc-dialog-surface {
+    border-radius: 0.75rem;
+  }
+
+  .scroll-lock {
+    overflow: hidden;
+  }
+}

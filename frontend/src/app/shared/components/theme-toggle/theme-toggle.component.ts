@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { Theme, ThemeService } from '../../../core/services/theme.service';
+import { Theme, ThemeService } from '@/app/core/services/theme.service';
 
 @Component({
   selector: 'app-theme-toggle',
-  standalone: true,
   imports: [MatIconModule, CommonModule],
   templateUrl: './theme-toggle.component.html',
-  styleUrl: './theme-toggle.component.scss',
+  styleUrl: './theme-toggle.component.scss'
 })
 export class ThemeToggleComponent {
   public constructor(private themeService: ThemeService) {}

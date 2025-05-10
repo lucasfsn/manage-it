@@ -1,3 +1,12 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
+import { Project, ProjectRequest } from '@/app/features/dto/project.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
+import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { endDateValidator, startDateValidator } from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -9,19 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../../core/services/mapper.service';
-import { TranslationService } from '../../../../core/services/translation.service';
-import {
-  Project,
-  ProjectRequest,
-} from '../../../../features/dto/project.model';
-import { ProjectService } from '../../../../features/services/project.service';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { FormButtonComponent } from '../../../../shared/components/form-button/form-button.component';
-import {
-  endDateValidator,
-  startDateValidator,
-} from '../../../../shared/validators';
 
 interface RouteData {
   readonly isEditing: boolean;
@@ -40,13 +36,14 @@ interface ProjectForm {
 
 @Component({
   selector: 'app-project-form',
-  standalone: true,
   imports: [
     TranslateModule,
     ReactiveFormsModule,
     MatIconModule,
     FormButtonComponent,
     ButtonComponent,
+    FormDateInputControlComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss',
@@ -72,35 +69,40 @@ export class ProjectFormComponent implements OnInit {
     return this.isEditing ? null : this.today();
   }
 
-  protected form: FormGroup<ProjectForm> = new FormGroup<ProjectForm>({
-    name: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50),
-      ],
-    }),
-    description: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(120),
-      ],
-    }),
-    dates: new FormGroup<DatesForm>(
-      {
-        startDate: new FormControl('', {
-          validators: [Validators.required],
-        }),
-        endDate: new FormControl('', {
-          validators: [Validators.required],
-        }),
-      },
-      {
-        validators: [endDateValidator('startDate', 'endDate')],
-      },
-    ),
-  });
+  protected form: FormGroup<ProjectForm> = new FormGroup<ProjectForm>(
+    {
+      name: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      }),
+      description: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(120),
+        ],
+      }),
+      dates: new FormGroup<DatesForm>(
+        {
+          startDate: new FormControl('', {
+            validators: [Validators.required],
+            updateOn: 'change',
+          }),
+          endDate: new FormControl('', {
+            validators: [Validators.required],
+            updateOn: 'change',
+          }),
+        },
+        {
+          validators: [endDateValidator('startDate', 'endDate')],
+        },
+      ),
+    },
+    { updateOn: 'blur' },
+  );
 
   protected get disabled(): boolean {
     return (
@@ -118,30 +120,6 @@ export class ProjectFormComponent implements OnInit {
       this.form.value.description !== this.project.description ||
       this.form.value.dates?.startDate !== this.project.startDate ||
       this.form.value.dates.endDate !== this.project.endDate
-    );
-  }
-
-  protected get nameIsInvalid(): boolean {
-    return (
-      this.form.controls.name.dirty &&
-      this.form.controls.name.touched &&
-      this.form.controls.name.invalid
-    );
-  }
-
-  protected get descriptionIsInvalid(): boolean {
-    return (
-      this.form.controls.description.dirty &&
-      this.form.controls.description.touched &&
-      this.form.controls.description.invalid
-    );
-  }
-
-  protected get startDateIsInvalid(): boolean {
-    return !!(
-      this.form.controls.dates.get('startDate')?.dirty &&
-      this.form.controls.dates.get('startDate')?.touched &&
-      this.form.controls.dates.get('startDate')?.invalid
     );
   }
 

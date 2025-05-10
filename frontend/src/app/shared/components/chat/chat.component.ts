@@ -1,3 +1,10 @@
+import { MapperService } from '@/app/core/services/mapper.service';
+import { UserCredentials } from '@/app/features/dto/auth.model';
+import { Message } from '@/app/features/dto/chat.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ChatService } from '@/app/features/services/chat.service';
+import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import {
   animate,
   state,
@@ -10,7 +17,9 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  HostListener,
   inject,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -21,17 +30,9 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MapperService } from '../../../core/services/mapper.service';
-import { UserCredentials } from '../../../features/dto/auth.model';
-import { Message } from '../../../features/dto/chat.model';
-import { AuthService } from '../../../features/services/auth.service';
-import { ChatService } from '../../../features/services/chat.service';
-import { DatePipe } from '../../pipes/date.pipe';
-import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
 
 @Component({
   selector: 'app-chat',
-  standalone: true,
   imports: [
     MatIconModule,
     PickerComponent,
@@ -55,7 +56,7 @@ import { ProfileIconComponent } from '../profile-icon/profile-icon.component';
     ]),
   ],
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('scroll') private scroll!: ElementRef;
   private destroyRef = inject(DestroyRef);
   private projectId: string | null = null;
@@ -125,6 +126,19 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 
+  @HostListener('window:resize')
+  protected onResize(): void {
+    this.checkWindowSizeAndToggleLock();
+  }
+
+  private checkWindowSizeAndToggleLock(): void {
+    if (window.innerWidth < 400) {
+      document.body.classList.add('scroll-lock');
+    } else {
+      document.body.classList.remove('scroll-lock');
+    }
+  }
+
   public ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.projectId = params.get('projectId');
@@ -132,10 +146,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.loadMessages();
       this.watchTopic();
     });
+    this.checkWindowSizeAndToggleLock();
   }
 
   public ngAfterViewChecked(): void {
     const el = this.scroll.nativeElement as HTMLElement;
     el.scrollTop = el.scrollHeight;
+  }
+
+  public ngOnDestroy(): void {
+    document.body.classList.remove('scroll-lock');
   }
 }

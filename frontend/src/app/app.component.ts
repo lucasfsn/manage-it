@@ -1,3 +1,6 @@
+import { NavbarComponent } from '@/app/core/layout/navbar/navbar.component';
+import { Theme, ThemeService } from '@/app/core/services/theme.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import { Component, effect, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
@@ -7,9 +10,6 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
-import { HeaderComponent } from './core/layout/header/header.component';
-import { Theme, ThemeService } from './core/services/theme.service';
-import { TranslationService } from './core/services/translation.service';
 
 interface RouteData {
   readonly title?: string;
@@ -17,8 +17,7 @@ interface RouteData {
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -31,7 +30,7 @@ export class AppComponent implements OnInit {
     private titleService: Title,
     private router: Router,
     private themeService: ThemeService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) {
     effect(() => {
       this.updateTheme(this.themeService.loadedTheme());
@@ -64,7 +63,7 @@ export class AppComponent implements OnInit {
 
           return route;
         }),
-        switchMap((route) => route.data)
+        switchMap((route) => route.data),
       )
       .subscribe((data: RouteData) => {
         const { title } = data;

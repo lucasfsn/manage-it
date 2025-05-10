@@ -1,0 +1,39 @@
+@if (users.length === 0) {
+  <p class="text-center text-gray-500">
+    {{ "task.assignees.EMPTY_ASSIGNEES_LIST" | translate }}
+  </p>
+}
+<ul class="flex flex-col gap-3 text-sm">
+  @for (user of users; track user.username) {
+    <li
+      class="flex items-center justify-between gap-1 text-slate-600 dark:text-slate-400"
+    >
+      <div class="flex cursor-default gap-2 focus-visible:outline-hidden">
+        <app-profile-icon
+          size="lg"
+          [firstName]="user.firstName"
+          [lastName]="user.lastName"
+          [hover]="false"
+        />
+        <p class="flex items-center gap-1">
+          <span [class.text-sky-500]="isLoggedInUser(user.username)"
+            >{{ user.firstName }} {{ user.lastName }}
+          </span>
+          <span class="text-slate-400 dark:text-slate-600">
+            ({{
+              isLoggedInUser(user.username)
+                ? ("task.assignees.CURRENT_USER_AS_SEARCH_RESULT" | translate)
+                : user.username
+            }})
+          </span>
+        </p>
+      </div>
+      <button
+        class="flex items-center justify-center rounded-full bg-gray-400 p-0.5 text-slate-950 transition-all hover:bg-gray-500 focus-visible:ring-2 focus-visible:ring-sky-950 focus-visible:outline-hidden"
+        (click)="onClick(user)"
+      >
+        <mat-icon class="text-base">{{ iconName }}</mat-icon>
+      </button>
+    </li>
+  }
+</ul>

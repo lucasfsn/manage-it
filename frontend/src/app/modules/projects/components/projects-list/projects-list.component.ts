@@ -1,32 +1,31 @@
-import { DecimalPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { Project, ProjectStatus } from '../../../../features/dto/project.model';
-import { AuthService } from '../../../../features/services/auth.service';
-import { ProjectService } from '../../../../features/services/project.service';
-import { DatePipe } from '../../../../shared/pipes/date.pipe';
-import { enumValueValidator } from '../../../../shared/validators';
-import { ProjectsFilters } from '../../models/projects-filter.model';
+import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { AuthService } from '@/app/features/services/auth.service';
+import { ProjectService } from '@/app/features/services/project.service';
+import { ProjectsFilterComponent } from '@/app/modules/projects/components/projects-filter/projects-filter.component';
+import { ProjectsSortComponent } from '@/app/modules/projects/components/projects-sort/projects-sort.component';
+import { ProjectsFilters } from '@/app/modules/projects/models/projects-filter.model';
 import {
   ProjectsSort,
   SortCriteria,
   SortOrder,
-} from '../../models/projects-sort.model';
-import { ProjectsFilterComponent } from '../projects-filter/projects-filter.component';
-import { ProjectsSortComponent } from '../projects-sort/projects-sort.component';
+} from '@/app/modules/projects/models/projects-sort.model';
+import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { enumValueValidator } from '@/app/shared/validators';
+import { DecimalPipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface ProjectsParams extends Params {
   readonly sort?: SortCriteria;
   readonly order?: SortOrder;
   readonly name?: string;
   readonly status?: ProjectStatus;
-  readonly onlyOwnedByMe?: string;
+  readonly ownedByCurrentUser?: string;
 }
 
 @Component({
   selector: 'app-projects-list',
-  standalone: true,
   imports: [
     RouterLink,
     DecimalPipe,
@@ -46,13 +45,13 @@ export class ProjectsListComponent implements OnInit {
 
   protected filterName: string = '';
   protected filterStatus: ProjectStatus | null = null;
-  protected filterOnlyOwnedByMe: boolean = false;
+  protected filterOwnedByCurrentUser: boolean = false;
 
   public constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
   ) {}
 
   protected get projects(): Project[] {
@@ -72,7 +71,7 @@ export class ProjectsListComponent implements OnInit {
   protected onFilterChange(filters: ProjectsFilters): void {
     this.filterName = filters.name;
     this.filterStatus = filters.status;
-    this.filterOnlyOwnedByMe = filters.onlyOwnedByMe;
+    this.filterOwnedByCurrentUser = filters.ownedByCurrentUser;
     this.applyFiltersAndSort();
   }
 
@@ -82,7 +81,7 @@ export class ProjectsListComponent implements OnInit {
   }
 
   private sortProjects(projects: Project[]): Project[] {
-    return [...projects].sort((a, b) => {
+    return projects.toSorted((a, b) => {
       let comparison = 0;
       switch (this.sortCriteria) {
       case SortCriteria.NAME:
@@ -113,7 +112,7 @@ export class ProjectsListComponent implements OnInit {
       const matchesStatus =
         !this.filterStatus || project.status === this.filterStatus;
       const matchesOwner =
-        !this.filterOnlyOwnedByMe ||
+        !this.filterOwnedByCurrentUser ||
         project.owner.username === this.authService.getLoggedInUsername();
 
       return matchesName && matchesStatus && matchesOwner;
@@ -128,8 +127,8 @@ export class ProjectsListComponent implements OnInit {
         order: this.sortOrder,
         name: this.filterName ? this.filterName : undefined,
         status: this.filterStatus ?? undefined,
-        onlyOwnedByMe: this.filterOnlyOwnedByMe
-          ? this.filterOnlyOwnedByMe
+        ownedByCurrentUser: this.filterOwnedByCurrentUser
+          ? this.filterOwnedByCurrentUser
           : undefined,
       },
       queryParamsHandling: 'merge',
@@ -144,7 +143,7 @@ export class ProjectsListComponent implements OnInit {
         enumValueValidator(params.order, SortOrder) || SortOrder.ASCENDING;
       this.filterName = params.name || '';
       this.filterStatus = enumValueValidator(params.status, ProjectStatus);
-      this.filterOnlyOwnedByMe = params.onlyOwnedByMe === 'true';
+      this.filterOwnedByCurrentUser = params.ownedByCurrentUser === 'true';
       this.applyFiltersAndSort();
     });
   }

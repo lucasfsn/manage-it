@@ -4,15 +4,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   ProjectStatus,
   UserProject,
-} from '../../../../features/dto/project.model';
-import { UserService } from '../../../../features/services/user.service';
+} from '@/app/features/dto/project.model';
+import { UserService } from '@/app/features/services/user.service';
 
 @Component({
   selector: 'app-user-projects-list',
-  standalone: true,
   imports: [RouterLink, TranslateModule],
   templateUrl: './user-projects-list.component.html',
-  styleUrl: './user-projects-list.component.scss',
+  styleUrl: './user-projects-list.component.scss'
 })
 export class UserProjectsListComponent {
   protected commonProjects: UserProject[] = [];
