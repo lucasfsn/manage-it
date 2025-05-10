@@ -46,5 +46,13 @@ public class UserController {
         return ResponseEntity.ok(userService.searchUsers(pattern, projectId, taskId));
     }
 
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteUser(
+            @AuthenticationPrincipal User userDetails
+    ) {
+        userService.removeUser(userDetails);
+        return ResponseEntity.noContent().build();
+    }
+
 }
 
