@@ -41,6 +41,37 @@ test('should successfuly update a project', async ({ projectId }) => {
   expect(responseBody.status).toBe("IN_PROGRESS");
 });
 
+test('should not update a project for incorrect status', async ({ projectId }) => {
+  const updatedProjectData = {
+    name: 'Updated test project',
+    description: 'This is an updated test project',
+    status: 'BAD_STATUS',
+  };
+
+  const response = await apiContext.patch(`/api/v1/projects/${projectId}`, {
+    data: updatedProjectData,
+  });
+
+  expect(response.status()).toBe(400);
+
+  // zwraca 500 zamiast 400. błąd
+});
+
+test('should not update a project for empty project name and description', async ({ projectId }) => {
+  const updatedProjectData = {
+    name: '',
+    description: '',
+  };
+
+  const response = await apiContext.patch(`/api/v1/projects/${projectId}`, {
+    data: updatedProjectData,
+  });
+
+  expect(response.status()).toBe(400);
+
+  // 500 zamiast 400 i błąd taki: "Could not commit JPA transaction"
+});
+
 test('should not update and return an error when startDate is after endDate', async ({ projectId }) => {
   const startDate = new Date(new Date().setDate(new Date().getDate() + 20)).toISOString().slice(0, 10);
   const endDate = new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().slice(0, 10);

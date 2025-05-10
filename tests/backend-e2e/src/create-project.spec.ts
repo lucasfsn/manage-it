@@ -22,7 +22,7 @@ test.afterAll(async () => {
   await apiContext.dispose();
 });
 
-test('should create a new project', async ({ storeTestData }) => {
+test('should create new projects', async ({ storeTestData }) => {
   const startDate = new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().slice(0, 10);
   const endDate = new Date(new Date().setDate(new Date().getDate() + 18)).toISOString().slice(0, 10);
 
@@ -59,6 +59,40 @@ test('should create a new project', async ({ storeTestData }) => {
   expect(responseBody.members[0].lastName).toBe(responseBody.owner.lastName);
 
   storeTestData({ projectId: responseBody.id });
+
+  // create project and change status to COMPLETED 
+  const startDate2 = new Date(new Date().setDate(new Date().getDate() + 4)).toISOString().slice(0, 10);
+  const endDate2 = new Date(new Date().setDate(new Date().getDate() + 18)).toISOString().slice(0, 10);
+
+  const completedProjectData = {
+    name: 'Finished project',
+    description: 'This is a completed project',
+    startDate: startDate2,
+    endDate: endDate2,
+  };
+
+  const response2 = await apiContext.post('/api/v1/projects', {
+    data: completedProjectData,
+  });
+
+  expect(response2.status()).toBe(201);
+  const responseBody2 = await response2.json();
+
+  const projectId2 = responseBody2.id;
+  storeTestData({ projectId2: projectId2 });
+
+  const updatedProjectData = {
+    status: "COMPLETED",
+  };
+
+  const updateResponse = await apiContext.patch(`/api/v1/projects/${projectId2}`, {
+    data: updatedProjectData,
+  });
+
+  expect(updateResponse.status()).toBe(200);
+  const updateResponseBody = await updateResponse.json();
+  expect(updateResponseBody.id).toBe(projectId2);
+  expect(updateResponseBody.status).toBe("COMPLETED");
 });
 
 test('should return an error when startDate is after endDate', async () => {

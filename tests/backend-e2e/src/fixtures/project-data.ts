@@ -4,6 +4,7 @@ import * as path from 'path';
 
 interface ProjectData {
   projectId?: string;
+  projectId2?: string;
   taskId?: string;
 }
 
@@ -28,6 +29,7 @@ function writeProjectData(data: ProjectData): void {
 
 interface ProjectFixtures {
   projectId: string;
+  projectId2: string;
   taskId: string;
   storeTestData: (data: ProjectData) => void;
 }
@@ -36,6 +38,11 @@ export const test = base.extend<ProjectFixtures>({
   projectId: async ({}, use) => {
     const data = readProjectData();
     await use(data.projectId || '');
+  },
+
+  projectId2: async ({}, use) => {
+    const data = readProjectData();
+    await use(data.projectId2 || '');
   },
 
   taskId: async ({}, use) => {
