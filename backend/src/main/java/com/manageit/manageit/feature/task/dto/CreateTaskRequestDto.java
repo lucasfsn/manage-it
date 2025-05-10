@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTaskRequest {
+public class CreateTaskRequestDto {
     private String description;
     private TaskStatus status;
     private TaskPriority priority;

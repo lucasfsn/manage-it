@@ -1,9 +1,9 @@
 package com.manageit.manageit.feature.task.controller;
 
-import com.manageit.manageit.feature.task.dto.CreateTaskRequest;
+import com.manageit.manageit.feature.task.dto.CreateTaskRequestDto;
 import com.manageit.manageit.feature.task.dto.TaskResponseDto;
 import com.manageit.manageit.feature.task.dto.TaskDetailsResponseDto;
-import com.manageit.manageit.feature.task.dto.UpdateTaskRequest;
+import com.manageit.manageit.feature.task.dto.UpdateTaskRequestDto;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.task.service.TaskService;
@@ -36,7 +36,7 @@ public class TaskController {
     public ResponseEntity<TaskDetailsResponseDto> addTaskToProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
-            @RequestBody CreateTaskRequest createTaskRequest
+            @RequestBody CreateTaskRequestDto createTaskRequest
     ) {
         TaskDetailsResponseDto task = taskService.createAndAddTaskToProject(userDetails, projectId ,createTaskRequest);
         URI location = ServletUriComponentsBuilder
@@ -62,7 +62,7 @@ public class TaskController {
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
-            @RequestBody UpdateTaskRequest updateTaskRequest
+            @RequestBody UpdateTaskRequestDto updateTaskRequest
     ) {
         TaskResponseDto updatedTask = taskService.updateTask(userDetails, taskId, projectId, updateTaskRequest);
         return ResponseEntity.ok(updatedTask);

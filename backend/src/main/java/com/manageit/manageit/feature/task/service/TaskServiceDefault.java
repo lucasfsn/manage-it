@@ -1,10 +1,10 @@
 package com.manageit.manageit.feature.task.service;
 
 
-import com.manageit.manageit.feature.task.dto.CreateTaskRequest;
+import com.manageit.manageit.feature.task.dto.CreateTaskRequestDto;
 import com.manageit.manageit.feature.task.dto.TaskResponseDto;
 import com.manageit.manageit.feature.task.dto.TaskDetailsResponseDto;
-import com.manageit.manageit.feature.task.dto.UpdateTaskRequest;
+import com.manageit.manageit.feature.task.dto.UpdateTaskRequestDto;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
@@ -62,7 +62,7 @@ public class TaskServiceDefault implements TaskService {
 
     @Override
     @Transactional
-    public TaskDetailsResponseDto createAndAddTaskToProject(User owner, UUID projectId, CreateTaskRequest createTaskRequest) {
+    public TaskDetailsResponseDto createAndAddTaskToProject(User owner, UUID projectId, CreateTaskRequestDto createTaskRequest) {
         User managedOwner = entityManager.merge(owner);
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(owner, project);
@@ -109,7 +109,7 @@ public class TaskServiceDefault implements TaskService {
 
     @Override
     @Transactional
-    public TaskResponseDto updateTask(User updater, UUID taskId, UUID projectId, UpdateTaskRequest request) {
+    public TaskResponseDto updateTask(User updater, UUID taskId, UUID projectId, UpdateTaskRequestDto request) {
         User managedUpdater = entityManager.merge(updater);
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(updater, project);

@@ -1,7 +1,7 @@
 package com.manageit.manageit.feature.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.manageit.manageit.feature.project.dto.UserProfileProjectDto;
+import com.manageit.manageit.feature.project.dto.UserProfileProjectResponseDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -16,6 +16,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDetailsResponseDto extends UserResponseDto {
     private String email;
-    private List<UserProfileProjectDto> projects;
+    private List<UserProfileProjectResponseDto> projects;
     private LocalDateTime createdAt;
 }

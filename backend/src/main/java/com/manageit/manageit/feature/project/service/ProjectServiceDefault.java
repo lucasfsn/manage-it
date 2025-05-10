@@ -1,8 +1,8 @@
 package com.manageit.manageit.feature.project.service;
 
 import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
-import com.manageit.manageit.feature.project.dto.CreateProjectRequest;
-import com.manageit.manageit.feature.project.dto.UpdateProjectRequest;
+import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
+import com.manageit.manageit.feature.project.dto.UpdateProjectRequestDto;
 import com.manageit.manageit.feature.task.repository.TaskRepository;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
@@ -64,7 +64,7 @@ public class ProjectServiceDefault implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectResponseDto createProject(User owner, CreateProjectRequest createProjectRequest) {
+    public ProjectResponseDto createProject(User owner, CreateProjectRequestDto createProjectRequest) {
         User managedOwner = entityManager.merge(owner);
         Project project = Project.builder()
                 .owner(managedOwner)
@@ -93,7 +93,7 @@ public class ProjectServiceDefault implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectResponseDto updateProject(User owner, UUID projectId, UpdateProjectRequest request) {
+    public ProjectResponseDto updateProject(User owner, UUID projectId, UpdateProjectRequestDto request) {
         User managedOwner = entityManager.merge(owner);
         Project project = getProjectById(projectId);
         String message;

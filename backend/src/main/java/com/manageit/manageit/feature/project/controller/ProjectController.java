@@ -2,8 +2,8 @@ package com.manageit.manageit.feature.project.controller;
 
 
 import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
-import com.manageit.manageit.feature.project.dto.CreateProjectRequest;
-import com.manageit.manageit.feature.project.dto.UpdateProjectRequest;
+import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
+import com.manageit.manageit.feature.project.dto.UpdateProjectRequestDto;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.project.service.ProjectService;
@@ -43,7 +43,7 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<ProjectResponseDto> createProject(
             @AuthenticationPrincipal User userDetails,
-            @Valid @RequestBody CreateProjectRequest createProjectRequest
+            @Valid @RequestBody CreateProjectRequestDto createProjectRequest
     ) {
         ProjectResponseDto project = projectService.createProject(userDetails, createProjectRequest);
         URI location = ServletUriComponentsBuilder
@@ -68,7 +68,7 @@ public class ProjectController {
     public ResponseEntity<ProjectResponseDto> updateProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
-            @Valid @RequestBody UpdateProjectRequest request
+            @Valid @RequestBody UpdateProjectRequestDto request
     ) {
         ProjectResponseDto updatedProject = projectService.updateProject(userDetails, projectId, request);
         return ResponseEntity.ok(updatedProject);

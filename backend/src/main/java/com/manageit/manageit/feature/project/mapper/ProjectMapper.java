@@ -1,7 +1,7 @@
 package com.manageit.manageit.feature.project.mapper;
 
 import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
-import com.manageit.manageit.feature.project.dto.UserProfileProjectDto;
+import com.manageit.manageit.feature.project.dto.UserProfileProjectResponseDto;
 import com.manageit.manageit.feature.project.model.Project;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,5 +15,5 @@ public interface ProjectMapper {
     @Mapping(target = "members", source = "members")
     ProjectResponseDto toProjectResponseDto(Project project);
 
-    UserProfileProjectDto toUserProfileProjectDto(Project project);
+    UserProfileProjectResponseDto toUserProfileProjectDto(Project project);
 }
