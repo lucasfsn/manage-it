@@ -17,3 +17,4 @@ TASKI
 (tutaj mogą być fajne kombinacje, np. jak zmienimy datę zakończenia projektu na wcześniejszą i będzie kolidować z taskiem 
 (dueDate dla taska będzie po endDate dla projektu) to dueDate zmieni się automatycznie na endDate dla projektu, podobnie można pokombinować ze startDate)
 - czy możemy dodawać taski do projektu o statusie COMPLETED? bo na frontendzie nie można, a na backendzie można
+- dla add i remove user też mamy 500, zamiast 400 przy id
