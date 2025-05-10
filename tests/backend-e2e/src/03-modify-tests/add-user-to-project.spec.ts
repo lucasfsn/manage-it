@@ -7,7 +7,7 @@ let token: string;
 let apiContext: APIRequestContext;
 
 test.beforeAll(async ({ playwright }) => {
-  const authenticationResponse = await authenticateUser('johndoe@mail.com', '1qazXSW@');
+  const authenticationResponse = await authenticateUser('jan.kowalski@mail.com', '1qazXSW@');
   token = authenticationResponse.token;
 
   apiContext = await playwright.request.newContext({
@@ -24,7 +24,6 @@ test.afterAll(async () => {
 
 test('should add a user to a project', async ({ projectId }) => {
   const username = 'jakis_username';
-
   const userData = {
     username: username,
   };
@@ -48,7 +47,6 @@ test('should add a user to a project', async ({ projectId }) => {
 
 test('should not add non-existing user to a project', async ({ projectId }) => {
   const nonExistingUsername = 'non_existing';
-
   const userData = {
     username: nonExistingUsername,
   };
@@ -66,7 +64,6 @@ test('should not add non-existing user to a project', async ({ projectId }) => {
 test('should not add user to a non-existing project', async () => {
   const nonExistentId = '00000000-0000-0000-0000-000000000000';
   const username = 'jakis_username';
-
   const userData = {
     username: username,
   };
@@ -84,7 +81,6 @@ test('should not add user to a non-existing project', async () => {
 test('should return error while adding user to a project with invalid id', async () => {
   const invalidId = 'invalid-id';
   const username = 'jakis_username';
-
   const userData = {
     username: username,
   };
