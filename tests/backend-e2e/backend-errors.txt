@@ -10,9 +10,9 @@ Prawdopodobnie pojawi się też przy taskach ten błąd tam gdzie używamy id.
 
 TASKI
 - czy dopuszczamy tworzenie tasków o tym samym descripton w jednym projekcie?
-- przy tworzeniu, gdy description jest '', to zwraca 500 zamiast 400
-- przy tworzeniu, gdy status lub priority nie należy do ENUM, to zwraca 500, a powinno 400
-- tworzy taska, gdy dueDate jest w przeszłości
+- przy tworzeniu i edycji, gdy description jest '', to zwraca 500 zamiast 400
+- przy tworzeniu i edycji, gdy status lub priority nie należy do ENUM, to zwraca 500, a powinno 400
+- tworzy taska, gdy dueDate jest w przeszłości. pozwala edytować na datę w przeszłości
 - do rozważenia dostosowanie dat w taki sposób, aby możliwe było ustawienie dueDate dla taska tylko w okresie trwania projektu
 (tutaj mogą być fajne kombinacje, np. jak zmienimy datę zakończenia projektu na wcześniejszą i będzie kolidować z taskiem 
 (dueDate dla taska będzie po endDate dla projektu) to dueDate zmieni się automatycznie na endDate dla projektu, podobnie można pokombinować ze startDate)
