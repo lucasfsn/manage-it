@@ -1,5 +1,5 @@
-import { test, expect } from './fixtures/project-data';
-import { authenticateUser } from './helpers/auth';
+import { test, expect } from '../src/fixtures/project-data';
+import { authenticateUser } from '../src/helpers/auth';
 import { baseUrl } from '../playwright.config';
 
 test('should return a list of projects for user with projects', async ({ playwright }) => {
