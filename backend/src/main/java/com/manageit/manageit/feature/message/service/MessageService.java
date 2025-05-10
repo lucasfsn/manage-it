@@ -1,7 +1,7 @@
 package com.manageit.manageit.feature.message.service;
 
 import com.manageit.manageit.feature.message.dto.MessageDto;
-import com.manageit.manageit.feature.user.service.UserServiceDefault;
+import com.manageit.manageit.feature.user.service.UserService;
 import com.manageit.manageit.feature.message.mapper.MessageMapper;
 import com.manageit.manageit.feature.chat.model.Chat;
 import com.manageit.manageit.feature.message.model.Message;
@@ -20,7 +20,7 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
     private final ChatService chatService;
-    private final UserServiceDefault userService;
+    private final UserService userService;
     private final MessageMapper messageMapper;
 
 

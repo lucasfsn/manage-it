@@ -9,7 +9,7 @@ import com.manageit.manageit.feature.user.dto.BasicUserDto;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInTaskException;
-import com.manageit.manageit.feature.user.service.UserServiceDefault;
+import com.manageit.manageit.feature.user.service.UserService;
 import com.manageit.manageit.feature.task.mapper.TaskMapper;
 import com.manageit.manageit.feature.project.model.Project;
 import com.manageit.manageit.feature.task.repository.TaskRepository;
@@ -37,7 +37,7 @@ public class TaskService {
     private final ProjectService projectService;
     private final TaskMapper taskMapper;
     private final NotificationService notificationService;
-    private final UserServiceDefault userService;
+    private final UserService userService;
     private final ChatService chatService;
 
     @PersistenceContext
