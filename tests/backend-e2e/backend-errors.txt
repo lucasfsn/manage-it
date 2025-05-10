@@ -1,12 +1,19 @@
-można utworzyć projekt, gdy startDate jest później niż endDate - do poprawy!
-dla updatowania projektu to samo.
-
-dla np. pobierania projektu po id, gdy id nie jest w formacie UUID to wyrzuca 500. Powinno wyrzucać 400.
+PROJEKTY
+- można utworzyć projekt, gdy startDate jest później niż endDate - do poprawy! dla updatowania projektu to samo.
+- dla np. pobierania projektu po id, gdy id nie jest w formacie UUID to wyrzuca 500. Powinno wyrzucać 400.
 Występuje także dla delete, update, dodawania/usuwania członka projektu. 
 Prawdopodobnie pojawi się też przy taskach ten błąd tam gdzie używamy id.
+- czy dopuszczamy tworzenie projektów o tej samej nazwie? bo na razie tak jest zrobione
+- przy updatowaniu projektu, gdy jest status, który nie należy do enum: ['COMPLETED', 'IN_PROGRESS'], to daje 500 zamiast 400
+- przy updatowaniu projektu, gdy próbuję edycji z body {name: '', description: ''}, to jest 500 zamiast 400 i błąd: "Could not commit JPA transaction"
 
-czy dopuszczamy tworzenie projektów o tej samej nazwie? bo na razie tak jest zrobione
 
-przy updatowaniu projektu, gdy jest status, który nie należy do enum: ['COMPLETED', 'IN_PROGRESS'], to daje 500 zamiast 400
-
-przy updatowaniu projektu, gdy próbuję edycji z body {name: '', description: ''}, to jest 500 zamiast 400 i błąd: "Could not commit JPA transaction"
+TASKI
+- czy dopuszczamy tworzenie tasków o tym samym descripton w jednym projekcie?
+- przy tworzeniu, gdy description jest '', to zwraca 500 zamiast 400
+- przy tworzeniu, gdy status lub priority nie należy do ENUM, to zwraca 500, a powinno 400
+- tworzy taska, gdy dueDate jest w przeszłości
+- do rozważenia dostosowanie dat w taki sposób, aby możliwe było ustawienie dueDate dla taska tylko w okresie trwania projektu
+(tutaj mogą być fajne kombinacje, np. jak zmienimy datę zakończenia projektu na wcześniejszą i będzie kolidować z taskiem 
+(dueDate dla taska będzie po endDate dla projektu) to dueDate zmieni się automatycznie na endDate dla projektu, podobnie można pokombinować ze startDate)
+- czy możemy dodawać taski do projektu o statusie COMPLETED? bo na frontendzie nie można, a na backendzie można
