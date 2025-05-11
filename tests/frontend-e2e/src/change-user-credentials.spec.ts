@@ -14,18 +14,19 @@ test('change user last name and password', async ({ page }) => {
 
   // sprawdź poprawność wczytywania danych początkowych do formularza
   await expect(page.locator('form')).toBeVisible();
-  await expect(page.getByRole('textbox', { name: 'Enter first name' })).toHaveValue('Isabella');
-  await expect(page.getByRole('textbox', { name: 'Enter last name' })).toHaveValue('Garcia');
-  await expect(page.getByRole('textbox', { name: 'Enter new email' })).toHaveValue('isabella.garcia@example.com');
+  await expect(page.getByRole('textbox', { name: 'First name' })).toHaveValue('Isabella');
+  await expect(page.getByRole('textbox', { name: 'Last name' })).toHaveValue('Garcia');
+  await expect(page.getByRole('textbox', { name: 'Email' })).toHaveValue('isabella.garcia@example.com');
 
   // zmiana nazwiska i hasła dla zalogowanego użytkownika 
-  await page.getByRole('textbox', { name: 'Enter last name' }).click();
-  await page.getByRole('textbox', { name: 'Enter last name' }).fill('Gracias');
+  await page.getByRole('textbox', { name: 'Last name' }).click();
+  await page.getByRole('textbox', { name: 'Last name' }).fill('Gracias');
   await page.getByRole('checkbox', { name: 'Edit password' }).check();
   await page.getByRole('textbox', { name: 'Enter new password' }).click();
   await page.getByRole('textbox', { name: 'Enter new password' }).fill('1qazXSW@');
   await page.getByRole('textbox', { name: 'Confirm password' }).click();
   await page.getByRole('textbox', { name: 'Confirm password' }).fill('1qazXSW@');
+  await page.getByRole('textbox', { name: 'First name' }).click();
   await page.getByRole('button', { name: 'Save' }).click();
 
   // sprawdzenie wyświetlania na stronie
@@ -34,8 +35,9 @@ test('change user last name and password', async ({ page }) => {
 
   // przywrócenie poprzednich danych
   await page.getByRole('button', { name: 'Edit profile' }).click();
-  await page.getByRole('textbox', { name: 'Enter last name' }).click();
-  await page.getByRole('textbox', { name: 'Enter last name' }).fill('Garcia');
+  await page.getByRole('textbox', { name: 'Last name' }).click();
+  await page.getByRole('textbox', { name: 'Last name' }).fill('Garcia');
+  await page.getByRole('textbox', { name: 'First name' }).click();
   await page.getByRole('button', { name: 'Save' }).click();
 });
 
