@@ -7,22 +7,25 @@
       {{ project.name }}
     </h2>
     <div class="flex flex-col gap-2">
-      <p>{{ project.description }}</p>
+      <p class="text-break">{{ project.description }}</p>
       <div
-        class="grid grid-cols-2 gap-2 sm:items-center sm:justify-center lg:w-2/3"
+        class="xs:items-center xs:justify-center xs:grid-cols-2 grid max-w-lg grid-cols-1 gap-2"
       >
         <p class="flex items-center gap-1">
           <mat-icon class="text-base">person</mat-icon>
           <span>{{ "project.details.LEADER" | translate }}</span>
         </p>
-        <div class="text-orange-900 dark:text-slate-300">
+        <div
+          class="text-break focus-outline line-clamp-1 cursor-pointer text-orange-900 hover:text-orange-950 dark:text-slate-300 dark:hover:text-slate-300/90"
+          [routerLink]="'/users/' + project.owner.username"
+        >
           {{ project.owner.firstName }} {{ project.owner.lastName }}
         </div>
-        <p class="col-span-2 flex items-center gap-1 sm:col-span-1">
+        <p class="flex items-center gap-1">
           <mat-icon class="text-base">group</mat-icon>
           <span>{{ "project.details.MEMBERS" | translate }}</span>
         </p>
-        <div class="col-span-2 mx-auto flex items-center sm:col-span-1 sm:mx-0">
+        <div class="flex items-center">
           <ul class="flex items-center justify-center gap-1">
             @for (
               member of project.members.slice(0, 5);
@@ -69,7 +72,7 @@
           <span>{{ "project.details.STATUS" | translate }}</span>
         </p>
         <div
-          class="mr-auto flex items-center justify-center rounded-full px-2 py-1 text-sm font-semibold text-slate-900"
+          class="flex w-fit items-center justify-center rounded-full px-2 py-1 text-sm font-semibold text-slate-900"
           [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
           [class.bg-orange-400]="project.status === ProjectStatus.IN_PROGRESS"
         >

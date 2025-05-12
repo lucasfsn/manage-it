@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { ChartData, ChartOptions } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { Project } from '@/app/features/dto/project.model';
 import { TaskStatus } from '@/app/features/dto/task.model';
 import { ProjectService } from '@/app/features/services/project.service';
+import { Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { ChartData, ChartOptions } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-tasks-summary',
   imports: [BaseChartDirective, TranslateModule],
   templateUrl: './tasks-summary.component.html',
-  styleUrl: './tasks-summary.component.scss'
+  styleUrl: './tasks-summary.component.scss',
 })
 export class TasksSummaryComponent implements OnInit {
   public constructor(
     private projectService: ProjectService,
-    private mapperService: MapperService
+    private mapperService: MapperService,
   ) {}
 
   protected get taskCount(): number {
@@ -32,6 +32,7 @@ export class TasksSummaryComponent implements OnInit {
 
   protected barChartOptions: ChartOptions<'bar'> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -56,7 +57,7 @@ export class TasksSummaryComponent implements OnInit {
 
     this.barChartData = {
       labels: Object.keys(taskStatusCounts).map((status) =>
-        this.mapperService.taskStatusMapper(status as TaskStatus)
+        this.mapperService.taskStatusMapper(status as TaskStatus),
       ),
       datasets: [
         {

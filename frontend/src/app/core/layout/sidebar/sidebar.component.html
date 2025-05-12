@@ -3,7 +3,8 @@
 >
   <button
     (click)="toggleSidebar()"
-    class="col-span-2 ml-3 hidden rounded-full bg-sky-500 transition-all hover:bg-sky-600 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-hidden xl:flex"
+    aria-label="Toggle sidebar"
+    class="focus-ring col-span-2 ml-3 hidden rounded-full bg-sky-600 text-slate-200 transition-all hover:bg-sky-600/90 focus-visible:ring-inset xl:flex"
     [class.justify-self-end]="!isCollapsed"
     [class.justify-self-start]="isCollapsed"
   >
@@ -13,7 +14,7 @@
     class="mx-auto grid grid-cols-5 items-center lg:mx-0 lg:grid-cols-1 lg:grid-rows-5 lg:gap-0.5"
   >
     <button
-      class="sidebar hover:bg-orange-100 dark:hover:bg-slate-900"
+      class="sidebar focus-ring hover:bg-orange-100 focus-visible:rounded-lg focus-visible:ring-inset dark:hover:bg-slate-900"
       (click)="openSearchDialog()"
     >
       <p class="sidebar-item">
@@ -26,8 +27,8 @@
         {{ "sidebar.SEARCH" | translate }}
       </p>
     </button>
-    <div
-      class="sidebar hover:bg-orange-100 dark:hover:bg-slate-900"
+    <button
+      class="sidebar focus-ring hover:bg-orange-100 focus-visible:rounded-lg focus-visible:ring-inset dark:hover:bg-slate-900"
       routerLink="/dashboard"
       routerLinkActive="text-sky-500"
     >
@@ -40,9 +41,9 @@
       >
         {{ "sidebar.DASHBOARD" | translate }}
       </p>
-    </div>
-    <div
-      class="sidebar hover:bg-orange-100 dark:hover:bg-slate-900"
+    </button>
+    <button
+      class="sidebar focus-ring hover:bg-orange-100 focus-visible:rounded-lg focus-visible:ring-inset dark:hover:bg-slate-900"
       routerLink="projects"
       routerLinkActive="text-sky-500"
     >
@@ -55,9 +56,9 @@
       >
         {{ "sidebar.PROJECTS" | translate }}
       </p>
-    </div>
-    <div
-      class="sidebar w-auto hover:bg-orange-100 dark:hover:bg-slate-900"
+    </button>
+    <button
+      class="sidebar focus-ring w-auto hover:bg-orange-100 focus-visible:rounded-lg focus-visible:ring-inset dark:hover:bg-slate-900"
       routerLink="notifications"
       routerLinkActive="text-sky-500"
     >
@@ -70,9 +71,9 @@
       >
         {{ "sidebar.NOTIFICATIONS" | translate }}
       </p>
-    </div>
-    <div
-      class="sidebar hover:bg-orange-100 dark:hover:bg-slate-900"
+    </button>
+    <button
+      class="sidebar focus-ring hover:bg-orange-100 focus-visible:rounded-lg focus-visible:ring-inset dark:hover:bg-slate-900"
       routerLink="users"
       routerLinkActive="text-sky-500 profile-active"
     >
@@ -93,6 +94,6 @@
       >
         {{ "sidebar.PROFILE" | translate }}
       </p>
-    </div>
+    </button>
   </div>
 </nav>
