@@ -158,9 +158,7 @@ export class ProjectFormComponent implements OnInit {
   }
 
   protected onSubmit(): void {
-    if (this.form.invalid) {
-      return;
-    }
+    if (this.form.invalid) return;
 
     const projectData: ProjectRequest = this.getProjectData();
 

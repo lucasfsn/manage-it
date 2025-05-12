@@ -159,7 +159,7 @@ export class SignupFormComponent {
     if (control.errors['maxlength'])
       return this.translationService.translate(
         'signupForm.LAST_NAME_MAX_LENGTH',
-        { minLength: control.errors['maxlength'].requiredLength },
+        { maxLength: control.errors['maxlength'].requiredLength },
       );
 
     if (control.errors['invalidName'])
@@ -183,8 +183,8 @@ export class SignupFormComponent {
 
     if (control.errors['maxlength'])
       return this.translationService.translate(
-        'signupForm.USERNAME_MIN_LENGTH',
-        { minLength: control.errors['maxlength'].requiredLength },
+        'signupForm.USERNAME_MAX_LENGTH',
+        { maxLength: control.errors['maxlength'].requiredLength },
       );
 
     if (control.errors['invalidUsername'])

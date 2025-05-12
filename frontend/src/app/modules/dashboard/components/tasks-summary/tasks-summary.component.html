@@ -1,5 +1,5 @@
 <div
-  class="mx-auto flex w-full max-w-75 flex-col items-center gap-1 rounded-lg bg-orange-100 p-4 shadow-xs sm:mx-0 sm:max-w-90 lg:w-100 dark:bg-slate-900"
+  class="flex h-full max-w-80 flex-1 flex-col items-center justify-between gap-1 rounded-lg bg-orange-100 p-4 shadow-xs dark:bg-slate-900"
 >
   <div class="flex flex-col gap-1">
     <h2 class="text-lg font-semibold">
@@ -15,6 +15,7 @@
     <canvas
       baseChart
       type="bar"
+      class="max-h-72"
       [data]="barChartData"
       [options]="barChartOptions"
     >

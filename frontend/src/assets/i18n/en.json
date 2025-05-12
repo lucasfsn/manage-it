@@ -201,9 +201,9 @@
     "form": {
       "EDIT_TITLE": "Edit Project",
       "CREATE_TITLE": "Create Project",
-      "NAME_LABEL": "Title",
-      "NAME_PLACEHOLDER": "Enter project title",
-      "NAME_INVALID": "Project title must be between 2 and 50 characters.",
+      "NAME_LABEL": "Name",
+      "NAME_PLACEHOLDER": "Enter project name",
+      "NAME_INVALID": "Project name must be between 2 and 50 characters.",
       "DESCRIPTION_LABEL": "Description",
       "DESCRIPTION_PLACEHOLDER": "Enter project description",
       "DESCRIPTION_INVALID": "Project description must be between 2 and 120 characters.",

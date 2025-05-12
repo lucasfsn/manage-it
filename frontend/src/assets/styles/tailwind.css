@@ -23,6 +23,9 @@
   /* Breakpoints */
   --breakpoint-xs: 25rem;
 
+  /* Container Sizes */
+  --container-page-content-container: var(--max-page-content-width);
+
   /* Background Images */
   --background-image-main-gradient: url("/assets/images/bg.webp");
   --background-image-main-gradient-light: url("/assets/images/bg-light.webp");
@@ -40,6 +43,7 @@
   --toast-success: #0ea5e9;
   --toast-error: #831843;
   --toast-error-text: #fbcfe8;
+  --max-page-content-width: 96rem;
 }
 
 :root.dark {
@@ -111,5 +115,32 @@
 
   .scroll-lock {
     overflow: hidden;
+  }
+}
+
+@utility text-break {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+@utility focus-ring {
+  outline: none;
+  &:focus-visible {
+    @apply ring-2 ring-sky-500;
+  }
+}
+
+@utility focus-outline {
+  &:focus-visible {
+    @apply outline-2 outline-sky-500;
   }
 }

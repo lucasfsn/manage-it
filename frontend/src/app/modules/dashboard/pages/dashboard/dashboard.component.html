@@ -1,8 +1,12 @@
-<div class="flex flex-col-reverse gap-x-6 gap-y-4 lg:flex-row">
-  <app-ongoing-projects />
-  <app-upcoming-deadlines />
+<div
+  class="max-w-page-content-container flex flex-col-reverse gap-x-6 gap-y-4 lg:flex-row"
+>
+  <div class="flex flex-col gap-x-6 gap-y-6 md:flex-row">
+    <app-ongoing-projects />
+    <app-upcoming-deadlines />
+  </div>
   <div
-    class="flex flex-row flex-wrap justify-center gap-x-6 gap-y-4 lg:flex-col xl:flex-row xl:justify-start"
+    class="flex flex-row flex-wrap justify-center gap-x-6 gap-y-4 self-center lg:justify-start xl:self-start"
   >
     <app-projects-summary />
     <app-tasks-summary />

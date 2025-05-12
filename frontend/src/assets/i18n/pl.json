@@ -201,9 +201,9 @@
     "form": {
       "EDIT_TITLE": "Edytuj Projekt",
       "CREATE_TITLE": "Utwórz Projekt",
-      "NAME_LABEL": "Tytuł",
-      "NAME_PLACEHOLDER": "Wprowadź tytuł projektu",
-      "NAME_INVALID": "Tytuł projektu musi zawierać od 2 do 50 znaków.",
+      "NAME_LABEL": "Nazwa",
+      "NAME_PLACEHOLDER": "Wprowadź nazwę projektu",
+      "NAME_INVALID": "Nazwa projektu musi zawierać od 2 do 50 znaków.",
       "DESCRIPTION_LABEL": "Opis",
       "DESCRIPTION_PLACEHOLDER": "Wprowadź opis projektu",
       "DESCRIPTION_INVALID": "Opis projektu musi zawierać od 2 do 120 znaków.",
