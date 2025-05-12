@@ -1,7 +1,7 @@
 import { APIRequestContext } from '@playwright/test';
-import { test, expect } from './fixtures/project-data';
-import { authenticateUser } from './helpers/auth';
-import { baseUrl } from '../playwright.config';
+import { test, expect } from '../fixtures/project-data';
+import { authenticateUser } from '../helpers/auth';
+import { baseUrl } from '../../playwright.config';
 
 let token: string;
 let apiContext: APIRequestContext;
@@ -29,7 +29,7 @@ test('should remove a task from a project', async ({ projectId, taskId }) => {
 
   const getTaskResponse = await apiContext.get(`/api/v1/projects/${projectId}/tasks/${taskId}`);
   expect(getTaskResponse.status()).toBe(404);
-  const responseBody = await response.json();
+  const responseBody = await getTaskResponse.json();
   expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No task found with id: ${taskId}`);
 });

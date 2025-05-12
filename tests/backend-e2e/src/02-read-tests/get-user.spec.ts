@@ -1,7 +1,7 @@
 import { APIRequestContext } from '@playwright/test';
-import { test, expect } from './fixtures/project-data';
-import { authenticateUser } from './helpers/auth';
-import { baseUrl } from '../playwright.config';
+import { test, expect } from '../fixtures/project-data';
+import { authenticateUser } from '../helpers/auth';
+import { baseUrl } from '../../playwright.config';
 
 let token: string;
 let apiContext: APIRequestContext;

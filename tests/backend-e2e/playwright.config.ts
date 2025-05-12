@@ -8,18 +8,33 @@ export const baseUrl = `http://localhost:8080/api/v1`;
 
 export default defineConfig({
   testDir: './src',
-  fullyParallel: false,
+  // fullyParallel: false,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
   workers: 1,
   reporter: 'html',
   use: {
     baseURL: baseUrl,
-
-    trace: 'on-first-retry',
+    trace: 'retain-on-first-failure',
   },
 
   projects: [
+    // {
+    //   name: '01-create-tests',
+    //   testMatch: [
+    //     './src/01-create-tests/01-register-user.spec.ts',
+    //     './src/01-create-tests/02-create-project.spec.ts',
+    //     './src/01-create-tests/03-add-task.spec.ts',
+    //   ]
+    // },
+    // {
+    //   name: '02-read-tests',
+    //   dependencies: ['01-create-tests'],
+    //   testMatch: [
+    //     './src/02-read-tests/*.spec.ts',
+    //   ]
+    // },
+
     // {
     //   name: 'chromium',
     //   use: { ...devices['Desktop Chrome'] },
