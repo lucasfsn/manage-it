@@ -41,6 +41,7 @@ test('create project, add new member to project and check notifications', async 
   await page.locator('app-button').filter({ hasText: 'edit' }).getByRole('button').click();
   await page.getByRole('textbox', { name: 'Title' }).click();
   await page.getByRole('textbox', { name: 'Title' }).fill('Fancy projekt zedytowany');
+  await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('button', { name: 'Save changes' }).click();
   await expect(page.locator('h2')).toContainText('Fancy projekt zedytowany');
 

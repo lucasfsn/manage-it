@@ -43,19 +43,20 @@ test('create project, add new tasks and edit task', async ({ page }) => {
 
   // dodanie taska o statusie ukończony
   await page.locator('app-drag-drop-list div').filter({ hasText: 'Completed add Add another task' }).getByRole('button').click();
-  await expect(page.getByText('add_taskAdd TaskcloseDescriptionDue DatePriority Select priority Low Medium')).toBeVisible();
+  await expect(page.getByText('add_taskAdd TaskcloseDescriptionDue DatePriority Low Medium High Reset Add Task')).toBeVisible();
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('New completed task');
-  await page.locator('#dueDate').fill(task1DueDateStr);
-  await page.locator('#priority').selectOption('HIGH');
-
+  await page.getByRole('textbox', { name: 'Due Date' }).fill(task1DueDateStr);
+  await page.getByLabel('Priority').selectOption('LOW');
+  // await page.getByRole('button', { name: 'Add Task' }).click();
+  
   await expect(page.getByRole('textbox', { name: 'Description' })).toHaveValue('New completed task');
-  await expect(page.locator('#dueDate')).toHaveValue(task1DueDateStr);
-  await expect(page.locator('#priority')).toHaveValue('HIGH');
+  await expect(page.getByRole('textbox', { name: 'Due Date' })).toHaveValue(task1DueDateStr);
+  await expect(page.getByLabel('Priority')).toHaveValue('LOW');
   await page.getByRole('button', { name: 'Add Task' }).click();
 
   // sprawdzanie czy task został poprawnie dodany
-  await expect(page.locator('#completed')).toContainText(`New completed task High schedule ${task1DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`);
+  await expect(page.locator('#completed')).toContainText(`New completed task Low schedule ${task1DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`);
 
   // sprawdzanie stanu projektu (ile procent tasków w projekcie jest ukończonych)
   await page.getByText('folder_open Projects').click();
@@ -66,7 +67,7 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await page.locator('app-drag-drop-list div').filter({ hasText: 'Upcoming add Add another task' }).getByRole('button').click();
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Task for future');
-  await page.locator('#dueDate').fill(task2DueDateStr);
+  await page.getByRole('textbox', { name: 'Due Date' }).fill(task2DueDateStr);
   await page.getByRole('button', { name: 'Add Task' }).click();
 
   // await expect(page.getByLabel('Task has been created')).toContainText('Task has been created');
@@ -89,6 +90,9 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await expect(page.getByLabel('Priority')).toHaveValue('LOW');
   await page.getByLabel('Status').selectOption('IN_PROGRESS');
   await page.getByLabel('Priority').selectOption('MEDIUM');
+
+
+  // tu coś nie działa, nie mam pojęcia czemu przycisk jest disabled w Playwright (w przeglądarce wszystko ok)
   await page.getByRole('button', { name: 'Save changes' }).click();
 
   // sprawdzanie zedytowanych danych taska
@@ -147,7 +151,7 @@ test('create project with tasks and add new members to task', async ({ page }) =
   await page.locator('app-drag-drop-list div').filter({ hasText: 'In Progress add Add another' }).getByRole('button').click();
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Add member to task');
-  await page.locator('#dueDate').fill(task1DueDateStr);
+  await page.getByRole('textbox', { name: 'Due Date' }).fill(task1DueDateStr);
   await page.getByRole('button', { name: 'Add Task' }).click();
   
   await expect(page.getByRole('alert', { name: 'Task has been created' })).toBeVisible();

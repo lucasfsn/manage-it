@@ -19,6 +19,7 @@ test('valid data in registration form', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Confirm password' }).click();
   await page.getByRole('textbox', { name: 'Confirm password' }).fill('Haslo123!');
   await page.getByRole('button', { name: 'Sign up' }).waitFor();
+  await page.getByRole('textbox', { name: 'Enter your first name' }).click();
   await expect(signUpButton).toBeVisible();
   await expect(signUpButton).toBeEnabled();
 
