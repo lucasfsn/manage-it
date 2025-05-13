@@ -1,6 +1,6 @@
 # Run frontend E2E tests
 
-Go to folder with tests for frontend
+Go to directory with tests for frontend
 ```
 cd tests/frontend-e2e
 ```

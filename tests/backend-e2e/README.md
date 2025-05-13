@@ -1,6 +1,6 @@
 # Run API E2E tests
 
-Go to folder with tests for API
+Go to directory with tests for API
 ```
 cd tests/backend-e2e
 ```
