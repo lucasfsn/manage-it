@@ -29,19 +29,21 @@
     class="search-results flex flex-col divide-y divide-orange-300 pb-4 dark:divide-slate-600"
   >
     @for (result of searchResults; track result.username) {
-      <button
-        class="focus-ring-inset flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-left text-sm text-slate-500 sm:px-6 sm:py-4 dark:text-slate-400"
-        (click)="handleClick(result.username)"
-      >
-        <span class="text-break line-clamp-1"
-          >{{ result.firstName }} {{ result.lastName }}</span
+      <li class="text-slate-500">
+        <button
+          class="focus-ring-inset flex w-full cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-left text-sm sm:px-6 sm:py-4 dark:text-slate-400"
+          (click)="handleClick(result.username)"
         >
-        @if (isLoggedInUser(result.username)) {
-          <span class="text-slate-600">{{
-            "searchModal.CURRENT_USER_AS_RESULT" | translate
-          }}</span>
-        }
-      </button>
+          <span class="text-break line-clamp-1"
+            >{{ result.firstName }} {{ result.lastName }}</span
+          >
+          @if (isLoggedInUser(result.username)) {
+            <span class="text-slate-600">{{
+              "searchModal.CURRENT_USER_AS_RESULT" | translate
+            }}</span>
+          }
+        </button>
+      </li>
     }
   </ul>
 }
