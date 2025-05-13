@@ -139,6 +139,13 @@
   }
 }
 
+@utility focus-ring-inset {
+  outline: none;
+  &:focus-visible {
+    @apply ring-2 ring-sky-500 ring-inset;
+  }
+}
+
 @utility focus-outline {
   &:focus-visible {
     @apply outline-2 outline-sky-500;

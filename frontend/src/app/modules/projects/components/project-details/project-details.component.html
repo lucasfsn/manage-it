@@ -16,7 +16,7 @@
           <span>{{ "project.details.LEADER" | translate }}</span>
         </p>
         <div
-          class="text-break focus-outline line-clamp-1 cursor-pointer text-orange-900 hover:text-orange-950 dark:text-slate-300 dark:hover:text-slate-300/90"
+          class="text-break focus-outline line-clamp-1 cursor-pointer rounded-full text-orange-900 hover:text-orange-950 dark:text-slate-300 dark:hover:text-slate-300/90"
           [routerLink]="'/users/' + project.owner.username"
         >
           {{ project.owner.firstName }} {{ project.owner.lastName }}
@@ -46,7 +46,7 @@
                 class="ml-1.5 flex gap-0.5 rounded-full bg-orange-200 px-1.5 py-0.5 dark:bg-sky-950"
               >
                 <button
-                  class="flex items-center justify-center focus-visible:text-sky-500 focus-visible:outline-hidden active:text-sky-500"
+                  class="focus-ring flex items-center justify-center rounded-sm active:text-sky-500"
                   (click)="showAllMembers()"
                 >
                   <mat-icon
@@ -56,7 +56,7 @@
                 </button>
                 <button
                   (click)="openSearchDialog()"
-                  class="flex items-center justify-center focus-visible:text-sky-500 focus-visible:outline-hidden active:text-sky-500"
+                  class="focus-ring flex items-center justify-center rounded-sm active:text-sky-500"
                 >
                   <mat-icon
                     class="text-sky-700 transition-all hover:text-sky-800 dark:text-sky-200 dark:hover:text-sky-300"

@@ -3,6 +3,7 @@ import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { User } from '@/app/features/dto/project.model';
 import { TaskService } from '@/app/features/services/task.service';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import {
   PageEvent,
   PaginatorComponent,
@@ -22,6 +23,7 @@ import { ToastrService } from 'ngx-toastr';
     TranslateModule,
     PaginatorComponent,
     UsersListComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './task-assignees-list.component.html',
   styleUrl: './task-assignees-list.component.scss',
