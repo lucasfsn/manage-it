@@ -6,6 +6,7 @@ interface ProjectData {
   projectId?: string;
   projectId2?: string;
   taskId?: string;
+  notificationId?: string;
 }
 
 const projectDataPath = path.join(__dirname, 'project-data.json');
@@ -31,6 +32,7 @@ interface ProjectFixtures {
   projectId: string;
   projectId2: string;
   taskId: string;
+  notificationId: string;
   storeTestData: (data: ProjectData) => void;
 }
 
@@ -48,6 +50,11 @@ export const test = base.extend<ProjectFixtures>({
   taskId: async ({}, use) => {
     const data = readProjectData();
     await use(data.taskId || '');
+  },
+
+  notificationId: async ({}, use) => {
+    const data = readProjectData();
+    await use(data.notificationId || '');
   },
 
   storeTestData: async ({}, use) => {
