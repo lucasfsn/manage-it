@@ -1,0 +1,48 @@
+import { APIRequestContext } from '@playwright/test';
+import { test, expect } from '../fixtures/project-data';
+import { authenticateUser } from '../helpers/auth';
+import { baseUrl } from '../../playwright.config';
+
+let token: string;
+let apiContext: APIRequestContext;
+
+test.beforeAll(async ({ playwright }) => {
+  const authenticationResponse = await authenticateUser('jan.kowalski@mail.com', '1qazXSW@');
+  token = authenticationResponse.token;
+
+  apiContext = await playwright.request.newContext({
+    baseURL: baseUrl,
+    extraHTTPHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+});
+
+test.afterAll(async () => {
+  await apiContext.dispose();
+});
+
+test('should get chat messages for a task', async ({ projectId, taskId }) => {
+  const response = await apiContext.get(`/api/v1/chat/projects/${projectId}/tasks/${taskId}`);
+  expect(response.status()).toBe(200);
+  const responseBody = await response.json();
+  expect(Array.isArray(responseBody)).toBe(true);
+});
+
+test('should return an error if the project does not exist', async ({ taskId }) => {
+  const nonExistentProjectId = '00000000-0000-0000-0000-000000000000';
+  const response = await apiContext.get(`/api/v1/chat/projects/${nonExistentProjectId}/tasks/${taskId}`);
+  expect(response.status()).toBe(404);
+});
+
+test('should return an error if the task does not exist', async ({ projectId }) => {
+  const nonExistentTaskId = '00000000-0000-0000-0000-000000000000';
+  const response = await apiContext.get(`/api/v1/chat/projects/${projectId}/tasks/${nonExistentTaskId}`);
+  expect(response.status()).toBe(404);
+});
+
+test('should return an error if the task id is invalid', async ({ projectId }) => {
+  const invalidTaskId = 'invalid-id';
+  const response = await apiContext.get(`/api/v1/chat/projects/${projectId}/tasks/${invalidTaskId}`);
+  expect(response.status()).toBe(400);
+});
