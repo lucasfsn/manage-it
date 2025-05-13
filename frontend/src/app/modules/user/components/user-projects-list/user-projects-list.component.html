@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-2">
   <h3 class="text-center text-xl font-semibold"><ng-content /></h3>
-  <ul class="grid max-w-6xl grid-cols-1 gap-1.5 sm:grid-cols-2 xl:grid-cols-3">
+  <div class="grid max-w-6xl grid-cols-1 gap-1.5 sm:grid-cols-2 xl:grid-cols-3">
     @for (project of userProjects; track project.id) {
       <button
         class="focus-ring flex min-h-28 min-w-64 cursor-pointer flex-col justify-between gap-4 rounded-lg bg-orange-100 p-4 text-left shadow-xs transition-all hover:bg-orange-200 dark:bg-slate-900 dark:hover:bg-slate-900/70"
@@ -32,5 +32,5 @@
         </div>
       </button>
     }
-  </ul>
+  </div>
 </div>

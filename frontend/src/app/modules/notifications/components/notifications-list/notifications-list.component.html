@@ -4,14 +4,11 @@
   </p>
 }
 
-<ul class="flex flex-col gap-3">
+<div class="flex flex-col gap-3">
   @for (notification of notifications; track notification.id) {
-    <li
+    <button
       class="focus-ring mr-auto flex cursor-pointer items-center gap-3 rounded-full px-5 py-1 hover:bg-slate-950/25"
       (click)="markAsReadAndOpen(notification)"
-      (keydown.enter)="markAsReadAndOpen(notification)"
-      (keydown.space)="markAsReadAndOpen(notification)"
-      tabindex="0"
     >
       <app-profile-icon
         size="lg"
@@ -32,6 +29,6 @@
           {{ notification.date | timeAgo }}
         </p>
       </div>
-    </li>
+    </button>
   }
-</ul>
+</div>
