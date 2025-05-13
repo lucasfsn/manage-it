@@ -18,3 +18,7 @@ TASKI
 (dueDate dla taska będzie po endDate dla projektu) to dueDate zmieni się automatycznie na endDate dla projektu, podobnie można pokombinować ze startDate)
 - czy możemy dodawać taski do projektu o statusie COMPLETED? bo na frontendzie nie można, a na backendzie można
 - dla add i remove user też mamy 500, zamiast 400 przy id
+
+POWIADOMIENIA
+- przy usuwaniu powiadomienia po id, gdy usuwamy powiadomienie po nieistniejącym id to mamy 204 zamiast 404
+- przy usuwaniu powiadomienia gdy id jest w formacie nie UUID, czyli 'invalid-id' to daje 500 zamiast 400
