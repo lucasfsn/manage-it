@@ -1,6 +1,6 @@
-# Run frontend e2e tests
+# Run frontend E2E tests
 
-In main project directory 
+Go to folder with tests for frontend
 ```
 cd tests/frontend-e2e
 ```
