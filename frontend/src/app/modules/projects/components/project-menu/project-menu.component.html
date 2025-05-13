@@ -1,4 +1,12 @@
-<div class="flex flex-col-reverse items-end gap-2">
+<div class="flex flex-col items-end gap-2">
+  <app-button
+    bgColor="bg-slate-400"
+    textColor="text-slate-900"
+    hoverBgColor="hover:bg-slate-500 focus-ring"
+    (handleClick)="handleGoBack()"
+  >
+    <mat-icon>arrow_back</mat-icon>
+  </app-button>
   @if (isOwner) {
     <div class="flex items-center gap-2">
       @if (project?.status !== ProjectStatus.COMPLETED) {
@@ -6,7 +14,7 @@
           bgColor="bg-sky-300"
           textColor="text-slate-900"
           hoverBgColor="hover:bg-sky-400"
-          customClass="focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-300 active:ring-0 active:text-slate-950"
+          customClass="focus-ring active:text-slate-950"
           [routerLink]="'/projects/' + project?.id + '/edit'"
         >
           <mat-icon>edit</mat-icon>
@@ -15,7 +23,7 @@
           bgColor="bg-green-300"
           textColor="text-slate-900"
           hoverBgColor="hover:bg-green-400"
-          customClass="focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-green-700 active:ring-0 active:text-slate-950"
+          customClass="focus-ring active:text-slate-950"
           (handleClick)="handleComplete()"
         >
           <mat-icon>done</mat-icon>
@@ -25,19 +33,11 @@
         bgColor="bg-pink-900"
         textColor="text-pink-200"
         hoverBgColor="hover:bg-pink-950"
-        customClass="focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 active:ring-0 active:text-slate-950"
+        customClass="focus-ring active:text-slate-950"
         (handleClick)="handleDelete()"
       >
         <mat-icon>delete</mat-icon>
       </app-button>
     </div>
   }
-  <app-button
-    bgColor="bg-slate-400"
-    textColor="text-slate-900"
-    hoverBgColor="hover:bg-slate-500"
-    (handleClick)="handleGoBack()"
-  >
-    <mat-icon>arrow_back</mat-icon>
-  </app-button>
 </div>

@@ -17,8 +17,8 @@
       cdkDropListSortingDisabled
     >
       @for (task of completedTasks; track task.id) {
-        <div
-          class="flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-gray-800 shadow-lg focus-visible:outline-hidden dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
+        <button
+          class="focus-ring flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-left text-gray-800 shadow-lg dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
           [class.cursor-wait]="loading"
           [class.cursor-move]="!loading"
           routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
@@ -53,12 +53,12 @@
               </div>
             }
           </div>
-        </div>
+        </button>
       }
     </div>
     @if (project.status !== ProjectStatus.COMPLETED) {
       <button
-        class="focus-ring flex w-auto items-center gap-1 self-center p-2 text-sm transition-all hover:text-gray-500 focus-visible:rounded-full active:text-sky-500"
+        class="focus-ring flex w-auto items-center gap-1 self-center rounded-full p-2 text-sm transition-all hover:text-gray-500 active:text-sky-500"
         (click)="openAddCardDialog(TaskStatus.COMPLETED)"
       >
         <mat-icon class="text-base">add</mat-icon>
@@ -84,8 +84,8 @@
       cdkDropListSortingDisabled
     >
       @for (task of inProgressTasks; track task.id) {
-        <div
-          class="flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-gray-800 shadow-lg focus-visible:outline-hidden dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
+        <button
+          class="focus-ring flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-left text-gray-800 shadow-lg dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
           [class.cursor-wait]="loading"
           [class.cursor-move]="!loading"
           routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
@@ -120,12 +120,12 @@
               </div>
             }
           </div>
-        </div>
+        </button>
       }
     </div>
     @if (project.status !== ProjectStatus.COMPLETED) {
       <button
-        class="focus-ring flex w-auto items-center gap-1 self-center p-2 text-sm transition-all hover:text-gray-500 focus-visible:rounded-full active:text-sky-500"
+        class="focus-ring flex w-auto items-center gap-1 self-center rounded-full p-2 text-sm transition-all hover:text-gray-500 active:text-sky-500"
         (click)="openAddCardDialog(TaskStatus.IN_PROGRESS)"
       >
         <mat-icon class="text-base">add</mat-icon>
@@ -134,7 +134,7 @@
     }
   </div>
   <div
-    class="flex h-full flex-1 flex-col items-center justify-start gap-2 rounded-lg bg-orange-100 p-4 text-gray-400 shadow-xs focus-visible:outline-hidden dark:bg-slate-950"
+    class="flex h-full flex-1 flex-col items-center justify-start gap-2 rounded-lg bg-orange-100 p-4 text-gray-400 shadow-xs dark:bg-slate-950"
   >
     <h3 class="self-start text-gray-700 dark:text-gray-100">
       {{ "task.drag-and-drop.labels.NOT_STARTED" | translate }}
@@ -152,7 +152,7 @@
     >
       @for (task of notStartedTasks; track task.id) {
         <div
-          class="flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-gray-800 shadow-lg focus-visible:outline-hidden dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
+          class="focus-ring flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-left text-gray-800 shadow-lg dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
           [class.cursor-wait]="loading"
           [class.cursor-move]="!loading"
           routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
@@ -192,7 +192,7 @@
     </div>
     @if (project.status !== ProjectStatus.COMPLETED) {
       <button
-        class="focus-ring mx-auto flex w-auto items-center gap-1 self-center p-2 text-sm transition-all hover:text-gray-500 focus-visible:rounded-full active:text-sky-500"
+        class="focus-ring mx-auto flex w-auto items-center gap-1 self-center rounded-full p-2 text-sm transition-all hover:text-gray-500 active:text-sky-500"
         (click)="openAddCardDialog(TaskStatus.NOT_STARTED)"
       >
         <mat-icon class="text-base">add</mat-icon>

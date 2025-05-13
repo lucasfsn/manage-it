@@ -1,4 +1,12 @@
-<div class="flex flex-col-reverse items-end gap-2">
+<div class="flex flex-col items-end gap-2">
+  <app-button
+    bgColor="bg-slate-400"
+    textColor="text-slate-900"
+    hoverBgColor="hover:bg-slate-500"
+    (handleClick)="handleGoBack()"
+  >
+    <mat-icon>arrow_back</mat-icon>
+  </app-button>
   <div class="flex gap-2">
     <app-button
       bgColor="bg-sky-300"
@@ -17,12 +25,4 @@
       <mat-icon>delete</mat-icon>
     </app-button>
   </div>
-  <app-button
-    bgColor="bg-slate-400"
-    textColor="text-slate-900"
-    hoverBgColor="hover:bg-slate-500"
-    (handleClick)="handleGoBack()"
-  >
-    <mat-icon>arrow_back</mat-icon>
-  </app-button>
 </div>
