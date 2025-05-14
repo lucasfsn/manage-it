@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { TranslationService } from '@/app/core/services/translation.service';
 import {
   NotificationOperation,
@@ -10,6 +9,7 @@ import {
   SortCriteria,
   SortOrder,
 } from '@/app/modules/projects/models/projects-sort.model';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -19,98 +19,104 @@ export class MapperService {
 
   public projectStatusMapper(status: ProjectStatus): string {
     switch (status) {
-    case ProjectStatus.IN_PROGRESS:
-      return this.translationService.translate(
-        'mappers.projectStatus.IN_PROGRESS'
-      );
-    case ProjectStatus.COMPLETED:
-      return this.translationService.translate(
-        'mappers.projectStatus.COMPLETED'
-      );
+      case ProjectStatus.IN_PROGRESS:
+        return this.translationService.translate(
+          'utils.mapper.projectStatus.IN_PROGRESS',
+        );
+      case ProjectStatus.COMPLETED:
+        return this.translationService.translate(
+          'utils.mapper.projectStatus.COMPLETED',
+        );
     }
   }
 
   public taskStatusMapper(status: TaskStatus): string {
     switch (status) {
-    case TaskStatus.IN_PROGRESS:
-      return this.translationService.translate(
-        'mappers.taskStatus.IN_PROGRESS'
-      );
-    case TaskStatus.COMPLETED:
-      return this.translationService.translate(
-        'mappers.taskStatus.COMPLETED'
-      );
-    case TaskStatus.NOT_STARTED:
-      return this.translationService.translate(
-        'mappers.taskStatus.NOT_STARTED'
-      );
+      case TaskStatus.IN_PROGRESS:
+        return this.translationService.translate(
+          'utils.mapper.taskStatus.IN_PROGRESS',
+        );
+      case TaskStatus.COMPLETED:
+        return this.translationService.translate(
+          'utils.mapper.taskStatus.COMPLETED',
+        );
+      case TaskStatus.NOT_STARTED:
+        return this.translationService.translate(
+          'utils.mapper.taskStatus.NOT_STARTED',
+        );
     }
   }
 
   public sortCriteriaMapper(criteria: SortCriteria): string {
     switch (criteria) {
-    case SortCriteria.NAME:
-      return this.translationService.translate('mappers.sortCriteria.NAME');
-    case SortCriteria.START_DATE:
-      return this.translationService.translate(
-        'mappers.sortCriteria.START_DATE'
-      );
-    case SortCriteria.END_DATE:
-      return this.translationService.translate(
-        'mappers.sortCriteria.END_DATE'
-      );
-    case SortCriteria.COMPLETED_TASKS:
-      return this.translationService.translate(
-        'mappers.sortCriteria.COMPLETED_TASKS'
-      );
+      case SortCriteria.NAME:
+        return this.translationService.translate(
+          'utils.mapper.sortCriteria.NAME',
+        );
+      case SortCriteria.START_DATE:
+        return this.translationService.translate(
+          'utils.mapper.sortCriteria.START_DATE',
+        );
+      case SortCriteria.END_DATE:
+        return this.translationService.translate(
+          'utils.mapper.sortCriteria.END_DATE',
+        );
+      case SortCriteria.COMPLETED_TASKS:
+        return this.translationService.translate(
+          'utils.mapper.sortCriteria.COMPLETED_TASKS',
+        );
     }
   }
 
   public sortOrderMapper(order: SortOrder): string {
     switch (order) {
-    case SortOrder.ASCENDING:
-      return this.translationService.translate('mappers.sortOrder.ASCENDING');
-    case SortOrder.DESCENDING:
-      return this.translationService.translate(
-        'mappers.sortOrder.DESCENDING'
-      );
+      case SortOrder.ASCENDING:
+        return this.translationService.translate(
+          'utils.mapper.sortOrder.ASCENDING',
+        );
+      case SortOrder.DESCENDING:
+        return this.translationService.translate(
+          'utils.mapper.sortOrder.DESCENDING',
+        );
     }
   }
 
   public priorityMapper(priority: Priority): string {
     switch (priority) {
-    case Priority.LOW:
-      return this.translationService.translate('mappers.priority.LOW');
-    case Priority.MEDIUM:
-      return this.translationService.translate('mappers.priority.MEDIUM');
-    case Priority.HIGH:
-      return this.translationService.translate('mappers.priority.HIGH');
+      case Priority.LOW:
+        return this.translationService.translate('utils.mapper.priority.LOW');
+      case Priority.MEDIUM:
+        return this.translationService.translate(
+          'utils.mapper.priority.MEDIUM',
+        );
+      case Priority.HIGH:
+        return this.translationService.translate('utils.mapper.priority.HIGH');
     }
   }
 
   public errorToastMapper(
     status?: number,
     errorDescription?: string,
-    message?: string
+    message?: string,
   ): string {
     if (!status)
       return this.translationService.translate('toast.error.DEFAULT');
 
     switch (status) {
-    case 401:
-      return this.translationService.translate(
-        errorDescription?.toLowerCase() === 'bad credentials'
-          ? 'toast.error.BAD_CREDENTIALS'
-          : 'toast.error.401'
-      );
-    case 404:
-      return this.translationService.translate('toast.error.404');
-    case 409:
-      return this.translationService.translate(
-        this.getConflictTranslationKey(message)
-      );
-    default:
-      return this.translationService.translate('toast.error.DEFAULT');
+      case 401:
+        return this.translationService.translate(
+          errorDescription?.toLowerCase() === 'bad credentials'
+            ? 'toast.error.BAD_CREDENTIALS'
+            : 'toast.error.401',
+        );
+      case 404:
+        return this.translationService.translate('toast.error.404');
+      case 409:
+        return this.translationService.translate(
+          this.getConflictTranslationKey(message),
+        );
+      default:
+        return this.translationService.translate('toast.error.DEFAULT');
     }
   }
 
@@ -130,48 +136,48 @@ export class MapperService {
 
     if (type === NotificationType.PROJECT) {
       translationKey = this.getProjectTranslationKey(
-        operation as NotificationOperation
+        operation as NotificationOperation,
       );
     } else if (type === NotificationType.TASK) {
       translationKey = this.getTaskTranslationKey(
-        operation as NotificationOperation
+        operation as NotificationOperation,
       );
     }
 
-    const translatedMessage = this.translationService.translate(translationKey);
-
-    return translatedMessage.replace('()', projectName);
+    return this.translationService.translate(translationKey, {
+      project: projectName,
+    });
   }
 
   private getProjectTranslationKey(operation: NotificationOperation): string {
     switch (operation) {
-    case NotificationOperation.COMPLETE:
-      return 'notifications.content.PROJECT_COMPLETE';
-    case NotificationOperation.UPDATE:
-      return 'notifications.content.PROJECT_UPDATE';
-    case NotificationOperation.JOIN:
-      return 'notifications.content.PROJECT_JOIN';
-    case NotificationOperation.LEAVE:
-      return 'notifications.content.PROJECT_LEAVE';
-    default:
-      return '';
+      case NotificationOperation.COMPLETE:
+        return 'notifications.content.project.COMPLETE';
+      case NotificationOperation.UPDATE:
+        return 'notifications.content.project.UPDATE';
+      case NotificationOperation.JOIN:
+        return 'notifications.content.project.JOIN';
+      case NotificationOperation.LEAVE:
+        return 'notifications.content.project.LEAVE';
+      default:
+        return '';
     }
   }
 
   private getTaskTranslationKey(operation: NotificationOperation): string {
     switch (operation) {
-    case NotificationOperation.CREATE:
-      return 'notifications.content.TASK_CREATE';
-    case NotificationOperation.DELETE:
-      return 'notifications.content.TASK_DELETE';
-    case NotificationOperation.UPDATE:
-      return 'notifications.content.TASK_UPDATE';
-    case NotificationOperation.JOIN:
-      return 'notifications.content.TASK_JOIN';
-    case NotificationOperation.LEAVE:
-      return 'notifications.content.TASK_LEAVE';
-    default:
-      return '';
+      case NotificationOperation.CREATE:
+        return 'notifications.content.task.CREATE';
+      case NotificationOperation.DELETE:
+        return 'notifications.content.task.DELETE';
+      case NotificationOperation.UPDATE:
+        return 'notifications.content.task.UPDATE';
+      case NotificationOperation.JOIN:
+        return 'notifications.content.task.JOIN';
+      case NotificationOperation.LEAVE:
+        return 'notifications.content.task.LEAVE';
+      default:
+        return '';
     }
   }
 }

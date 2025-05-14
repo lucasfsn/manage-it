@@ -3,16 +3,18 @@
 </h2>
 @if (!isAuthenticated) {
   <p class="text-base">
-    {{ "notFound.DESCRIPTION_GUEST" | translate }}
+    {{ "notFound.guest.DESCRIPTION" | translate }}
     <a routerLink="/auth/login" class="text-sky-500">{{
-      "notFound.DESCRIPTION_GUEST_LOGIN_TEXT" | translate
-    }}</a>
+      "notFound.guest.DESCRIPTION_LINK" | translate
+    }}</a
+    >.
   </p>
 } @else {
   <p class="text-base">
-    {{ "notFound.DESCRIPTION_LOGGED_IN" | translate }}
+    {{ "notFound.user.DESCRIPTION" | translate }}
     <a routerLink="/dashboard" class="focus-outline text-sky-500">{{
-      "notFound.DESCRIPTION_LOGGED_IN_DASHBOARD_TEXT" | translate
-    }}</a>
+      "notFound.user.DESCRIPTION_LINK" | translate
+    }}</a
+    >.
   </p>
 }

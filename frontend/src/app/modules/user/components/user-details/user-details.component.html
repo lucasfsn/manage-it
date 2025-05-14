@@ -9,16 +9,16 @@
           class="focus-ring mb-4 rounded-full bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 active:text-sky-200"
           (click)="openEditProfileDialog()"
         >
-          {{ "user.profile.EDIT_BUTTON" | translate }}
+          {{ "user.profile.buttons.EDIT" | translate }}
         </button>
       }
     </div>
     @if (user.projects.length > 0) {
       <app-user-projects-list>
         @if (isLoggedInUser(user.username)) {
-          {{ "user.profile.LOGGED_USER_TEXT" | translate }}
+          {{ "user.profile.title.loggedUser" | translate }}
         } @else {
-          {{ "user.profile.NOT_LOGGED_USER_TEXT" | translate }}
+          {{ "user.profile.title.user" | translate }}
         }
       </app-user-projects-list>
     }

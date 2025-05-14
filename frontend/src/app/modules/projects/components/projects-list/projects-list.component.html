@@ -53,13 +53,13 @@
           class="flex flex-col rounded-lg bg-orange-200/30 px-2 py-1 text-sm text-gray-700 dark:bg-slate-950 dark:text-gray-400"
         >
           <p>
-            {{ "projects.list.START_DATE_TEXT" | translate }}
+            {{ "projects.list.START_DATE" | translate }}:
             <span class="text-sky-500">
               {{ project.startDate | date }}
             </span>
           </p>
           <p>
-            {{ "projects.list.DEADLINE_TEXT" | translate }}
+            {{ "projects.list.DEADLINE" | translate }}:
             <span class="text-pink-500">
               {{ project.endDate | date }}
             </span>
@@ -80,7 +80,7 @@
             {{
               (project.completedTasks / project.totalTasks) * 100
                 | number: "1.0-0"
-            }}% {{ "projects.list.COMPLETED_PERCENTAGE_TEXT" | translate }}
+            }}% {{ "projects.list.COMPLETED_PERCENTAGE" | translate }}
           </span>
         </div>
       } @else {

@@ -9,16 +9,13 @@ import { ButtonComponent } from '@/app/shared/components/ui/button/button.compon
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import {
   endDateValidator,
-  futureOrTodayDateValidator,
-  startDateValidator,
+  maxLength,
+  minDate,
+  minLength,
+  required,
 } from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -79,27 +76,25 @@ export class ProjectFormComponent implements OnInit {
     {
       name: new FormControl('', {
         validators: [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(100),
+          required('project.form.name.errors.REQUIRED'),
+          minLength(5, 'project.form.name.errors.MIN_LENGTH'),
+          maxLength(100, 'project.form.name.errors.MAX_LENGTH'),
         ],
       }),
       description: new FormControl('', {
         validators: [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(1000),
+          required('project.form.description.errors.REQUIRED'),
+          minLength(5, 'project.form.description.errors.MIN_LENGTH'),
+          maxLength(1000, 'project.form.description.errors.MAX_LENGTH'),
         ],
       }),
       dates: new FormGroup<DatesForm>(
         {
           startDate: new FormControl('', {
-            validators: [Validators.required],
-            updateOn: 'change',
+            validators: [required('project.form.startDate.errors.REQUIRED')],
           }),
           endDate: new FormControl('', {
-            validators: [Validators.required],
-            updateOn: 'change',
+            validators: [required('project.form.endDate.errors.REQUIRED')],
           }),
         },
         {
@@ -110,83 +105,12 @@ export class ProjectFormComponent implements OnInit {
     { updateOn: 'blur' },
   );
 
-  protected get nameErrors(): string | null {
-    const control = this.form.controls.name;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate('project.form.NAME_REQUIRED');
-
-    if (control.errors['minlength'])
-      return this.translationService.translate('project.form.NAME_MIN_LENGTH', {
-        minLength: control.errors['minlength'].requiredLength,
-      });
-
-    if (control.errors['maxlength'])
-      return this.translationService.translate('project.form.NAME_MAX_LENGTH', {
-        maxLength: control.errors['maxlength'].requiredLength,
-      });
-
-    return null;
-  }
-
-  protected get descriptionErrors(): string | null {
-    const control = this.form.controls.description;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate(
-        'project.form.DESCRIPTION_REQUIRED',
-      );
-
-    if (control.errors['minlength'])
-      return this.translationService.translate(
-        'project.form.DESCRIPTION_MIN_LENGTH',
-        {
-          minLength: control.errors['minlength'].requiredLength,
-        },
-      );
-
-    if (control.errors['maxlength'])
-      return this.translationService.translate(
-        'project.form.DESCRIPTION_MAX_LENGTH',
-        {
-          maxLength: control.errors['maxlength'].requiredLength,
-        },
-      );
-
-    return null;
-  }
-
-  protected get startDateErrors(): string | null {
-    const control = this.form.controls.dates.controls.startDate;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate(
-        'project.form.START_DATE_REQUIRED',
-      );
-
-    if (control.errors['invalidDate'])
-      return this.translationService.translate(
-        'project.form.START_DATE_MIN_DATE',
-      );
-
-    return null;
-  }
-
-  protected get endDateErrors(): string | null {
+  protected get dateErrors(): string | null {
     const group = this.form.controls.dates;
-    const control = this.form.controls.dates.controls.endDate;
-
-    if (control.errors && control.errors['required'])
-      return this.translationService.translate(
-        'project.form.END_DATE_REQUIRED',
-      );
 
     if (group.errors && group.errors['invalidEndDate'])
       return this.translationService.translate(
-        'project.form.END_DATE_MIN_DATE',
+        'project.form.endDate.errors.INVALID',
       );
 
     return null;
@@ -208,15 +132,6 @@ export class ProjectFormComponent implements OnInit {
       this.form.value.description !== this.project.description ||
       this.form.value.dates?.startDate !== this.project.startDate ||
       this.form.value.dates.endDate !== this.project.endDate
-    );
-  }
-
-  protected get endDateIsInvalid(): boolean {
-    return (
-      (this.form.controls.dates.get('endDate')?.dirty &&
-        this.form.controls.dates.get('endDate')?.touched &&
-        this.form.controls.dates.get('endDate')?.invalid) ||
-      this.form.controls.dates.hasError('invalidEndDate')
     );
   }
 
@@ -265,7 +180,7 @@ export class ProjectFormComponent implements OnInit {
       next: (projectId: string) => {
         this.router.navigate(['/projects', projectId]);
         this.toastrService.success(
-          this.translationService.translate('toast.success.PROJECT_CREATED'),
+          this.translationService.translate('toast.success.project.CREATE'),
         );
       },
       error: () => {
@@ -288,7 +203,7 @@ export class ProjectFormComponent implements OnInit {
       next: () => {
         this.router.navigate(['/projects', projectId]);
         this.toastrService.success(
-          this.translationService.translate('toast.success.PROJECT_UPDATED'),
+          this.translationService.translate('toast.success.project.UPDATE'),
         );
       },
       error: () => {
@@ -324,26 +239,8 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  private addValidatorsIfCreating(): void {
-    if (this.project) return;
-
-    this.form.controls.dates.controls.startDate.addValidators(
-      startDateValidator,
-    );
-    this.form.controls.dates.controls.startDate.updateValueAndValidity();
-  }
-
   private today(): string {
     return new Date().toISOString().split('T')[0];
-  }
-
-  private addValidatorsIfEditing(): void {
-    if (this.isEditing) return;
-
-    this.form.controls.dates.controls.endDate.addValidators(
-      futureOrTodayDateValidator,
-    );
-    this.form.controls.dates.controls.endDate.updateValueAndValidity();
   }
 
   public ngOnInit(): void {
@@ -358,8 +255,13 @@ export class ProjectFormComponent implements OnInit {
 
     this.isEditing = isEditing;
 
-    this.addValidatorsIfEditing();
+    if (!this.isEditing) {
+      this.form.controls.dates.controls.startDate.addValidators(
+        minDate(this.today(), 'project.form.startDate.errors.MIN'),
+      );
+      this.form.controls.dates.controls.startDate.updateValueAndValidity();
+    }
+
     this.fillFormWithDefaultValues();
-    this.addValidatorsIfCreating();
   }
 }

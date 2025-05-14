@@ -21,28 +21,26 @@
     <app-form-textarea-input-control
       identifier="description"
       [control]="form.controls.description"
-      [placeholder]="'task.editForm.DESCRIPTION_PLACEHOLDER' | translate"
-      [label]="'task.editForm.DESCRIPTION_LABEL' | translate"
-      [errorMessage]="descriptionErrors"
+      [placeholder]="'task.editForm.description.PLACEHOLDER' | translate"
+      [label]="'task.editForm.description.LABEL' | translate"
       [maxLength]="500"
       customClass="!max-h-50"
     />
     <app-form-date-input-control
       identifier="due-date"
       [control]="form.controls.dueDate"
-      [label]="'task.editForm.DUE_DATE_LABEL' | translate"
-      [errorMessage]="dueDateErrors"
+      [label]="'task.editForm.dueDate.LABEL' | translate"
     />
     <app-form-select-control
       identifier="status"
       [control]="form.controls.status"
-      [label]="'task.editForm.STATUS_LABEL' | translate"
+      [label]="'task.editForm.status.LABEL' | translate"
       [options]="statuses"
     />
     <app-form-select-control
       identifier="priority"
       [control]="form.controls.priority"
-      [label]="'task.editForm.PRIORITY_LABEL' | translate"
+      [label]="'task.editForm.priority.LABEL' | translate"
       [options]="priorities"
     />
     <div class="mt-4 flex flex-wrap justify-between gap-2">
@@ -51,13 +49,13 @@
         [disabled]="loading"
         (handleClick)="onReset()"
       >
-        {{ "task.editForm.RESET_BUTTON" | translate }}
+        {{ "task.editForm.buttons.RESET" | translate }}
       </app-form-button>
       <app-form-button [disabled]="disabled" (handleClick)="onSubmit()">
         @if (loading) {
           {{ "utils.LOADING" | translate }}
         } @else {
-          {{ "task.editForm.SAVE_BUTTON" | translate }}
+          {{ "task.editForm.buttons.SAVE" | translate }}
         }
       </app-form-button>
     </div>

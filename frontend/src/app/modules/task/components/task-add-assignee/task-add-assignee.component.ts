@@ -55,7 +55,7 @@ export class TaskAddAssigneeComponent {
           `${user.firstName} ${
             user.lastName
           } ${this.translationService.translate(
-            'toast.success.MEMBER_ADDED_TO_TASK',
+            'toast.success.task.member.ADD',
           )}`,
         );
       },

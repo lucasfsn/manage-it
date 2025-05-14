@@ -18,23 +18,21 @@
     <app-form-textarea-input-control
       identifier="description"
       [control]="form.controls.description"
-      [placeholder]="'task.createForm.DESCRIPTION_PLACEHOLDER' | translate"
-      [label]="'task.createForm.DESCRIPTION_LABEL' | translate"
-      [errorMessage]="descriptionErrors"
+      [placeholder]="'task.createForm.description.PLACEHOLDER' | translate"
+      [label]="'task.createForm.description.LABEL' | translate"
       [maxLength]="500"
       customClass="!max-h-50"
     />
     <app-form-date-input-control
       identifier="due-date"
       [control]="form.controls.dueDate"
-      [label]="'task.createForm.DUE_DATE_LABEL' | translate"
-      [errorMessage]="dueDateErrors"
-      [min]="getToday()"
+      [label]="'task.createForm.dueDate.LABEL' | translate"
+      [min]="today"
     />
     <app-form-select-control
       identifier="priority"
       [control]="form.controls.priority"
-      [label]="'task.createForm.PRIORITY_LABEL' | translate"
+      [label]="'task.createForm.priority.LABEL' | translate"
       [options]="priorities"
     />
     <div class="mt-4 flex flex-wrap justify-between gap-2">
@@ -43,7 +41,7 @@
         [disabled]="loading"
         (handleClick)="onReset()"
       >
-        {{ "task.createForm.RESET_BUTTON" | translate }}
+        {{ "task.createForm.buttons.RESET" | translate }}
       </app-form-button>
       <app-form-button
         [disabled]="form.invalid || loading"
@@ -52,7 +50,7 @@
         @if (loading) {
           {{ "utils.LOADING" | translate }}
         } @else {
-          {{ "task.createForm.ADD_BUTTON" | translate }}
+          {{ "task.createForm.buttons.CREATE" | translate }}
         }
       </app-form-button>
     </div>

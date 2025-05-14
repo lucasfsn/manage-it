@@ -49,7 +49,7 @@
   "homepage": {
     "TITLE": "Zmień sposób pracy dzięki intuicyjnemu zarządzaniu projektami.",
     "DESCRIPTION": "Odkryj nowy poziom produktywności dzięki naszemu narzędziu do zarządzania projektami. Organizuj zadania, współpracuj z zespołem i śledź postępy w czasie rzeczywistym. Niezależnie od tego, czy to mały projekt, czy duży zespół, nasz intuicyjny interfejs i solidne funkcje pomogą Ci szybciej osiągnąć cele.",
-    "SIGN_UP_BUTTON": "Dołącz - za darmo!"
+    "SIGN_UP": "Dołącz - za darmo!"
   },
   "sidebar": {
     "SEARCH": "Szukaj...",
@@ -62,13 +62,13 @@
     "ongoingProjects": {
       "TITLE": "Trwające projekty",
       "NO_PROJECTS": "Brak trwających projektów",
-      "COMPLETED_TASKS_TEXT": "Ukończone zadania:",
+      "COMPLETED_TASKS": "Ukończone zadania",
       "NO_TASKS": "Brak zadań w tej chwili"
     },
     "upcomingDeadlines": {
       "TITLE": "Nadchodzące terminy",
       "NO_DEADLINES": "Brak nadchodzących terminów",
-      "DEADLINE_TEXT": "Termin:",
+      "DEADLINE": "Termin",
       "DAY_LEFT": "Jutro",
       "DAYS_LEFT": "{{daysLeft}} dni",
       "TODAY": "Dzisiaj"

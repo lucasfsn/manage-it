@@ -47,7 +47,7 @@ export class ProjectManageMembersComponent {
           `${user.firstName} ${
             user.lastName
           } ${this.translationService.translate(
-            'toast.success.MEMBER_REMOVED_FROM_PROJECT',
+            'toast.success.project.member.REMOVE',
           )}`,
         );
       },

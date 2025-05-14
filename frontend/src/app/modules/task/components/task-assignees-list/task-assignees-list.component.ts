@@ -60,7 +60,7 @@ export class TaskAssigneesListComponent implements OnInit {
           `${user.firstName} ${
             user.lastName
           } ${this.translationService.translate(
-            'toast.success.MEMBER_REMOVED_FROM_TASK',
+            'toast.success.task.member.REMOVE',
           )}`,
         );
       },
