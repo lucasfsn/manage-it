@@ -30,12 +30,13 @@
       [label]="'project.form.NAME_LABEL' | translate"
       [errorMessage]="nameErrors"
     />
-    <app-form-text-input-control
+    <app-form-textarea-input-control
       identifier="description"
       [control]="form.controls.description"
       [placeholder]="'project.form.DESCRIPTION_PLACEHOLDER' | translate"
       [label]="'project.form.DESCRIPTION_LABEL' | translate"
       [errorMessage]="descriptionErrors"
+      [maxLength]="1000"
     />
     <app-form-date-input-control
       identifier="start-date"
