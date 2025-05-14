@@ -9,7 +9,7 @@
     <app-form-text-input-control
       identifier="search-input"
       [control]="form"
-      [placeholder]="'searchModal.PLACEHOLDER' | translate"
+      [placeholder]="'utils.searchModal.PLACEHOLDER' | translate"
       customClass="focus-visible:ring-0! p-0! border-none rounded-none"
       (input)="onSearch()"
     />
@@ -20,7 +20,7 @@
       (click)="handleClose()"
       class="focus-ring flex items-center justify-center rounded-md bg-orange-100 px-1.5 py-1 text-slate-800 dark:bg-slate-500 dark:text-slate-300"
     >
-      <p class="text-xs">{{ "searchModal.CLOSE_BUTTON" | translate }}</p>
+      <p class="text-xs">{{ "utils.searchModal.buttons.CLOSE" | translate }}</p>
     </button>
   </div>
 </mat-dialog-content>
@@ -38,9 +38,9 @@
             >{{ result.firstName }} {{ result.lastName }}</span
           >
           @if (isLoggedInUser(result.username)) {
-            <span class="text-slate-600">{{
-              "searchModal.CURRENT_USER_AS_RESULT" | translate
-            }}</span>
+            <span class="text-slate-600"
+              >({{ "utils.searchModal.CURRENT_USER" | translate }})</span
+            >
           }
         </button>
       </li>

@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { User } from '@/app/features/dto/user.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { UserService } from '@/app/features/services/user.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-project-add-button',
   imports: [TranslateModule],
   templateUrl: './user-project-add-button.component.html',
-  styleUrl: './user-project-add-button.component.scss'
+  styleUrl: './user-project-add-button.component.scss',
 })
 export class UserProjectAddButtonComponent implements OnInit {
   protected projectId: string | null = null;
@@ -25,7 +25,7 @@ export class UserProjectAddButtonComponent implements OnInit {
     private toastrService: ToastrService,
     private userService: UserService,
     private translationService: TranslationService,
-    private mapperService: MapperService
+    private mapperService: MapperService,
   ) {}
 
   private get user(): User | null {
@@ -43,8 +43,8 @@ export class UserProjectAddButtonComponent implements OnInit {
           `${user.firstName} ${
             user.lastName
           } ${this.translationService.translate(
-            'toast.success.MEMBER_ADDED_TO_PROJECT'
-          )}`
+            'toast.success.project.member.ADD',
+          )}`,
         );
         this.router.navigate(['/projects', this.projectId]);
       },

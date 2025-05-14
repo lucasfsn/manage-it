@@ -66,7 +66,7 @@ export class ProjectsFilterComponent implements OnInit {
     return [
       {
         value: null,
-        label: this.translationService.translate('projects.filter.ALL_FILTER'),
+        label: this.translationService.translate('projects.filter.ALL'),
       },
       ...Object.values(ProjectStatus).map((status) => ({
         value: status,

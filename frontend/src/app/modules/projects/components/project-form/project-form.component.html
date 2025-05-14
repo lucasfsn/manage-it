@@ -14,9 +14,9 @@
       <mat-icon>create_new_folder</mat-icon>
     </div>
     @if (isEditing) {
-      <p class="font-semibold">{{ "project.form.EDIT_TITLE" | translate }}</p>
+      <p class="font-semibold">{{ "project.form.title.EDIT" | translate }}</p>
     } @else {
-      <p class="font-semibold">{{ "project.form.CREATE_TITLE" | translate }}</p>
+      <p class="font-semibold">{{ "project.form.title.CREATE" | translate }}</p>
     }
   </div>
   <form
@@ -26,47 +26,47 @@
     <app-form-text-input-control
       identifier="name"
       [control]="form.controls.name"
-      [placeholder]="'project.form.NAME_PLACEHOLDER' | translate"
-      [label]="'project.form.NAME_LABEL' | translate"
-      [errorMessage]="nameErrors"
+      [placeholder]="'project.form.name.PLACEHOLDER' | translate"
+      [label]="'project.form.name.LABEL' | translate"
     />
     <app-form-textarea-input-control
       identifier="description"
       [control]="form.controls.description"
-      [placeholder]="'project.form.DESCRIPTION_PLACEHOLDER' | translate"
-      [label]="'project.form.DESCRIPTION_LABEL' | translate"
-      [errorMessage]="descriptionErrors"
+      [placeholder]="'project.form.description.PLACEHOLDER' | translate"
+      [label]="'project.form.description.LABEL' | translate"
       [maxLength]="1000"
     />
     <app-form-date-input-control
       identifier="start-date"
       [control]="form.controls.dates.controls.startDate"
-      [label]="'project.form.START_DATE_LABEL' | translate"
-      [errorMessage]="startDateErrors"
+      [label]="'project.form.startDate.LABEL' | translate"
       [min]="minDate"
     />
     <app-form-date-input-control
       identifier="end-date"
       [control]="form.controls.dates.controls.endDate"
-      [label]="'project.form.END_DATE_LABEL' | translate"
-      [errorMessage]="endDateErrors"
+      [label]="'project.form.endDate.LABEL' | translate"
       [min]="minDate"
-      [customIsInvalid]="endDateIsInvalid"
     />
+    @if (dateErrors) {
+      <p class="text-sm text-red-500">
+        {{ dateErrors }}
+      </p>
+    }
     <div class="mt-2 flex justify-between gap-2">
       <app-form-button
         type="reset"
         [disabled]="loading"
         (handleClick)="onReset()"
-        >{{ "project.form.RESET_BUTTON" | translate }}</app-form-button
+        >{{ "project.form.buttons.RESET" | translate }}</app-form-button
       >
       <app-form-button [disabled]="disabled" (handleClick)="onSubmit()">
         @if (loading) {
           {{ "utils.LOADING" | translate }}
         } @else if (isEditing) {
-          {{ "project.form.SAVE_BUTTON" | translate }}
+          {{ "project.form.buttons.SAVE" | translate }}
         } @else {
-          {{ "project.form.CREATE_BUTTON" | translate }}
+          {{ "project.form.buttons.CREATE" | translate }}
         }
       </app-form-button>
     </div>

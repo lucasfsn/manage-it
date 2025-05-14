@@ -17,7 +17,7 @@
       <app-form-text-input-control
         identifier="name"
         [control]="form.controls.name"
-        [placeholder]="'projects.filter.INPUT_PLACEHOLDER' | translate"
+        [placeholder]="'projects.filter.input.PLACEHOLDER' | translate"
         customClass="focus-visible:ring-0! p-0! border-none rounded-none"
       />
     </div>
@@ -33,18 +33,18 @@
       <div class="flex flex-col gap-3 rounded-md bg-transparent p-2">
         <app-form-radio-control
           identifier="project-filter-status"
-          [label]="'projects.filter.MENU_STATUS_TEXT' | translate"
+          [label]="'projects.filter.status.LABEL' | translate"
           [control]="form.controls.status"
           [options]="statuses"
         />
         <app-form-checkbox-control
           identifier="owner"
           [control]="form.controls.ownedByCurrentUser"
-          [label]="'projects.filter.ONLY_LOGGED_USER_PROJECTS' | translate"
+          [label]="'projects.filter.owner.LABEL' | translate"
         />
       </div>
       <button (click)="onReset()" class="self-center px-2 py-1">
-        {{ "projects.filter.CLEAR_BUTTON" | translate }}
+        {{ "projects.filter.buttons.CLEAR" | translate }}
       </button>
     </div>
   </mat-menu>

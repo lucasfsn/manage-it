@@ -1,26 +1,23 @@
 import { UpdateUser, User } from '@/app/features/dto/user.model';
 import { UserService } from '@/app/features/services/user.service';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import {
+  email,
   equalValues,
-  nameValidator,
-  passwordValidator,
+  maxLength,
+  minLength,
+  pattern,
+  required,
 } from '@/app/shared/validators';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -57,7 +54,6 @@ export class UserEditFormComponent implements OnInit {
     private dialogRef: MatDialogRef<UserEditFormComponent>,
     private userService: UserService,
     private toastrService: ToastrService,
-    private translationService: TranslationService,
     private mapperService: MapperService,
     private loadingService: LoadingService,
   ) {}
@@ -70,22 +66,31 @@ export class UserEditFormComponent implements OnInit {
     {
       firstName: new FormControl('', {
         validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          nameValidator,
+          required('user.form.firstName.errors.REQUIRED'),
+          minLength(2, 'user.form.firstName.errors.MIN_LENGTH'),
+          maxLength(50, 'user.form.firstName.errors.MAX_LENGTH'),
+          pattern(
+            /^[a-zA-Z\xC0-\uFFFF]+([ \-']{0,1}[a-zA-Z\xC0-\uFFFF]+){0,2}[.]{0,1}$/,
+            'user.form.firstName.errors.INVALID',
+          ),
         ],
       }),
       lastName: new FormControl('', {
         validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          nameValidator,
+          required('user.form.lastName.errors.REQUIRED'),
+          minLength(2, 'user.form.lastName.errors.MIN_LENGTH'),
+          maxLength(50, 'user.form.lastName.errors.MAX_LENGTH'),
+          pattern(
+            /^[a-zA-Z\xC0-\uFFFF]+([ \-']{0,1}[a-zA-Z\xC0-\uFFFF]+){0,2}[.]{0,1}$/,
+            'user.form.lastName.errors.INVALID',
+          ),
         ],
       }),
       email: new FormControl('', {
-        validators: [Validators.required, Validators.email],
+        validators: [
+          required('user.form.email.errors.REQUIRED'),
+          email('user.form.email.errors.INVALID'),
+        ],
       }),
       changePassword: new FormControl(false, {
         updateOn: 'change',
@@ -100,100 +105,6 @@ export class UserEditFormComponent implements OnInit {
 
   protected get disabled(): boolean {
     return this.form.invalid || !this.hasFormChanged();
-  }
-
-  protected get passwordIsInvalid(): boolean {
-    const control = this.form.controls.passwords?.get('password');
-    if (!control) return false;
-
-    return control.dirty && control.touched && control.invalid;
-  }
-
-  protected get passwordsDoNotMatch(): boolean {
-    return !!this.form.controls.passwords?.hasError('equalValues');
-  }
-
-  protected get firstNameErrors(): string | null {
-    const control = this.form.controls.firstName;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate(
-        'user.editForm.FIRST_NAME_REQUIRED',
-      );
-
-    if (control.errors['minlength'])
-      return this.translationService.translate(
-        'user.editForm.FIRST_NAME_MIN_LENGTH',
-        { minLength: control.errors['minlength'].requiredLength },
-      );
-
-    if (control.errors['maxlength'])
-      return this.translationService.translate(
-        'user.editForm.FIRST_NAME_MAX_LENGTH',
-        { maxLength: control.errors['maxlength'].requiredLength },
-      );
-
-    if (control.errors['invalidName'])
-      return this.translationService.translate(
-        'user.editForm.FIRST_NAME_INVALID',
-      );
-
-    return null;
-  }
-
-  protected get lastNameErrors(): string | null {
-    const control = this.form.controls.lastName;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate(
-        'user.editForm.LAST_NAME_REQUIRED',
-      );
-
-    if (control.errors['minlength'])
-      return this.translationService.translate(
-        'user.editForm.LAST_NAME_MIN_LENGTH',
-        { minLength: control.errors['minlength'].requiredLength },
-      );
-
-    if (control.errors['maxlength'])
-      return this.translationService.translate(
-        'user.editForm.LAST_NAME_MAX_LENGTH',
-        { maxLength: control.errors['maxlength'].requiredLength },
-      );
-
-    if (control.errors['invalidName'])
-      return this.translationService.translate(
-        'user.editForm.LAST_NAME_INVALID',
-      );
-
-    return null;
-  }
-
-  protected get emailErrors(): string | null {
-    const control = this.form.controls.email;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate('user.editForm.EMAIL_REQUIRED');
-
-    if (control.errors['email'])
-      return this.translationService.translate('user.editForm.EMAIL_INVALID');
-
-    return null;
-  }
-
-  protected get passwordErrors(): string | null {
-    const control = this.form.controls.passwords?.get('password');
-    if (!control?.errors) return null;
-
-    if (control.errors['invalidPassword'])
-      return this.translationService.translate(
-        'user.editForm.PASSWORD_INVALID',
-      );
-
-    return null;
   }
 
   protected closeDialog(): void {
@@ -259,17 +170,23 @@ export class UserEditFormComponent implements OnInit {
   }
 
   private addPasswordsControl(): FormGroup<PasswordsForm> {
-    return new FormGroup<PasswordsForm>(
-      {
-        password: new FormControl('', {
-          validators: [Validators.required, passwordValidator],
-        }),
-        confirmPassword: new FormControl(''),
-      },
-      {
-        validators: [equalValues('password', 'confirmPassword')],
-      },
-    );
+    return new FormGroup<PasswordsForm>({
+      password: new FormControl('', {
+        validators: [
+          required('user.form.password.errors.REQUIRED'),
+          pattern(
+            /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+            'user.form.password.errors.INVALID',
+          ),
+        ],
+      }),
+      confirmPassword: new FormControl('', {
+        validators: [
+          required('user.form.confirmPassword.errors.REQUIRED'),
+          equalValues('password', 'user.form.confirmPassword.errors.NOT_EQUAL'),
+        ],
+      }),
+    });
   }
 
   public ngOnInit(): void {

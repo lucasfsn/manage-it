@@ -15,14 +15,14 @@ import {
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
-import { futureOrTodayDateValidator } from '@/app/shared/validators';
-import { Component, inject } from '@angular/core';
 import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+  maxLength,
+  minDate,
+  minLength,
+  required,
+} from '@/app/shared/validators';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -70,6 +70,26 @@ export class TaskCreateFormComponent {
     private translationService: TranslationService,
   ) {}
 
+  protected form: FormGroup<TaskCreateForm> = new FormGroup<TaskCreateForm>(
+    {
+      description: new FormControl('', {
+        validators: [
+          required('task.createForm.description.errors.REQUIRED'),
+          minLength(5, 'task.createForm.description.errors.MIN_LENGTH'),
+          maxLength(500, 'task.createForm.description.errors.MAX_LENGTH'),
+        ],
+      }),
+      dueDate: new FormControl(this.today, {
+        validators: [
+          required('task.createForm.dueDate.errors.REQUIRED'),
+          minDate(this.today, 'task.createForm.dueDate.errors.MIN'),
+        ],
+      }),
+      priority: new FormControl<Priority | null>(Priority.LOW),
+    },
+    { updateOn: 'blur' },
+  );
+
   protected get TaskStatus(): typeof TaskStatus {
     return TaskStatus;
   }
@@ -81,72 +101,8 @@ export class TaskCreateFormComponent {
     }));
   }
 
-  protected getToday(): string {
+  protected get today(): string {
     return new Date().toISOString().split('T')[0];
-  }
-
-  protected form: FormGroup<TaskCreateForm> = new FormGroup<TaskCreateForm>(
-    {
-      description: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(500),
-        ],
-      }),
-      dueDate: new FormControl(this.getToday(), {
-        validators: [Validators.required, futureOrTodayDateValidator],
-      }),
-      priority: new FormControl<Priority | null>(Priority.LOW, {
-        validators: [Validators.required],
-      }),
-    },
-    { updateOn: 'blur' },
-  );
-
-  protected get descriptionErrors(): string | null {
-    const control = this.form.controls.description;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate(
-        'task.createForm.DESCRIPTION_REQUIRED',
-      );
-
-    if (control.errors['minlength'])
-      return this.translationService.translate(
-        'task.createForm.DESCRIPTION_MIN_LENGTH',
-        {
-          minLength: control.errors['minlength'].requiredLength,
-        },
-      );
-
-    if (control.errors['maxlength'])
-      return this.translationService.translate(
-        'task.createForm.DESCRIPTION_MAX_LENGTH',
-        {
-          maxLength: control.errors['maxlength'].requiredLength,
-        },
-      );
-
-    return null;
-  }
-
-  protected get dueDateErrors(): string | null {
-    const control = this.form.controls.dueDate;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate(
-        'task.createForm.DUE_DATE_REQUIRED',
-      );
-
-    if (control.errors['invalidDate'])
-      return this.translationService.translate(
-        'task.createForm.DUE_DATE_MIN_DATE',
-      );
-
-    return null;
   }
 
   protected closeDialog(): void {
@@ -156,7 +112,7 @@ export class TaskCreateFormComponent {
   protected onReset(): void {
     this.form.reset({
       priority: Priority.LOW,
-      dueDate: this.getToday(),
+      dueDate: this.today,
     });
   }
 
@@ -177,7 +133,7 @@ export class TaskCreateFormComponent {
         this.loading = false;
         this.dialogRef.close(newTask);
         this.toastrService.success(
-          this.translationService.translate('toast.success.TASK_ADDED'),
+          this.translationService.translate('toast.success.task.CREATE'),
         );
       },
       error: () => {

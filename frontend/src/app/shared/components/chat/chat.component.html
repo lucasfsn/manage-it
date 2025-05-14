@@ -5,7 +5,7 @@
   <div
     class="border-none bg-orange-200 p-4 text-center text-gray-700 dark:bg-slate-950 dark:text-gray-300"
   >
-    <h2 class="text-lg font-semibold">{{ "chat.TITLE" | translate }}</h2>
+    <h2 class="text-lg font-semibold">{{ "utils.chat.TITLE" | translate }}</h2>
   </div>
   <div
     class="xs:pb-4 relative flex grow flex-col justify-between gap-3 overflow-hidden p-4 pb-16"
@@ -70,7 +70,7 @@
       }
       <input
         type="text"
-        [placeholder]="'chat.INPUT_PLACEHOLDER' | translate"
+        [placeholder]="'utils.chat.PLACEHOLDER' | translate"
         class="flex-1 bg-transparent text-sm outline-hidden placeholder:text-gray-500 disabled:cursor-not-allowed"
         [formControl]="form"
         (keydown.enter)="sendMessage()"
