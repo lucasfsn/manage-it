@@ -15,7 +15,7 @@ import {
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
-import { dueDateValidator } from '@/app/shared/validators';
+import { futureOrTodayDateValidator } from '@/app/shared/validators';
 import { Component, inject } from '@angular/core';
 import {
   FormControl,
@@ -90,12 +90,12 @@ export class TaskCreateFormComponent {
       description: new FormControl('', {
         validators: [
           Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(120),
+          Validators.minLength(5),
+          Validators.maxLength(500),
         ],
       }),
       dueDate: new FormControl(this.getToday(), {
-        validators: [Validators.required, dueDateValidator],
+        validators: [Validators.required, futureOrTodayDateValidator],
       }),
       priority: new FormControl<Priority | null>(Priority.LOW, {
         validators: [Validators.required],
@@ -103,6 +103,51 @@ export class TaskCreateFormComponent {
     },
     { updateOn: 'blur' },
   );
+
+  protected get descriptionErrors(): string | null {
+    const control = this.form.controls.description;
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate(
+        'task.createForm.DESCRIPTION_REQUIRED',
+      );
+
+    if (control.errors['minlength'])
+      return this.translationService.translate(
+        'task.createForm.DESCRIPTION_MIN_LENGTH',
+        {
+          minLength: control.errors['minlength'].requiredLength,
+        },
+      );
+
+    if (control.errors['maxlength'])
+      return this.translationService.translate(
+        'task.createForm.DESCRIPTION_MAX_LENGTH',
+        {
+          maxLength: control.errors['maxlength'].requiredLength,
+        },
+      );
+
+    return null;
+  }
+
+  protected get dueDateErrors(): string | null {
+    const control = this.form.controls.dueDate;
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate(
+        'task.createForm.DUE_DATE_REQUIRED',
+      );
+
+    if (control.errors['invalidDate'])
+      return this.translationService.translate(
+        'task.createForm.DUE_DATE_MIN_DATE',
+      );
+
+    return null;
+  }
 
   protected closeDialog(): void {
     this.dialog.closeAll();

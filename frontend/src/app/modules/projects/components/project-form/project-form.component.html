@@ -27,33 +27,28 @@
       identifier="name"
       [control]="form.controls.name"
       [placeholder]="'project.form.NAME_PLACEHOLDER' | translate"
-      [errorMessage]="'project.form.NAME_INVALID' | translate"
       [label]="'project.form.NAME_LABEL' | translate"
+      [errorMessage]="nameErrors"
     />
     <app-form-text-input-control
       identifier="description"
       [control]="form.controls.description"
       [placeholder]="'project.form.DESCRIPTION_PLACEHOLDER' | translate"
-      [errorMessage]="'project.form.DESCRIPTION_INVALID' | translate"
       [label]="'project.form.DESCRIPTION_LABEL' | translate"
+      [errorMessage]="descriptionErrors"
     />
     <app-form-date-input-control
       identifier="start-date"
       [control]="form.controls.dates.controls.startDate"
-      [errorMessage]="
-        (isEditing
-          ? 'project.form.EDIT_START_DATE_INVALID'
-          : 'project.form.CREATE_START_DATE_INVALID'
-        ) | translate
-      "
       [label]="'project.form.START_DATE_LABEL' | translate"
+      [errorMessage]="startDateErrors"
       [min]="minDate"
     />
     <app-form-date-input-control
       identifier="end-date"
       [control]="form.controls.dates.controls.endDate"
-      [errorMessage]="'project.form.END_DATE_INVALID' | translate"
       [label]="'project.form.END_DATE_LABEL' | translate"
+      [errorMessage]="endDateErrors"
       [min]="minDate"
       [customIsInvalid]="endDateIsInvalid"
     />
