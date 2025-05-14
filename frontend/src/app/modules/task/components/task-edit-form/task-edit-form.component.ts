@@ -12,7 +12,7 @@ import {
   FormSelectControlComponent,
   SelectOption,
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
-import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -42,7 +42,7 @@ interface TaskEditForm {
     FormButtonComponent,
     FormDateInputControlComponent,
     FormSelectControlComponent,
-    FormTextInputControlComponent,
+    FormTextareaInputControlComponent,
   ],
   templateUrl: './task-edit-form.component.html',
   styleUrl: './task-edit-form.component.scss',

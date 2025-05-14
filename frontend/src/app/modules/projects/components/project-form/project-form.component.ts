@@ -4,6 +4,7 @@ import { Project, ProjectRequest } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import {
@@ -48,6 +49,7 @@ interface ProjectForm {
     ButtonComponent,
     FormDateInputControlComponent,
     FormTextInputControlComponent,
+    FormTextareaInputControlComponent,
   ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss',
@@ -236,6 +238,8 @@ export class ProjectFormComponent implements OnInit {
     }
 
     this.form.reset({
+      name: '',
+      description: '',
       dates: {
         startDate: this.today(),
         endDate: this.today(),

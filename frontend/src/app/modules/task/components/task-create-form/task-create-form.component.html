@@ -15,12 +15,14 @@
     </button>
   </div>
   <form [formGroup]="form" class="flex flex-col gap-2 px-3 py-2">
-    <app-form-text-input-control
+    <app-form-textarea-input-control
       identifier="description"
       [control]="form.controls.description"
       [placeholder]="'task.createForm.DESCRIPTION_PLACEHOLDER' | translate"
       [label]="'task.createForm.DESCRIPTION_LABEL' | translate"
       [errorMessage]="descriptionErrors"
+      [maxLength]="500"
+      customClass="!max-h-50"
     />
     <app-form-date-input-control
       identifier="due-date"
