@@ -18,7 +18,9 @@
     {{ "projects.list.NO_PROJECTS" | translate }}
   </p>
 }
-<div class="max-w-page-content-container flex flex-wrap gap-1.5">
+<div
+  class="max-w-page-content-container grid grid-cols-1 gap-1.5 sm:grid-cols-2 lg:grid-cols-3"
+>
   @for (project of sortedAndFilteredProjects; track project.id) {
     <button
       class="focus-ring flex min-w-70 flex-1 cursor-pointer flex-col justify-between gap-4 rounded-lg bg-orange-100 p-4 text-left shadow-xs transition-all hover:bg-orange-200 active:bg-orange-100/70 dark:bg-slate-900 dark:hover:bg-slate-900/70 dark:active:bg-slate-900/70"

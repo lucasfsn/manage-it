@@ -19,14 +19,14 @@
       identifier="description"
       [control]="form.controls.description"
       [placeholder]="'task.createForm.DESCRIPTION_PLACEHOLDER' | translate"
-      [errorMessage]="'task.createForm.DESCRIPTION_INVALID' | translate"
       [label]="'task.createForm.DESCRIPTION_LABEL' | translate"
+      [errorMessage]="descriptionErrors"
     />
     <app-form-date-input-control
       identifier="due-date"
       [control]="form.controls.dueDate"
-      [errorMessage]="'task.createForm.DUE_DATE_INVALID' | translate"
       [label]="'task.createForm.DUE_DATE_LABEL' | translate"
+      [errorMessage]="dueDateErrors"
       [min]="getToday()"
     />
     <app-form-select-control

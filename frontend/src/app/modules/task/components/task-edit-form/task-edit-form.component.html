@@ -22,14 +22,14 @@
       identifier="description"
       [control]="form.controls.description"
       [placeholder]="'task.editForm.DESCRIPTION_PLACEHOLDER' | translate"
-      [errorMessage]="'task.editForm.DESCRIPTION_INVALID' | translate"
       [label]="'task.editForm.DESCRIPTION_LABEL' | translate"
+      [errorMessage]="descriptionErrors"
     />
     <app-form-date-input-control
       identifier="due-date"
       [control]="form.controls.dueDate"
-      [errorMessage]="'task.editForm.DUE_DATE_INVALID' | translate"
       [label]="'task.editForm.DUE_DATE_LABEL' | translate"
+      [errorMessage]="dueDateErrors"
     />
     <app-form-select-control
       identifier="status"

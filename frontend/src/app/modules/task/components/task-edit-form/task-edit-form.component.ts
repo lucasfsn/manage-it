@@ -61,8 +61,8 @@ export class TaskEditFormComponent implements OnInit {
   protected form: FormGroup<TaskEditForm> = new FormGroup<TaskEditForm>(
     {
       description: new FormControl('', [
-        Validators.minLength(2),
-        Validators.maxLength(120),
+        Validators.minLength(5),
+        Validators.maxLength(500),
         Validators.required,
       ]),
       status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED, {
@@ -77,6 +77,46 @@ export class TaskEditFormComponent implements OnInit {
     },
     { updateOn: 'blur' },
   );
+
+  protected get descriptionErrors(): string | null {
+    const control = this.form.controls.description;
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate(
+        'task.editForm.DESCRIPTION_REQUIRED',
+      );
+
+    if (control.errors['minlength'])
+      return this.translationService.translate(
+        'task.editForm.DESCRIPTION_MIN_LENGTH',
+        {
+          minLength: control.errors['minlength'].requiredLength,
+        },
+      );
+
+    if (control.errors['maxlength'])
+      return this.translationService.translate(
+        'task.editForm.DESCRIPTION_MAX_LENGTH',
+        {
+          maxLength: control.errors['maxlength'].requiredLength,
+        },
+      );
+
+    return null;
+  }
+
+  protected get dueDateErrors(): string | null {
+    const control = this.form.controls.dueDate;
+    if (!control.errors) return null;
+
+    if (control.errors['required'])
+      return this.translationService.translate(
+        'task.editForm.DUE_DATE_REQUIRED',
+      );
+
+    return null;
+  }
 
   protected get disabled(): boolean {
     return this.form.invalid || !this.isFormChanged() || this.loading;
