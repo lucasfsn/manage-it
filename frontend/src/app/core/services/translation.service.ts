@@ -1,5 +1,5 @@
 import { LanguageCode, LANGUAGES } from '@/app/config/language.config';
-import { environment } from '@/environments/environment';
+import { LANGUAGE_KEY } from '@/app/core/constants/local-storage.constants';
 import { Injectable, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TranslationService {
-  private readonly LANGUAGE = environment.storageKeys.LANGUAGE;
+  private readonly LANGUAGE = LANGUAGE_KEY;
   private language = signal<LanguageCode>(LanguageCode.EN);
 
   public loadedLanguage = this.language.asReadonly();

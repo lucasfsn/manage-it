@@ -1,8 +1,8 @@
+import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
 import { HttpInterceptorFn } from '@angular/common/http';
-import { environment } from '@/environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem(environment.storageKeys.TOKEN);
+  const token = localStorage.getItem(TOKEN_KEY);
 
   if (token) {
     const cloned = req.clone({

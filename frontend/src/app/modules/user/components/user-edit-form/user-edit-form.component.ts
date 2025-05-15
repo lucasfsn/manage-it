@@ -6,6 +6,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 
+import {
+  PASSWORD_REGEX,
+  PERSON_NAME_REGEX,
+} from '@/app/core/constants/regex.constants';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
@@ -58,10 +62,6 @@ export class UserEditFormComponent implements OnInit {
     private loadingService: LoadingService,
   ) {}
 
-  protected get userData(): User | null {
-    return this.userService.loadedUser();
-  }
-
   protected form: FormGroup<UserEditForm> = new FormGroup<UserEditForm>(
     {
       firstName: new FormControl('', {
@@ -69,10 +69,7 @@ export class UserEditFormComponent implements OnInit {
           required('user.form.firstName.errors.REQUIRED'),
           minLength(2, 'user.form.firstName.errors.MIN_LENGTH'),
           maxLength(50, 'user.form.firstName.errors.MAX_LENGTH'),
-          pattern(
-            /^[a-zA-Z\xC0-\uFFFF]+([ \-']{0,1}[a-zA-Z\xC0-\uFFFF]+){0,2}[.]{0,1}$/,
-            'user.form.firstName.errors.INVALID',
-          ),
+          pattern(PERSON_NAME_REGEX, 'user.form.firstName.errors.INVALID'),
         ],
       }),
       lastName: new FormControl('', {
@@ -80,10 +77,7 @@ export class UserEditFormComponent implements OnInit {
           required('user.form.lastName.errors.REQUIRED'),
           minLength(2, 'user.form.lastName.errors.MIN_LENGTH'),
           maxLength(50, 'user.form.lastName.errors.MAX_LENGTH'),
-          pattern(
-            /^[a-zA-Z\xC0-\uFFFF]+([ \-']{0,1}[a-zA-Z\xC0-\uFFFF]+){0,2}[.]{0,1}$/,
-            'user.form.lastName.errors.INVALID',
-          ),
+          pattern(PERSON_NAME_REGEX, 'user.form.lastName.errors.INVALID'),
         ],
       }),
       email: new FormControl('', {
@@ -98,6 +92,10 @@ export class UserEditFormComponent implements OnInit {
     },
     { updateOn: 'blur' },
   );
+
+  protected get userData(): User | null {
+    return this.userService.loadedUser();
+  }
 
   protected get showPasswordFields(): boolean {
     return this.form.controls.changePassword.value === true;
@@ -174,10 +172,7 @@ export class UserEditFormComponent implements OnInit {
       password: new FormControl('', {
         validators: [
           required('user.form.password.errors.REQUIRED'),
-          pattern(
-            /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-            'user.form.password.errors.INVALID',
-          ),
+          pattern(PASSWORD_REGEX, 'user.form.password.errors.INVALID'),
         ],
       }),
       confirmPassword: new FormControl('', {
