@@ -14,7 +14,7 @@
     class="mx-auto grid grid-cols-5 items-center lg:mx-0 lg:grid-cols-1 lg:grid-rows-5 lg:gap-0.5"
   >
     <button
-      class="sidebar focus-ring-inset rounded-lg hover:bg-orange-100 dark:hover:bg-slate-900"
+      class="sidebar focus-ring-inset items-center justify-center rounded-lg hover:bg-orange-100 dark:hover:bg-slate-900"
       (click)="openSearchDialog()"
     >
       <p class="sidebar-item">
@@ -79,7 +79,7 @@
     >
       @if (user) {
         <p
-          class="profile-picture flex aspect-square h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-xs text-slate-300 dark:bg-slate-300 dark:text-slate-950"
+          class="profile-picture sidebar-item flex aspect-square h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-xs text-slate-300 dark:bg-slate-300 dark:text-slate-950"
         >
           {{ user.firstName.charAt(0) + user.lastName.charAt(0) }}
         </p>

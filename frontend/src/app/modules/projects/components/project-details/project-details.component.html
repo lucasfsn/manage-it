@@ -4,26 +4,28 @@
       <app-project-menu />
     </div>
     <div class="max-w-page-content-container flex flex-col gap-3">
-      <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+      <h2
+        class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100"
+      >
         {{ project.name }}
       </h2>
       <div class="flex flex-col gap-5">
-        <p class="text-break">{{ project.description }}</p>
+        <p class="text-break text-sm sm:text-base">{{ project.description }}</p>
         <div
           class="xs:items-center xs:justify-center xs:grid-cols-2 grid max-w-lg grid-cols-1 gap-2"
         >
-          <p class="flex items-center gap-1">
-            <mat-icon class="text-base">person</mat-icon>
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>person</mat-icon>
             <span>{{ "project.details.LEADER" | translate }}</span>
           </p>
           <div
-            class="text-break focus-outline line-clamp-1 cursor-pointer rounded-full text-orange-900 hover:text-orange-950 dark:text-slate-300 dark:hover:text-slate-300/90"
+            class="text-break focus-outline line-clamp-1 cursor-pointer rounded-full text-sm text-orange-900 hover:text-orange-950 sm:text-base dark:text-slate-300 dark:hover:text-slate-300/90"
             [routerLink]="'/users/' + project.owner.username"
           >
             {{ project.owner.firstName }} {{ project.owner.lastName }}
           </div>
-          <p class="flex items-center gap-1">
-            <mat-icon class="text-base">group</mat-icon>
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>group</mat-icon>
             <span>{{ "project.details.MEMBERS" | translate }}</span>
           </p>
           <div class="flex items-center">
@@ -68,29 +70,29 @@
               }
             </ul>
           </div>
-          <p class="flex items-center gap-1">
-            <mat-icon class="text-base">task_alt</mat-icon>
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>task_alt</mat-icon>
             <span>{{ "project.details.STATUS" | translate }}</span>
           </p>
           <div
-            class="flex w-fit items-center justify-center rounded-full px-2 py-1 text-sm font-semibold text-slate-900"
+            class="flex w-fit items-center justify-center rounded-full px-2 py-1 text-sm font-semibold text-slate-900 sm:text-base"
             [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
             [class.bg-orange-400]="project.status === ProjectStatus.IN_PROGRESS"
           >
             {{ mapProjectStatus() }}
           </div>
-          <p class="flex items-center gap-1">
-            <mat-icon class="text-base">schedule</mat-icon>
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>schedule</mat-icon>
             <span>{{ "project.details.START_DATE" | translate }}</span>
           </p>
-          <div class="text-orange-900 dark:text-slate-300">
+          <div class="text-sm text-orange-900 sm:text-base dark:text-slate-300">
             {{ project.startDate | date }}
           </div>
-          <p class="flex items-center gap-1">
-            <mat-icon class="text-base">alarm</mat-icon>
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>alarm</mat-icon>
             <span>{{ "project.details.END_DATE" | translate }}</span>
           </p>
-          <div class="text-orange-900 dark:text-slate-300">
+          <div class="text-sm text-orange-900 sm:text-base dark:text-slate-300">
             {{ project.endDate | date }}
           </div>
         </div>

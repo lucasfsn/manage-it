@@ -445,7 +445,7 @@
     "searchModal": {
       "PLACEHOLDER": "Type to search...",
       "buttons": {
-        "CLOSE": "Close"
+        "CLOSE": "close"
       },
       "CURRENT_USER": "You"
     },

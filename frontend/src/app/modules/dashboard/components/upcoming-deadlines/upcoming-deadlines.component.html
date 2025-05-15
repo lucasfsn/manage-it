@@ -9,19 +9,19 @@
   }
   @for (project of sortedProjectsByEndDate(); track project.id) {
     <button
-      class="focus-ring flex min-h-30 cursor-pointer flex-col justify-between gap-2 rounded-lg bg-orange-100 p-4 text-left shadow-xs transition-all hover:bg-orange-200 dark:bg-slate-900 dark:hover:bg-slate-900/70"
+      class="focus-ring flex min-h-25 cursor-pointer flex-col justify-between gap-2 rounded-lg bg-orange-100 p-4 text-left shadow-xs transition-all hover:bg-orange-200 sm:min-h-30 dark:bg-slate-900 dark:hover:bg-slate-900/70"
       routerLink="/projects/{{ project.id }}"
     >
-      <h3 class="text-break line-clamp-2 text-lg font-semibold">
+      <h3 class="text-break line-clamp-2 text-base font-semibold sm:text-lg">
         {{ project.name }}
       </h3>
       <div class="flex flex-col">
-        <p class="gap-1 text-sm text-gray-600 dark:text-gray-400">
+        <p class="gap-1 text-xs text-gray-600 sm:text-sm dark:text-gray-400">
           {{ "dashboard.upcomingDeadlines.DEADLINE" | translate }}:
           {{ project.endDate | date }}
         </p>
         <p
-          class="text-sm font-semibold {{
+          class="text-xs sm:text-sm font-semibold {{
             deadlineClass(project.endDate, project.status)
           }}"
         >
