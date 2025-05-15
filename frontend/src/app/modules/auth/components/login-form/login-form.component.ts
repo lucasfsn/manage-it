@@ -3,13 +3,9 @@ import { TranslationService } from '@/app/core/services/translation.service';
 import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { email, required } from '@/app/shared/validators';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -46,24 +42,17 @@ export class LoginFormComponent implements OnInit {
   protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>(
     {
       email: new FormControl('', {
-        validators: [Validators.required, Validators.email],
+        validators: [
+          required('loginForm.email.errors.REQUIRED'),
+          email('loginForm.email.errors.INVALID'),
+        ],
       }),
       password: new FormControl('', {
-        validators: [Validators.required],
+        validators: [required('loginForm.password.errors.REQUIRED')],
       }),
     },
     { updateOn: 'blur' },
   );
-
-  protected get passwordErrors(): string | null {
-    const control = this.form.controls.password;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate('loginForm.PASSWORD_REQUIRED');
-
-    return null;
-  }
 
   protected onSubmit(): void {
     if (this.form.invalid) return;

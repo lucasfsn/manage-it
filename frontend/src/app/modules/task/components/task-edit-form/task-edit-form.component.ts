@@ -12,15 +12,11 @@ import {
   FormSelectControlComponent,
   SelectOption,
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
-import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { maxLength, minLength, required } from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
@@ -42,7 +38,7 @@ interface TaskEditForm {
     FormButtonComponent,
     FormDateInputControlComponent,
     FormSelectControlComponent,
-    FormTextInputControlComponent,
+    FormTextareaInputControlComponent,
   ],
   templateUrl: './task-edit-form.component.html',
   styleUrl: './task-edit-form.component.scss',
@@ -61,25 +57,21 @@ export class TaskEditFormComponent implements OnInit {
   protected form: FormGroup<TaskEditForm> = new FormGroup<TaskEditForm>(
     {
       description: new FormControl('', [
-        Validators.minLength(2),
-        Validators.maxLength(120),
-        Validators.required,
+        required('task.editForm.description.errors.REQUIRED'),
+        minLength(5, 'task.editForm.description.errors.MIN_LENGTH'),
+        maxLength(500, 'task.editForm.description.errors.MAX_LENGTH'),
       ]),
-      status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED, {
-        validators: [Validators.required],
-      }),
-      priority: new FormControl<Priority | null>(Priority.LOW, {
-        validators: [Validators.required],
-      }),
+      status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED),
+      priority: new FormControl<Priority | null>(Priority.LOW),
       dueDate: new FormControl('', {
-        validators: [Validators.required],
+        validators: [required('task.editForm.dueDate.errors.REQUIRED')],
       }),
     },
     { updateOn: 'blur' },
   );
 
   protected get disabled(): boolean {
-    return this.form.invalid || !this.isFormChanged() || this.loading;
+    return this.form.invalid || !this.hasFormChanged() || this.loading;
   }
 
   protected get task(): Task | null {
@@ -100,7 +92,7 @@ export class TaskEditFormComponent implements OnInit {
     }));
   }
 
-  private isFormChanged(): boolean {
+  private hasFormChanged(): boolean {
     if (!this.task) return false;
 
     return (
@@ -142,13 +134,13 @@ export class TaskEditFormComponent implements OnInit {
       dueDate: this.form.value.dueDate!,
     };
 
-    if (!this.isFormChanged()) return;
+    if (!this.hasFormChanged()) return;
 
     this.loading = true;
     this.taskService.updateTask(projectId, id, updatedTask).subscribe({
       next: () => {
         this.toastrService.success(
-          this.translationService.translate('toast.success.TASK_UPDATED'),
+          this.translationService.translate('toast.success.task.UPDATE'),
         );
         this.closeDialog();
       },

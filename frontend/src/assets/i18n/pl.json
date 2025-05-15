@@ -1,42 +1,80 @@
 {
   "loginForm": {
-    "EMAIL_PLACEHOLDER": "Wprowadź swój email",
-    "EMAIL_INVALID": "Proszę wprowadzić prawidłowy adres email.",
-    "PASSWORD_PLACEHOLDER": "Wprowadź swoje hasło",
-    "PASSWORD_REQUIRED": "Hasło jest wymagane.",
-    "PASSWORD_INVALID": "Hasło musi zawierać co najmniej 8 znaków, w tym co najmniej jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny.",
-    "LOGIN_BUTTON": "Zaloguj się",
-    "CREATE_ACCOUNT": "Utwórz konto"
+    "email": {
+      "PLACEHOLDER": "Wprowadź swój email",
+      "errors": {
+        "REQUIRED": "Email jest wymagany.",
+        "INVALID": "Proszę wprowadzić prawidłowy adres email."
+      }
+    },
+    "password": {
+      "PLACEHOLDER": "Wprowadź swoje hasło",
+      "errors": {
+        "REQUIRED": "Hasło jest wymagane.",
+        "INVALID": "Hasło musi zawierać co najmniej 8 znaków, w tym co najmniej jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny."
+      }
+    },
+    "buttons": {
+      "LOG_IN": "Zaloguj się",
+      "SIGN_UP": "Utwórz konto"
+    }
   },
   "signupForm": {
     "TITLE": "Potrzebujemy od Ciebie kilku danych, aby rozpocząć",
-    "FIRST_NAME_PLACEHOLDER": "Wprowadź swoje imię",
-    "FIRST_NAME_REQUIRED": "Imię jest wymagane.",
-    "FIRST_NAME_MIN_LENGTH": "Imię musi mieć co najmniej {{minLength}} znaków.",
-    "FIRST_NAME_MAX_LENGTH": "Imię nie może mieć więcej niż {{maxLength}} znaków.",
-    "FIRST_NAME_INVALID": "Imię nie może zawierać cyfr i znaków specjalnych.",
-    "LAST_NAME_PLACEHOLDER": "Wprowadź swoje nazwisko",
-    "LAST_NAME_REQUIRED": "Nazwisko jest wymagane.",
-    "LAST_NAME_MIN_LENGTH": "Nazwisko musi mieć co najmniej {{minLength}} znaków.",
-    "LAST_NAME_MAX_LENGTH": "Nazwisko nie może mieć więcej niż {{maxLength}} znaków.",
-    "LAST_NAME_INVALID": "Nazwisko nie może zawierać cyfr i znaków specjalnych.",
-    "USERNAME_PLACEHOLDER": "Wprowadź swoją nazwę użytkownika",
-    "USERNAME_REQUIRED": "Nazwa użytkownika jest wymagana.",
-    "USERNAME_TOOLTIP": "Nazwa użytkownika jest stała i nie może być zmieniona później",
-    "USERNAME_MIN_LENGTH": "Nazwa użytkownika musi mieć co najmniej {{minLength}} znaków.",
-    "USERNAME_MAX_LENGTH": "Nazwa użytkownika nie może mieć więcej niż {{maxLength}} znaków.",
-    "USERNAME_INVALID": "Nazwa użytkownika nie może zawierać cyfr i znaków specjalnych.",
-    "EMAIL_PLACEHOLDER": "Wprowadź swój email",
-    "EMAIL_REQUIRED": "Email jest wymagany.",
-    "EMAIL_INVALID": "Proszę wprowadzić prawidłowy adres email.",
-    "PASSWORD_PLACEHOLDER": "Wprowadź swoje hasło",
-    "CONFIRM_PASSWORD_PLACEHOLDER": "Potwierdź hasło",
-    "PASSWORD_REQUIRED": "Hasło jest wymagane.",
-    "PASSWORD_INVALID": "Hasło musi zawierać co najmniej 8 znaków, w tym co najmniej jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny.",
-    "PASSWORDS_DO_NOT_MATCH": "Podane hasła nie pasują do siebie.",
-    "SIGN_UP_BUTTON": "Zarejestruj się",
-    "RESET_BUTTON": "Resetuj",
-    "ALREADY_HAVE_ACCOUNT": "Masz już konto? Zaloguj się"
+    "firstName": {
+      "PLACEHOLDER": "Wprowadź swoje imię",
+      "errors": {
+        "REQUIRED": "Imię jest wymagane.",
+        "MIN_LENGTH": "Imię musi mieć co najmniej {{minLength}} znaki.",
+        "MAX_LENGTH": "Imię nie może mieć więcej niż {{maxLength}} znaków.",
+        "INVALID": "Imię nie może zawierać cyfr i znaków specjalnych."
+      }
+    },
+    "lastName": {
+      "PLACEHOLDER": "Wprowadź swoje nazwisko",
+      "errors": {
+        "REQUIRED": "Nazwisko jest wymagane.",
+        "MIN_LENGTH": "Nazwisko musi mieć co najmniej {{minLength}} znaki.",
+        "MAX_LENGTH": "Nazwisko nie może mieć więcej niż {{maxLength}} znaków.",
+        "INVALID": "Nazwisko nie może zawierać cyfr i znaków specjalnych."
+      }
+    },
+    "username": {
+      "PLACEHOLDER": "Wprowadź swoją nazwę użytkownika",
+      "TOOLTIP": "Nazwa użytkownika jest stała i nie może być zmieniona później",
+      "errors": {
+        "REQUIRED": "Nazwa użytkownika jest wymagana.",
+        "MIN_LENGTH": "Nazwa użytkownika musi mieć co najmniej {{minLength}} znaków.",
+        "MAX_LENGTH": "Nazwa użytkownika nie może mieć więcej niż {{maxLength}} znaków.",
+        "INVALID": "Nazwa użytkownika nie może zawierać cyfr i znaków specjalnych."
+      }
+    },
+    "email": {
+      "PLACEHOLDER": "Wprowadź swój email",
+      "errors": {
+        "REQUIRED": "Email jest wymagany.",
+        "INVALID": "Proszę wprowadzić prawidłowy adres email."
+      }
+    },
+    "password": {
+      "PLACEHOLDER": "Wprowadź swoje hasło",
+      "errors": {
+        "REQUIRED": "Hasło jest wymagane.",
+        "INVALID": "Hasło musi zawierać co najmniej 8 znaków, w tym co najmniej jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny."
+      }
+    },
+    "confirmPassword": {
+      "PLACEHOLDER": "Potwierdź hasło",
+      "errors": {
+        "REQUIRED": "Potwierdzenie hasła jest wymagane.",
+        "NOT_EQUAL": "Podane hasła nie pasują do siebie."
+      }
+    },
+    "buttons": {
+      "SIGN_UP": "Zarejestruj się",
+      "RESET": "Resetuj",
+      "LOG_IN": "Masz już konto? Zaloguj się"
+    }
   },
   "header": {
     "LOGIN": "Zaloguj",
@@ -49,7 +87,7 @@
   "homepage": {
     "TITLE": "Zmień sposób pracy dzięki intuicyjnemu zarządzaniu projektami.",
     "DESCRIPTION": "Odkryj nowy poziom produktywności dzięki naszemu narzędziu do zarządzania projektami. Organizuj zadania, współpracuj z zespołem i śledź postępy w czasie rzeczywistym. Niezależnie od tego, czy to mały projekt, czy duży zespół, nasz intuicyjny interfejs i solidne funkcje pomogą Ci szybciej osiągnąć cele.",
-    "SIGN_UP_BUTTON": "Dołącz - za darmo!"
+    "SIGN_UP": "Dołącz - za darmo!"
   },
   "sidebar": {
     "SEARCH": "Szukaj...",
@@ -62,50 +100,24 @@
     "ongoingProjects": {
       "TITLE": "Trwające projekty",
       "NO_PROJECTS": "Brak trwających projektów",
-      "COMPLETED_TASKS_TEXT": "Ukończone zadania:",
+      "COMPLETED_TASKS": "Ukończone zadania",
       "NO_TASKS": "Brak zadań w tej chwili"
     },
     "upcomingDeadlines": {
       "TITLE": "Nadchodzące terminy",
       "NO_DEADLINES": "Brak nadchodzących terminów",
-      "DEADLINE_TEXT": "Termin:",
+      "DEADLINE": "Termin",
       "DAY_LEFT": "Jutro",
       "DAYS_LEFT": "{{daysLeft}} dni",
       "TODAY": "Dzisiaj"
     },
     "projectsSummary": {
       "TITLE": "Podsumowanie projektów",
-      "ONGOING_PROJECTS_TEXT": "Trwające projekty:"
+      "ONGOING_PROJECTS": "Trwające projekty:"
     },
     "tasksSummary": {
       "TITLE": "Podsumowanie zadań",
       "NO_TASKS": "Brak zadań w tej chwili"
-    }
-  },
-  "mappers": {
-    "projectStatus": {
-      "IN_PROGRESS": "W trakcie",
-      "COMPLETED": "Zakończony"
-    },
-    "taskStatus": {
-      "IN_PROGRESS": "W trakcie",
-      "COMPLETED": "Ukończony",
-      "NOT_STARTED": "Nadchodzące"
-    },
-    "sortCriteria": {
-      "NAME": "Nazwa",
-      "START_DATE": "Data rozpoczęcia",
-      "END_DATE": "Data zakończenia",
-      "COMPLETED_TASKS": "Liczba ukończonych zadań"
-    },
-    "sortOrder": {
-      "ASCENDING": "Rosnąco",
-      "DESCENDING": "Malejąco"
-    },
-    "priority": {
-      "LOW": "Niski",
-      "MEDIUM": "Średni",
-      "HIGH": "Wysoki"
     }
   },
   "notifications": {
@@ -113,79 +125,123 @@
     "MARK_ALL_AS_READ": "Oznacz wszystkie jako przeczytane",
     "NO_NOTIFICATIONS": "Brak powiadomień",
     "content": {
-      "PROJECT_COMPLETE": "oznaczył(a) () jako ukończony",
-      "PROJECT_UPDATE": "zmodyfikował(a) ()",
-      "PROJECT_JOIN": "dołączył(a) do ()",
-      "PROJECT_LEAVE": "opuścił(a) ()",
-      "TASK_CREATE": "utworzył(a) nowe zadanie w ()",
-      "TASK_DELETE": "usunął(a) ()",
-      "TASK_UPDATE": "zmodyfikował(a) zadanie w ()",
-      "TASK_JOIN": "dołączył(a) do zadania w ()",
-      "TASK_LEAVE": "opuścił(a) zadanie w ()"
+      "project": {
+        "COMPLETE": "oznaczył(a) {{project}} jako ukończony",
+        "UPDATE": "zmodyfikował(a) {{project}}",
+        "JOIN": "dołączył(a) do {{project}}",
+        "LEAVE": "opuścił(a) {{project}}"
+      },
+      "task": {
+        "CREATE": "utworzył(a) zadanie w {{project}}",
+        "DELETE": "usunął(a) zadanie z {{project}}",
+        "UPDATE": "zmodyfikował(a) zadanie w {{project}}",
+        "JOIN": "dołączył(a) do zadania w {{project}}",
+        "LEAVE": "opuścił(a) zadanie w {{project}}"
+      }
     }
   },
   "notFound": {
     "TITLE": "Strona nie została znaleziona.",
-    "DESCRIPTION_LOGGED_IN": "Ta strona może nie istnieć lub możesz nie mieć do niej dostępu. Sprawdź adres URL lub wróć do",
-    "DESCRIPTION_LOGGED_IN_DASHBOARD_TEXT": "pulpitu.",
-    "DESCRIPTION_GUEST": "Ta strona może być prywatna. Możesz ją zobaczyć po",
-    "DESCRIPTION_GUEST_LOGIN_TEXT": "zalogowaniu się."
+    "guest": {
+      "DESCRIPTION": "Ta strona może być prywatna. Możesz ją zobaczyć po przejściu na",
+      "DESCRIPTION_LINK": "stronę logowania"
+    },
+    "user": {
+      "DESCRIPTION": "Ta strona może nie istnieć lub możesz nie mieć do niej dostępu. Sprawdź adres URL lub wróć do",
+      "DESCRIPTION_LINK": "pulpitu"
+    }
   },
   "user": {
     "profile": {
-      "JOINED_TEXT": "Dołączył",
-      "EDIT_BUTTON": "Edytuj profil",
-      "LOGGED_USER_TEXT": "Twoje Projekty",
-      "NOT_LOGGED_USER_TEXT": "Wspólne Projekty",
-      "ADD_TO_PROJECT_BUTTON": "Dodaj do Projektu"
+      "CREATE_DATE": "Dołączył",
+      "buttons": {
+        "EDIT": "Edytuj profil",
+        "ADD_TO_PROJECT": "Dodaj do Projektu"
+      },
+      "title": {
+        "loggedUser": "Twoje Projekty",
+        "user": "Wspólne Projekty"
+      }
     },
-    "editForm": {
+    "form": {
       "TITLE": "Edytuj profil",
-      "FIRST_NAME_LABEL": "Imię",
-      "FIRST_NAME_PLACEHOLDER": "Wprowadź swoje imię",
-      "LAST_NAME_LABEL": "Nazwisko",
-      "LAST_NAME_PLACEHOLDER": "Wprowadź swoje nazwisko",
-      "EMAIL_LABEL": "Email",
-      "EMAIL_PLACEHOLDER": "Wprowadź nowy email",
-      "PASSWORD_LABEL": "Edytuj hasło",
-      "PASSWORD_PLACEHOLDER": "Wprowadź nowe hasło",
-      "CONFIRM_PASSWORD_PLACEHOLDER": "Potwierdź hasło",
-      "SAVE_BUTTON": "Zapisz",
-      "RESET_BUTTON": "Resetuj",
-      "FIRST_NAME_REQUIRED": "Imię jest wymagane.",
-      "FIRST_NAME_MIN_LENGTH": "Imię musi mieć co najmniej {{minLength}} znaków.",
-      "FIRST_NAME_MAX_LENGTH": "Imię nie może mieć więcej niż {{maxLength}} znaków.",
-      "FIRST_NAME_INVALID": "Imię nie może zawierać cyfr i znaków specjalnych.",
-      "LAST_NAME_REQUIRED": "Nazwisko jest wymagane.",
-      "LAST_NAME_MIN_LENGTH": "Nazwisko musi mieć co najmniej {{minLength}} znaków.",
-      "LAST_NAME_MAX_LENGTH": "Nazwisko nie może mieć więcej niż {{maxLength}} znaków.",
-      "LAST_NAME_INVALID": "Nazwisko nie może zawierać cyfr i znaków specjalnych.",
-      "EMAIL_REQUIRED": "Email jest wymagany.",
-      "EMAIL_INVALID": "Proszę wprowadzić prawidłowy adres email.",
-      "PASSWORD_INVALID": "Hasło musi zawierać co najmniej 8 znaków, w tym co najmniej jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny.",
-      "PASSWORDS_DO_NOT_MATCH": "Podane hasła nie pasują do siebie."
+      "firstName": {
+        "LABEL": "Imię",
+        "PLACEHOLDER": "Wprowadź imię",
+        "errors": {
+          "REQUIRED": "Imię jest wymagane.",
+          "MIN_LENGTH": "Imię musi mieć co najmniej {{minLength}} znaki.",
+          "MAX_LENGTH": "Imię nie może mieć więcej niż {{maxLength}} znaków.",
+          "INVALID": "Imię nie może zawierać cyfr i znaków specjalnych."
+        }
+      },
+      "lastName": {
+        "LABEL": "Nazwisko",
+        "PLACEHOLDER": "Wprowadź nazwisko",
+        "errors": {
+          "REQUIRED": "Nazwisko jest wymagane.",
+          "MIN_LENGTH": "Nazwisko musi mieć co najmniej {{minLength}} znaki.",
+          "MAX_LENGTH": "Nazwisko nie może mieć więcej niż {{maxLength}} znaków.",
+          "INVALID": "Nazwisko nie może zawierać cyfr i znaków specjalnych."
+        }
+      },
+      "email": {
+        "LABEL": "Email",
+        "PLACEHOLDER": "Wprowadź nowy email",
+        "errors": {
+          "REQUIRED": "Email jest wymagany.",
+          "INVALID": "Proszę wprowadzić prawidłowy adres email."
+        }
+      },
+      "passwords": {
+        "LABEL": "Edytuj hasło"
+      },
+      "password": {
+        "PLACEHOLDER": "Wprowadź nowe hasło",
+        "errors": {
+          "REQUIRED": "Hasło jest wymagane.",
+          "INVALID": "Hasło musi zawierać co najmniej 8 znaków, w tym co najmniej jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny."
+        }
+      },
+      "confirmPassword": {
+        "PLACEHOLDER": "Potwierdź hasło",
+        "errors": {
+          "REQUIRED": "Potwierdzenie hasła jest wymagane.",
+          "NOT_EQUAL": "Podane hasła nie pasują do siebie."
+        }
+      },
+      "buttons": {
+        "SAVE": "Zapisz zmiany",
+        "RESET": "Resetuj"
+      }
     }
   },
   "projects": {
     "list": {
       "NO_PROJECTS": "Brak projektów",
-      "START_DATE_TEXT": "Data rozpoczęcia:",
-      "DEADLINE_TEXT": "Termin:",
+      "START_DATE": "Data rozpoczęcia",
+      "DEADLINE": "Termin",
       "NO_TASKS": "Brak zadań w tej chwili",
-      "COMPLETED_PERCENTAGE_TEXT": "Ukończono"
+      "COMPLETED_PERCENTAGE": "Ukończono"
     },
     "filter": {
-      "INPUT_PLACEHOLDER": "Filtruj po nazwie",
-      "MENU_TITLE": "Filtry",
-      "MENU_STATUS_TEXT": "Status",
-      "ONLY_LOGGED_USER_PROJECTS": "Zarządzane przeze mnie",
-      "CLEAR_BUTTON": "Wyczyść",
-      "APPLY_BUTTON": "Zastosuj",
-      "ALL_FILTER": "Wszystkie"
+      "input": {
+        "PLACEHOLDER": "Filtruj po nazwie"
+      },
+      "status": {
+        "LABEL": "Status"
+      },
+      "owner": {
+        "LABEL": "Zarządzane przeze mnie"
+      },
+      "buttons": {
+        "CLEAR": "Wyczyść filtry"
+      },
+      "ALL": "Wszystkie"
     },
     "sort": {
-      "SORT_CRITERIA_TEXT": "Sortuj według",
-      "SORT_ORDER_TEXT": "Kolejność"
+      "CRITERIA": "Sortuj według",
+      "ORDER": "Kolejność"
     }
   },
   "project": {
@@ -195,52 +251,63 @@
       "STATUS": "Status",
       "START_DATE": "Data rozpoczęcia",
       "END_DATE": "Data zakończenia",
-      "DELETE_MESSAGE": "Czy na pewno chcesz usunąć ten projekt?",
-      "COMPLETE_MESSAGE": "Czy na pewno chcesz oznaczyć ten projekt jako zakończony?"
+      "members": {
+        "TITLE": "Zarządzaj członkami"
+      },
+      "message": {
+        "DELETE": "Czy na pewno chcesz usunąć ten projekt?",
+        "COMPLETE": "Czy na pewno chcesz oznaczyć ten projekt jako zakończony?"
+      }
     },
     "form": {
-      "EDIT_TITLE": "Edytuj Projekt",
-      "CREATE_TITLE": "Utwórz Projekt",
-      "NAME_LABEL": "Tytuł",
-      "NAME_PLACEHOLDER": "Wprowadź tytuł projektu",
-      "NAME_INVALID": "Tytuł projektu musi zawierać od 2 do 50 znaków.",
-      "DESCRIPTION_LABEL": "Opis",
-      "DESCRIPTION_PLACEHOLDER": "Wprowadź opis projektu",
-      "DESCRIPTION_INVALID": "Opis projektu musi zawierać od 2 do 120 znaków.",
-      "START_DATE_LABEL": "Data rozpoczęcia",
-      "EDIT_START_DATE_INVALID": "Data rozpoczęcia jest wymagana.",
-      "CREATE_START_DATE_INVALID": "Data rozpoczęcia musi być co najmniej dzisiejsza.",
-      "END_DATE_LABEL": "Data zakończenia",
-      "END_DATE_INVALID": "Data zakończenia nie może być wczesniejsza niż data rozpoczęcia.",
-      "RESET_BUTTON": "Resetuj",
-      "CREATE_BUTTON": "Utwórz Projekt",
-      "SAVE_BUTTON": "Zapisz zmiany"
+      "title": {
+        "CREATE": "Utwórz Projekt",
+        "EDIT": "Edytuj Projekt"
+      },
+      "name": {
+        "LABEL": "Nazwa projektu",
+        "PLACEHOLDER": "Wprowadź nazwę projektu",
+        "errors": {
+          "REQUIRED": "Nazwa projektu jest wymagana.",
+          "MIN_LENGTH": "Nazwa projektu musi mieć co najmniej {{minLength}} znaków.",
+          "MAX_LENGTH": "Nazwa projektu nie może mieć więcej niż {{maxLength}} znaków."
+        }
+      },
+      "description": {
+        "LABEL": "Opis",
+        "PLACEHOLDER": "Wprowadź opis projektu",
+        "errors": {
+          "REQUIRED": "Opis projektu jest wymagany.",
+          "MIN_LENGTH": "Opis projektu musi mieć co najmniej {{minLength}} znaków.",
+          "MAX_LENGTH": "Opis projektu nie może mieć więcej niż {{maxLength}} znaków."
+        }
+      },
+      "startDate": {
+        "LABEL": "Data rozpoczęcia",
+        "errors": {
+          "REQUIRED": "Data rozpoczęcia jest wymagana.",
+          "MIN": "Data rozpoczęcia musi być co najmniej dzisiejsza."
+        }
+      },
+      "endDate": {
+        "LABEL": "Data zakończenia",
+        "errors": {
+          "REQUIRED": "Data zakończenia jest wymagana.",
+          "INVALID": "Data zakończenia nie może być wcześniejsza niż data rozpoczęcia."
+        }
+      },
+      "buttons": {
+        "RESET": "Resetuj",
+        "CREATE": "Utwórz projekt",
+        "SAVE": "Zapisz zmiany"
+      }
     }
-  },
-  "showMoreMembers": {
-    "ALL_TEXT": "Wszyscy członkowie",
-    "MANAGE_TEXT": "Zarządzaj członkami"
-  },
-  "searchModal": {
-    "CLOSE_BUTTON": "zamknij",
-    "PLACEHOLDER": "Szukaj...",
-    "CURRENT_USER_AS_RESULT": "(Ty)"
-  },
-  "chat": {
-    "TITLE": "Wiadomości",
-    "INPUT_PLACEHOLDER": "Napisz..."
-  },
-  "confirmModal": {
-    "CONFIRM_BUTTON": "Tak",
-    "CANCEL_BUTTON": "Nie",
-    "WARNING_LABEL": "Uwaga",
-    "WARNING_MESSAGE": "Ta operacja jest nieodwracalna."
   },
   "task": {
     "details": {
       "STATUS": "Status",
       "DUE_DATE": "Termin",
-      "PRIORITY": "Prioritet",
+      "PRIORITY": "Priorytet",
       "ASSIGNEES": "Przydzielone osoby",
       "NO_ASSIGNEES": "Brak"
     },
@@ -259,28 +326,57 @@
     },
     "createForm": {
       "TITLE": "Utwórz Zadanie",
-      "DESCRIPTION_LABEL": "Opis",
-      "DESCRIPTION_PLACEHOLDER": "Wprowadź opis zadania",
-      "DESCRIPTION_INVALID": "Opis zadania musi zawierać od 2 do 120 znaków.",
-      "DUE_DATE_LABEL": "Termin",
-      "DUE_DATE_INVALID": "Data terminu musi być co najmniej dzisiejsza.",
-      "PRIORITY_LABEL": "Priorytet",
-      "PRIORITY_SELECT": "Wybierz prioritet",
-      "RESET_BUTTON": "Resetuj",
-      "ADD_BUTTON": "Utwórz Zadanie"
+      "description": {
+        "LABEL": "Opis",
+        "PLACEHOLDER": "Wprowadź opis zadania",
+        "errors": {
+          "REQUIRED": "Opis zadania jest wymagany.",
+          "MIN_LENGTH": "Opis zadania musi mieć co najmniej {{minLength}} znaków.",
+          "MAX_LENGTH": "Opis zadania nie może mieć więcej niż {{maxLength}} znaków."
+        }
+      },
+      "dueDate": {
+        "LABEL": "Termin",
+        "errors": {
+          "REQUIRED": "Termin jest wymagany.",
+          "MIN": "Data terminu musi być co najmniej dzisiejsza."
+        }
+      },
+      "priority": {
+        "LABEL": "Priorytet"
+      },
+      "buttons": {
+        "RESET": "Resetuj",
+        "CREATE": "Utwórz zadanie"
+      }
     },
     "editForm": {
       "TITLE": "Edytuj Zadanie",
-      "DESCRIPTION_LABEL": "Opis",
-      "DESCRIPTION_PLACEHOLDER": "Wprowadź opis zadania",
-      "DESCRIPTION_INVALID": "Opis zadania musi zawierać od 2 do 120 znaków.",
-      "DUE_DATE_LABEL": "Termin",
-      "DUE_DATE_INVALID": "Data terminu musi być co najmniej dzisiejsza.",
-      "PRIORITY_LABEL": "Priorytet",
-      "PRIORITY_SELECT": "Wybierz prioritet",
-      "STATUS_LABEL": "Status",
-      "RESET_BUTTON": "Resetuj",
-      "SAVE_BUTTON": "Zapisz zmiany"
+      "description": {
+        "LABEL": "Opis",
+        "PLACEHOLDER": "Wprowadź opis zadania",
+        "errors": {
+          "REQUIRED": "Opis zadania jest wymagany.",
+          "MIN_LENGTH": "Opis zadania musi mieć co najmniej {{minLength}} znaków.",
+          "MAX_LENGTH": "Opis zadania nie może mieć więcej niż {{maxLength}} znaków."
+        }
+      },
+      "dueDate": {
+        "LABEL": "Termin",
+        "errors": {
+          "REQUIRED": "Termin jest wymagany."
+        }
+      },
+      "priority": {
+        "LABEL": "Priorytet"
+      },
+      "status": {
+        "LABEL": "Status"
+      },
+      "buttons": {
+        "RESET": "Resetuj",
+        "SAVE": "Zapisz zmiany"
+      }
     }
   },
   "toast": {
@@ -288,17 +384,25 @@
       "LOGOUT": "Pomyślnie wylogowano",
       "LOGIN": "Pomyślnie zalogowano",
       "SIGNUP": "Pomyślnie zarejestrowano",
-      "TASK_ADDED": "Zadanie zostało dodane",
-      "TASK_UPDATED": "Zadanie zostało zaktualizowane",
-      "TASK_DELETED": "Zadanie zostało usunięte",
-      "MEMBER_ADDED_TO_TASK": "został dodany(a) do zadania",
-      "MEMBER_REMOVED_FROM_TASK": "został usunięty(a) z zadania",
-      "PROJECT_CREATED": "Projekt został utworzony",
-      "PROJECT_UPDATED": "Projekt został zaktualizowany",
-      "PROJECT_DELETED": "Projekt został usunięty",
-      "PROJECT_COMPLETED": "Projekt został oznaczony jako ukończony",
-      "MEMBER_ADDED_TO_PROJECT": "został dodany(a) do projektu",
-      "MEMBER_REMOVED_FROM_PROJECT": "został usunięty(a) z projektu"
+      "task": {
+        "CREATE": "Zadanie zostało dodane",
+        "UPDATE": "Zadanie zostało zaktualizowane",
+        "DELETE": "Zadanie zostało usunięte",
+        "member": {
+          "ADD": "został dodany(a) do zadania",
+          "REMOVE": "został usunięty(a) z zadania"
+        }
+      },
+      "project": {
+        "CREATE": "Projekt został utworzony",
+        "UPDATE": "Projekt został zaktualizowany",
+        "DELETE": "Projekt został usunięty",
+        "COMPLETE": "Projekt został oznaczony jako ukończony",
+        "member": {
+          "ADD": "został dodany(a) do projektu",
+          "REMOVE": "został usunięty(a) z projektu"
+        }
+      }
     },
     "error": {
       "BAD_CREDENTIALS": "Podany email oraz hasło są nieprawidłowe",
@@ -322,13 +426,58 @@
     "PROJECT_EDIT": "Edytuj Projekt",
     "TASK": "Zadanie",
     "PROFILE": "Profil",
-    "DEFAULT": "Zarządzaj Projektami"
-  },
-  "paginator": {
-    "PAGE_INFO": "z",
-    "SELECT_INFO": "Ilość elementów na stronę"
+    "DEFAULT": "Aplikacja do zarządzania projektami"
   },
   "utils": {
-    "LOADING": "Ładowanie..."
+    "LOADING": "Ładowanie...",
+    "paginator": {
+      "OF": "z",
+      "TOOLTIP": "Ilość elementów na stronę"
+    },
+    "confirmModal": {
+      "HEADING": "Uwaga",
+      "CONTENT": "Ta operacja jest nieodwracalna.",
+      "buttons": {
+        "CONFIRM": "Tak",
+        "CANCEL": "Nie"
+      }
+    },
+    "searchModal": {
+      "PLACEHOLDER": "Szukaj...",
+      "buttons": {
+        "CLOSE": "zamknij"
+      },
+      "CURRENT_USER": "Ty"
+    },
+    "chat": {
+      "TITLE": "Wiadomości",
+      "PLACEHOLDER": "Napisz..."
+    },
+    "mapper": {
+      "projectStatus": {
+        "IN_PROGRESS": "W trakcie",
+        "COMPLETED": "Zakończony"
+      },
+      "taskStatus": {
+        "IN_PROGRESS": "W trakcie",
+        "COMPLETED": "Ukończony",
+        "NOT_STARTED": "Nadchodzące"
+      },
+      "sortCriteria": {
+        "NAME": "Nazwa",
+        "START_DATE": "Data rozpoczęcia",
+        "END_DATE": "Data zakończenia",
+        "COMPLETED_TASKS": "Liczba ukończonych zadań"
+      },
+      "sortOrder": {
+        "ASCENDING": "Rosnąco",
+        "DESCENDING": "Malejąco"
+      },
+      "priority": {
+        "LOW": "Niski",
+        "MEDIUM": "Średni",
+        "HIGH": "Wysoki"
+      }
+    }
   }
 }

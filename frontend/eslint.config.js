@@ -30,7 +30,7 @@ module.exports = tseslint.config(
       ],
       "arrow-parens": ["error", "always"],
       complexity: ["error", 8],
-      indent: ["error", 2],
+      // indent: ["error", 2],
       // "no-console": "error",
       "no-else-return": "error",
       "no-nested-ternary": "error",
