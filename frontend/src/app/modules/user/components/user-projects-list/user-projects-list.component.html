@@ -1,17 +1,17 @@
 <div class="flex flex-col gap-2">
-  <h3 class="text-center text-xl font-semibold"><ng-content /></h3>
+  <h3 class="text-center text-lg font-semibold sm:text-xl"><ng-content /></h3>
   <div class="grid max-w-6xl grid-cols-1 gap-1.5 sm:grid-cols-2 xl:grid-cols-3">
     @for (project of userProjects; track project.id) {
       <button
-        class="focus-ring flex min-h-28 min-w-64 cursor-pointer flex-col justify-between gap-4 rounded-lg bg-orange-100 p-4 text-left shadow-xs transition-all hover:bg-orange-200 dark:bg-slate-900 dark:hover:bg-slate-900/70"
+        class="focus-ring flex min-h-25 min-w-64 cursor-pointer flex-col justify-between gap-4 rounded-lg bg-orange-100 p-4 text-left shadow-xs transition-all hover:bg-orange-200 sm:min-h-28 dark:bg-slate-900 dark:hover:bg-slate-900/70"
         routerLink="/projects/{{ project.id }}"
       >
         <div class="flex h-full flex-col justify-between gap-2">
           <div class="flex flex-col gap-1">
             <h3
-              class="flex flex-row items-center justify-between gap-1 text-lg font-semibold"
+              class="flex flex-row items-center justify-between gap-1 font-semibold"
             >
-              <span class="text-break line-clamp-2">
+              <span class="text-break line-clamp-2 text-base sm:text-lg">
                 {{ project.name }}
               </span>
               <span
@@ -24,7 +24,7 @@
               </span>
             </h3>
             <p
-              class="text-break line-clamp-1 text-sm text-gray-600 dark:text-gray-400"
+              class="text-break line-clamp-1 text-xs text-gray-600 sm:text-sm dark:text-gray-400"
             >
               {{ project.description }}
             </p>

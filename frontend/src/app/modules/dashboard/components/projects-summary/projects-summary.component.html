@@ -1,11 +1,11 @@
 <div
-  class="flex h-full max-w-80 flex-1 flex-col items-center justify-between gap-1 rounded-lg bg-orange-100 p-4 shadow-xs dark:bg-slate-900"
+  class="flex h-full w-full max-w-75 flex-1 flex-col items-center justify-between gap-1 rounded-lg bg-orange-100 p-4 shadow-xs dark:bg-slate-900"
 >
   <div class="flex flex-col gap-1">
-    <h2 class="text-lg font-semibold">
+    <h2 class="text-base font-semibold sm:text-lg">
       {{ "dashboard.projectsSummary.TITLE" | translate }}
     </h2>
-    <p class="self-center text-sm text-gray-700 dark:text-gray-400">
+    <p class="self-center text-xs text-gray-700 sm:text-sm dark:text-gray-400">
       {{ "dashboard.projectsSummary.ONGOING_PROJECTS" | translate }}
       <span class="font-bold text-gray-800 dark:text-gray-300">
         {{ activeProjectsCount }}

@@ -28,10 +28,8 @@
     >
       <div class="flex h-full flex-col justify-between gap-2">
         <div class="flex flex-col gap-1">
-          <h3
-            class="flex flex-row items-center justify-between text-lg font-semibold"
-          >
-            <span class="text-break line-clamp-2">
+          <h3 class="flex flex-row items-center justify-between font-semibold">
+            <span class="text-break line-clamp-2 text-base sm:text-lg">
               {{ project.name }}
             </span>
             <span
@@ -44,32 +42,28 @@
             </span>
           </h3>
           <p
-            class="text-break line-clamp-2 text-sm text-gray-600 dark:text-gray-400"
+            class="text-break line-clamp-2 text-xs text-gray-600 sm:text-sm dark:text-gray-400"
           >
             {{ project.description }}
           </p>
         </div>
         <div
-          class="flex flex-col rounded-lg bg-orange-200/30 px-2 py-1 text-sm text-gray-700 dark:bg-slate-950 dark:text-gray-400"
+          class="grid grid-cols-[auto_1fr] gap-x-4 rounded-lg bg-orange-200/30 px-1.5 py-0.5 text-xs text-gray-700 sm:px-2 sm:py-1 sm:text-sm dark:bg-slate-950 dark:text-gray-400"
         >
-          <p>
-            {{ "projects.list.START_DATE" | translate }}:
-            <span class="text-sky-500">
-              {{ project.startDate | date }}
-            </span>
-          </p>
-          <p>
-            {{ "projects.list.DEADLINE" | translate }}:
-            <span class="text-pink-500">
-              {{ project.endDate | date }}
-            </span>
-          </p>
+          <span>{{ "projects.list.START_DATE" | translate }}:</span>
+          <span class="text-sky-500">
+            {{ project.startDate | date }}
+          </span>
+          <span>{{ "projects.list.DEADLINE" | translate }}:</span>
+          <span class="text-pink-500">
+            {{ project.endDate | date }}
+          </span>
         </div>
       </div>
       @if (project.completedTasks !== 0 && project.totalTasks !== 0) {
-        <div class="relative h-5 w-full rounded-full bg-zinc-300">
+        <div class="relative h-4 w-full rounded-full bg-zinc-300 sm:h-5">
           <div
-            class="h-5 rounded-full bg-sky-600"
+            class="h-4 rounded-full bg-sky-600 sm:h-5"
             [style.width.%]="
               (project.completedTasks / project.totalTasks) * 100
             "
@@ -84,7 +78,7 @@
           </span>
         </div>
       } @else {
-        <p class="text-sm text-gray-400">
+        <p class="text-xs text-gray-400 sm:text-sm">
           {{ "projects.list.NO_TASKS" | translate }}
         </p>
       }

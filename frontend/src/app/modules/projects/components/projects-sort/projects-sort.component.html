@@ -1,7 +1,4 @@
-<form
-  class="flex w-fit flex-col justify-end gap-2.5 text-sm sm:flex-row"
-  [formGroup]="form"
->
+<form class="flex w-fit flex-row gap-2.5 text-sm" [formGroup]="form">
   <app-form-select-control
     identifier="status"
     [control]="form.controls.criteria"

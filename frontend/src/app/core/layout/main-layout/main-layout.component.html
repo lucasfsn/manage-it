@@ -2,7 +2,7 @@
 @if (isLoading) {
   <app-spinner />
 } @else {
-  <div class="flex-1 px-2">
+  <div class="xs:px-2 flex-1">
     <router-outlet />
     @if (message) {
       <app-confirm-modal />

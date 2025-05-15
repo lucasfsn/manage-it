@@ -1,13 +1,15 @@
 <form [formGroup]="form">
   <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
-    <button
-      mat-icon-button
-      [matMenuTriggerFor]="filterMenu"
-      class="focus-ring flex items-center justify-center rounded-sm active:text-sky-500"
-      aria-label="Filter projects menu"
-    >
-      <mat-icon>filter_list</mat-icon>
-    </button>
+    <div class="flex items-center justify-center">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="filterMenu"
+        class="focus-ring flex items-center justify-center rounded-sm active:text-sky-500"
+        aria-label="Filter projects menu"
+      >
+        <mat-icon>filter_list</mat-icon>
+      </button>
+    </div>
     <div
       class="flex items-center gap-1 rounded-full bg-orange-200 px-2 py-1 focus-within:ring-2 focus-within:ring-sky-500 dark:bg-slate-900"
     >
