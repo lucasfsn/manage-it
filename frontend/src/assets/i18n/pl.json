@@ -156,7 +156,7 @@
       "CREATE_DATE": "Dołączył",
       "buttons": {
         "EDIT": "Edytuj profil",
-        "ADD_TO_PROJECT": "Dodaj do Projektu"
+        "ADD_TO_PROJECT": "Dodaj do projektu"
       },
       "title": {
         "loggedUser": "Twoje Projekty",
