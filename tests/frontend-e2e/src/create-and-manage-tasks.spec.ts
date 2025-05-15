@@ -25,15 +25,12 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await login(page, 'johndoe@mail.com', '1qazXSW@');
   await expect(page).toHaveURL('/dashboard');
 
-  const navElement = page.locator('div[routerlink="projects"]');
-  await navElement.waitFor();
-  await expect(navElement).toBeVisible();
-  await navElement.click();
+  await page.getByText('Projects', { exact: true }).click();
+  await expect(page).toHaveURL(/\/projects(\?.*)?/);
 
   // tworzenie projektu
-  await expect(page).toHaveURL(/\/projects(\?.*)?/);
   await page.getByRole('button').filter({ hasText: 'add' }).click();
-  await page.getByRole('textbox', { name: 'Title' }).fill('Testowy projekt');
+  await page.getByRole('textbox', { name: 'Project name' }).fill('Testowy projekt');
   await page.getByRole('textbox', { name: 'Description' }).fill('Projekt do testowania tasków');
   await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);
   await page.getByRole('textbox', { name: 'End Date' }).fill(endDateStr);
@@ -43,17 +40,16 @@ test('create project, add new tasks and edit task', async ({ page }) => {
 
   // dodanie taska o statusie ukończony
   await page.locator('app-drag-drop-list div').filter({ hasText: 'Completed add Add another task' }).getByRole('button').click();
-  await expect(page.getByText('add_taskAdd TaskcloseDescriptionDue DatePriority Low Medium High Reset Add Task')).toBeVisible();
+  await expect(page.getByText('add_taskAdd TaskcloseDescription0/500Due DatePriority Low Medium High Reset')).toBeVisible();
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('New completed task');
   await page.getByRole('textbox', { name: 'Due Date' }).fill(task1DueDateStr);
   await page.getByLabel('Priority').selectOption('LOW');
-  // await page.getByRole('button', { name: 'Add Task' }).click();
   
   await expect(page.getByRole('textbox', { name: 'Description' })).toHaveValue('New completed task');
   await expect(page.getByRole('textbox', { name: 'Due Date' })).toHaveValue(task1DueDateStr);
   await expect(page.getByLabel('Priority')).toHaveValue('LOW');
-  await page.getByRole('button', { name: 'Add Task' }).click();
+  await page.getByRole('button', { name: 'Create task' }).click();
 
   // sprawdzanie czy task został poprawnie dodany
   await expect(page.locator('#completed')).toContainText(`New completed task Low schedule ${task1DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`);
@@ -68,7 +64,7 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Task for future');
   await page.getByRole('textbox', { name: 'Due Date' }).fill(task2DueDateStr);
-  await page.getByRole('button', { name: 'Add Task' }).click();
+  await page.getByRole('button', { name: 'Create task' }).click();
 
   // await expect(page.getByLabel('Task has been created')).toContainText('Task has been created');
   await expect(page.getByRole('alert', { name: 'Task has been created' })).toBeVisible();
@@ -90,7 +86,7 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await expect(page.getByLabel('Priority')).toHaveValue('LOW');
   await page.getByLabel('Status').selectOption('IN_PROGRESS');
   await page.getByLabel('Priority').selectOption('MEDIUM');
-
+  await page.getByRole('textbox', { name: 'Description' }).click();
 
   // tu coś nie działa, nie mam pojęcia czemu przycisk jest disabled w Playwright (w przeglądarce wszystko ok)
   await page.getByRole('button', { name: 'Save changes' }).click();
@@ -131,15 +127,12 @@ test('create project with tasks and add new members to task', async ({ page }) =
   await login(page, 'johndoe@mail.com', '1qazXSW@');
   await expect(page).toHaveURL('/dashboard');
 
-  const navElement = page.locator('div[routerlink="projects"]');
-  await navElement.waitFor();
-  await expect(navElement).toBeVisible();
-  await navElement.click();
+  await page.getByText('Projects', { exact: true }).click();
+  await expect(page).toHaveURL(/\/projects(\?.*)?/);
 
   // tworzenie projektu
-  await expect(page).toHaveURL(/\/projects(\?.*)?/);
   await page.getByRole('button').filter({ hasText: 'add' }).click();
-  await page.getByRole('textbox', { name: 'Title' }).fill('Taskowy projekt');
+  await page.getByRole('textbox', { name: 'Project name' }).fill('Taskowy projekt');
   await page.getByRole('textbox', { name: 'Description' }).fill('Projekt do tasków');
   await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);
   await page.getByRole('textbox', { name: 'End Date' }).fill(endDateStr);
@@ -152,7 +145,7 @@ test('create project with tasks and add new members to task', async ({ page }) =
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Add member to task');
   await page.getByRole('textbox', { name: 'Due Date' }).fill(task1DueDateStr);
-  await page.getByRole('button', { name: 'Add Task' }).click();
+  await page.getByRole('button', { name: 'Create task' }).click();
   
   await expect(page.getByRole('alert', { name: 'Task has been created' })).toBeVisible();
   await expect(page.locator('#inProgress')).toContainText(`Add member to task Low schedule ${task1DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`);

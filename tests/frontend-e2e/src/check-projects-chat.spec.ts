@@ -19,8 +19,8 @@ test('check if chat is working correctly', async ({ page }) => {
   // utworzenie projektu
   await page.getByText('Projects', { exact: true }).click();
   await page.getByRole('button').filter({ hasText: 'add' }).click();
-  await page.getByRole('textbox', { name: 'Title' }).click();
-  await page.getByRole('textbox', { name: 'Title' }).fill('Chatowy projekt');
+  await page.getByRole('textbox', { name: 'Project name' }).click();
+  await page.getByRole('textbox', { name: 'Project name' }).fill('Chatowy projekt');
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Projekt do testowania czatu');
   await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);

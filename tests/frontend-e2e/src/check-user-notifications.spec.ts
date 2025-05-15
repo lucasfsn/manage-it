@@ -16,18 +16,14 @@ test('create project, add new member to project and check notifications', async 
 
   await login(page, 'johndoe@mail.com', '1qazXSW@');
   
-  const navElement = page.locator('div[routerlink="projects"]');
-  await navElement.waitFor();
-  await expect(navElement).toBeVisible();
-  await navElement.click();
-      
   // sprawdź poprawnośc adresów URL
+  await page.getByText('Projects', { exact: true }).click();
   await expect(page).toHaveURL(/\/projects(\?.*)?/);
   await page.getByRole('button').filter({ hasText: 'add' }).click();
   await expect(page).toHaveURL('/projects/create');
       
   // dodaj nowy projekt
-  await page.getByRole('textbox', { name: 'Title' }).fill('Fancy projekt');
+  await page.getByRole('textbox', { name: 'Project name' }).fill('Fancy projekt');
   await page.getByRole('textbox', { name: 'Description' }).fill('Tajne description testowego projektu');
   await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);
   await page.getByRole('textbox', { name: 'End Date' }).fill(endDateStr);
@@ -39,8 +35,8 @@ test('create project, add new member to project and check notifications', async 
 
   // edycja projektu
   await page.locator('app-button').filter({ hasText: 'edit' }).getByRole('button').click();
-  await page.getByRole('textbox', { name: 'Title' }).click();
-  await page.getByRole('textbox', { name: 'Title' }).fill('Fancy projekt zedytowany');
+  await page.getByRole('textbox', { name: 'Project name' }).click();
+  await page.getByRole('textbox', { name: 'Project name' }).fill('Fancy projekt zedytowany');
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('button', { name: 'Save changes' }).click();
   await expect(page.locator('h2')).toContainText('Fancy projekt zedytowany');
