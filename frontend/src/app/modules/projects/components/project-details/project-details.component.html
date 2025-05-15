@@ -3,91 +3,98 @@
     <div class="flex flex-row items-center justify-between self-end">
       <app-project-menu />
     </div>
-    <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-      {{ project.name }}
-    </h2>
-    <div class="flex flex-col gap-2">
-      <p>{{ project.description }}</p>
-      <div
-        class="grid grid-cols-2 gap-2 sm:items-center sm:justify-center lg:w-2/3"
+    <div class="max-w-page-content-container flex flex-col gap-3">
+      <h2
+        class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100"
       >
-        <p class="flex items-center gap-1">
-          <mat-icon class="text-base">person</mat-icon>
-          <span>{{ "project.details.LEADER" | translate }}</span>
-        </p>
-        <div class="text-orange-900 dark:text-slate-300">
-          {{ project.owner.firstName }} {{ project.owner.lastName }}
-        </div>
-        <p class="col-span-2 flex items-center gap-1 sm:col-span-1">
-          <mat-icon class="text-base">group</mat-icon>
-          <span>{{ "project.details.MEMBERS" | translate }}</span>
-        </p>
-        <div class="col-span-2 mx-auto flex items-center sm:col-span-1 sm:mx-0">
-          <ul class="flex items-center justify-center gap-1">
-            @for (
-              member of project.members.slice(0, 5);
-              track member.username
-            ) {
-              <app-profile-icon
-                size="md"
-                [firstName]="member.firstName"
-                [lastName]="member.lastName"
-                [routerLink]="'/users/' + member.username"
-              />
-            }
-            @if (project.members.length > 5) {
-              <p class="text-sky-500">+{{ project.members.length - 5 }}</p>
-            }
-            @if (project.status !== ProjectStatus.COMPLETED && isOwner) {
-              <div
-                class="ml-1.5 flex gap-0.5 rounded-full bg-orange-200 px-1.5 py-0.5 dark:bg-sky-950"
-              >
-                <button
-                  class="flex items-center justify-center focus-visible:text-sky-500 focus-visible:outline-hidden active:text-sky-500"
-                  (click)="showAllMembers()"
-                >
-                  <mat-icon
-                    class="text-sky-900 transition-all hover:text-sky-950 dark:text-sky-600 dark:hover:text-sky-700"
-                    >edit</mat-icon
-                  >
-                </button>
-                <button
-                  (click)="openSearchDialog()"
-                  class="flex items-center justify-center focus-visible:text-sky-500 focus-visible:outline-hidden active:text-sky-500"
-                >
-                  <mat-icon
-                    class="text-sky-700 transition-all hover:text-sky-800 dark:text-sky-200 dark:hover:text-sky-300"
-                    >add</mat-icon
-                  >
-                </button>
-              </div>
-            }
-          </ul>
-        </div>
-        <p class="flex items-center gap-1">
-          <mat-icon class="text-base">task_alt</mat-icon>
-          <span>{{ "project.details.STATUS" | translate }}</span>
-        </p>
+        {{ project.name }}
+      </h2>
+      <div class="flex flex-col gap-5">
+        <p class="text-break text-sm sm:text-base">{{ project.description }}</p>
         <div
-          class="mr-auto flex items-center justify-center rounded-full px-2 py-1 text-sm font-semibold text-slate-900"
-          [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
-          [class.bg-orange-400]="project.status === ProjectStatus.IN_PROGRESS"
+          class="xs:items-center xs:justify-center xs:grid-cols-2 grid max-w-lg grid-cols-1 gap-2"
         >
-          {{ mapProjectStatus() }}
-        </div>
-        <p class="flex items-center gap-1">
-          <mat-icon class="text-base">schedule</mat-icon>
-          <span>{{ "project.details.START_DATE" | translate }}</span>
-        </p>
-        <div class="text-orange-900 dark:text-slate-300">
-          {{ project.startDate | date }}
-        </div>
-        <p class="flex items-center gap-1">
-          <mat-icon class="text-base">alarm</mat-icon>
-          <span>{{ "project.details.END_DATE" | translate }}</span>
-        </p>
-        <div class="text-orange-900 dark:text-slate-300">
-          {{ project.endDate | date }}
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>person</mat-icon>
+            <span>{{ "project.details.LEADER" | translate }}</span>
+          </p>
+          <div
+            class="text-break focus-outline line-clamp-1 cursor-pointer rounded-full text-sm text-orange-900 hover:text-orange-950 sm:text-base dark:text-slate-300 dark:hover:text-slate-300/90"
+            [routerLink]="'/users/' + project.owner.username"
+          >
+            {{ project.owner.firstName }} {{ project.owner.lastName }}
+          </div>
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>group</mat-icon>
+            <span>{{ "project.details.MEMBERS" | translate }}</span>
+          </p>
+          <div class="flex items-center">
+            <ul class="flex items-center justify-center gap-1">
+              @for (
+                member of project.members.slice(0, 5);
+                track member.username
+              ) {
+                <app-profile-icon
+                  size="md"
+                  [firstName]="member.firstName"
+                  [lastName]="member.lastName"
+                  [routerLink]="'/users/' + member.username"
+                />
+              }
+              @if (project.members.length > 5) {
+                <p class="text-sky-500">+{{ project.members.length - 5 }}</p>
+              }
+              @if (project.status !== ProjectStatus.COMPLETED && isOwner) {
+                <div
+                  class="ml-1.5 flex gap-0.5 rounded-full bg-orange-200 px-1.5 py-0.5 dark:bg-sky-950"
+                >
+                  <button
+                    class="focus-ring flex items-center justify-center rounded-sm active:text-sky-500"
+                    (click)="showAllMembers()"
+                  >
+                    <mat-icon
+                      class="text-sky-900 transition-all hover:text-sky-950 dark:text-sky-600 dark:hover:text-sky-700"
+                      >edit</mat-icon
+                    >
+                  </button>
+                  <button
+                    (click)="openSearchDialog()"
+                    class="focus-ring flex items-center justify-center rounded-sm active:text-sky-500"
+                  >
+                    <mat-icon
+                      class="text-sky-700 transition-all hover:text-sky-800 dark:text-sky-200 dark:hover:text-sky-300"
+                      >add</mat-icon
+                    >
+                  </button>
+                </div>
+              }
+            </ul>
+          </div>
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>task_alt</mat-icon>
+            <span>{{ "project.details.STATUS" | translate }}</span>
+          </p>
+          <div
+            class="flex w-fit items-center justify-center rounded-full px-2 py-1 text-sm font-semibold text-slate-900 sm:text-base"
+            [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
+            [class.bg-orange-400]="project.status === ProjectStatus.IN_PROGRESS"
+          >
+            {{ mapProjectStatus() }}
+          </div>
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ "project.details.START_DATE" | translate }}</span>
+          </p>
+          <div class="text-sm text-orange-900 sm:text-base dark:text-slate-300">
+            {{ project.startDate | date }}
+          </div>
+          <p class="flex items-center gap-1 text-sm sm:text-base">
+            <mat-icon>alarm</mat-icon>
+            <span>{{ "project.details.END_DATE" | translate }}</span>
+          </p>
+          <div class="text-sm text-orange-900 sm:text-base dark:text-slate-300">
+            {{ project.endDate | date }}
+          </div>
         </div>
       </div>
     </div>

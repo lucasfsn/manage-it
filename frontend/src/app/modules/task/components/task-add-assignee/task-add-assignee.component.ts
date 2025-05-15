@@ -4,6 +4,7 @@ import { TranslationService } from '@/app/core/services/translation.service';
 import { User } from '@/app/features/dto/project.model';
 import { TaskService } from '@/app/features/services/task.service';
 import { UserService } from '@/app/features/services/user.service';
+import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { UsersListComponent } from '@/app/shared/components/ui/users-list/users-list.component';
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -20,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
     TranslateModule,
     MatProgressSpinnerModule,
     UsersListComponent,
+    FormTextInputControlComponent,
   ],
   templateUrl: './task-add-assignee.component.html',
   styleUrl: './task-add-assignee.component.scss',
@@ -53,7 +55,7 @@ export class TaskAddAssigneeComponent {
           `${user.firstName} ${
             user.lastName
           } ${this.translationService.translate(
-            'toast.success.MEMBER_ADDED_TO_TASK',
+            'toast.success.task.member.ADD',
           )}`,
         );
       },

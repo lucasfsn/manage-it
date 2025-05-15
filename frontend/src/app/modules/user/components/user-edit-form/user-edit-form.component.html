@@ -8,11 +8,11 @@
       >
         <mat-icon>settings</mat-icon>
       </div>
-      <p class="font-semibold">{{ "user.editForm.TITLE" | translate }}</p>
+      <p class="font-semibold">{{ "user.form.TITLE" | translate }}</p>
     </div>
     <button
       (click)="closeDialog()"
-      class="flex items-center justify-center focus-visible:text-sky-300 focus-visible:ring-0 focus-visible:outline-hidden active:text-sky-500"
+      class="focus-ring flex items-center justify-center rounded-full active:text-sky-500"
     >
       <mat-icon>close</mat-icon>
     </button>
@@ -22,30 +22,27 @@
       <app-form-text-input-control
         identifier="first-name"
         [control]="form.controls.firstName"
-        [placeholder]="'user.editForm.FIRST_NAME_PLACEHOLDER' | translate"
-        [label]="'user.editForm.FIRST_NAME_LABEL' | translate"
-        [errorMessage]="firstNameErrors"
+        [placeholder]="'user.form.firstName.PLACEHOLDER' | translate"
+        [label]="'user.form.firstName.LABEL' | translate"
       />
       <app-form-text-input-control
         identifier="last-name"
         [control]="form.controls.lastName"
-        [placeholder]="'user.editForm.LAST_NAME_PLACEHOLDER' | translate"
-        [label]="'user.editForm.LAST_NAME_LABEL' | translate"
-        [errorMessage]="lastNameErrors"
+        [placeholder]="'user.form.lastName.PLACEHOLDER' | translate"
+        [label]="'user.form.lastName.LABEL' | translate"
       />
       <app-form-text-input-control
         identifier="email"
         type="email"
         [control]="form.controls.email"
-        [placeholder]="'user.editForm.EMAIL_PLACEHOLDER' | translate"
-        [label]="'user.editForm.EMAIL_LABEL' | translate"
-        [errorMessage]="emailErrors"
+        [placeholder]="'user.form.email.PLACEHOLDER' | translate"
+        [label]="'user.form.email.LABEL' | translate"
       />
       <div class="flex flex-col gap-2">
         <app-form-checkbox-control
           identifier="change-password"
           [control]="form.controls.changePassword"
-          [label]="'user.editForm.PASSWORD_LABEL' | translate"
+          [label]="'user.form.passwords.LABEL' | translate"
         />
         @if (showPasswordFields) {
           <div class="flex flex-row gap-3">
@@ -53,25 +50,16 @@
               identifier="password"
               type="password"
               [control]="form.controls.passwords?.controls?.password!"
-              [placeholder]="'user.editForm.PASSWORD_PLACEHOLDER' | translate"
+              [placeholder]="'user.form.password.PLACEHOLDER' | translate"
             />
             <app-form-text-input-control
               identifier="confirm-password"
               type="password"
               [control]="form.controls.passwords?.controls?.confirmPassword!"
               [placeholder]="
-                'user.editForm.CONFIRM_PASSWORD_PLACEHOLDER' | translate
+                'user.form.confirmPassword.PLACEHOLDER' | translate
               "
             />
-          </div>
-          <div class="flex flex-row gap-1">
-            @if (passwordIsInvalid) {
-              <p class="text-sm text-red-500">{{ passwordErrors }}</p>
-            } @else if (!passwordIsInvalid && passwordsDoNotMatch) {
-              <p class="text-sm text-red-500">
-                {{ "user.editForm.PASSWORDS_DO_NOT_MATCH" | translate }}
-              </p>
-            }
           </div>
         }
       </div>
@@ -82,10 +70,10 @@
         [disabled]="!hasFormChanged()"
         (handleClick)="onReset()"
       >
-        {{ "user.editForm.RESET_BUTTON" | translate }}
+        {{ "user.form.buttons.RESET" | translate }}
       </app-form-button>
       <app-form-button [disabled]="disabled" (handleClick)="onSubmit()">
-        {{ "user.editForm.SAVE_BUTTON" | translate }}
+        {{ "user.form.buttons.SAVE" | translate }}
       </app-form-button>
     </div>
   </form>

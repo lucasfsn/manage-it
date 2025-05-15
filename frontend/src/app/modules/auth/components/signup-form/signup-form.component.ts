@@ -1,3 +1,8 @@
+import {
+  PASSWORD_REGEX,
+  PERSON_NAME_REGEX,
+  USERNAME_REGEX,
+} from '@/app/core/constants/regex.constants';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { RegisterCredentials } from '@/app/features/dto/auth.model';
@@ -5,18 +10,15 @@ import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import {
+  email,
   equalValues,
-  nameValidator,
-  passwordValidator,
-  usernameValidator,
+  maxLength,
+  minLength,
+  pattern,
+  required,
 } from '@/app/shared/validators';
 import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
@@ -64,160 +66,54 @@ export class SignupFormComponent {
     {
       firstName: new FormControl('', {
         validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          nameValidator,
+          required('signupForm.firstName.errors.REQUIRED'),
+          minLength(2, 'signupForm.firstName.errors.MIN_LENGTH'),
+          maxLength(50, 'signupForm.firstName.errors.MAX_LENGTH'),
+          pattern(PERSON_NAME_REGEX, 'signupForm.firstName.errors.INVALID'),
         ],
       }),
       lastName: new FormControl('', {
         validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          nameValidator,
+          required('signupForm.lastName.errors.REQUIRED'),
+          minLength(2, 'signupForm.lastName.errors.MIN_LENGTH'),
+          maxLength(50, 'signupForm.lastName.errors.MAX_LENGTH'),
+          pattern(PERSON_NAME_REGEX, 'signupForm.lastName.errors.INVALID'),
         ],
       }),
       username: new FormControl('', {
         validators: [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(30),
-          usernameValidator,
+          required('signupForm.username.errors.REQUIRED'),
+          minLength(8, 'signupForm.username.errors.MIN_LENGTH'),
+          maxLength(30, 'signupForm.username.errors.MAX_LENGTH'),
+          pattern(USERNAME_REGEX, 'signupForm.username.errors.INVALID'),
         ],
       }),
       email: new FormControl('', {
-        validators: [Validators.required, Validators.email],
+        validators: [
+          required('signupForm.email.errors.REQUIRED'),
+          email('signupForm.email.errors.INVALID'),
+        ],
       }),
-      passwords: new FormGroup<PasswordsForm>(
-        {
-          password: new FormControl('', {
-            validators: [Validators.required, passwordValidator],
-          }),
-          confirmPassword: new FormControl(''),
-        },
-        {
-          validators: [equalValues('password', 'confirmPassword')],
-        },
-      ),
+      passwords: new FormGroup<PasswordsForm>({
+        password: new FormControl('', {
+          validators: [
+            required('signupForm.password.errors.REQUIRED'),
+            pattern(PASSWORD_REGEX, 'signupForm.password.errors.INVALID'),
+          ],
+        }),
+        confirmPassword: new FormControl('', {
+          validators: [
+            required('signupForm.confirmPassword.errors.REQUIRED'),
+            equalValues(
+              'password',
+              'signupForm.confirmPassword.errors.NOT_EQUAL',
+            ),
+          ],
+        }),
+      }),
     },
     { updateOn: 'blur' },
   );
-
-  protected get passwordIsInvalid(): boolean {
-    return !!(
-      this.form.controls.passwords.get('password')?.dirty &&
-      this.form.controls.passwords.get('password')?.touched &&
-      this.form.controls.passwords.get('password')?.invalid
-    );
-  }
-
-  protected get passwordsDoNotMatch(): boolean {
-    return this.form.controls.passwords.hasError('equalValues');
-  }
-
-  protected get firstNameErrors(): string | null {
-    const control = this.form.controls.firstName;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate(
-        'signupForm.FIRST_NAME_REQUIRED',
-      );
-
-    if (control.errors['minlength'])
-      return this.translationService.translate(
-        'signupForm.FIRST_NAME_MIN_LENGTH',
-        { minLength: control.errors['minlength'].requiredLength },
-      );
-
-    if (control.errors['maxlength'])
-      return this.translationService.translate(
-        'signupForm.FIRST_NAME_MAX_LENGTH',
-        { maxLength: control.errors['maxlength'].requiredLength },
-      );
-
-    if (control.errors['invalidName'])
-      return this.translationService.translate('signupForm.FIRST_NAME_INVALID');
-
-    return null;
-  }
-
-  protected get lastNameErrors(): string | null {
-    const control = this.form.controls.lastName;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate('signupForm.LAST_NAME_REQUIRED');
-
-    if (control.errors['minlength'])
-      return this.translationService.translate(
-        'signupForm.LAST_NAME_MIN_LENGTH',
-        { minLength: control.errors['minlength'].requiredLength },
-      );
-
-    if (control.errors['maxlength'])
-      return this.translationService.translate(
-        'signupForm.LAST_NAME_MAX_LENGTH',
-        { minLength: control.errors['maxlength'].requiredLength },
-      );
-
-    if (control.errors['invalidName'])
-      return this.translationService.translate('signupForm.LAST_NAME_INVALID');
-
-    return null;
-  }
-
-  protected get usernameErrors(): string | null {
-    const control = this.form.controls.username;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate('signupForm.USERNAME_REQUIRED');
-
-    if (control.errors['minlength'])
-      return this.translationService.translate(
-        'signupForm.USERNAME_MIN_LENGTH',
-        { minLength: control.errors['minlength'].requiredLength },
-      );
-
-    if (control.errors['maxlength'])
-      return this.translationService.translate(
-        'signupForm.USERNAME_MIN_LENGTH',
-        { minLength: control.errors['maxlength'].requiredLength },
-      );
-
-    if (control.errors['invalidUsername'])
-      return this.translationService.translate('signupForm.USERNAME_INVALID');
-
-    return null;
-  }
-
-  protected get emailErrors(): string | null {
-    const control = this.form.controls.email;
-    if (!control.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate('signupForm.EMAIL_REQUIRED');
-
-    if (control.errors['email'])
-      return this.translationService.translate('signupForm.EMAIL_INVALID');
-
-    return null;
-  }
-
-  protected get passwordErrors(): string | null {
-    const control = this.form.controls.passwords.get('password');
-    if (!control?.errors) return null;
-
-    if (control.errors['required'])
-      return this.translationService.translate('signupForm.PASSWORD_REQUIRED');
-
-    if (control.errors['invalidPassword'])
-      return this.translationService.translate('signupForm.PASSWORD_INVALID');
-
-    return null;
-  }
 
   protected onSubmit(): void {
     if (this.form.invalid) {

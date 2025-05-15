@@ -9,7 +9,7 @@
     <app-form-text-input-control
       identifier="search-input"
       [control]="form"
-      [placeholder]="'searchModal.PLACEHOLDER' | translate"
+      [placeholder]="'utils.searchModal.PLACEHOLDER' | translate"
       customClass="focus-visible:ring-0! p-0! border-none rounded-none"
       (input)="onSearch()"
     />
@@ -18,9 +18,9 @@
     }
     <button
       (click)="handleClose()"
-      class="flex items-center justify-center rounded-md bg-orange-100 px-1.5 py-1 text-slate-800 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-hidden dark:bg-slate-500 dark:text-slate-300"
+      class="focus-ring flex items-center justify-center rounded-md bg-orange-100 px-1.5 py-1 text-slate-800 dark:bg-slate-500 dark:text-slate-300"
     >
-      <p class="text-xs">{{ "searchModal.CLOSE_BUTTON" | translate }}</p>
+      <p class="text-xs">{{ "utils.searchModal.buttons.CLOSE" | translate }}</p>
     </button>
   </div>
 </mat-dialog-content>
@@ -29,19 +29,20 @@
     class="search-results flex flex-col divide-y divide-orange-300 pb-4 dark:divide-slate-600"
   >
     @for (result of searchResults; track result.username) {
-      <li
-        class="flex cursor-pointer items-center gap-2 px-4 py-2 text-sm text-slate-500 focus-visible:outline-hidden sm:px-6 sm:py-4 dark:text-slate-400"
-        (click)="handleClick(result.username)"
-        (keydown.enter)="handleClick(result.username)"
-        (keydown.space)="handleClick(result.username)"
-        tabindex="0"
-      >
-        {{ result.firstName }} {{ result.lastName }}
-        @if (isLoggedInUser(result.username)) {
-          <span class="text-slate-600">{{
-            "searchModal.CURRENT_USER_AS_RESULT" | translate
-          }}</span>
-        }
+      <li class="text-slate-500">
+        <button
+          class="focus-ring-inset flex w-full cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-left text-sm sm:px-6 sm:py-4 dark:text-slate-400"
+          (click)="handleClick(result.username)"
+        >
+          <span class="text-break line-clamp-1"
+            >{{ result.firstName }} {{ result.lastName }}</span
+          >
+          @if (isLoggedInUser(result.username)) {
+            <span class="text-slate-600"
+              >({{ "utils.searchModal.CURRENT_USER" | translate }})</span
+            >
+          }
+        </button>
       </li>
     }
   </ul>

@@ -12,19 +12,21 @@
     </div>
     <div class="flex flex-col gap-3">
       <div class="flex flex-col">
-        <h2 class="text-2xl font-semibold">
+        <h2 class="text-break text-xl font-semibold sm:text-2xl">
           {{ user.firstName }} {{ user.lastName }}
         </h2>
-        <p class="text-sm text-gray-600 dark:text-gray-400">
+        <p
+          class="text-break text-xs text-gray-600 sm:text-sm dark:text-gray-400"
+        >
           {{ "@" + user.username }}
         </p>
       </div>
       <p
-        class="flex items-center justify-center gap-1 text-sm text-gray-600 dark:text-gray-400"
+        class="flex items-center justify-center gap-1 text-xs text-gray-600 sm:text-sm dark:text-gray-400"
       >
-        <mat-icon class="text-lg">calendar_month</mat-icon>
+        <mat-icon class="text-md sm:text-lg">calendar_month</mat-icon>
         <span
-          >{{ "user.profile.JOINED_TEXT" | translate }}
+          >{{ "user.profile.CREATE_DATE" | translate }}
           {{ user.createdAt | date }}</span
         >
       </p>

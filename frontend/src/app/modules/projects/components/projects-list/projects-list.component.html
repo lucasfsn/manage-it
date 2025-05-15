@@ -18,20 +18,22 @@
     {{ "projects.list.NO_PROJECTS" | translate }}
   </p>
 }
-<div class="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-4">
+<div
+  class="max-w-page-content-container grid grid-cols-1 gap-1.5 sm:grid-cols-2 lg:grid-cols-3"
+>
   @for (project of sortedAndFilteredProjects; track project.id) {
-    <div
-      class="flex cursor-pointer flex-col justify-between gap-4 rounded-lg bg-orange-100 p-4 shadow-xs transition-all hover:bg-orange-200 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-hidden active:bg-orange-100/70 dark:bg-slate-900 dark:hover:bg-slate-900/70 dark:active:bg-slate-900/70"
+    <button
+      class="focus-ring flex min-w-70 flex-1 cursor-pointer flex-col justify-between gap-4 rounded-lg bg-orange-100 p-4 text-left shadow-xs transition-all hover:bg-orange-200 active:bg-orange-100/70 dark:bg-slate-900 dark:hover:bg-slate-900/70 dark:active:bg-slate-900/70"
       routerLink="/projects/{{ project.id }}"
     >
       <div class="flex h-full flex-col justify-between gap-2">
         <div class="flex flex-col gap-1">
-          <h3
-            class="flex flex-row items-center justify-between text-lg font-semibold"
-          >
-            {{ project.name }}
+          <h3 class="flex flex-row items-center justify-between font-semibold">
+            <span class="text-break line-clamp-2 text-base sm:text-lg">
+              {{ project.name }}
+            </span>
             <span
-              class="size-3.75 self-start rounded-full"
+              class="size-3.75 shrink-0 self-start rounded-full"
               [class.bg-sky-500]="project.status === ProjectStatus.COMPLETED"
               [class.bg-orange-400]="
                 project.status === ProjectStatus.IN_PROGRESS
@@ -39,31 +41,29 @@
             >
             </span>
           </h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">
+          <p
+            class="text-break line-clamp-2 text-xs text-gray-600 sm:text-sm dark:text-gray-400"
+          >
             {{ project.description }}
           </p>
         </div>
         <div
-          class="flex flex-col rounded-lg bg-orange-200/30 px-2 py-1 text-sm text-gray-700 dark:bg-slate-950 dark:text-gray-400"
+          class="grid grid-cols-[auto_1fr] gap-x-4 rounded-lg bg-orange-200/30 px-1.5 py-0.5 text-xs text-gray-700 sm:px-2 sm:py-1 sm:text-sm dark:bg-slate-950 dark:text-gray-400"
         >
-          <p>
-            {{ "projects.list.START_DATE_TEXT" | translate }}
-            <span class="text-sky-500">
-              {{ project.startDate | date }}
-            </span>
-          </p>
-          <p>
-            {{ "projects.list.DEADLINE_TEXT" | translate }}
-            <span class="text-pink-500">
-              {{ project.endDate | date }}
-            </span>
-          </p>
+          <span>{{ "projects.list.START_DATE" | translate }}:</span>
+          <span class="text-sky-500">
+            {{ project.startDate | date }}
+          </span>
+          <span>{{ "projects.list.DEADLINE" | translate }}:</span>
+          <span class="text-pink-500">
+            {{ project.endDate | date }}
+          </span>
         </div>
       </div>
       @if (project.completedTasks !== 0 && project.totalTasks !== 0) {
-        <div class="relative h-4 w-full rounded-full bg-zinc-300">
+        <div class="relative h-4 w-full rounded-full bg-zinc-300 sm:h-5">
           <div
-            class="h-4 rounded-full bg-sky-600"
+            class="h-4 rounded-full bg-sky-600 sm:h-5"
             [style.width.%]="
               (project.completedTasks / project.totalTasks) * 100
             "
@@ -74,14 +74,14 @@
             {{
               (project.completedTasks / project.totalTasks) * 100
                 | number: "1.0-0"
-            }}% {{ "projects.list.COMPLETED_PERCENTAGE_TEXT" | translate }}
+            }}% {{ "projects.list.COMPLETED_PERCENTAGE" | translate }}
           </span>
         </div>
       } @else {
-        <p class="text-sm text-gray-400">
+        <p class="text-xs text-gray-400 sm:text-sm">
           {{ "projects.list.NO_TASKS" | translate }}
         </p>
       }
-    </div>
+    </button>
   }
 </div>

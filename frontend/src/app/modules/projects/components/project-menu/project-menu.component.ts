@@ -57,7 +57,7 @@ export class ProjectMenuComponent {
     if (!projectId) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      this.translationService.translate('project.details.DELETE_MESSAGE'),
+      this.translationService.translate('project.details.message.DELETE'),
     );
 
     const subscription = confirmation$.subscribe((confirmed) => {
@@ -67,7 +67,7 @@ export class ProjectMenuComponent {
       this.projectService.deleteProject(projectId).subscribe({
         next: () => {
           this.toastrService.success(
-            this.translationService.translate('toast.success.PROJECT_DELETED'),
+            this.translationService.translate('toast.success.project.DELETE'),
           );
           this.router.navigate(['/projects']);
         },
@@ -91,7 +91,7 @@ export class ProjectMenuComponent {
     if (!project) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      this.translationService.translate('project.details.COMPLETE_MESSAGE'),
+      this.translationService.translate('project.details.message.COMPLETE'),
     );
 
     const subscription = confirmation$.subscribe((confirmed) => {
@@ -101,9 +101,7 @@ export class ProjectMenuComponent {
       this.projectService.completeProject(project).subscribe({
         next: () => {
           this.toastrService.success(
-            this.translationService.translate(
-              'toast.success.PROJECT_COMPLETED',
-            ),
+            this.translationService.translate('toast.success.project.COMPLETE'),
           );
         },
         error: () => {

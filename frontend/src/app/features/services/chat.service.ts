@@ -1,16 +1,17 @@
+import { rxStompConfig } from '@/app/config/rx-stomp.config';
+import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
+import { Message, MessageSend } from '@/app/features/dto/chat.model';
+import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { RxStomp } from '@stomp/rx-stomp';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { environment } from '@/environments/environment';
-import { rxStompConfig } from '@/app/config/rx-stomp.config';
-import { Message, MessageSend } from '@/app/features/dto/chat.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  private readonly TOKEN = environment.storageKeys.TOKEN;
+  private readonly TOKEN = TOKEN_KEY;
   private rxStomp: RxStomp;
 
   private messages = signal<Message[]>([]);
@@ -26,7 +27,7 @@ export class ChatService {
   public sendMessage(
     message: string,
     projectId: string,
-    taskId: string | null = null
+    taskId: string | null = null,
   ): void {
     const token = localStorage.getItem(this.TOKEN);
 
@@ -49,7 +50,7 @@ export class ChatService {
 
   public getChatHistory(
     projectId: string,
-    taskId: string | null = null
+    taskId: string | null = null,
   ): Observable<Message[]> {
     this.messages.set([]);
 
@@ -63,13 +64,13 @@ export class ChatService {
       }),
       catchError((err: HttpErrorResponse) => {
         return throwError(() => err);
-      })
+      }),
     );
   }
 
   public watchTopic(
     projectId: string,
-    taskId: string | null = null
+    taskId: string | null = null,
   ): Observable<Message> {
     const topic = taskId
       ? `/join/tasks/${taskId}`
@@ -79,7 +80,7 @@ export class ChatService {
       this.rxStomp.watch(topic).subscribe((message) => {
         const newMessage: Message = JSON.parse(message.body) as Message;
         this.messages.update((messages) => [...messages, newMessage]);
-      })
+      }),
     );
   }
 }

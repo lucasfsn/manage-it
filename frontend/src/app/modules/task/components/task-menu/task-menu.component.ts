@@ -59,7 +59,7 @@ export class TaskMenuComponent {
         next: () => {
           this.router.navigate(['/projects', this.task?.projectId]);
           this.toastrService.success(
-            this.translationService.translate('toast.success.TASK_DELETED'),
+            this.translationService.translate('toast.success.task.DELETE'),
           );
         },
         error: () => {

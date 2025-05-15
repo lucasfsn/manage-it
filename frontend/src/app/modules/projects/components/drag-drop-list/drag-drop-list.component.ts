@@ -89,12 +89,12 @@ export class DragDropListComponent implements OnInit {
 
   private getNewStatus(containerId: string): TaskStatus {
     switch (containerId) {
-    case 'completed':
-      return TaskStatus.COMPLETED;
-    case 'inProgress':
-      return TaskStatus.IN_PROGRESS;
-    default:
-      return TaskStatus.NOT_STARTED;
+      case 'completed':
+        return TaskStatus.COMPLETED;
+      case 'inProgress':
+        return TaskStatus.IN_PROGRESS;
+      default:
+        return TaskStatus.NOT_STARTED;
     }
   }
 
@@ -104,7 +104,7 @@ export class DragDropListComponent implements OnInit {
     const dialogRef: MatDialogRef<TaskCreateFormComponent> = this.dialog.open(
       TaskCreateFormComponent,
       {
-        width: '450px',
+        width: '600px',
         backdropClass: 'dialog-backdrop',
         data: {
           selectedStatus,
@@ -119,15 +119,15 @@ export class DragDropListComponent implements OnInit {
 
   private addTaskToList(task: Task): void {
     switch (task.status) {
-    case TaskStatus.COMPLETED:
-      this.completedTasks.push(task);
-      break;
-    case TaskStatus.IN_PROGRESS:
-      this.inProgressTasks.push(task);
-      break;
-    case TaskStatus.NOT_STARTED:
-      this.notStartedTasks.push(task);
-      break;
+      case TaskStatus.COMPLETED:
+        this.completedTasks.push(task);
+        break;
+      case TaskStatus.IN_PROGRESS:
+        this.inProgressTasks.push(task);
+        break;
+      case TaskStatus.NOT_STARTED:
+        this.notStartedTasks.push(task);
+        break;
     }
   }
 
@@ -150,33 +150,33 @@ export class DragDropListComponent implements OnInit {
 
   private restoreTaskState(task: Task, prevStatus: TaskStatus): void {
     switch (task.status) {
-    case TaskStatus.COMPLETED:
-      this.completedTasks = this.completedTasks.filter(
-        (t) => t.id !== task.id,
-      );
-      break;
-    case TaskStatus.IN_PROGRESS:
-      this.inProgressTasks = this.inProgressTasks.filter(
-        (t) => t.id !== task.id,
-      );
-      break;
-    case TaskStatus.NOT_STARTED:
-      this.notStartedTasks = this.notStartedTasks.filter(
-        (t) => t.id !== task.id,
-      );
-      break;
+      case TaskStatus.COMPLETED:
+        this.completedTasks = this.completedTasks.filter(
+          (t) => t.id !== task.id,
+        );
+        break;
+      case TaskStatus.IN_PROGRESS:
+        this.inProgressTasks = this.inProgressTasks.filter(
+          (t) => t.id !== task.id,
+        );
+        break;
+      case TaskStatus.NOT_STARTED:
+        this.notStartedTasks = this.notStartedTasks.filter(
+          (t) => t.id !== task.id,
+        );
+        break;
     }
 
     switch (prevStatus) {
-    case TaskStatus.COMPLETED:
-      this.completedTasks.push(task);
-      break;
-    case TaskStatus.IN_PROGRESS:
-      this.inProgressTasks.push(task);
-      break;
-    case TaskStatus.NOT_STARTED:
-      this.notStartedTasks.push(task);
-      break;
+      case TaskStatus.COMPLETED:
+        this.completedTasks.push(task);
+        break;
+      case TaskStatus.IN_PROGRESS:
+        this.inProgressTasks.push(task);
+        break;
+      case TaskStatus.NOT_STARTED:
+        this.notStartedTasks.push(task);
+        break;
     }
   }
 

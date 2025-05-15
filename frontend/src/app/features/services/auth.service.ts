@@ -1,8 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, Observable, tap, throwError } from 'rxjs';
-import { environment } from '@/environments/environment';
+import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
 import {
   AuthResponse,
   LoginCredentials,
@@ -10,17 +6,25 @@ import {
   UpdateUserCredentials,
   UserCredentials,
 } from '@/app/features/dto/auth.model';
+import { environment } from '@/environments/environment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly TOKEN = environment.storageKeys.TOKEN;
+  private readonly TOKEN = TOKEN_KEY;
   private currentUser = signal<UserCredentials | null>(null);
 
   public loadedUser = this.currentUser.asReadonly();
 
-  public constructor(private router: Router, private http: HttpClient) {}
+  public constructor(
+    private router: Router,
+    private http: HttpClient,
+  ) {}
 
   public register(user: RegisterCredentials): Observable<AuthResponse> {
     return this.http
@@ -36,7 +40,7 @@ export class AuthService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -54,7 +58,7 @@ export class AuthService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -78,7 +82,7 @@ export class AuthService {
           this.logout();
 
           return throwError(() => err.error);
-        })
+        }),
       );
   }
 

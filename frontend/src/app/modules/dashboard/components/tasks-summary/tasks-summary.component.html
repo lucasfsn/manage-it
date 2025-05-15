@@ -1,12 +1,14 @@
 <div
-  class="mx-auto flex w-full max-w-75 flex-col items-center gap-1 rounded-lg bg-orange-100 p-4 shadow-xs sm:mx-0 sm:max-w-90 lg:w-100 dark:bg-slate-900"
+  class="flex h-full w-full max-w-75 flex-1 flex-col items-center justify-between gap-1 rounded-lg bg-orange-100 p-4 shadow-xs dark:bg-slate-900"
 >
   <div class="flex flex-col gap-1">
-    <h2 class="text-lg font-semibold">
+    <h2 class="text-base font-semibold sm:text-lg">
       {{ "dashboard.tasksSummary.TITLE" | translate }}
     </h2>
     @if (taskCount === 0) {
-      <p class="text-center text-sm text-gray-700 dark:text-gray-400">
+      <p
+        class="text-center text-xs text-gray-700 sm:text-sm dark:text-gray-400"
+      >
         {{ "dashboard.tasksSummary.NO_TASKS" | translate }}
       </p>
     }
@@ -15,6 +17,7 @@
     <canvas
       baseChart
       type="bar"
+      class="max-h-72"
       [data]="barChartData"
       [options]="barChartOptions"
     >

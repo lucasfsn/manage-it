@@ -1,5 +1,6 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
+import { getTodayDate } from '@/app/core/utils/get-today-date.utils';
 import {
   Priority,
   Task,
@@ -13,16 +14,16 @@ import {
   FormSelectControlComponent,
   SelectOption,
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
-import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
-import { dueDateValidator } from '@/app/shared/validators';
-import { Component, inject } from '@angular/core';
 import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+  maxLength,
+  minDate,
+  minLength,
+  required,
+} from '@/app/shared/validators';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -49,7 +50,7 @@ interface TaskCreateForm {
     FormButtonComponent,
     FormDateInputControlComponent,
     FormSelectControlComponent,
-    FormTextInputControlComponent,
+    FormTextareaInputControlComponent,
   ],
   templateUrl: './task-create-form.component.html',
   styleUrl: './task-create-form.component.scss',
@@ -70,8 +71,28 @@ export class TaskCreateFormComponent {
     private translationService: TranslationService,
   ) {}
 
-  protected get TaskStatus(): typeof TaskStatus {
-    return TaskStatus;
+  protected form: FormGroup<TaskCreateForm> = new FormGroup<TaskCreateForm>(
+    {
+      description: new FormControl('', {
+        validators: [
+          required('task.createForm.description.errors.REQUIRED'),
+          minLength(5, 'task.createForm.description.errors.MIN_LENGTH'),
+          maxLength(500, 'task.createForm.description.errors.MAX_LENGTH'),
+        ],
+      }),
+      dueDate: new FormControl(getTodayDate(), {
+        validators: [
+          required('task.createForm.dueDate.errors.REQUIRED'),
+          minDate(getTodayDate(), 'task.createForm.dueDate.errors.MIN'),
+        ],
+      }),
+      priority: new FormControl<Priority | null>(Priority.LOW),
+    },
+    { updateOn: 'blur' },
+  );
+
+  protected get minDate(): string | null {
+    return getTodayDate();
   }
 
   protected get priorities(): SelectOption[] {
@@ -81,29 +102,6 @@ export class TaskCreateFormComponent {
     }));
   }
 
-  protected getToday(): string {
-    return new Date().toISOString().split('T')[0];
-  }
-
-  protected form: FormGroup<TaskCreateForm> = new FormGroup<TaskCreateForm>(
-    {
-      description: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(120),
-        ],
-      }),
-      dueDate: new FormControl(this.getToday(), {
-        validators: [Validators.required, dueDateValidator],
-      }),
-      priority: new FormControl<Priority | null>(Priority.LOW, {
-        validators: [Validators.required],
-      }),
-    },
-    { updateOn: 'blur' },
-  );
-
   protected closeDialog(): void {
     this.dialog.closeAll();
   }
@@ -111,7 +109,7 @@ export class TaskCreateFormComponent {
   protected onReset(): void {
     this.form.reset({
       priority: Priority.LOW,
-      dueDate: this.getToday(),
+      dueDate: getTodayDate(),
     });
   }
 
@@ -132,7 +130,7 @@ export class TaskCreateFormComponent {
         this.loading = false;
         this.dialogRef.close(newTask);
         this.toastrService.success(
-          this.translationService.translate('toast.success.TASK_ADDED'),
+          this.translationService.translate('toast.success.task.CREATE'),
         );
       },
       error: () => {

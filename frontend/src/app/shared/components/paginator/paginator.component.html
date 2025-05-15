@@ -3,7 +3,7 @@
 >
   <select
     (change)="handlePageSizeChange($event)"
-    [matTooltip]="'paginator.SELECT_INFO' | translate"
+    [matTooltip]="'utils.paginator.TOOLTIP' | translate"
     class="border-none bg-transparent text-sky-700 outline-hidden dark:text-sky-300"
   >
     @for (option of pageSizeOptions; track option) {
@@ -25,7 +25,7 @@
     </button>
     <span>
       {{ totalPages === 0 ? currentPage : currentPage + 1 }}
-      {{ "paginator.PAGE_INFO" | translate }} {{ totalPages }}</span
+      {{ "utils.paginator.OF" | translate }} {{ totalPages }}</span
     >
     <button
       (click)="handleNext()"
