@@ -1,3 +1,8 @@
+import {
+  PASSWORD_REGEX,
+  PERSON_NAME_REGEX,
+  USERNAME_REGEX,
+} from '@/app/core/constants/regex.constants';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { RegisterCredentials } from '@/app/features/dto/auth.model';
@@ -64,10 +69,7 @@ export class SignupFormComponent {
           required('signupForm.firstName.errors.REQUIRED'),
           minLength(2, 'signupForm.firstName.errors.MIN_LENGTH'),
           maxLength(50, 'signupForm.firstName.errors.MAX_LENGTH'),
-          pattern(
-            /^[a-zA-Z\xC0-\uFFFF]+([ \-']{0,1}[a-zA-Z\xC0-\uFFFF]+){0,2}[.]{0,1}$/,
-            'signupForm.firstName.errors.INVALID',
-          ),
+          pattern(PERSON_NAME_REGEX, 'signupForm.firstName.errors.INVALID'),
         ],
       }),
       lastName: new FormControl('', {
@@ -75,10 +77,7 @@ export class SignupFormComponent {
           required('signupForm.lastName.errors.REQUIRED'),
           minLength(2, 'signupForm.lastName.errors.MIN_LENGTH'),
           maxLength(50, 'signupForm.lastName.errors.MAX_LENGTH'),
-          pattern(
-            /^[a-zA-Z\xC0-\uFFFF]+([ \-']{0,1}[a-zA-Z\xC0-\uFFFF]+){0,2}[.]{0,1}$/,
-            'signupForm.lastName.errors.INVALID',
-          ),
+          pattern(PERSON_NAME_REGEX, 'signupForm.lastName.errors.INVALID'),
         ],
       }),
       username: new FormControl('', {
@@ -86,10 +85,7 @@ export class SignupFormComponent {
           required('signupForm.username.errors.REQUIRED'),
           minLength(8, 'signupForm.username.errors.MIN_LENGTH'),
           maxLength(30, 'signupForm.username.errors.MAX_LENGTH'),
-          pattern(
-            /^[A-Za-z][A-Za-z0-9_]{7,29}$/,
-            'signupForm.username.errors.INVALID',
-          ),
+          pattern(USERNAME_REGEX, 'signupForm.username.errors.INVALID'),
         ],
       }),
       email: new FormControl('', {
@@ -102,10 +98,7 @@ export class SignupFormComponent {
         password: new FormControl('', {
           validators: [
             required('signupForm.password.errors.REQUIRED'),
-            pattern(
-              /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-              'signupForm.password.errors.INVALID',
-            ),
+            pattern(PASSWORD_REGEX, 'signupForm.password.errors.INVALID'),
           ],
         }),
         confirmPassword: new FormControl('', {

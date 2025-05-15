@@ -1,5 +1,6 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
+import { getTodayDate } from '@/app/core/utils/get-today-date.utils';
 import { Project, ProjectRequest } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
@@ -64,14 +65,6 @@ export class ProjectFormComponent implements OnInit {
     private route: ActivatedRoute,
   ) {}
 
-  protected get project(): Project | null {
-    return this.projectService.loadedProject();
-  }
-
-  protected get minDate(): string | null {
-    return this.isEditing ? null : this.today();
-  }
-
   protected form: FormGroup<ProjectForm> = new FormGroup<ProjectForm>(
     {
       name: new FormControl('', {
@@ -99,16 +92,17 @@ export class ProjectFormComponent implements OnInit {
         },
         {
           validators: [endDateValidator('startDate', 'endDate')],
+          updateOn: 'change',
         },
       ),
     },
     { updateOn: 'blur' },
   );
 
-  protected get dateErrors(): string | null {
+  protected get dateGroupErrors(): string | null {
     const group = this.form.controls.dates;
 
-    if (group.errors && group.errors['invalidEndDate'])
+    if (group.errors?.['invalidEndDate'])
       return this.translationService.translate(
         'project.form.endDate.errors.INVALID',
       );
@@ -116,12 +110,19 @@ export class ProjectFormComponent implements OnInit {
     return null;
   }
 
+  protected get project(): Project | null {
+    return this.projectService.loadedProject();
+  }
+
+  protected get minDate(): string | null {
+    return this.isEditing ? null : getTodayDate();
+  }
+
   protected get disabled(): boolean {
-    return (
-      (this.isEditing
-        ? this.form.invalid || !this.hadFormChanged()
-        : this.form.invalid) || this.loading
-    );
+    const isFormInvalid = this.form.invalid;
+    const isUnchanged = this.isEditing && !this.hadFormChanged();
+
+    return isFormInvalid || isUnchanged || this.loading;
   }
 
   private hadFormChanged(): boolean {
@@ -156,8 +157,8 @@ export class ProjectFormComponent implements OnInit {
       name: '',
       description: '',
       dates: {
-        startDate: this.today(),
-        endDate: this.today(),
+        startDate: getTodayDate(),
+        endDate: getTodayDate(),
       },
     });
   }
@@ -239,15 +240,11 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  private today(): string {
-    return new Date().toISOString().split('T')[0];
-  }
-
   public ngOnInit(): void {
     this.form.patchValue({
       dates: {
-        startDate: this.today(),
-        endDate: this.today(),
+        startDate: getTodayDate(),
+        endDate: getTodayDate(),
       },
     });
 
@@ -257,7 +254,7 @@ export class ProjectFormComponent implements OnInit {
 
     if (!this.isEditing) {
       this.form.controls.dates.controls.startDate.addValidators(
-        minDate(this.today(), 'project.form.startDate.errors.MIN'),
+        minDate(getTodayDate(), 'project.form.startDate.errors.MIN'),
       );
       this.form.controls.dates.controls.startDate.updateValueAndValidity();
     }

@@ -1,5 +1,6 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
+import { getTodayDate } from '@/app/core/utils/get-today-date.utils';
 import {
   Priority,
   Task,
@@ -79,10 +80,10 @@ export class TaskCreateFormComponent {
           maxLength(500, 'task.createForm.description.errors.MAX_LENGTH'),
         ],
       }),
-      dueDate: new FormControl(this.today, {
+      dueDate: new FormControl(getTodayDate(), {
         validators: [
           required('task.createForm.dueDate.errors.REQUIRED'),
-          minDate(this.today, 'task.createForm.dueDate.errors.MIN'),
+          minDate(getTodayDate(), 'task.createForm.dueDate.errors.MIN'),
         ],
       }),
       priority: new FormControl<Priority | null>(Priority.LOW),
@@ -90,8 +91,8 @@ export class TaskCreateFormComponent {
     { updateOn: 'blur' },
   );
 
-  protected get TaskStatus(): typeof TaskStatus {
-    return TaskStatus;
+  protected get minDate(): string | null {
+    return getTodayDate();
   }
 
   protected get priorities(): SelectOption[] {
@@ -101,10 +102,6 @@ export class TaskCreateFormComponent {
     }));
   }
 
-  protected get today(): string {
-    return new Date().toISOString().split('T')[0];
-  }
-
   protected closeDialog(): void {
     this.dialog.closeAll();
   }
@@ -112,7 +109,7 @@ export class TaskCreateFormComponent {
   protected onReset(): void {
     this.form.reset({
       priority: Priority.LOW,
-      dueDate: this.today,
+      dueDate: getTodayDate(),
     });
   }
 
