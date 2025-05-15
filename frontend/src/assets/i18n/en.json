@@ -155,8 +155,8 @@
     "profile": {
       "CREATE_DATE": "Joined",
       "buttons": {
-        "EDIT": "Edit Project",
-        "ADD_TO_PROJECT": "Add to Project"
+        "EDIT": "Edit profile",
+        "ADD_TO_PROJECT": "Add to project"
       },
       "title": {
         "loggedUser": "Your Projects",
