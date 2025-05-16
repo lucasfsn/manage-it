@@ -44,15 +44,16 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('New completed task');
   await page.getByRole('textbox', { name: 'Due Date' }).fill(task1DueDateStr);
-  await page.getByLabel('Priority').selectOption('LOW');
+  await page.getByLabel('Priority').selectOption('HIGH');
+  await page.getByLabel('Priority').press('Tab');
   
   await expect(page.getByRole('textbox', { name: 'Description' })).toHaveValue('New completed task');
   await expect(page.getByRole('textbox', { name: 'Due Date' })).toHaveValue(task1DueDateStr);
-  await expect(page.getByLabel('Priority')).toHaveValue('LOW');
+  await expect(page.getByLabel('Priority')).toHaveValue('HIGH');
   await page.getByRole('button', { name: 'Create task' }).click();
 
   // sprawdzanie czy task został poprawnie dodany
-  await expect(page.locator('#completed')).toContainText(`New completed task Low schedule ${task1DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`);
+  await expect(page.locator('#completed')).toContainText(`New completed task High schedule ${task1DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`);
 
   // sprawdzanie stanu projektu (ile procent tasków w projekcie jest ukończonych)
   await page.getByText('folder_open Projects').click();
@@ -66,7 +67,6 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Due Date' }).fill(task2DueDateStr);
   await page.getByRole('button', { name: 'Create task' }).click();
 
-  // await expect(page.getByLabel('Task has been created')).toContainText('Task has been created');
   await expect(page.getByRole('alert', { name: 'Task has been created' })).toBeVisible();
   await expect(page.locator('#notStarted')).toContainText(`Task for future Low schedule ${task2DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`);
 
@@ -85,10 +85,9 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await expect(page.getByLabel('Status')).toHaveValue('NOT_STARTED');
   await expect(page.getByLabel('Priority')).toHaveValue('LOW');
   await page.getByLabel('Status').selectOption('IN_PROGRESS');
+  await page.getByLabel('Status').press('Tab');
   await page.getByLabel('Priority').selectOption('MEDIUM');
-  await page.getByRole('textbox', { name: 'Description' }).click();
-
-  // tu coś nie działa, nie mam pojęcia czemu przycisk jest disabled w Playwright (w przeglądarce wszystko ok)
+  await page.getByLabel('Priority').press('Tab');
   await page.getByRole('button', { name: 'Save changes' }).click();
 
   // sprawdzanie zedytowanych danych taska
