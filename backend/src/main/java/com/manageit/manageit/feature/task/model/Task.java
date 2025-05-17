@@ -31,7 +31,7 @@ public class Task {
     @JoinColumn(name = "assigned_project_id", nullable = false)
     private Project project;
 
-    @NotBlank(message = "Description cannot be empty")
+    @NotBlank(message = "Description cannot be empty.")
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 

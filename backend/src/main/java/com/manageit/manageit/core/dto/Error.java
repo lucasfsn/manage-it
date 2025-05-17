@@ -10,12 +10,12 @@ public enum Error {
     BAD_CREDENTIALS(UNAUTHORIZED, "Email and Password is incorrect."),
     VALIDATION_ERROR(BAD_REQUEST, "Validation failed for one or more arguments."),
     DATA_INTEGRITY_VIOLATION(CONFLICT, "Data already exist."),
-    INTERNAL_ERROR(INTERNAL_SERVER_ERROR, "Internal Server Error."),
+    INTERNAL_ERROR(INTERNAL_SERVER_ERROR, "Internal Server Error"),
     ENTITY_NOT_FOUND(NOT_FOUND, "Entity not found."),
     TOKEN_MISMATCH(UNAUTHORIZED, "The user provided does not match the user in the token."),
-    INSUFFICIENT_PERMISSIONS(UNAUTHORIZED, "User does not have sufficient permissions to perform this action"),
+    INSUFFICIENT_PERMISSIONS(UNAUTHORIZED, "User does not have sufficient permissions to perform this action."),
     TASK_NOT_IN_PROJECT(BAD_REQUEST, "The specified task does not belong to the project."),
-    ILLEGAL_STATE(CONFLICT, "The operation could not be performed due to an illegal state"),
+    ILLEGAL_STATE(CONFLICT, "The operation could not be performed due to an illegal state."),
     INVALID_REQUEST_BODY(BAD_REQUEST, "Invalid request body format or value.");
 
     private final String description;

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EndDateAfterStartDate {
-    String message() default "End date must be after start date";
+    String message() default "End date must be after start date.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
