@@ -9,7 +9,7 @@ import static org.springframework.http.HttpStatus.*;
 public enum Error {
     BAD_CREDENTIALS(UNAUTHORIZED, "Email and Password is incorrect."),
     VALIDATION_ERROR(BAD_REQUEST, "Validation failed for one or more arguments."),
-    DATA_INTEGRITY_VIOLATION(CONFLICT, "Data already exsist."),
+    DATA_INTEGRITY_VIOLATION(CONFLICT, "Data already exist."),
     INTERNAL_ERROR(INTERNAL_SERVER_ERROR, "Internal Server Error."),
     ENTITY_NOT_FOUND(NOT_FOUND, "Entity not found."),
     TOKEN_MISMATCH(UNAUTHORIZED, "The user provided does not match the user in the token."),
