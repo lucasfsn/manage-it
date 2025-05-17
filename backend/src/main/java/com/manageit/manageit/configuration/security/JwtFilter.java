@@ -48,6 +48,11 @@ public class JwtFilter extends OncePerRequestFilter {
         final String jwt = authHeader.substring(7);
         final String userId;
 
+        String tokenType = jwtService.extractClaim(jwt, claims -> (String) claims.get("type"));
+        if (tokenType == null || !tokenType.equals("access")) {
+            throw new JwtAuthenticationException("Invalid JWT token");
+        }
+
         try {
             userId = jwtService.extractUserId(jwt);
         } catch (Exception e) {
