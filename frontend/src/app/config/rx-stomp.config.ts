@@ -1,4 +1,4 @@
-import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
+import { TOKEN_KEY } from '@/app/shared/constants/local-storage.constants';
 import { environment } from '@/environments/environment';
 import { RxStompConfig } from '@stomp/rx-stomp';
 

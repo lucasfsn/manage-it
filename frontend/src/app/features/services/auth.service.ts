@@ -1,4 +1,3 @@
-import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
 import {
   AuthResponse,
   LoginCredentials,
@@ -6,6 +5,8 @@ import {
   UpdateUserCredentials,
   UserCredentials,
 } from '@/app/features/dto/auth.model';
+import { TOKEN_KEY } from '@/app/shared/constants/local-storage.constants';
+import { extractApiError } from '@/app/shared/utils/http-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
@@ -56,8 +57,8 @@ export class AuthService {
 
           this.router.navigate(['/dashboard']);
         }),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => extractApiError(error));
         }),
       );
   }

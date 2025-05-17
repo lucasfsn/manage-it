@@ -1,6 +1,6 @@
 import { rxStompConfig } from '@/app/config/rx-stomp.config';
-import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
 import { Message, MessageSend } from '@/app/features/dto/chat.model';
+import { TOKEN_KEY } from '@/app/shared/constants/local-storage.constants';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';

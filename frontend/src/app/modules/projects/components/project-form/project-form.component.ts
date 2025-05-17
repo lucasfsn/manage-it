@@ -1,6 +1,5 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { getTodayDate } from '@/app/core/utils/get-today-date.utils';
 import { Project, ProjectRequest } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
@@ -8,6 +7,7 @@ import { FormTextInputControlComponent } from '@/app/shared/components/form-cont
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { getTodayDate } from '@/app/shared/utils/get-today-date.util';
 import {
   endDateValidator,
   maxLength,

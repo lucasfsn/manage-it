@@ -1,4 +1,4 @@
-import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
+import { TOKEN_KEY } from '@/app/shared/constants/local-storage.constants';
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
