@@ -17,6 +17,10 @@ spring:
 springdoc:
   default-produces-media-type: application/json
 
+logging:
+  level:
+    root: INFO
+
 application:
   security:
     jwt:
