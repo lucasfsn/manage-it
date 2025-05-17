@@ -15,7 +15,8 @@ public enum Error {
     TOKEN_MISMATCH(UNAUTHORIZED, "The user provided does not match the user in the token."),
     INSUFFICIENT_PERMISSIONS(UNAUTHORIZED, "User does not have sufficient permissions to perform this action"),
     TASK_NOT_IN_PROJECT(BAD_REQUEST, "The specified task does not belong to the project."),
-    ILLEGAL_STATE(CONFLICT, "The operation could not be performed due to an illegal state");
+    ILLEGAL_STATE(CONFLICT, "The operation could not be performed due to an illegal state"),
+    INVALID_REQUEST_BODY(BAD_REQUEST, "Invalid request body format or value.");
 
     private final String description;
     private final HttpStatus httpStatus;
