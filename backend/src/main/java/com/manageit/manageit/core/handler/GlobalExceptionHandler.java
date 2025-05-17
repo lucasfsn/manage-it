@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
                 log.error("Invalid UUID format: {} = {}", name, value, ex);
             }
 
-            String message = String.format("Parameter '%s' should be a valid UUID, but the value '%s' could not be parsed",
+            String message = String.format("Parameter '%s' should be a valid UUID, but the value '%s' could not be parsed.",
                     name, value);
 
             return ResponseEntity
@@ -181,9 +181,9 @@ public class GlobalExceptionHandler {
         if (exp.getCause() instanceof ConstraintViolationException constraintException) {
             String constraintName = constraintException.getConstraintName();
             if ("users_email_key".equals(constraintName)) {
-                message = "Email already exists";
+                message = "Email already exists.";
             } else if ("users_username_key".equals(constraintName)) {
-                message = "Username already exists";
+                message = "Username already exists.";
             }
         }
         return ResponseEntity

@@ -18,15 +18,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateTaskRequest {
-    @NotBlank(message = "Task description cannot be empty")
-    @Size(min = 5, max = 500, message = "Task description must be between 5 and 500 characters")
+    @NotBlank(message = "Task description cannot be empty.")
+    @Size(min = 5, max = 500, message = "Task description must be between 5 and 500 characters.")
     private String description;
 
     private TaskStatus status;
 
     private TaskPriority priority;
 
-    @NotNull(message = "Task due date cannot be empty")
-    @FutureOrPresent(message = "Task due date cannot be in the past")
+    @NotNull(message = "Task due date cannot be empty.")
+    @FutureOrPresent(message = "Task due date cannot be in the past.")
     private LocalDate dueDate;
 }

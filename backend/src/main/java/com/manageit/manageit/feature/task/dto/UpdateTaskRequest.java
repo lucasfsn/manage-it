@@ -20,13 +20,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdateTaskRequest {
-    @Size(min = 5, max = 500, message = "Task description must be between 5 and 500 characters")
+    @Size(min = 5, max = 500, message = "Task description must be between 5 and 500 characters.")
     private String description;
 
     private TaskStatus status;
 
     private TaskPriority priority;
 
-    @FutureOrPresent(message = "Task due date cannot be in the past")
+    @FutureOrPresent(message = "Task due date cannot be in the past.")
     private LocalDate dueDate;
 }
