@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
+
+    User getUserOrThrow(UUID id);
+
+    User getUserOrThrow(String id);
+
     User getUserByToken(String token);
 
     User getUserByUsername(String username);

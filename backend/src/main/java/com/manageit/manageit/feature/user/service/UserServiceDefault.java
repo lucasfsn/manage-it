@@ -32,9 +32,19 @@ public class UserServiceDefault implements UserService {
     private static final String EXCEPTION_MESSAGE = "No users found!";
 
     @Override
+    public User getUserOrThrow(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No user found with id: " + id));
+    }
+
+    @Override
+    public User getUserOrThrow(String id) {
+        return getUserOrThrow(UUID.fromString(id));
+    }
+
+    @Override
     public User getUserByToken(String token) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        return getUserByUsername(username);
+        String id = jwtService.extractUserId(token.replace("Bearer ", ""));
+        return getUserOrThrow(UUID.fromString(id));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.manageit.manageit.configuration.security;
 
+import com.manageit.manageit.core.exception.JwtAuthenticationException;
 import com.manageit.manageit.feature.user.model.User;
+import com.manageit.manageit.feature.user.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,7 +23,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(
@@ -30,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains(("api/v1/auth"))) {
+        if (request.getServletPath().contains("api/v1/auth")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -45,25 +46,26 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         final String jwt = authHeader.substring(7);
-        final String username;
+        final String userId;
 
         try {
-            username = jwtService.extractUsername(jwt);
+            userId = jwtService.extractUserId(jwt);
         } catch (Exception e) {
-            filterChain.doFilter(request, response);
-            return;
+            throw new JwtAuthenticationException("Invalid JWT token", e);
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
-            if (jwtService.isTokenValid(jwt, (User) userDetails)) {
+        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            User user = userService.getUserOrThrow(userId);
+            if (jwtService.isTokenValid(jwt, user)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
+                        user,
                         null,
-                        userDetails.getAuthorities()
+                        user.getAuthorities()
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                throw new JwtAuthenticationException("Invalid JWT token");
             }
         }
 
