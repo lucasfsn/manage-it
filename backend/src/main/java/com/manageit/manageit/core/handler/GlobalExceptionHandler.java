@@ -11,6 +11,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ExceptionResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
-        // Only handle UUID conversion errors
+
         if (ex.getRequiredType() != null && ex.getRequiredType().equals(UUID.class)) {
             String name = ex.getName();
             String value = ex.getValue() != null ? ex.getValue().toString() : "null";
@@ -55,7 +56,6 @@ public class GlobalExceptionHandler {
 
         return handleException(ex);
     }
-
 
     @ExceptionHandler(TokenUserMismatchException.class)
     public ResponseEntity<ExceptionResponse> handleException(TokenUserMismatchException exp) {
@@ -210,6 +210,23 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .errorDescription(ILLEGAL_STATE.getDescription())
                                 .message(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
+        return ResponseEntity
+                .status(INVALID_REQUEST_BODY.getHttpStatus())
+                .body(
+                        ExceptionResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .httpStatus(INVALID_REQUEST_BODY.getHttpStatus())
+                                .errorDescription(INVALID_REQUEST_BODY.getDescription())
+                                .message(INVALID_REQUEST_BODY.getDescription())
                                 .build()
                 );
     }
