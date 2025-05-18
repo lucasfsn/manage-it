@@ -12,20 +12,51 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.manageit.manageit.core.dto.Error.*;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ExceptionResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
+
+        if (ex.getRequiredType() != null && ex.getRequiredType().equals(UUID.class)) {
+            String name = ex.getName();
+            String value = ex.getValue() != null ? ex.getValue().toString() : "null";
+
+            if (log.isErrorEnabled()) {
+                log.error("Invalid UUID format: {} = {}", name, value, ex);
+            }
+
+            String message = String.format("Parameter '%s' should be a valid UUID, but the value '%s' could not be parsed.",
+                    name, value);
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(
+                            ExceptionResponse.builder()
+                                    .timestamp(LocalDateTime.now())
+                                    .httpStatus(HttpStatus.BAD_REQUEST)
+                                    .errorDescription("Invalid UUID format")
+                                    .message(message)
+                                    .build()
+                    );
+        }
+
+        return handleException(ex);
+    }
 
     @ExceptionHandler(TokenUserMismatchException.class)
     public ResponseEntity<ExceptionResponseDto> handleException(TokenUserMismatchException exp) {
@@ -157,9 +188,9 @@ public class GlobalExceptionHandler {
         if (exp.getCause() instanceof ConstraintViolationException constraintException) {
             String constraintName = constraintException.getConstraintName();
             if ("users_email_key".equals(constraintName)) {
-                message = "Email already exsists";
+                message = "Email already exists.";
             } else if ("users_username_key".equals(constraintName)) {
-                message = "Username already exsists";
+                message = "Username already exists.";
             }
         }
         return ResponseEntity
@@ -186,6 +217,23 @@ public class GlobalExceptionHandler {
                                 .timestamp(LocalDateTime.now())
                                 .errorDescription(ILLEGAL_STATE.getDescription())
                                 .message(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
+        return ResponseEntity
+                .status(INVALID_REQUEST_BODY.getHttpStatus())
+                .body(
+                        ExceptionResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .httpStatus(INVALID_REQUEST_BODY.getHttpStatus())
+                                .errorDescription(INVALID_REQUEST_BODY.getDescription())
+                                .message(INVALID_REQUEST_BODY.getDescription())
                                 .build()
                 );
     }

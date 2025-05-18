@@ -7,6 +7,7 @@ import com.manageit.manageit.feature.task.dto.UpdateTaskRequestDto;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.task.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,7 +37,7 @@ public class TaskController {
     public ResponseEntity<TaskDetailsResponseDto> addTaskToProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
-            @RequestBody CreateTaskRequestDto createTaskRequest
+            @Valid @RequestBody CreateTaskRequestDto createTaskRequest
     ) {
         TaskDetailsResponseDto task = taskService.createAndAddTaskToProject(userDetails, projectId ,createTaskRequest);
         URI location = ServletUriComponentsBuilder
@@ -62,7 +63,7 @@ public class TaskController {
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
-            @RequestBody UpdateTaskRequestDto updateTaskRequest
+            @Valid @RequestBody UpdateTaskRequestDto updateTaskRequest
     ) {
         TaskResponseDto updatedTask = taskService.updateTask(userDetails, taskId, projectId, updateTaskRequest);
         return ResponseEntity.ok(updatedTask);

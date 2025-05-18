@@ -18,8 +18,8 @@ public class AuthenticationRequestDto {
     @NotEmpty(message = "Email is required")
     @NotBlank(message = "Email is required")
     private String email;
-    @NotEmpty(message = "Password is required")
-    @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password should be 8 characters long minimum")
+    @NotEmpty(message = "Password is required.")
+    @NotBlank(message = "Password is required.")
+    @Size(min = 8, message = "Password should be 8 characters long minimum.")
     private String password;
 }
