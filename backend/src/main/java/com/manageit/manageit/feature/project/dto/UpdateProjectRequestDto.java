@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@EndDateAfterStartDate(message = "End date must be after start date")
+@EndDateAfterStartDate
 public class UpdateProjectRequestDto {
 
     @Size(min = 5, max = 100, message = "Project name must be between 5 and 100 characters.")
