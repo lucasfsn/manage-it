@@ -5,6 +5,7 @@ import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.TokenUserMismatchException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInTaskException;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
@@ -112,6 +113,12 @@ public class GlobalExceptionHandler {
                                 .build()
                 );
     }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Void> handleException() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
 
 
     @ExceptionHandler(BadCredentialsException.class)

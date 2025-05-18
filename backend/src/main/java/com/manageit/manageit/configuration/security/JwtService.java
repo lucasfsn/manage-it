@@ -1,11 +1,15 @@
 package com.manageit.manageit.configuration.security;
 
 import com.manageit.manageit.feature.user.model.User;
+import com.manageit.manageit.jwt.builder.JwtTokenParser;
+import com.manageit.manageit.jwt.model.JwtToken;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +24,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     @Value("${application.security.jwt.expiration}")
@@ -28,6 +33,7 @@ public class JwtService {
     private long jwtRefreshExpiration;
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
+    private final JwtTokenParser jwtTokenParser;
 
     public String extractUserId(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -35,6 +41,7 @@ public class JwtService {
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
+        System.out.println(claims);
         return claimsResolver.apply(claims);
     }
 
@@ -50,25 +57,28 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
     }
 
-    public String generateToken(User userDetails) {
+    public JwtToken generateToken(User userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("type", "access");
         return generateToken(extraClaims, userDetails);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, User userDetails) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+    public JwtToken generateToken(Map<String, Object> extraClaims, User userDetails) {
+        JwtBuilder token = buildToken(extraClaims, userDetails, jwtExpiration);
+        return jwtTokenParser.parse(token);
     }
 
-    public String generateRefreshToken(UserDetails userDetails) {
+    public JwtToken generateRefreshToken(UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("type", "refresh");
-        return buildToken(extraClaims, (User) userDetails, jwtRefreshExpiration);
+        JwtBuilder token = buildToken(extraClaims, (User) userDetails, jwtRefreshExpiration);
+        return jwtTokenParser.parse(token);
     }
 
-    private String buildToken(
+    private JwtBuilder buildToken(
             Map<String, Object> extraClaims,
             User userDetails,
             long jwtExpiration
@@ -85,8 +95,7 @@ public class JwtService {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMillis))
                 .claim("authorities", authorities)
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256);
     }
 
     public boolean isTokenValid(String token, User user) {
@@ -94,8 +103,18 @@ public class JwtService {
         return (userId.equals(user.getId())) && !isTokenExpired(token);
     }
 
+    public boolean isTokenValid(JwtToken jwtToken, User user) {
+        UUID userId = UUID.fromString(jwtToken.getSubject());
+        return (userId.equals(user.getId())) && !isTokenExpired(jwtToken);
+    }
+
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
+    }
+
+    private boolean isTokenExpired(JwtToken token) {
+        return token.getExpiration().before(new Date());
     }
 
     private Key getSignInKey() {
