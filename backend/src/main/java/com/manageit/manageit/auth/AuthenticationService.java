@@ -1,24 +1,21 @@
 package com.manageit.manageit.auth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.manageit.manageit.configuration.security.JwtService;
 import com.manageit.manageit.core.exception.JwtAuthenticationException;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.mapper.UserMapper;
 import com.manageit.manageit.feature.user.repository.UserRepository;
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.manageit.manageit.jwt.builder.JwtTokenParser;
+import com.manageit.manageit.jwt.dto.JwtTokenResponseDto;
+import com.manageit.manageit.jwt.model.JwtToken;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -30,6 +27,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper;
+    private final JwtTokenParser jwtTokenParser;
 
     public AuthenticationResponse register(@Valid RegisterRequest request) {
         User user = User.builder()
@@ -41,9 +39,9 @@ public class AuthenticationService {
                 .build();
         User savedUser = repository.save(user);
         AuthenticatedUserResponseDto authenticatedUserResponseDto = userMapper.toAuthenticatedUserResponse(user);
-        String jwtToken = jwtService.generateToken(savedUser);
-        String refreshToken = jwtService.generateRefreshToken(savedUser);
-        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).user(authenticatedUserResponseDto).build();
+        JwtToken jwtToken = jwtService.generateToken(savedUser);
+        JwtToken refreshToken = jwtService.generateRefreshToken(savedUser);
+        return AuthenticationResponse.builder().accessToken(jwtToken.getToken()).refreshToken(refreshToken.getToken()).user(authenticatedUserResponseDto).build();
     }
 
     public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
@@ -55,42 +53,24 @@ public class AuthenticationService {
         );
         User user = ((User) auth.getPrincipal());
         AuthenticatedUserResponseDto authenticatedUserResponseDto = userMapper.toAuthenticatedUserResponse(user);
-        String jwtToken  = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).user(authenticatedUserResponseDto).build();
+        JwtToken jwtToken  = jwtService.generateToken(user);
+        JwtToken refreshToken = jwtService.generateRefreshToken(user);
+        return AuthenticationResponse.builder().accessToken(jwtToken.getToken()).refreshToken(refreshToken.getToken()).user(authenticatedUserResponseDto).build();
     }
 
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authHeader == null && request.getQueryString() != null && request.getQueryString().startsWith("token=Bearer")) {
-            authHeader = request.getQueryString().replace("token=Bearer%20", "Bearer ");
+    public JwtTokenResponseDto refreshToken(String refreshToken) {
+        JwtToken jwtToken = jwtTokenParser.parse(refreshToken);
+        String userId = jwtToken.getSubject();
+
+
+        User user = repository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new JwtAuthenticationException("Invalid JWT token"));
+
+        if (!jwtService.isTokenValid(jwtToken, user)) {
+            throw new JwtAuthenticationException("Invalid JWT token");
         }
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return;
-        }
-
-        final String refreshToken = authHeader.substring(7);
-        final String userId;
-
-        try {
-            userId = jwtService.extractUserId(refreshToken);
-        } catch (Exception e) {
-            throw new JwtAuthenticationException("Invalid JWT token", e);
-        }
-
-        if (userId != null) {
-            User user = repository.findById(UUID.fromString(userId)).orElseThrow(() -> new JwtAuthenticationException("Invalid JWT token"));
-            if (jwtService.isTokenValid(refreshToken, user)) {
-                String accessToken = jwtService.generateToken(user);
-                AuthenticationResponse authResponse = AuthenticationResponse.builder()
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
-                        .build();
-                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
-            } else {
-                throw new JwtAuthenticationException("Invalid JWT token");
-            }
-        }
+        JwtToken accessToken = jwtService.generateToken(user);
+        return new JwtTokenResponseDto(accessToken.getToken(), jwtToken.getToken());
     }
 }

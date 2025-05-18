@@ -31,10 +31,12 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains("api/v1/auth")) {
+        String path = request.getServletPath();
+        if (path.equals("/auth/register") || path.equals("/auth/authenticate") || path.equals("/auth/refresh-token")) {
             filterChain.doFilter(request, response);
             return;
         }
+
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader == null && request.getQueryString() != null && request.getQueryString().startsWith("token=Bearer")) {
             authHeader = request.getQueryString().replace("token=Bearer%20", "Bearer ");

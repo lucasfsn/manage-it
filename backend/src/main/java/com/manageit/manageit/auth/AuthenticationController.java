@@ -2,6 +2,7 @@ package com.manageit.manageit.auth;
 
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
 import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.jwt.dto.JwtTokenResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,11 +44,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(userService.findByToken(token));
     }
 
-    @PostMapping("/refresh-token")
-    public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws IOException {
-        authService.refreshToken(request, response);
+    @GetMapping("/refresh-token")
+    public ResponseEntity<JwtTokenResponseDto> refreshToken(
+            @RequestHeader("Authorization") String token
+    )  {
+        return ResponseEntity.ok(authService.refreshToken(token));
     }
 }
