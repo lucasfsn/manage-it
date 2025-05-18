@@ -3,6 +3,8 @@ package com.manageit.manageit.jwt.filter;
 import com.manageit.manageit.core.exception.JwtAuthenticationException;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.jwt.builder.JwtTokenParser;
+import com.manageit.manageit.jwt.model.JwtToken;
 import com.manageit.manageit.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,6 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserService userService;
+    private final JwtTokenParser jwtTokenParser;
 
     @Override
     protected void doFilterInternal(
@@ -48,23 +51,17 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String jwt = authHeader.substring(7);
-        final String userId;
+        final JwtToken token = jwtTokenParser.parse(authHeader);
 
-        String tokenType = jwtService.extractClaim(jwt, claims -> (String) claims.get("type"));
-        if (tokenType == null || !tokenType.equals("access")) {
+        if (token == null || !token.getType().equals("access")) {
             throw new JwtAuthenticationException("Invalid JWT token");
         }
 
-        try {
-            userId = jwtService.extractUserId(jwt);
-        } catch (Exception e) {
-            throw new JwtAuthenticationException("Invalid JWT token", e);
-        }
+        String userId = token.getSubject();
 
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userService.getUserOrThrow(userId);
-            if (jwtService.isTokenValid(jwt, user)) {
+            if (jwtService.isTokenValid(token, user)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         user,
                         null,
