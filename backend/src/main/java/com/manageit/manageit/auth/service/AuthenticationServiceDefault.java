@@ -1,5 +1,8 @@
-package com.manageit.manageit.auth;
+package com.manageit.manageit.auth.service;
 
+import com.manageit.manageit.auth.dto.AuthenticationRequestDto;
+import com.manageit.manageit.auth.dto.AuthenticationResponseDto;
+import com.manageit.manageit.auth.dto.RegisterRequestDto;
 import com.manageit.manageit.jwt.service.JwtService;
 import com.manageit.manageit.core.exception.JwtAuthenticationException;
 import com.manageit.manageit.feature.user.model.User;
@@ -20,7 +23,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationServiceDefault implements AuthenticationService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
@@ -29,7 +32,8 @@ public class AuthenticationService {
     private final UserMapper userMapper;
     private final JwtTokenParser jwtTokenParser;
 
-    public AuthenticationResponse register(@Valid RegisterRequest request) {
+    @Override
+    public AuthenticationResponseDto register(@Valid RegisterRequestDto request) {
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .username(request.getUsername())
@@ -41,10 +45,11 @@ public class AuthenticationService {
         AuthenticatedUserResponseDto authenticatedUserResponseDto = userMapper.toAuthenticatedUserResponse(user);
         JwtToken jwtToken = jwtService.generateToken(savedUser);
         JwtToken refreshToken = jwtService.generateRefreshToken(savedUser);
-        return AuthenticationResponse.builder().accessToken(jwtToken.getToken()).refreshToken(refreshToken.getToken()).user(authenticatedUserResponseDto).build();
+        return AuthenticationResponseDto.builder().accessToken(jwtToken.getToken()).refreshToken(refreshToken.getToken()).user(authenticatedUserResponseDto).build();
     }
 
-    public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
+    @Override
+    public AuthenticationResponseDto authenticate(@Valid AuthenticationRequestDto request) {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -55,9 +60,10 @@ public class AuthenticationService {
         AuthenticatedUserResponseDto authenticatedUserResponseDto = userMapper.toAuthenticatedUserResponse(user);
         JwtToken jwtToken  = jwtService.generateToken(user);
         JwtToken refreshToken = jwtService.generateRefreshToken(user);
-        return AuthenticationResponse.builder().accessToken(jwtToken.getToken()).refreshToken(refreshToken.getToken()).user(authenticatedUserResponseDto).build();
+        return AuthenticationResponseDto.builder().accessToken(jwtToken.getToken()).refreshToken(refreshToken.getToken()).user(authenticatedUserResponseDto).build();
     }
 
+    @Override
     public JwtTokenResponseDto refreshToken(String refreshToken) {
         JwtToken jwtToken = jwtTokenParser.parse(refreshToken);
         String userId = jwtToken.getSubject();

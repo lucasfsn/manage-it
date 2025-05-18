@@ -1,4 +1,4 @@
-package com.manageit.manageit.auth;
+package com.manageit.manageit.auth.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class RegisterRequestDto {
 
     @NotBlank(message = "Username cannot be empty")
     @Size(min = 7, max = 30, message = "Username must be between 7 and 30 characters")
