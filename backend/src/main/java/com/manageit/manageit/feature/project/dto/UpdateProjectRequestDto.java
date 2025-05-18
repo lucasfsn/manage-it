@@ -1,6 +1,5 @@
 package com.manageit.manageit.feature.project.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.manageit.manageit.feature.project.model.ProjectStatus;
 import com.manageit.manageit.feature.project.validation.EndDateAfterStartDate;

@@ -1,4 +1,3 @@
-
 package com.manageit.manageit.feature.project.dto;
 
 import com.manageit.manageit.feature.project.validation.EndDateAfterStartDate;
@@ -12,7 +11,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-
 
 @Data
 @Builder
