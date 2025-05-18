@@ -1,7 +1,7 @@
 package com.manageit.manageit.feature.message.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,9 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MessageDto {
+public class MessageResponseDto {
     private UUID id;
     private String createdAt;
-    private BasicUserDto sender;
+    private UserResponseDto sender;
     private String content;
 }

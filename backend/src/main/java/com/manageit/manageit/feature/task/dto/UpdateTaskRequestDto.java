@@ -1,8 +1,8 @@
-package com.manageit.manageit.feature.project.dto;
-
+package com.manageit.manageit.feature.task.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.manageit.manageit.feature.project.model.ProjectStatus;
+import com.manageit.manageit.feature.task.model.TaskPriority;
+import com.manageit.manageit.feature.task.model.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,10 +15,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UpdateProjectRequest {
-    private String name;
+public class UpdateTaskRequestDto {
     private String description;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private ProjectStatus status;
+    private TaskStatus status;
+    private TaskPriority priority;
+    private LocalDate dueDate;
 }

@@ -1,8 +1,9 @@
-package com.manageit.manageit.configuration.security;
+package com.manageit.manageit.jwt.filter;
 
 import com.manageit.manageit.core.exception.JwtAuthenticationException;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

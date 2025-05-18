@@ -1,6 +1,7 @@
 package com.manageit.manageit.configuration.security;
 
 
+import com.manageit.manageit.jwt.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
