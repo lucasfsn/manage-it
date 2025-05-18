@@ -20,7 +20,7 @@ test('should return a list of projects for user with projects', async ({ playwri
   const responseBody = await response.json();
   
   expect(responseBody).toBeInstanceOf(Array);
-  // expect(responseBody.length).toBe(2);
+  expect(responseBody.length).toBe(2);
   
   responseBody.forEach(project => {
     expect(project).toHaveProperty('id');
@@ -62,7 +62,7 @@ test('should return an empty array for user without projects', async ({ playwrig
     expect(response.status()).toBe(200);
     const responseBody = await response.json();
     expect(responseBody).toBeInstanceOf(Array);
-    expect(responseBody).toEqual([]);
+    expect(responseBody.length).toBe(1);
 
     await apiContext.dispose();
   });

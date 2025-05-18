@@ -120,6 +120,4 @@ test('should return error while removing user from a project with invalid id', a
   });
 
   expect(response.status()).toBe(400);
-  
-  // znowu 500 zamiast 400
 });

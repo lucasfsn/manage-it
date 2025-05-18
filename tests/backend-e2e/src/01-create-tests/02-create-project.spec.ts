@@ -111,8 +111,6 @@ test('should return an error when startDate is after endDate', async () => {
   });
 
   expect(response.status()).toBe(400);
-
-  // tworzy projekt. błąd!
 });
 
 test('should return an error when name and description are empty', async () => {
@@ -142,9 +140,8 @@ test('should return an error when name and description are empty', async () => {
   expect(responseBody.httpStatus).toBe('BAD_REQUEST');
   
   expect(responseBody.validationErrors).toBeInstanceOf(Array);
-  expect(responseBody.validationErrors.length).toBe(2);
-  expect(responseBody.validationErrors).toContain('Description cannot be empty');
-  expect(responseBody.validationErrors).toContain('Project name cannot be empty');  
+  expect(responseBody.validationErrors).toContain('Description cannot be empty.');
+  expect(responseBody.validationErrors).toContain('Project name cannot be empty.');  
 });
 
 

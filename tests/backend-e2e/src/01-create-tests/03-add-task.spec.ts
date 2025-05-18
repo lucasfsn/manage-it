@@ -62,7 +62,10 @@ test('should return an error when description is empty', async ({ projectId }) =
 
   expect(response.status()).toBe(400);
 
-  // 500, a powinno 400. message: "Could not commit JPA transaction"
+  const responseBody = await response.json();
+  expect(responseBody.httpStatus).toBe('BAD_REQUEST');  
+  expect(responseBody.validationErrors).toBeInstanceOf(Array);
+  expect(responseBody.validationErrors).toContain('Task description cannot be empty.');
 });
 
 test('should return an error when task status is incorrect', async ({ projectId }) => {
@@ -80,7 +83,8 @@ test('should return an error when task status is incorrect', async ({ projectId 
 
   expect(response.status()).toBe(400);
 
-  // 500, a powinno być 400
+  const responseBody = await response.json();
+  expect(responseBody.httpStatus).toBe('BAD_REQUEST');
 });
 
 test('should return an error when task priority is incorrect', async ({ projectId }) => {
@@ -98,7 +102,8 @@ test('should return an error when task priority is incorrect', async ({ projectI
 
   expect(response.status()).toBe(400);
 
-  // 500, a powinno być 400
+  const responseBody = await response.json();
+  expect(responseBody.httpStatus).toBe('BAD_REQUEST');
 });
 
 test('should return an error when dueDate is in the past', async ({ projectId }) => {
@@ -115,8 +120,11 @@ test('should return an error when dueDate is in the past', async ({ projectId })
   });
 
   expect(response.status()).toBe(400);
-
-  // można utworzyć taska, gdy dueDate jest w przeszłości. BŁĄD
+  
+  const responseBody = await response.json();
+  expect(responseBody.httpStatus).toBe('BAD_REQUEST');
+  expect(responseBody.validationErrors).toBeInstanceOf(Array);
+  expect(responseBody.validationErrors).toContain('Task due date cannot be in the past.');
 });
 
 test('should not add task to project with COMPLETED status', async ({ projectId2 }) => {

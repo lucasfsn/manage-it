@@ -67,6 +67,8 @@ test('should not add user (not a member of the project) to a task', async ({ pro
 
   expect(responseBody.httpStatus).toBe('UNAUTHORIZED');
   expect(responseBody.message).toBe(`User ${username} is not member of project`);
+
+  // dodaje użytkownika, który nie jest członkiem projektu do taska przypisanego do tego projektu 
 });
 
 test('should not assign non-existing user to a task', async ({ projectId, taskId }) => {
@@ -112,7 +114,8 @@ test('should return error if task has invalid id', async ({ projectId }) => {
   });
 
   expect(response.status()).toBe(400);
-
-  // daje 500 zamiast 400
+  const responseBody = await response.json();
+  expect(responseBody.httpStatus).toBe("BAD_REQUEST");
+  expect(responseBody.errorDescription).toBe(`Invalid UUID format`);
 });
 

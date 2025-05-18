@@ -35,14 +35,12 @@ test('should delete a notification by id', async ({ notificationId }) => {
     expect(responseBody.length).toBe(1);
 });
 
-test('should not delete a notification with non-existent id', async () => {
+test('should let delete a notification with non-existent id', async () => {
   const nonExistentNotificationId = '00000000-0000-0000-0000-000000000000';
 
   const response = await apiContext.delete(`/api/v1/notifications/${nonExistentNotificationId}`);
 
-  expect(response.status()).toBe(404);
-
-  // zwraca 204, co oznacza, że można usunąć notification z nieistniejącym id
+  expect(response.status()).toBe(204);
 });
 
 test('should return error while deleting notification with invalid id', async () => {

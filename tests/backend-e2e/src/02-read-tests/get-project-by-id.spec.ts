@@ -47,6 +47,8 @@ test('should return 400 if invalid ID format', async () => {
 
   const response = await apiContext.get(`/api/v1/projects/${invalidId}`);
   expect(response.status()).toBe(400);
-
-  // póki co zwraca 500. a 500 nie może być!
+  
+  const responseBody = await response.json();
+  expect(responseBody.httpStatus).toBe("BAD_REQUEST");
+  expect(responseBody.errorDescription).toBe(`Invalid UUID format`);
 });

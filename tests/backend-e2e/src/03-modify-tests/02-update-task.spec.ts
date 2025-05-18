@@ -59,8 +59,6 @@ test('should return an error when description is empty', async ({ projectId, tas
   });
 
   expect(response.status()).toBe(400);
-
-  // 500, a powinno 400. message: "Could not commit JPA transaction"
 });
 
 test('should return an error when task status is incorrect', async ({ projectId, taskId }) => {
@@ -77,8 +75,6 @@ test('should return an error when task status is incorrect', async ({ projectId,
   });
 
   expect(response.status()).toBe(400);
-
-  // 500, a powinno być 400
 });
 
 test('should return an error when task priority is incorrect', async ({ projectId, taskId }) => {
@@ -95,8 +91,6 @@ test('should return an error when task priority is incorrect', async ({ projectI
   });
 
   expect(response.status()).toBe(400);
-
-  // 500, a powinno być 400
 });
 
 test('should return an error when dueDate is in the past', async ({ projectId, taskId }) => {
@@ -113,8 +107,6 @@ test('should return an error when dueDate is in the past', async ({ projectId, t
   });
 
   expect(response.status()).toBe(400);
-
-  // można utworzyć taska, gdy dueDate jest w przeszłości. BŁĄD
 });
 
 test('should return 404 if task is not found', async ({ projectId }) => {
@@ -144,6 +136,4 @@ test('should return error if task id is invalid', async ({ projectId }) => {
   });
 
   expect(response.status()).toBe(400);
-
-  // zwraca 500, a powinno 400
 });

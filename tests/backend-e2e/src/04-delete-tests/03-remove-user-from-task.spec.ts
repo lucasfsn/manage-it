@@ -97,6 +97,4 @@ test('should return error if task has invalid id', async ({ projectId }) => {
   });
 
   expect(response.status()).toBe(400);
-
-  // daje 500 zamiast 400
 });

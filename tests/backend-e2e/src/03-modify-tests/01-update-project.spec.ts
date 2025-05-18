@@ -123,6 +123,4 @@ test('should not update project with invalid id', async () => {
   });
 
   expect(response.status()).toBe(400);
-  
-  // 500. A powinno być 400
 });

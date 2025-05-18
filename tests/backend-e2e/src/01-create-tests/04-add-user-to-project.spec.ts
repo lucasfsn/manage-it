@@ -90,6 +90,7 @@ test('should return error while adding user to a project with invalid id', async
   });
 
   expect(response.status()).toBe(400);
-  
-  // znowu 500 zamiast 400
+  const responseBody = await response.json();
+  expect(responseBody.httpStatus).toBe("BAD_REQUEST");
+  expect(responseBody.errorDescription).toBe(`Invalid UUID format`);
 });

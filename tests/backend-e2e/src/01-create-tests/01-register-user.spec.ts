@@ -35,7 +35,7 @@ test('should return an error when registering with missing username', async ({ r
   expect(response.status()).toBe(400);
   const responseBody = await response.json();
   expect(responseBody.httpStatus).toBe("BAD_REQUEST");
-  expect(responseBody.validationErrors).toContain('Username cannot be empty');
+  expect(responseBody.validationErrors).toContain('Username cannot be empty.');
 });
 
 test('should return an error when registering with invalid email format', async ({ request }) => {
@@ -54,7 +54,7 @@ test('should return an error when registering with invalid email format', async 
   expect(response.status()).toBe(400);
   const responseBody = await response.json();
   expect(responseBody.httpStatus).toBe("BAD_REQUEST");
-  expect(responseBody.validationErrors).toContain('Email should be valid');
+  expect(responseBody.validationErrors).toContain('Email should be valid.');
 });
 
 test('should return an error when registering with an already existing username and email', async ({ request }) => {

@@ -55,6 +55,4 @@ test('should not delete project with invalid id', async () => {
   const response = await apiContext.delete(`/api/v1/projects/${invalidId}`);
 
   expect(response.status()).toBe(400);
-
-  // wyrzuca 500, a powinno 400. 500 jest NIELEGALNA
 });
