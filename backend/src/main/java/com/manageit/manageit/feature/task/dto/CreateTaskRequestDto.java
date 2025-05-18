@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTaskRequest {
+public class CreateTaskRequestDto {
     @NotBlank(message = "Task description cannot be empty.")
     @Size(min = 5, max = 500, message = "Task description must be between 5 and 500 characters.")
     private String description;

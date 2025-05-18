@@ -1,6 +1,6 @@
 package com.manageit.manageit.core.handler;
 
-import com.manageit.manageit.core.dto.ExceptionResponse;
+import com.manageit.manageit.core.dto.ExceptionResponseDto;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.TokenUserMismatchException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
@@ -59,11 +59,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TokenUserMismatchException.class)
-    public ResponseEntity<ExceptionResponse> handleException(TokenUserMismatchException exp) {
+    public ResponseEntity<ExceptionResponseDto> handleException(TokenUserMismatchException exp) {
 
         return ResponseEntity.status(TOKEN_MISMATCH.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(TOKEN_MISMATCH.getHttpStatus())
                                 .errorDescription(exp.getMessage())
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({UserNotInProjectException.class, UserNotInTaskException.class})
-    public ResponseEntity<ExceptionResponse> handleException(RuntimeException exp) {
+    public ResponseEntity<ExceptionResponseDto> handleException(RuntimeException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(INSUFFICIENT_PERMISSIONS.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(INSUFFICIENT_PERMISSIONS.getHttpStatus())
                                 .errorDescription(exp.getMessage())
@@ -94,7 +94,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TaskNotInProjectException.class)
-    public ResponseEntity<ExceptionResponse> handleException(TaskNotInProjectException exp) {
+    public ResponseEntity<ExceptionResponseDto> handleException(TaskNotInProjectException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
@@ -105,7 +105,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(TASK_NOT_IN_PROJECT.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(TASK_NOT_IN_PROJECT.getHttpStatus())
                                 .errorDescription(exp.getMessage())
@@ -122,14 +122,14 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ExceptionResponse> handleException(BadCredentialsException exp) {
+    public ResponseEntity<ExceptionResponseDto> handleException(BadCredentialsException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
         return ResponseEntity
                 .status(BAD_CREDENTIALS.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(BAD_CREDENTIALS.getHttpStatus())
                                 .errorDescription(exp.getMessage())
@@ -139,7 +139,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleException(EntityNotFoundException exp) {
+    public ResponseEntity<ExceptionResponseDto> handleException(EntityNotFoundException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
@@ -150,7 +150,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(ENTITY_NOT_FOUND.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(ENTITY_NOT_FOUND.getHttpStatus())
                                 .errorDescription(exp.getMessage())
@@ -160,7 +160,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleException(MethodArgumentNotValidException exp) {
+    public ResponseEntity<ExceptionResponseDto> handleException(MethodArgumentNotValidException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
@@ -169,7 +169,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(VALIDATION_ERROR.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(VALIDATION_ERROR.getHttpStatus())
                                 .errorDescription(VALIDATION_ERROR.getDescription())
@@ -180,7 +180,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException exp) {
+    public ResponseEntity<ExceptionResponseDto> handleDataIntegrityViolationException(DataIntegrityViolationException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
@@ -196,7 +196,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(DATA_INTEGRITY_VIOLATION.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(DATA_INTEGRITY_VIOLATION.getHttpStatus())
                                 .errorDescription(exp.getMessage())
@@ -206,14 +206,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ExceptionResponse> handleException(IllegalStateException exp) {
+    public ResponseEntity<ExceptionResponseDto> handleException(IllegalStateException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
         return ResponseEntity
                 .status(ILLEGAL_STATE.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .errorDescription(ILLEGAL_STATE.getDescription())
                                 .message(exp.getMessage())
@@ -239,14 +239,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> handleException(Exception exp) {
+    public ResponseEntity<ExceptionResponseDto> handleException(Exception exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
         return ResponseEntity
                 .status(INTERNAL_ERROR.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .errorDescription(INTERNAL_ERROR.getDescription())
                                 .message(exp.getMessage())

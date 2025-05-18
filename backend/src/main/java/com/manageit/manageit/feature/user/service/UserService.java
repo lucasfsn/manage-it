@@ -1,9 +1,9 @@
 package com.manageit.manageit.feature.user.service;
 
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
-import com.manageit.manageit.feature.user.dto.UpdateUserRequest;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
+import com.manageit.manageit.feature.user.dto.UpdateUserRequestDto;
+import com.manageit.manageit.feature.user.dto.UserDetailsResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 
 import java.util.List;
@@ -21,11 +21,11 @@ public interface UserService {
 
     AuthenticatedUserResponseDto findByToken(String token);
 
-    UserResponseDto findByUsername(User userDetails, String username);
+    UserDetailsResponseDto findByUsername(User userDetails, String username);
 
-    UserResponseDto updateUser(User userDetails, UpdateUserRequest updatedUser);
+    UserDetailsResponseDto updateUser(User userDetails, UpdateUserRequestDto updatedUser);
 
-    List<BasicUserDto> searchUsers(String pattern, UUID projectId, UUID taskId);
+    List<UserResponseDto> searchUsers(String pattern, UUID projectId, UUID taskId);
 
     void removeUser(User userDetails);
 }

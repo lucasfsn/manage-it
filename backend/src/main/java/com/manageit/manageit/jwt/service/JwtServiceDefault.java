@@ -1,4 +1,4 @@
-package com.manageit.manageit.configuration.security;
+package com.manageit.manageit.jwt.service;
 
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.jwt.builder.JwtTokenParser;
@@ -25,7 +25,7 @@ import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
-public class JwtService {
+public class JwtServiceDefault implements JwtService {
 
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
@@ -35,47 +35,52 @@ public class JwtService {
     private String secretKey;
     private final JwtTokenParser jwtTokenParser;
 
+    @Override
     public String extractUserId(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    @Override
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
-        System.out.println(claims);
         return claimsResolver.apply(claims);
     }
 
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-
-    private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-    }
-
+    @Override
     public JwtToken generateToken(User userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("type", "access");
         return generateToken(extraClaims, userDetails);
     }
 
+    @Override
     public JwtToken generateToken(Map<String, Object> extraClaims, User userDetails) {
         JwtBuilder token = buildToken(extraClaims, userDetails, jwtExpiration);
         return jwtTokenParser.parse(token);
     }
 
+    @Override
     public JwtToken generateRefreshToken(UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("type", "refresh");
         JwtBuilder token = buildToken(extraClaims, (User) userDetails, jwtRefreshExpiration);
         return jwtTokenParser.parse(token);
+    }
+
+    @Override
+    public boolean isTokenValid(String token, User user) {
+        final UUID userId = UUID.fromString(extractUserId(token));
+        return (userId.equals(user.getId())) && !isTokenExpired(token);
+    }
+
+    @Override
+    public boolean isTokenValid(JwtToken jwtToken, User user) {
+        UUID userId = UUID.fromString(jwtToken.getSubject());
+        return (userId.equals(user.getId())) && !isTokenExpired(jwtToken);
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
     private JwtBuilder buildToken(
@@ -98,16 +103,15 @@ public class JwtService {
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256);
     }
 
-    public boolean isTokenValid(String token, User user) {
-        final UUID userId = UUID.fromString(extractUserId(token));
-        return (userId.equals(user.getId())) && !isTokenExpired(token);
-    }
+    private Claims extractAllClaims(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
 
-    public boolean isTokenValid(JwtToken jwtToken, User user) {
-        UUID userId = UUID.fromString(jwtToken.getSubject());
-        return (userId.equals(user.getId())) && !isTokenExpired(jwtToken);
     }
-
 
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());

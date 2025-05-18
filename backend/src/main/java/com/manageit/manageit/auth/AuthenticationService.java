@@ -1,6 +1,6 @@
 package com.manageit.manageit.auth;
 
-import com.manageit.manageit.configuration.security.JwtService;
+import com.manageit.manageit.jwt.service.JwtService;
 import com.manageit.manageit.core.exception.JwtAuthenticationException;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.mapper.UserMapper;
