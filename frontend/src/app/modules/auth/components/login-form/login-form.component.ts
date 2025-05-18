@@ -3,6 +3,7 @@ import { TranslationService } from '@/app/core/services/translation.service';
 import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { email, required } from '@/app/shared/validators';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -67,7 +68,7 @@ export class LoginFormComponent implements OnInit {
           this.translationService.translate('toast.success.LOGIN'),
         );
       },
-      error: (error) => {
+      error: (error: ErrorResponse) => {
         const localeMessage = this.mapperService.errorToastMapper(
           error.status,
           error.error.errorDescription,
