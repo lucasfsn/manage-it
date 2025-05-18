@@ -133,7 +133,7 @@ public class ProjectServiceDefault implements ProjectService {
     public void addUserToProject(User user, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
         validateUserIsProjectOwner(user, project);
-        User userToAdd = userService.getUserByUsername(request.getUsername());
+        User userToAdd = userService.getUserByUsername(request.getName());
         if (!project.getMembers().contains(userToAdd)) {
             project.getMembers().add(userToAdd);
             project.setUpdatedAt(LocalDateTime.now());
@@ -153,11 +153,11 @@ public class ProjectServiceDefault implements ProjectService {
     public ProjectResponseDto removeUserFromProject(User owner, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
         validateUserIsProjectOwner(owner, project);
-        if (project.getOwner().getName().equals(request.getUsername())) {
+        if (project.getOwner().getName().equals(request.getName())) {
             throw new IllegalArgumentException("Project owner cannot remove themselves from the project.");
         }
 
-        User userToRemove = userService.getUserByUsername(request.getUsername());
+        User userToRemove = userService.getUserByUsername(request.getName());
         if (project.getMembers().contains(userToRemove)) {
             project.getTasks().forEach(task -> task.getUsers().remove(userToRemove));
             project.getMembers().remove(userToRemove);

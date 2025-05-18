@@ -12,12 +12,17 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+
     UserResponseDto toUserResponseDto(User user);
+
     AuthenticatedUserResponseDto toAuthenticatedUserResponse(User user);
+
     UserDetailsResponseDto toUserDetailsResponseDto(User user);
     @Mapping(source = "projects", target = "projects")
+
     UserDetailsResponseDto toUserDetailsResponseDto(User user, List<Project> projects);
     @Mapping(source = "projects", target = "projects")
     @Mapping(target = "email", ignore = true)
+
     UserDetailsResponseDto toUserResponseWithoutEmail(User user, List<Project> projects);
 }

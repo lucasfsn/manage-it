@@ -147,7 +147,7 @@ public class TaskServiceDefault implements TaskService {
     @Override
     public TaskResponseDto addUserToTask(User user, UUID taskId, UUID projectId, UserResponseDto request) {
         Project project = projectService.getProjectById(projectId);
-        User userToAdd = userService.getUserByUsername(request.getUsername());
+        User userToAdd = userService.getUserByUsername(request.getName());
         checkIfUserIsMemberOfProject(user, project);
         if (!project.getMembers().contains(userToAdd)) {
             throw new UserNotInProjectException("User " + userToAdd.getName() + " is not member of project");
@@ -182,7 +182,7 @@ public class TaskServiceDefault implements TaskService {
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
-        User userToRemove = userService.getUserByUsername(request.getUsername());
+        User userToRemove = userService.getUserByUsername(request.getName());
         if (task.getUsers().contains(userToRemove)) {
             task.getUsers().remove(userToRemove);
             task.setUpdatedAt(LocalDateTime.now());
