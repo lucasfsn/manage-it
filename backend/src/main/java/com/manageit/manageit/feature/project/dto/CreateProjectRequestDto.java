@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EndDateAfterStartDate(message = "End date must be after start date")
+@EndDateAfterStartDate
 public class CreateProjectRequestDto {
 
     @NotBlank(message = "Project name cannot be empty.")
