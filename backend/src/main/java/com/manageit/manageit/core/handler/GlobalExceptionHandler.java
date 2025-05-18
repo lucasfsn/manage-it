@@ -30,7 +30,7 @@ import static com.manageit.manageit.core.dto.Error.*;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ExceptionResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
+    public ResponseEntity<ExceptionResponseDto> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
 
         if (ex.getRequiredType() != null && ex.getRequiredType().equals(UUID.class)) {
             String name = ex.getName();
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(
-                            ExceptionResponse.builder()
+                            ExceptionResponseDto.builder()
                                     .timestamp(LocalDateTime.now())
                                     .httpStatus(HttpStatus.BAD_REQUEST)
                                     .errorDescription("Invalid UUID format")
@@ -222,14 +222,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exp) {
+    public ResponseEntity<ExceptionResponseDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
         return ResponseEntity
                 .status(INVALID_REQUEST_BODY.getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
+                        ExceptionResponseDto.builder()
                                 .timestamp(LocalDateTime.now())
                                 .httpStatus(INVALID_REQUEST_BODY.getHttpStatus())
                                 .errorDescription(INVALID_REQUEST_BODY.getDescription())
