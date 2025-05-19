@@ -43,7 +43,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(userService.findByToken(token));
     }
 
-    @GetMapping("/refresh-token")
+    @PostMapping("/refresh-token")
     public ResponseEntity<JwtTokenResponseDto> refreshToken(
             @RequestHeader("Authorization") String token
     )  {
