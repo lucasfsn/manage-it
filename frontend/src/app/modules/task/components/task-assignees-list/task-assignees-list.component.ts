@@ -1,6 +1,4 @@
 import { LoadingService } from '@/app/core/services/loading.service';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
 import { User } from '@/app/features/dto/project.model';
 import { TaskService } from '@/app/features/services/task.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
@@ -9,6 +7,8 @@ import {
   PaginatorComponent,
 } from '@/app/shared/components/paginator/paginator.component';
 import { UsersListComponent } from '@/app/shared/components/ui/users-list/users-list.component';
+import { MapperService } from '@/app/shared/services/mapper.service';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';

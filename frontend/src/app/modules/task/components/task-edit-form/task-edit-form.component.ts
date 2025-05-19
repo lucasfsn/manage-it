@@ -1,5 +1,3 @@
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
 import {
   Priority,
   Task,
@@ -14,6 +12,8 @@ import {
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { MapperService } from '@/app/shared/services/mapper.service';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import { maxLength, minLength, required } from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';

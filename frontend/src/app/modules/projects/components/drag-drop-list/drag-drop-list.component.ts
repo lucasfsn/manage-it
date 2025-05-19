@@ -1,4 +1,3 @@
-import { MapperService } from '@/app/core/services/mapper.service';
 import { Project, ProjectStatus } from '@/app/features/dto/project.model';
 import { Task, TaskStatus } from '@/app/features/dto/task.model';
 import { ProjectService } from '@/app/features/services/project.service';
@@ -7,6 +6,7 @@ import { TaskCreateFormComponent } from '@/app/modules/task/components/task-crea
 import { PriorityComponent } from '@/app/shared/components/ui/priority/priority.component';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { MapperService } from '@/app/shared/services/mapper.service';
 import {
   CdkDrag,
   CdkDragDrop,

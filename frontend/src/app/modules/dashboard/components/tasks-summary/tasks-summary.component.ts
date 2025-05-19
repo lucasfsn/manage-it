@@ -1,7 +1,7 @@
-import { MapperService } from '@/app/core/services/mapper.service';
 import { Project } from '@/app/features/dto/project.model';
 import { TaskStatus } from '@/app/features/dto/task.model';
 import { ProjectService } from '@/app/features/services/project.service';
+import { MapperService } from '@/app/shared/services/mapper.service';
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';

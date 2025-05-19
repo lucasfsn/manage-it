@@ -1,5 +1,4 @@
 import { LoadingService } from '@/app/core/services/loading.service';
-import { MapperService } from '@/app/core/services/mapper.service';
 import { UpdateUser, User } from '@/app/features/dto/user.model';
 import { UserService } from '@/app/features/services/user.service';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
@@ -9,6 +8,7 @@ import {
   PASSWORD_REGEX,
   PERSON_NAME_REGEX,
 } from '@/app/shared/constants/regex.constants';
+import { MapperService } from '@/app/shared/services/mapper.service';
 import {
   email,
   equalValues,

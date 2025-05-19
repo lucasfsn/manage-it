@@ -1,10 +1,10 @@
-import { MapperService } from '@/app/core/services/mapper.service';
 import { UserCredentials } from '@/app/features/dto/auth.model';
 import { Message } from '@/app/features/dto/chat.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ChatService } from '@/app/features/services/chat.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { MapperService } from '@/app/shared/services/mapper.service';
 import {
   animate,
   state,

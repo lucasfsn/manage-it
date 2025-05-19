@@ -1,5 +1,3 @@
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
 import { RegisterCredentials } from '@/app/features/dto/auth.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
@@ -9,6 +7,8 @@ import {
   PERSON_NAME_REGEX,
   USERNAME_REGEX,
 } from '@/app/shared/constants/regex.constants';
+import { MapperService } from '@/app/shared/services/mapper.service';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import {
   email,
   equalValues,

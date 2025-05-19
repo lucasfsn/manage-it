@@ -1,11 +1,11 @@
+import { LoadingService } from '@/app/core/services/loading.service';
+import { Notification } from '@/app/features/dto/notification.model';
+import { NotificationService } from '@/app/features/services/notification.service';
+import { MapperService } from '@/app/shared/services/mapper.service';
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
-import { LoadingService } from '@/app/core/services/loading.service';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { Notification } from '@/app/features/dto/notification.model';
-import { NotificationService } from '@/app/features/services/notification.service';
 
 export const notificationsResolver: ResolveFn<
   Notification[] | undefined

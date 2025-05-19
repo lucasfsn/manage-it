@@ -1,5 +1,5 @@
 import { Language, LANGUAGES, LocaleCode } from '@/app/config/language.config';
-import { TranslationService } from '@/app/core/services/translation.service';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import { DatePipe as DatePipeBase } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 

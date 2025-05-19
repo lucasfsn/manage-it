@@ -1,4 +1,4 @@
-import { allowAddUserToProjectGuard } from '@/app/core/guards/allow-add-user-to-project.guard';
+import { allowAddUserToProjectGuard } from '@/app/modules/user/guards/allow-add-user-to-project.guard';
 import { UserComponent } from '@/app/modules/user/pages/user/user.component';
 import {
   userRedirectResolver,

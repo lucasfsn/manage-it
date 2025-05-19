@@ -1,4 +1,3 @@
-import { MapperService } from '@/app/core/services/mapper.service';
 import { Project, ProjectStatus } from '@/app/features/dto/project.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
@@ -9,6 +8,7 @@ import { SearchComponent } from '@/app/shared/components/search/search.component
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { MapperService } from '@/app/shared/services/mapper.service';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';

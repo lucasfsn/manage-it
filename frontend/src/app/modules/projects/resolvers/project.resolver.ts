@@ -1,11 +1,11 @@
+import { LoadingService } from '@/app/core/services/loading.service';
+import { Project } from '@/app/features/dto/project.model';
+import { ProjectService } from '@/app/features/services/project.service';
+import { MapperService } from '@/app/shared/services/mapper.service';
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
-import { LoadingService } from '@/app/core/services/loading.service';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { Project } from '@/app/features/dto/project.model';
-import { ProjectService } from '@/app/features/services/project.service';
 
 export const projectResolver: ResolveFn<Project | null> = (route) => {
   const loadingService = inject(LoadingService);

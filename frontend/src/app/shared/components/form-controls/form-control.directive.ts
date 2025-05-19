@@ -1,4 +1,4 @@
-import { TranslationService } from '@/app/core/services/translation.service';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import { Directive, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 

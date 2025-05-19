@@ -1,4 +1,3 @@
-import { MapperService } from '@/app/core/services/mapper.service';
 import {
   ProjectsSort,
   SortCriteria,
@@ -8,6 +7,7 @@ import {
   FormSelectControlComponent,
   SelectOption,
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
+import { MapperService } from '@/app/shared/services/mapper.service';
 import {
   Component,
   DestroyRef,

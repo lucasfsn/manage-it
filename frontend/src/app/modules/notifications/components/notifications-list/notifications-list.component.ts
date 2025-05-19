@@ -1,8 +1,8 @@
-import { MapperService } from '@/app/core/services/mapper.service';
 import { Notification } from '@/app/features/dto/notification.model';
 import { NotificationService } from '@/app/features/services/notification.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { TimeAgoPipe } from '@/app/shared/pipes/time-ago.pipe';
+import { MapperService } from '@/app/shared/services/mapper.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';

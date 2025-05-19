@@ -1,6 +1,6 @@
 import { NavbarComponent } from '@/app/core/layout/navbar/navbar.component';
 import { Theme, ThemeService } from '@/app/core/services/theme.service';
-import { TranslationService } from '@/app/core/services/translation.service';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import { Component, effect, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {

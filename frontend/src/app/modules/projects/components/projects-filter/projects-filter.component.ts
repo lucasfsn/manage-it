@@ -1,5 +1,3 @@
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
 import { ProjectStatus } from '@/app/features/dto/project.model';
 import { ProjectsFilters } from '@/app/modules/projects/models/projects-filter.model';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
@@ -8,6 +6,8 @@ import {
   RadioOption,
 } from '@/app/shared/components/form-controls/form-radio-control/form-radio-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { MapperService } from '@/app/shared/services/mapper.service';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import {
   Component,
   DestroyRef,

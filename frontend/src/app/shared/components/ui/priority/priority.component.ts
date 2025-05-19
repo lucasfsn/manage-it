@@ -1,12 +1,12 @@
-import { Component, Input } from '@angular/core';
-import { MapperService } from '@/app/core/services/mapper.service';
 import { Priority } from '@/app/features/dto/task.model';
+import { MapperService } from '@/app/shared/services/mapper.service';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-priority',
   imports: [],
   templateUrl: './priority.component.html',
-  styleUrl: './priority.component.scss'
+  styleUrl: './priority.component.scss',
 })
 export class PriorityComponent {
   @Input() public priority!: Priority;

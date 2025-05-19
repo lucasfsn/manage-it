@@ -1,8 +1,8 @@
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
 import { Project, User } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
+import { MapperService } from '@/app/shared/services/mapper.service';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';

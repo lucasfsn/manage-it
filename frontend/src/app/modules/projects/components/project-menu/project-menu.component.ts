@@ -1,11 +1,11 @@
 import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 import { LoadingService } from '@/app/core/services/loading.service';
-import { MapperService } from '@/app/core/services/mapper.service';
-import { TranslationService } from '@/app/core/services/translation.service';
 import { Project, ProjectStatus } from '@/app/features/dto/project.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
+import { MapperService } from '@/app/shared/services/mapper.service';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';

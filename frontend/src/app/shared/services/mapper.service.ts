@@ -1,4 +1,3 @@
-import { TranslationService } from '@/app/core/services/translation.service';
 import {
   NotificationOperation,
   NotificationType,
@@ -9,6 +8,7 @@ import {
   SortCriteria,
   SortOrder,
 } from '@/app/modules/projects/models/projects-sort.model';
+import { TranslationService } from '@/app/shared/services/translation.service';
 import { Injectable } from '@angular/core';
 
 @Injectable({
