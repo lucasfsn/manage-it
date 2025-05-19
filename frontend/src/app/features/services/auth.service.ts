@@ -38,8 +38,7 @@ export class AuthService {
         tap((res: AuthResponse) => {
           const { accessToken, refreshToken, user } = res;
 
-          this.storeAccessToken(accessToken);
-          this.storeRefreshToken(refreshToken);
+          this.storeTokens(accessToken, refreshToken);
 
           this.currentUser.set(user);
 
@@ -58,8 +57,7 @@ export class AuthService {
         tap((res: AuthResponse) => {
           const { accessToken, refreshToken, user } = res;
 
-          this.storeAccessToken(accessToken);
-          this.storeRefreshToken(refreshToken);
+          this.storeTokens(accessToken, refreshToken);
 
           this.currentUser.set(user);
 
@@ -109,25 +107,21 @@ export class AuthService {
   }
 
   public refreshToken(): Observable<RefreshTokenResponse> {
-    const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
+    const refreshTokenValue = localStorage.getItem(this.REFRESH_TOKEN);
 
-    if (!refreshToken) {
+    if (!refreshTokenValue) {
       this.logout();
 
-      return throwError(() => new Error('No refresh token found'));
+      return throwError(() => null);
     }
 
     return this.http
-      .post<RefreshTokenResponse>(
-        `${environment.apiUrl}/auth/refresh-token`,
-        {},
-      )
+      .get<RefreshTokenResponse>(`${environment.apiUrl}/auth/refresh-token`)
       .pipe(
         tap((res: RefreshTokenResponse) => {
           const { accessToken, refreshToken } = res;
 
-          this.storeAccessToken(accessToken);
-          this.storeRefreshToken(refreshToken);
+          this.storeTokens(accessToken, refreshToken);
         }),
         catchError((err: HttpErrorResponse) => {
           this.logout();
@@ -137,11 +131,8 @@ export class AuthService {
       );
   }
 
-  private storeAccessToken(jwt: string): void {
-    localStorage.setItem(this.ACCESS_TOKEN, jwt);
-  }
-
-  private storeRefreshToken(jwt: string): void {
-    localStorage.setItem(this.REFRESH_TOKEN, jwt);
+  private storeTokens(accessToken: string, refreshToken: string): void {
+    localStorage.setItem(this.ACCESS_TOKEN, accessToken);
+    localStorage.setItem(this.REFRESH_TOKEN, refreshToken);
   }
 }

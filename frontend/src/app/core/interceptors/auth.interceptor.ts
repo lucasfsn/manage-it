@@ -5,46 +5,82 @@ import {
 import { AuthService } from '@/app/features/services/auth.service';
 import {
   HttpErrorResponse,
+  HttpEvent,
+  HttpHandlerFn,
   HttpInterceptorFn,
   HttpRequest,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, switchMap, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  filter,
+  Observable,
+  switchMap,
+  take,
+  throwError,
+} from 'rxjs';
+
+const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
 
-  const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-  const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+  const isRefreshTokenRequest = req.url.includes('/refresh-token');
+  const token = isRefreshTokenRequest
+    ? localStorage.getItem(REFRESH_TOKEN_KEY)
+    : localStorage.getItem(ACCESS_TOKEN_KEY);
 
-  const addTokenToHeader = (
-    request: HttpRequest<unknown>,
-    token: string | null,
-  ): HttpRequest<unknown> => {
-    if (token)
-      return request.clone({
-        headers: request.headers.set('Authorization', `Bearer ${token}`),
-      });
-
-    return request;
-  };
-
-  let authReq = req;
-  if (req.url.includes('/refresh-token')) {
-    authReq = addTokenToHeader(req, refreshToken);
-  } else {
-    authReq = addTokenToHeader(req, accessToken);
-  }
-
-  return next(authReq).pipe(
+  return next(addAuthorizationHeader(req, token)).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401)
-        return authService.refreshToken().pipe(
-          switchMap((res) => next(addTokenToHeader(req, res.accessToken))),
-          catchError((refreshError) => throwError(() => refreshError)),
-        );
+      if (error.status === 401 && !isRefreshTokenRequest)
+        return handleTokenRefresh(req, next, authService);
+
+      if (error.status === 401) authService.logout();
 
       return throwError(() => error);
     }),
+  );
+};
+
+const addAuthorizationHeader = (
+  request: HttpRequest<unknown>,
+  token: string | null,
+): HttpRequest<unknown> => {
+  return token
+    ? request.clone({
+        headers: request.headers.set('Authorization', `Bearer ${token}`),
+      })
+    : request;
+};
+
+const handleTokenRefresh = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+  authService: AuthService,
+): Observable<HttpEvent<unknown>> => {
+  if (!refreshTokenSubject.value) {
+    refreshTokenSubject.next(null);
+
+    return authService.refreshToken().pipe(
+      switchMap(({ accessToken: newAccessToken }) => {
+        refreshTokenSubject.next(newAccessToken);
+
+        return next(addAuthorizationHeader(req, newAccessToken));
+      }),
+      catchError((error) => {
+        authService.logout();
+
+        return throwError(() => error);
+      }),
+    );
+  }
+
+  return refreshTokenSubject.pipe(
+    filter((token): token is string => !!token),
+    take(1),
+    switchMap((newAccessToken) =>
+      next(addAuthorizationHeader(req, newAccessToken)),
+    ),
   );
 };

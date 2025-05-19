@@ -1,5 +1,5 @@
 import { rxStompConfig } from '@/app/config/rx-stomp.config';
-import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
+import { ACCESS_TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
 import { Message, MessageSend } from '@/app/features/dto/chat.model';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -11,7 +11,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class ChatService {
-  private readonly TOKEN = TOKEN_KEY;
+  private readonly TOKEN = ACCESS_TOKEN_KEY;
   private rxStomp: RxStomp;
 
   private messages = signal<Message[]>([]);

@@ -25,7 +25,7 @@ application:
   security:
     jwt:
       secret-key: ${JWT_SECRET_KEY}
-      expiration: 360 # 5min
+      expiration: 300 # 5min
       refresh-token:
         expiration: 1800 # 30min
     frontend:
