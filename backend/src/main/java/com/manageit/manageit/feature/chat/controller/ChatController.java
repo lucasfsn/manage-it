@@ -1,6 +1,6 @@
 package com.manageit.manageit.feature.chat.controller;
 
-import com.manageit.manageit.feature.message.dto.MessageDto;
+import com.manageit.manageit.feature.message.dto.MessageResponseDto;
 import com.manageit.manageit.feature.message.dto.WebSocketRequestMessage;
 import com.manageit.manageit.feature.chat.model.Chat;
 import com.manageit.manageit.feature.chat.service.ChatService;
@@ -27,7 +27,7 @@ public class ChatController {
 
     @MessageMapping("/projects/{projectId}")
     @SendTo("/join/projects/{projectId}")
-    public MessageDto sendProjectMessage(
+    public MessageResponseDto sendProjectMessage(
             @DestinationVariable UUID projectId,
             @Payload WebSocketRequestMessage request
     ) {
@@ -36,7 +36,7 @@ public class ChatController {
 
     @MessageMapping("/tasks/{taskId}")
     @SendTo("/join/tasks/{taskId}")
-    public MessageDto sendTaskMessage(
+    public MessageResponseDto sendTaskMessage(
             @DestinationVariable UUID taskId,
             @Payload WebSocketRequestMessage requset
     ) {
@@ -47,7 +47,7 @@ public class ChatController {
 
 
     @GetMapping("/chat/projects/{projectId}")
-    public ResponseEntity<List<MessageDto>> getChatMessages(
+    public ResponseEntity<List<MessageResponseDto>> getChatMessages(
         @PathVariable UUID projectId
     ) {
         Chat chat = chatService.getChatByProjectIdAndTaskId(projectId, null);
@@ -55,7 +55,7 @@ public class ChatController {
     }
 
     @GetMapping("/chat/projects/{projectId}/tasks/{taskId}")
-    public ResponseEntity<List<MessageDto>> getChatMessages(
+    public ResponseEntity<List<MessageResponseDto>> getChatMessages(
         @PathVariable UUID projectId,
         @PathVariable UUID taskId
     ) {

@@ -1,8 +1,8 @@
 package com.manageit.manageit.feature.user.controller;
 
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
-import com.manageit.manageit.feature.user.dto.UpdateUserRequest;
+import com.manageit.manageit.feature.user.dto.UserDetailsResponseDto;
+import com.manageit.manageit.feature.user.dto.UpdateUserRequestDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.service.UserService;
 import jakarta.validation.Valid;
@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserResponseDto> getUser(
+    public ResponseEntity<UserDetailsResponseDto> getUser(
             @AuthenticationPrincipal User userDetails,
             @PathVariable String username
     ) {
@@ -29,16 +29,16 @@ public class UserController {
     }
 
     @PatchMapping()
-    public ResponseEntity<UserResponseDto> updateUser(
+    public ResponseEntity<UserDetailsResponseDto> updateUser(
             @AuthenticationPrincipal User userDetails,
-            @Valid @RequestBody UpdateUserRequest updatedUser
+            @Valid @RequestBody UpdateUserRequestDto updatedUser
     ) {
-        UserResponseDto updatedUserData = userService.updateUser(userDetails, updatedUser);
+        UserDetailsResponseDto updatedUserData = userService.updateUser(userDetails, updatedUser);
         return ResponseEntity.ok(updatedUserData);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BasicUserDto>> searchUser(
+    public ResponseEntity<List<UserResponseDto>> searchUser(
             @RequestParam("pattern") String pattern,
             @RequestParam(value = "projectId", required = false) UUID projectId,
             @RequestParam(value = "taskId", required = false) UUID taskId

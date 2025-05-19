@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateUserRequest {
+public class UpdateUserRequestDto {
 
     @Size(max = 50, min = 2, message = "First name must be between 2 and 50 characters")
     @Pattern(

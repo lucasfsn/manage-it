@@ -1,7 +1,7 @@
 package com.manageit.manageit.feature.notification.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +15,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class NotificationDto {
+public class NotificationResponseDto {
     private UUID id;
-    private BasicUserDto user;
+    private UserResponseDto user;
     private String message;
     private LocalDateTime date;
     private UUID projectId;

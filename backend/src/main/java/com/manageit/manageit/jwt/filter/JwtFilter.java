@@ -1,6 +1,11 @@
-package com.manageit.manageit.configuration.security;
+package com.manageit.manageit.jwt.filter;
 
+import com.manageit.manageit.core.exception.JwtAuthenticationException;
 import com.manageit.manageit.feature.user.model.User;
+import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.jwt.builder.JwtTokenParser;
+import com.manageit.manageit.jwt.model.JwtToken;
+import com.manageit.manageit.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,7 +26,8 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserService userService;
+    private final JwtTokenParser jwtTokenParser;
 
     @Override
     protected void doFilterInternal(
@@ -30,10 +35,12 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains(("api/v1/auth"))) {
+        String path = request.getServletPath();
+        if (path.equals("/auth/register") || path.equals("/auth/authenticate") || path.equals("/auth/refresh-token")) {
             filterChain.doFilter(request, response);
             return;
         }
+
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader == null && request.getQueryString() != null && request.getQueryString().startsWith("token=Bearer")) {
             authHeader = request.getQueryString().replace("token=Bearer%20", "Bearer ");
@@ -44,26 +51,26 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String jwt = authHeader.substring(7);
-        final String username;
+        final JwtToken token = jwtTokenParser.parse(authHeader);
 
-        try {
-            username = jwtService.extractUsername(jwt);
-        } catch (Exception e) {
-            filterChain.doFilter(request, response);
-            return;
+        if (token == null || !token.getType().equals("access")) {
+            throw new JwtAuthenticationException("Invalid JWT token");
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
-            if (jwtService.isTokenValid(jwt, (User) userDetails)) {
+        String userId = token.getSubject();
+
+        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            User user = userService.getUserOrThrow(userId);
+            if (jwtService.isTokenValid(token, user)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
+                        user,
                         null,
-                        userDetails.getAuthorities()
+                        user.getAuthorities()
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                throw new JwtAuthenticationException("Invalid JWT token");
             }
         }
 
