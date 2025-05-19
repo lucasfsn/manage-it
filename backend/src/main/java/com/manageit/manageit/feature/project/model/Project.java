@@ -33,12 +33,12 @@ public class Project {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @NotBlank(message = "Project name cannot be empty")
-    @Size(max = 255, message = "Project name cannot exceed 255 characters")
+    @NotBlank(message = "Project name cannot be empty.")
+    @Size(min = 5, max = 100, message = "Project name must be between 5 and 100 characters.")
     @Column(name = "project_name", nullable = false)
     private String name;
 
-    @NotBlank(message = "Description cannot be empty")
+    @NotBlank(message = "Description cannot be empty.")
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 

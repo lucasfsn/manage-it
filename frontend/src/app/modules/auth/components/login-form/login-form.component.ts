@@ -1,3 +1,4 @@
+import { SAVED_LOGIN_FORM_DATA_KEY } from '@/app/core/constants/local-storage.constant';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { AuthService } from '@/app/features/services/auth.service';
@@ -83,7 +84,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const savedLoginForm = localStorage.getItem('saved-login-form');
+    const savedLoginForm = localStorage.getItem(SAVED_LOGIN_FORM_DATA_KEY);
 
     if (savedLoginForm) {
       const loadedData = JSON.parse(savedLoginForm) as { email: string | null };
@@ -95,7 +96,7 @@ export class LoginFormComponent implements OnInit {
       .subscribe({
         next: (value) => {
           localStorage.setItem(
-            'saved-login-form',
+            SAVED_LOGIN_FORM_DATA_KEY,
             JSON.stringify({ email: value.email }),
           );
         },
