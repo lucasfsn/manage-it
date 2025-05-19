@@ -21,6 +21,8 @@ import {
   throwError,
 } from 'rxjs';
 
+const REFRESH_TOKEN_PENDING = 'PENDING';
+
 const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
@@ -60,7 +62,7 @@ const handleTokenRefresh = (
   authService: AuthService,
 ): Observable<HttpEvent<unknown>> => {
   if (refreshTokenSubject.value === null) {
-    refreshTokenSubject.next('PENDING');
+    refreshTokenSubject.next(REFRESH_TOKEN_PENDING);
 
     return authService.refreshToken().pipe(
       switchMap(({ accessToken: newAccessToken }) => {
@@ -78,7 +80,9 @@ const handleTokenRefresh = (
   }
 
   return refreshTokenSubject.pipe(
-    filter((token): token is string => !!token && token !== 'PENDING'),
+    filter(
+      (token): token is string => !!token && token !== REFRESH_TOKEN_PENDING,
+    ),
     take(1),
     switchMap((newAccessToken) =>
       next(addAuthorizationHeader(req, newAccessToken)),
