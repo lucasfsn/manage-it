@@ -59,8 +59,8 @@ const handleTokenRefresh = (
   next: HttpHandlerFn,
   authService: AuthService,
 ): Observable<HttpEvent<unknown>> => {
-  if (!refreshTokenSubject.value) {
-    refreshTokenSubject.next(null);
+  if (refreshTokenSubject.value === null) {
+    refreshTokenSubject.next('PENDING');
 
     return authService.refreshToken().pipe(
       switchMap(({ accessToken: newAccessToken }) => {
@@ -70,6 +70,7 @@ const handleTokenRefresh = (
       }),
       catchError((error) => {
         authService.logout();
+        refreshTokenSubject.next(null);
 
         return throwError(() => error);
       }),
@@ -77,7 +78,7 @@ const handleTokenRefresh = (
   }
 
   return refreshTokenSubject.pipe(
-    filter((token): token is string => !!token),
+    filter((token): token is string => !!token && token !== 'PENDING'),
     take(1),
     switchMap((newAccessToken) =>
       next(addAuthorizationHeader(req, newAccessToken)),

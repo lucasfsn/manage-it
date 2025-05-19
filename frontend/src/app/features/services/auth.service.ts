@@ -14,7 +14,7 @@ import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -112,7 +112,7 @@ export class AuthService {
     if (!refreshTokenValue) {
       this.logout();
 
-      return throwError(() => null);
+      return EMPTY;
     }
 
     return this.http
