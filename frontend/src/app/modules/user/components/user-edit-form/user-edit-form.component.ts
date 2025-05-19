@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import {
   PASSWORD_REGEX,
   PERSON_NAME_REGEX,
-} from '@/app/core/constants/regex.constants';
+} from '@/app/core/constants/regex.constant';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';

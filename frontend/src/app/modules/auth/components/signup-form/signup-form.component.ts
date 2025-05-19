@@ -2,7 +2,7 @@ import {
   PASSWORD_REGEX,
   PERSON_NAME_REGEX,
   USERNAME_REGEX,
-} from '@/app/core/constants/regex.constants';
+} from '@/app/core/constants/regex.constant';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { RegisterCredentials } from '@/app/features/dto/auth.model';

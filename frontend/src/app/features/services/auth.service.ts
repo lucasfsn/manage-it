@@ -1,7 +1,7 @@
 import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY,
-} from '@/app/core/constants/local-storage.constants';
+} from '@/app/core/constants/cookie.constant';
 import {
   AuthResponse,
   LoginCredentials,
@@ -14,21 +14,20 @@ import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly ACCESS_TOKEN = ACCESS_TOKEN_KEY;
-  private readonly REFRESH_TOKEN = REFRESH_TOKEN_KEY;
-
   private currentUser = signal<UserCredentials | null>(null);
   public loadedUser = this.currentUser.asReadonly();
 
   public constructor(
     private router: Router,
     private http: HttpClient,
+    private cookieService: CookieService,
   ) {}
 
   public register(user: RegisterCredentials): Observable<AuthResponse> {
@@ -70,14 +69,14 @@ export class AuthService {
   }
 
   public logout(): void {
-    localStorage.removeItem(this.ACCESS_TOKEN);
-    localStorage.removeItem(this.REFRESH_TOKEN);
+    this.cookieService.delete(ACCESS_TOKEN_KEY);
+    this.cookieService.delete(REFRESH_TOKEN_KEY);
 
     this.router.navigate(['/']);
   }
 
   public isAuthenticated(): boolean {
-    return !!localStorage.getItem(this.ACCESS_TOKEN);
+    return this.cookieService.check(ACCESS_TOKEN_KEY);
   }
 
   public getUserByToken(): Observable<UserCredentials> {
@@ -107,7 +106,7 @@ export class AuthService {
   }
 
   public refreshToken(): Observable<RefreshTokenResponse> {
-    const refreshTokenValue = localStorage.getItem(this.REFRESH_TOKEN);
+    const refreshTokenValue = this.cookieService.check(REFRESH_TOKEN_KEY);
 
     if (!refreshTokenValue) {
       this.logout();
@@ -135,7 +134,26 @@ export class AuthService {
   }
 
   private storeTokens(accessToken: string, refreshToken: string): void {
-    localStorage.setItem(this.ACCESS_TOKEN, accessToken);
-    localStorage.setItem(this.REFRESH_TOKEN, refreshToken);
+    const accessTokenExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+    const refreshTokenExpiry = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
+
+    this.cookieService.set(
+      ACCESS_TOKEN_KEY,
+      accessToken,
+      accessTokenExpiry,
+      '/',
+      undefined,
+      true,
+      'Strict',
+    );
+    this.cookieService.set(
+      REFRESH_TOKEN_KEY,
+      refreshToken,
+      refreshTokenExpiry,
+      '/',
+      undefined,
+      true,
+      'Strict',
+    );
   }
 }

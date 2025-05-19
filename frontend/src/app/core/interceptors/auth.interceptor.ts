@@ -1,7 +1,7 @@
 import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY,
-} from '@/app/core/constants/local-storage.constants';
+} from '@/app/core/constants/cookie.constant';
 import { AuthService } from '@/app/features/services/auth.service';
 import {
   HttpErrorResponse,
@@ -11,6 +11,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import {
   BehaviorSubject,
   catchError,
@@ -27,11 +28,12 @@ const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const cookieService = inject(CookieService);
 
   const isRefreshTokenRequest = req.url.includes('/refresh-token');
   const token = isRefreshTokenRequest
-    ? localStorage.getItem(REFRESH_TOKEN_KEY)
-    : localStorage.getItem(ACCESS_TOKEN_KEY);
+    ? cookieService.get(REFRESH_TOKEN_KEY)
+    : cookieService.get(ACCESS_TOKEN_KEY);
 
   return next(addAuthorizationHeader(req, token)).pipe(
     catchError((error: HttpErrorResponse) => {

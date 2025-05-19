@@ -1,24 +1,34 @@
-import { rxStompConfig } from '@/app/config/rx-stomp.config';
-import { ACCESS_TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
+import { ACCESS_TOKEN_KEY } from '@/app/core/constants/cookie.constant';
 import { Message, MessageSend } from '@/app/features/dto/chat.model';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { RxStomp } from '@stomp/rx-stomp';
+import { RxStomp, RxStompConfig } from '@stomp/rx-stomp';
+import { CookieService } from 'ngx-cookie-service';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  private readonly TOKEN = ACCESS_TOKEN_KEY;
   private rxStomp: RxStomp;
 
   private messages = signal<Message[]>([]);
-
   public loadedMessages = this.messages.asReadonly();
 
-  public constructor(private http: HttpClient) {
+  public constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+  ) {
+    const token = this.cookieService.get(ACCESS_TOKEN_KEY);
+
+    const rxStompConfig: RxStompConfig = {
+      brokerURL: `${environment.socketUrl}?token=${encodeURIComponent(
+        `Bearer ${token}`,
+      )}`,
+      reconnectDelay: 1000,
+    };
+
     this.rxStomp = new RxStomp();
     this.rxStomp.configure(rxStompConfig);
     this.rxStomp.activate();
@@ -29,7 +39,7 @@ export class ChatService {
     projectId: string,
     taskId: string | null = null,
   ): void {
-    const token = localStorage.getItem(this.TOKEN);
+    const token = this.cookieService.get(ACCESS_TOKEN_KEY);
 
     if (!token) return;
 
