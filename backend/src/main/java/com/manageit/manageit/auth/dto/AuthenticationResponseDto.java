@@ -1,4 +1,4 @@
-package com.manageit.manageit.auth;
+package com.manageit.manageit.auth.dto;
 
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
 import lombok.*;
@@ -7,7 +7,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
-    private String token;
+public class AuthenticationResponseDto {
+    private String accessToken;
+    private String refreshToken;
     private AuthenticatedUserResponseDto user;
 }

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class TaskMetadataDto extends TaskDto{
+public class TaskDetailsResponseDto extends TaskResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

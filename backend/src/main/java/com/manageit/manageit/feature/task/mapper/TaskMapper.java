@@ -1,44 +1,18 @@
 package com.manageit.manageit.feature.task.mapper;
 
-import com.manageit.manageit.feature.task.dto.TaskDto;
-import com.manageit.manageit.feature.user.mapper.BasicUserMapper;
+import com.manageit.manageit.feature.task.dto.TaskDetailsResponseDto;
+import com.manageit.manageit.feature.task.dto.TaskResponseDto;
 import com.manageit.manageit.feature.task.model.Task;
-import com.manageit.manageit.feature.task.dto.TaskMetadataDto;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.stream.Collectors;
+@Mapper(componentModel = "spring")
+public interface TaskMapper {
+    @Mapping(target = "projectId", expression = "java(task.getProject().getId())")
+    @Mapping(target = "members", source = "users")
+    TaskResponseDto toTaskResponseDto(Task task);
 
-@Service
-@RequiredArgsConstructor
-public class TaskMapper {
-
-    private final BasicUserMapper basicUserMapper;
-
-    public TaskDto toTaskDto(Task task) {
-        return TaskDto.builder()
-                .id(task.getId())
-                .projectId(task.getProject().getId())
-                .description(task.getDescription())
-                .status(task.getStatus())
-                .priority(task.getPriority())
-                .dueDate(task.getDueDate())
-                .members(task.getUsers().stream().map(basicUserMapper::toBasicUserDto).collect(Collectors.toList()))
-                .build();
-    }
-
-    public TaskMetadataDto toTaskMetadataDto(Task task) {
-        return TaskMetadataDto.builder()
-                .id(task.getId())
-                .projectId(task.getProject().getId())
-                .description(task.getDescription())
-                .status(task.getStatus())
-                .priority(task.getPriority())
-                .dueDate(task.getDueDate())
-                .createdAt(task.getCreatedAt())
-                .updatedAt(task.getUpdatedAt())
-                .members(task.getUsers().stream().map(basicUserMapper::toBasicUserDto).collect(Collectors.toList()))
-                .build();
-    }
-
+    @Mapping(target = "projectId", expression = "java(task.getProject().getId())")
+    @Mapping(target = "members", source = "users")
+    TaskDetailsResponseDto toTaskDetailsResponseDto(Task task);
 }

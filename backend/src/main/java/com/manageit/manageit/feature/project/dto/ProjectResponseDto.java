@@ -1,8 +1,8 @@
 package com.manageit.manageit.feature.project.dto;
 
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.project.model.ProjectStatus;
-import com.manageit.manageit.feature.task.dto.TaskMetadataDto;
+import com.manageit.manageit.feature.task.dto.TaskDetailsResponseDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,9 +15,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProjectDto {
+public class ProjectResponseDto {
     private UUID id;
-    private BasicUserDto owner;
+    private UserResponseDto owner;
     private String name;
     private String description;
     private ProjectStatus status;
@@ -27,6 +27,6 @@ public class ProjectDto {
     private LocalDate endDate;
     private Integer completedTasks;
     private Integer totalTasks;
-    private List<TaskMetadataDto> tasks;
-    private List<BasicUserDto> members;
+    private List<TaskDetailsResponseDto> tasks;
+    private List<UserResponseDto> members;
 }

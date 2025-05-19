@@ -1,13 +1,13 @@
 package com.manageit.manageit.feature.project.validation;
 
-import com.manageit.manageit.feature.project.dto.CreateProjectRequest;
+import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class EndDateAfterStartDateForCreateValidator implements ConstraintValidator<EndDateAfterStartDate, CreateProjectRequest> {
+public class EndDateAfterStartDateForCreateValidator implements ConstraintValidator<EndDateAfterStartDate, CreateProjectRequestDto> {
 
     @Override
-    public boolean isValid(CreateProjectRequest request, ConstraintValidatorContext context) {
+    public boolean isValid(CreateProjectRequestDto request, ConstraintValidatorContext context) {
         if (request.getStartDate() == null || request.getEndDate() == null) {
             return true;
         }

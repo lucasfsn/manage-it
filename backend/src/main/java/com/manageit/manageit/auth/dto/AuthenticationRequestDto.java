@@ -1,4 +1,4 @@
-package com.manageit.manageit.auth;
+package com.manageit.manageit.auth.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
+public class AuthenticationRequestDto {
     @Email(message = "Email should be valid.")
     @NotEmpty(message = "Email is required.")
     @NotBlank(message = "Email is required.")

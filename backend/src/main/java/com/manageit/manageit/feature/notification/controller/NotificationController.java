@@ -1,6 +1,6 @@
 package com.manageit.manageit.feature.notification.controller;
 
-import com.manageit.manageit.feature.notification.dto.NotificationDto;
+import com.manageit.manageit.feature.notification.dto.NotificationResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping
-    public ResponseEntity<List<NotificationDto>> getNotifications(
+    public ResponseEntity<List<NotificationResponseDto>> getNotifications(
             @AuthenticationPrincipal User userDetails
     ) {
         return ResponseEntity.ok(notificationService.getNotifications(userDetails));
