@@ -1,7 +1,11 @@
-import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
+import {
+  ACCESS_TOKEN_KEY,
+  REFRESH_TOKEN_KEY,
+} from '@/app/core/constants/local-storage.constants';
 import {
   AuthResponse,
   LoginCredentials,
+  RefreshTokenResponse,
   RegisterCredentials,
   UpdateUserCredentials,
   UserCredentials,
@@ -16,9 +20,10 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly TOKEN = TOKEN_KEY;
-  private currentUser = signal<UserCredentials | null>(null);
+  private readonly ACCESS_TOKEN = ACCESS_TOKEN_KEY;
+  private readonly REFRESH_TOKEN = REFRESH_TOKEN_KEY;
 
+  private currentUser = signal<UserCredentials | null>(null);
   public loadedUser = this.currentUser.asReadonly();
 
   public constructor(
@@ -31,9 +36,11 @@ export class AuthService {
       .post<AuthResponse>(`${environment.apiUrl}/auth/register`, user)
       .pipe(
         tap((res: AuthResponse) => {
-          const { token, user } = res;
+          const { accessToken, refreshToken, user } = res;
 
-          this.storeJwtToken(token);
+          this.storeAccessToken(accessToken);
+          this.storeRefreshToken(refreshToken);
+
           this.currentUser.set(user);
 
           this.router.navigate(['/dashboard']);
@@ -49,9 +56,11 @@ export class AuthService {
       .post<AuthResponse>(`${environment.apiUrl}/auth/authenticate`, user)
       .pipe(
         tap((res: AuthResponse) => {
-          const { token, user } = res;
+          const { accessToken, refreshToken, user } = res;
 
-          this.storeJwtToken(token);
+          this.storeAccessToken(accessToken);
+          this.storeRefreshToken(refreshToken);
+
           this.currentUser.set(user);
 
           this.router.navigate(['/dashboard']);
@@ -63,12 +72,14 @@ export class AuthService {
   }
 
   public logout(): void {
-    localStorage.removeItem(this.TOKEN);
+    localStorage.removeItem(this.ACCESS_TOKEN);
+    localStorage.removeItem(this.REFRESH_TOKEN);
+
     this.router.navigate(['/']);
   }
 
   public isAuthenticated(): boolean {
-    return !!localStorage.getItem(this.TOKEN);
+    return !!localStorage.getItem(this.ACCESS_TOKEN);
   }
 
   public getUserByToken(): Observable<UserCredentials> {
@@ -88,7 +99,6 @@ export class AuthService {
 
   public setUser(updatedData: UpdateUserCredentials): void {
     const user = this.currentUser();
-
     if (!user) return;
 
     this.currentUser.set({ ...user, ...updatedData });
@@ -98,7 +108,40 @@ export class AuthService {
     return this.currentUser()?.username;
   }
 
-  private storeJwtToken(jwt: string): void {
-    localStorage.setItem(this.TOKEN, jwt);
+  public refreshToken(): Observable<RefreshTokenResponse> {
+    const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
+
+    if (!refreshToken) {
+      this.logout();
+
+      return throwError(() => new Error('No refresh token found'));
+    }
+
+    return this.http
+      .post<RefreshTokenResponse>(
+        `${environment.apiUrl}/auth/refresh-token`,
+        {},
+      )
+      .pipe(
+        tap((res: RefreshTokenResponse) => {
+          const { accessToken, refreshToken } = res;
+
+          this.storeAccessToken(accessToken);
+          this.storeRefreshToken(refreshToken);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          this.logout();
+
+          return throwError(() => err.error);
+        }),
+      );
+  }
+
+  private storeAccessToken(jwt: string): void {
+    localStorage.setItem(this.ACCESS_TOKEN, jwt);
+  }
+
+  private storeRefreshToken(jwt: string): void {
+    localStorage.setItem(this.REFRESH_TOKEN, jwt);
   }
 }
