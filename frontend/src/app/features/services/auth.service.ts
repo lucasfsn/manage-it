@@ -1,7 +1,11 @@
-import { TOKEN_KEY } from '@/app/core/constants/local-storage.constants';
+import {
+  ACCESS_TOKEN_KEY,
+  REFRESH_TOKEN_KEY,
+} from '@/app/core/constants/cookie.constant';
 import {
   AuthResponse,
   LoginCredentials,
+  RefreshTokenResponse,
   RegisterCredentials,
   UpdateUserCredentials,
   UserCredentials,
@@ -10,20 +14,20 @@ import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly TOKEN = TOKEN_KEY;
   private currentUser = signal<UserCredentials | null>(null);
-
   public loadedUser = this.currentUser.asReadonly();
 
   public constructor(
     private router: Router,
     private http: HttpClient,
+    private cookieService: CookieService,
   ) {}
 
   public register(user: RegisterCredentials): Observable<AuthResponse> {
@@ -31,9 +35,10 @@ export class AuthService {
       .post<AuthResponse>(`${environment.apiUrl}/auth/register`, user)
       .pipe(
         tap((res: AuthResponse) => {
-          const { token, user } = res;
+          const { accessToken, refreshToken, user } = res;
 
-          this.storeJwtToken(token);
+          this.storeTokens(accessToken, refreshToken);
+
           this.currentUser.set(user);
 
           this.router.navigate(['/dashboard']);
@@ -49,9 +54,10 @@ export class AuthService {
       .post<AuthResponse>(`${environment.apiUrl}/auth/authenticate`, user)
       .pipe(
         tap((res: AuthResponse) => {
-          const { token, user } = res;
+          const { accessToken, refreshToken, user } = res;
 
-          this.storeJwtToken(token);
+          this.storeTokens(accessToken, refreshToken);
+
           this.currentUser.set(user);
 
           this.router.navigate(['/dashboard']);
@@ -63,12 +69,14 @@ export class AuthService {
   }
 
   public logout(): void {
-    localStorage.removeItem(this.TOKEN);
+    this.cookieService.delete(ACCESS_TOKEN_KEY);
+    this.cookieService.delete(REFRESH_TOKEN_KEY);
+
     this.router.navigate(['/']);
   }
 
   public isAuthenticated(): boolean {
-    return !!localStorage.getItem(this.TOKEN);
+    return this.cookieService.check(ACCESS_TOKEN_KEY);
   }
 
   public getUserByToken(): Observable<UserCredentials> {
@@ -88,7 +96,6 @@ export class AuthService {
 
   public setUser(updatedData: UpdateUserCredentials): void {
     const user = this.currentUser();
-
     if (!user) return;
 
     this.currentUser.set({ ...user, ...updatedData });
@@ -98,7 +105,55 @@ export class AuthService {
     return this.currentUser()?.username;
   }
 
-  private storeJwtToken(jwt: string): void {
-    localStorage.setItem(this.TOKEN, jwt);
+  public refreshToken(): Observable<RefreshTokenResponse> {
+    const refreshTokenValue = this.cookieService.check(REFRESH_TOKEN_KEY);
+
+    if (!refreshTokenValue) {
+      this.logout();
+
+      return EMPTY;
+    }
+
+    return this.http
+      .post<RefreshTokenResponse>(
+        `${environment.apiUrl}/auth/refresh-token`,
+        {},
+      )
+      .pipe(
+        tap((res: RefreshTokenResponse) => {
+          const { accessToken, refreshToken } = res;
+
+          this.storeTokens(accessToken, refreshToken);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          this.logout();
+
+          return throwError(() => err.error);
+        }),
+      );
+  }
+
+  private storeTokens(accessToken: string, refreshToken: string): void {
+    const accessTokenExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+    const refreshTokenExpiry = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
+
+    this.cookieService.set(
+      ACCESS_TOKEN_KEY,
+      accessToken,
+      accessTokenExpiry,
+      '/',
+      undefined,
+      true,
+      'Strict',
+    );
+    this.cookieService.set(
+      REFRESH_TOKEN_KEY,
+      refreshToken,
+      refreshTokenExpiry,
+      '/',
+      undefined,
+      true,
+      'Strict',
+    );
   }
 }

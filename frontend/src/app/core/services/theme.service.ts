@@ -1,4 +1,4 @@
-import { THEME_KEY } from '@/app/core/constants/local-storage.constants';
+import { THEME_KEY } from '@/app/core/constants/local-storage.constant';
 import { Injectable, signal } from '@angular/core';
 
 export enum Theme {
@@ -10,13 +10,12 @@ export enum Theme {
   providedIn: 'root',
 })
 export class ThemeService {
-  private readonly THEME = THEME_KEY;
   private theme = signal<Theme>(Theme.DARK);
 
   public loadedTheme = this.theme.asReadonly();
 
   public constructor() {
-    const storedTheme = localStorage.getItem(this.THEME) as Theme;
+    const storedTheme = localStorage.getItem(THEME_KEY) as Theme;
 
     if (this.isValidTheme(storedTheme)) this.theme.set(storedTheme);
   }
@@ -25,7 +24,7 @@ export class ThemeService {
     this.theme.update((curr) =>
       curr === Theme.LIGHT ? Theme.DARK : Theme.LIGHT,
     );
-    localStorage.setItem(this.THEME, this.theme());
+    localStorage.setItem(THEME_KEY, this.theme());
   }
 
   private isValidTheme(theme: Theme): boolean {
