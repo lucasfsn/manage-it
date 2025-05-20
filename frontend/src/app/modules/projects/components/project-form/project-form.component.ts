@@ -1,6 +1,7 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { getTodayDate } from '@/app/core/utils/get-today-date.utils';
+import { getTodayDate } from '@/app/core/utils/get-today-date.util';
+import { getTomorrowDate } from '@/app/core/utils/get-tomorrow-date.util';
 import { Project, ProjectRequest } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
@@ -114,8 +115,12 @@ export class ProjectFormComponent implements OnInit {
     return this.projectService.loadedProject();
   }
 
-  protected get minDate(): string | null {
+  protected get minStartDate(): string | null {
     return this.isEditing ? null : getTodayDate();
+  }
+
+  protected get minEndDate(): string | null {
+    return this.isEditing ? null : getTomorrowDate();
   }
 
   protected get disabled(): boolean {
@@ -153,14 +158,7 @@ export class ProjectFormComponent implements OnInit {
       return;
     }
 
-    this.form.reset({
-      name: '',
-      description: '',
-      dates: {
-        startDate: getTodayDate(),
-        endDate: getTodayDate(),
-      },
-    });
+    this.form.reset();
   }
 
   protected onSubmit(): void {
@@ -241,13 +239,6 @@ export class ProjectFormComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.form.patchValue({
-      dates: {
-        startDate: getTodayDate(),
-        endDate: getTodayDate(),
-      },
-    });
-
     const { isEditing } = this.route.snapshot.data as RouteData;
 
     this.isEditing = isEditing;

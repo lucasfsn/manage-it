@@ -40,13 +40,13 @@
       identifier="start-date"
       [control]="form.controls.dates.controls.startDate"
       [label]="'project.form.startDate.LABEL' | translate"
-      [min]="minDate"
+      [min]="minStartDate"
     />
     <app-form-date-input-control
       identifier="end-date"
       [control]="form.controls.dates.controls.endDate"
       [label]="'project.form.endDate.LABEL' | translate"
-      [min]="minDate"
+      [min]="minEndDate"
     />
     @if (dateGroupErrors) {
       <p class="text-sm text-red-500">

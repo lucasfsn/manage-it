@@ -293,7 +293,7 @@
         "LABEL": "Data zakończenia",
         "errors": {
           "REQUIRED": "Data zakończenia jest wymagana.",
-          "INVALID": "Data zakończenia nie może być wcześniejsza niż data rozpoczęcia."
+          "INVALID": "Data zakończenia musi być późniejsza niż data rozpoczęcia."
         }
       },
       "buttons": {

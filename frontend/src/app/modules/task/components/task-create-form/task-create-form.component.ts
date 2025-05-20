@@ -1,6 +1,6 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { getTodayDate } from '@/app/core/utils/get-today-date.utils';
+import { getTodayDate } from '@/app/core/utils/get-today-date.util';
 import {
   Priority,
   Task,

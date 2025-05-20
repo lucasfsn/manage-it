@@ -23,7 +23,7 @@
               [lastName]="message.sender.lastName"
               [hover]="false"
             />
-            <div class="flex h-full items-center gap-2">
+            <div class="flex h-full flex-col">
               @if (message.sender.username === currentUser?.username) {
                 <span class="text-sm font-semibold text-sky-600">You</span>
               } @else {
@@ -32,7 +32,7 @@
                   {{ message.sender.lastName }}</span
                 >
               }
-              <span class="text-sm text-gray-500">{{
+              <span class="text-xs text-gray-500">{{
                 message.createdAt | date: "medium"
               }}</span>
             </div>

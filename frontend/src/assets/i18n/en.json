@@ -293,7 +293,7 @@
         "LABEL": "End date",
         "errors": {
           "REQUIRED": "End date is required.",
-          "INVALID": "End date cannot be earlier than the start date."
+          "INVALID": "End date must be after start date."
         }
       },
       "buttons": {
