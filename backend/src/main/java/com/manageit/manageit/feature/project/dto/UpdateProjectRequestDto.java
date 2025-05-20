@@ -27,10 +27,8 @@ public class UpdateProjectRequestDto {
     @Size(min = 5, max = 1000, message = "Description must be between 5 and 1000 characters.")
     private String description;
 
-    @FutureOrPresent(message = "Start date cannot be in the past.")
     private LocalDate startDate;
 
-    @FutureOrPresent(message = "End date cannot be in the past.")
     private LocalDate endDate;
 
     private ProjectStatus status;

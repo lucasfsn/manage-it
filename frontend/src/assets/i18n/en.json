@@ -322,6 +322,9 @@
         "COMPLETED": "Completed",
         "IN_PROGRESS": "In Progress",
         "NOT_STARTED": "Upcoming"
+      },
+      "filter": {
+        "ME_MODE": "Filter for your tasks"
       }
     },
     "createForm": {
@@ -338,8 +341,7 @@
       "dueDate": {
         "LABEL": "Due Date",
         "errors": {
-          "REQUIRED": "Due date is required.",
-          "MIN": "Due date must be at least today."
+          "REQUIRED": "Due date is required."
         }
       },
       "priority": {

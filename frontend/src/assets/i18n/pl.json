@@ -322,6 +322,9 @@
         "COMPLETED": "Ukończone",
         "IN_PROGRESS": "W trakcie",
         "NOT_STARTED": "Nadchodzące"
+      },
+      "filter": {
+        "ME_MODE": "Filtruj zadania przydzielone do mnie"
       }
     },
     "createForm": {
@@ -338,8 +341,7 @@
       "dueDate": {
         "LABEL": "Termin",
         "errors": {
-          "REQUIRED": "Termin jest wymagany.",
-          "MIN": "Data terminu musi być co najmniej dzisiejsza."
+          "REQUIRED": "Termin jest wymagany."
         }
       },
       "priority": {

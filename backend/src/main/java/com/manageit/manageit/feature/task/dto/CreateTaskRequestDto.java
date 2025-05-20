@@ -27,6 +27,5 @@ public class CreateTaskRequestDto {
     private TaskPriority priority;
 
     @NotNull(message = "Task due date cannot be empty.")
-    @FutureOrPresent(message = "Task due date cannot be in the past.")
     private LocalDate dueDate;
 }

@@ -7,8 +7,6 @@ export function minDate(minDate: string | null, message: string): ValidatorFn {
     const controlDate = new Date(control.value);
     const minimumDate = new Date(minDate);
 
-    return controlDate < minimumDate
-      ? { minDate: { message: message, minDate: minDate } }
-      : null;
+    return controlDate < minimumDate ? { minDate: { message, minDate } } : null;
   };
 }

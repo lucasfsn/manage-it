@@ -1,6 +1,7 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { Project, ProjectStatus, User } from '@/app/features/dto/project.model';
 import { Task, TaskStatus } from '@/app/features/dto/task.model';
+import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { TaskService } from '@/app/features/services/task.service';
 import { TaskCreateFormComponent } from '@/app/modules/task/components/task-create-form/task-create-form.component';
@@ -14,9 +15,11 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -32,12 +35,15 @@ import { ToastrService } from 'ngx-toastr';
     RouterLink,
     TranslateModule,
     ProfileIconComponent,
+    MatTooltipModule,
+    CommonModule,
   ],
   templateUrl: './drag-drop-list.component.html',
   styleUrl: './drag-drop-list.component.scss',
 })
 export class DragDropListComponent implements OnInit {
   protected loading: boolean = false;
+  protected onlyMyTasks: boolean = true;
 
   public constructor(
     private dialog: MatDialog,
@@ -45,6 +51,7 @@ export class DragDropListComponent implements OnInit {
     private taskService: TaskService,
     private mapperService: MapperService,
     private toastrService: ToastrService,
+    private authService: AuthService,
   ) {}
 
   protected completedTasks: Task[] = [];
@@ -61,6 +68,18 @@ export class DragDropListComponent implements OnInit {
 
   protected get ProjectStatus(): typeof ProjectStatus {
     return ProjectStatus;
+  }
+
+  protected get currentUserInitials(): string {
+    const user = this.authService.loadedUser();
+    if (!user) return '';
+
+    return `${user.firstName.charAt(0) + user.lastName.charAt(0)}`;
+  }
+
+  protected toggleOnlyMyTasks(): void {
+    this.onlyMyTasks = !this.onlyMyTasks;
+    this.groupTasksByStatus();
   }
 
   protected drop(event: CdkDragDrop<Task[]>): void {
@@ -180,17 +199,35 @@ export class DragDropListComponent implements OnInit {
     }
   }
 
-  public ngOnInit(): void {
+  private filterTasksByUser(task: Task): boolean {
+    if (!task.members) return true;
+
+    const username = this.authService.getLoggedInUsername();
+
+    return (
+      !this.onlyMyTasks ||
+      task.members.some((member: User) => member.username === username)
+    );
+  }
+
+  private groupTasksByStatus(): void {
     if (!this.project) return;
 
     this.completedTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.COMPLETED,
+      (task) =>
+        task.status === TaskStatus.COMPLETED && this.filterTasksByUser(task),
     );
     this.inProgressTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.IN_PROGRESS,
+      (task) =>
+        task.status === TaskStatus.IN_PROGRESS && this.filterTasksByUser(task),
     );
     this.notStartedTasks = this.project.tasks.filter(
-      (task) => task.status === TaskStatus.NOT_STARTED,
+      (task) =>
+        task.status === TaskStatus.NOT_STARTED && this.filterTasksByUser(task),
     );
+  }
+
+  public ngOnInit(): void {
+    this.groupTasksByStatus();
   }
 }

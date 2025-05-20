@@ -16,13 +16,9 @@ import {
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
-import {
-  maxLength,
-  minDate,
-  minLength,
-  required,
-} from '@/app/shared/validators';
-import { Component, inject } from '@angular/core';
+import { maxLength, minLength, required } from '@/app/shared/validators';
+import { maxDate } from '@/app/shared/validators/max-date.validator';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -55,7 +51,7 @@ interface TaskCreateForm {
   templateUrl: './task-create-form.component.html',
   styleUrl: './task-create-form.component.scss',
 })
-export class TaskCreateFormComponent {
+export class TaskCreateFormComponent implements OnInit {
   protected loading = false;
   protected selectedStatus = inject<{ selectedStatus: TaskStatus }>(
     MAT_DIALOG_DATA,
@@ -81,18 +77,15 @@ export class TaskCreateFormComponent {
         ],
       }),
       dueDate: new FormControl(getTodayDate(), {
-        validators: [
-          required('task.createForm.dueDate.errors.REQUIRED'),
-          minDate(getTodayDate(), 'task.createForm.dueDate.errors.MIN'),
-        ],
+        validators: [required('task.createForm.dueDate.errors.REQUIRED')],
       }),
       priority: new FormControl<Priority | null>(Priority.LOW),
     },
     { updateOn: 'blur' },
   );
 
-  protected get minDate(): string | null {
-    return getTodayDate();
+  protected get maxDate(): string | null {
+    return this.projectService.loadedProject()?.endDate ?? null;
   }
 
   protected get priorities(): SelectOption[] {
@@ -139,5 +132,14 @@ export class TaskCreateFormComponent {
         this.loading = false;
       },
     });
+  }
+
+  public ngOnInit(): void {
+    const project = this.projectService.loadedProject();
+    if (!project) return;
+
+    this.form.controls.dueDate.addValidators([
+      maxDate(project.endDate, 'task.createForm.dueDate.errors.MAX_DATE'),
+    ]);
   }
 }

@@ -18,7 +18,7 @@
       <div class="flex flex-col">
         <p class="gap-1 text-xs text-gray-600 sm:text-sm dark:text-gray-400">
           {{ "dashboard.upcomingDeadlines.DEADLINE" | translate }}:
-          {{ project.endDate | date }}
+          {{ project.endDate | customDate }}
         </p>
         <p
           class="text-xs sm:text-sm font-semibold {{
