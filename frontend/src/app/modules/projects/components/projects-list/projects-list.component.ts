@@ -87,9 +87,9 @@ export class ProjectsListComponent implements OnInit {
         case SortCriteria.NAME:
           comparison = a.name.localeCompare(b.name);
           break;
-        case SortCriteria.START_DATE:
+        case SortCriteria.CREATED_AT:
           comparison =
-            new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
           break;
         case SortCriteria.END_DATE:
           comparison =

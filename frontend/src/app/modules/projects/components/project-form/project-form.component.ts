@@ -9,13 +9,7 @@ import { FormTextInputControlComponent } from '@/app/shared/components/form-cont
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
-import {
-  endDateValidator,
-  maxLength,
-  minDate,
-  minLength,
-  required,
-} from '@/app/shared/validators';
+import { maxLength, minLength, required } from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,15 +21,10 @@ interface RouteData {
   readonly isEditing: boolean;
 }
 
-interface DatesForm {
-  readonly startDate: FormControl<string | null>;
-  readonly endDate: FormControl<string | null>;
-}
-
 interface ProjectForm {
   readonly name: FormControl<string | null>;
   readonly description: FormControl<string | null>;
-  readonly dates: FormGroup<DatesForm>;
+  readonly endDate: FormControl<string | null>;
 }
 
 @Component({
@@ -82,34 +71,12 @@ export class ProjectFormComponent implements OnInit {
           maxLength(1000, 'project.form.description.errors.MAX_LENGTH'),
         ],
       }),
-      dates: new FormGroup<DatesForm>(
-        {
-          startDate: new FormControl('', {
-            validators: [required('project.form.startDate.errors.REQUIRED')],
-          }),
-          endDate: new FormControl('', {
-            validators: [required('project.form.endDate.errors.REQUIRED')],
-          }),
-        },
-        {
-          validators: [endDateValidator('startDate', 'endDate')],
-          updateOn: 'change',
-        },
-      ),
+      endDate: new FormControl('', {
+        validators: [required('project.form.endDate.errors.REQUIRED')],
+      }),
     },
     { updateOn: 'blur' },
   );
-
-  protected get dateGroupErrors(): string | null {
-    const group = this.form.controls.dates;
-
-    if (group.errors?.['invalidEndDate'])
-      return this.translationService.translate(
-        'project.form.endDate.errors.INVALID',
-      );
-
-    return null;
-  }
 
   protected get project(): Project | null {
     return this.projectService.loadedProject();
@@ -136,8 +103,7 @@ export class ProjectFormComponent implements OnInit {
     return (
       this.form.value.name !== this.project.name ||
       this.form.value.description !== this.project.description ||
-      this.form.value.dates?.startDate !== this.project.startDate ||
-      this.form.value.dates.endDate !== this.project.endDate
+      this.form.value.endDate !== this.project.endDate
     );
   }
 
@@ -220,8 +186,7 @@ export class ProjectFormComponent implements OnInit {
     return {
       name: this.form.value.name ?? '',
       description: this.form.value.description ?? '',
-      startDate: this.form.value.dates?.startDate ?? '',
-      endDate: this.form.value.dates?.endDate ?? '',
+      endDate: this.form.value.endDate ?? '',
     };
   }
 
@@ -231,24 +196,13 @@ export class ProjectFormComponent implements OnInit {
     this.form.patchValue({
       name: this.project.name,
       description: this.project.description,
-      dates: {
-        startDate: this.project.startDate,
-        endDate: this.project.endDate,
-      },
+      endDate: this.project.endDate,
     });
   }
 
   public ngOnInit(): void {
     const { isEditing } = this.route.snapshot.data as RouteData;
-
     this.isEditing = isEditing;
-
-    if (!this.isEditing) {
-      this.form.controls.dates.controls.startDate.addValidators(
-        minDate(getTodayDate(), 'project.form.startDate.errors.MIN'),
-      );
-      this.form.controls.dates.controls.startDate.updateValueAndValidity();
-    }
 
     this.fillFormWithDefaultValues();
   }

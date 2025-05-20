@@ -71,7 +71,6 @@ public class ProjectServiceDefault implements ProjectService {
                 .name(createProjectRequest.getName())
                 .description(createProjectRequest.getDescription())
                 .status(ProjectStatus.IN_PROGRESS)
-                .startDate(createProjectRequest.getStartDate())
                 .endDate(createProjectRequest.getEndDate())
                 .members(List.of(managedOwner))
                 .tasks(List.of())
@@ -108,9 +107,6 @@ public class ProjectServiceDefault implements ProjectService {
             }
             if (request.getDescription() != null) {
                 project.setDescription(request.getDescription());
-            }
-            if (request.getStartDate() != null) {
-                project.setStartDate(request.getStartDate());
             }
             if (request.getEndDate() != null) {
                 project.setEndDate(request.getEndDate());

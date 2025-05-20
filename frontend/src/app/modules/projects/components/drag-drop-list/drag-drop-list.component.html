@@ -31,9 +31,8 @@
       >
         @for (task of notStartedTasks; track task.id) {
           <div
-            class="focus-ring flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-left text-gray-800 shadow-lg dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
+            class="focus-ring flex cursor-default list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-left text-gray-800 shadow-lg dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
             [class.cursor-wait]="loading"
-            [class.cursor-move]="!loading"
             routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
             cdkDrag
           >
@@ -100,9 +99,8 @@
       >
         @for (task of inProgressTasks; track task.id) {
           <button
-            class="focus-ring flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-left text-gray-800 shadow-lg dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
+            class="focus-ring flex cursor-default list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-left text-gray-800 shadow-lg dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
             [class.cursor-wait]="loading"
-            [class.cursor-move]="!loading"
             routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
             cdkDrag
           >
@@ -169,9 +167,8 @@
       >
         @for (task of completedTasks; track task.id) {
           <button
-            class="focus-ring flex list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-left text-gray-800 shadow-lg dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
+            class="focus-ring flex cursor-default list-none flex-col gap-2 rounded-lg border-b border-orange-200 bg-orange-100! p-3! text-left text-gray-800 shadow-lg dark:border-slate-900 dark:bg-slate-950! dark:text-gray-300"
             [class.cursor-wait]="loading"
-            [class.cursor-move]="!loading"
             routerLink="/projects/{{ project.id }}/tasks/{{ task.id }}"
             cdkDrag
           >

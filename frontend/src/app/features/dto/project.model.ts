@@ -15,7 +15,7 @@ export interface Project {
   readonly id: string;
   readonly name: string;
   readonly description: string;
-  readonly startDate: string;
+  readonly createdAt: string;
   readonly endDate: string;
   readonly completedTasks: number;
   readonly totalTasks: number;
@@ -36,6 +36,5 @@ export interface UserProject {
 export interface ProjectRequest {
   readonly name: string;
   readonly description: string;
-  readonly startDate: string;
   readonly endDate: string;
 }

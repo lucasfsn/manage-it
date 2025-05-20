@@ -200,7 +200,7 @@ export class DragDropListComponent implements OnInit {
   }
 
   private filterTasksByUser(task: Task): boolean {
-    if (!task.members) return true;
+    if (!task.members) return true; // TODO
 
     const username = this.authService.getLoggedInUsername();
 
