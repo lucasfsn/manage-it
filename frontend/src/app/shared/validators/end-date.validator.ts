@@ -12,7 +12,7 @@ export function endDateValidator(startDate: string, endDate: string) {
 
     if (!startDateValue || !endDateValue) return null;
 
-    if (new Date(startDateValue) <= new Date(endDateValue)) return null;
+    if (new Date(startDateValue) < new Date(endDateValue)) return null;
 
     return {
       invalidEndDate: true,

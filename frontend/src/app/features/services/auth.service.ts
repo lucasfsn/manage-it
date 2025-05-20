@@ -134,13 +134,12 @@ export class AuthService {
   }
 
   private storeTokens(accessToken: string, refreshToken: string): void {
-    const accessTokenExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
-    const refreshTokenExpiry = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day
 
     this.cookieService.set(
       ACCESS_TOKEN_KEY,
       accessToken,
-      accessTokenExpiry,
+      tokenExpiry,
       '/',
       undefined,
       true,
@@ -149,7 +148,7 @@ export class AuthService {
     this.cookieService.set(
       REFRESH_TOKEN_KEY,
       refreshToken,
-      refreshTokenExpiry,
+      tokenExpiry,
       '/',
       undefined,
       true,
