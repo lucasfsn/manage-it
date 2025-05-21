@@ -69,8 +69,8 @@ export class AuthService {
   }
 
   public logout(): void {
-    this.cookieService.delete(ACCESS_TOKEN_KEY);
-    this.cookieService.delete(REFRESH_TOKEN_KEY);
+    this.cookieService.delete(ACCESS_TOKEN_KEY, '/');
+    this.cookieService.delete(REFRESH_TOKEN_KEY, '/');
 
     this.router.navigate(['/']);
   }

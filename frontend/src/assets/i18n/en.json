@@ -143,7 +143,7 @@
   "notFound": {
     "TITLE": "Page not found",
     "guest": {
-      "DESCRIPTION": "This page may be private. You may be able to view it by",
+      "DESCRIPTION": "This page may be private or not exist. Please check the URL or go back to the",
       "DESCRIPTION_LINK": "login page"
     },
     "user": {

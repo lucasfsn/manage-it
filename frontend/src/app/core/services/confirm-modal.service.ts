@@ -6,8 +6,8 @@ import { Observable, Subject, take } from 'rxjs';
 })
 export class ConfirmModalService {
   private confirmation$ = new Subject<boolean>();
-  private message = signal<string | null>(null);
 
+  private message = signal<string | null>(null);
   public loadedMessage = this.message.asReadonly();
 
   public confirm(message: string): Observable<boolean> {
