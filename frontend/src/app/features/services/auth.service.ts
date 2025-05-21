@@ -1,8 +1,4 @@
 import {
-  ACCESS_TOKEN_KEY,
-  REFRESH_TOKEN_KEY,
-} from '@/app/core/constants/cookie.constant';
-import {
   AuthResponse,
   LoginCredentials,
   RefreshTokenResponse,
@@ -10,6 +6,10 @@ import {
   UpdateUserCredentials,
   UserCredentials,
 } from '@/app/features/dto/auth.model';
+import {
+  ACCESS_TOKEN_KEY,
+  REFRESH_TOKEN_KEY,
+} from '@/app/shared/constants/cookie.constant';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';

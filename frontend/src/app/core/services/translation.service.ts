@@ -1,5 +1,5 @@
 import { LanguageCode, LANGUAGES } from '@/app/config/language.config';
-import { LANGUAGE_KEY } from '@/app/core/constants/local-storage.constant';
+import { LANGUAGE_KEY } from '@/app/shared/constants/local-storage.constant';
 import { Injectable, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';

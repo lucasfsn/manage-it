@@ -1,8 +1,8 @@
+import { AuthService } from '@/app/features/services/auth.service';
 import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY,
-} from '@/app/core/constants/cookie.constant';
-import { AuthService } from '@/app/features/services/auth.service';
+} from '@/app/shared/constants/cookie.constant';
 import {
   HttpErrorResponse,
   HttpEvent,

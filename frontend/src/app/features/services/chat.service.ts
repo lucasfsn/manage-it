@@ -1,6 +1,6 @@
-import { ACCESS_TOKEN_KEY } from '@/app/core/constants/cookie.constant';
 import { Message, MessageSend } from '@/app/features/dto/chat.model';
 import { AuthService } from '@/app/features/services/auth.service';
+import { ACCESS_TOKEN_KEY } from '@/app/shared/constants/cookie.constant';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, OnDestroy, signal } from '@angular/core';
