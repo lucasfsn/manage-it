@@ -1,17 +1,16 @@
 import { ACCESS_TOKEN_KEY } from '@/app/core/constants/cookie.constant';
 import { Message, MessageSend } from '@/app/features/dto/chat.model';
+import { AuthService } from '@/app/features/services/auth.service';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
-import { RxStomp, RxStompConfig } from '@stomp/rx-stomp';
+import { Injectable, OnDestroy, signal } from '@angular/core';
+import { RxStomp } from '@stomp/rx-stomp';
 import { CookieService } from 'ngx-cookie-service';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, firstValueFrom, Observable, tap, throwError } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ChatService {
-  private rxStomp: RxStomp;
+@Injectable()
+export class ChatService implements OnDestroy {
+  private rxStomp: RxStomp = new RxStomp();
 
   private messages = signal<Message[]>([]);
   public loadedMessages = this.messages.asReadonly();
@@ -19,28 +18,30 @@ export class ChatService {
   public constructor(
     private http: HttpClient,
     private cookieService: CookieService,
+    private authService: AuthService,
   ) {
-    const token = this.cookieService.get(ACCESS_TOKEN_KEY);
+    const beforeConnect = async (): Promise<void> => {
+      const token = await this.getValidAccessToken();
+      if (!token) return;
 
-    const rxStompConfig: RxStompConfig = {
-      brokerURL: `${environment.socketUrl}?token=${encodeURIComponent(
-        `Bearer ${token}`,
-      )}`,
-      reconnectDelay: 1000,
+      this.rxStomp.configure({
+        brokerURL: `${environment.socketUrl}?token=${encodeURIComponent(`Bearer ${token}`)}`,
+      });
     };
 
-    this.rxStomp = new RxStomp();
-    this.rxStomp.configure(rxStompConfig);
+    this.rxStomp.configure({
+      beforeConnect,
+      reconnectDelay: 1000,
+    });
     this.rxStomp.activate();
   }
 
-  public sendMessage(
+  public async sendMessage(
     message: string,
     projectId: string,
     taskId: string | null = null,
-  ): void {
-    const token = this.cookieService.get(ACCESS_TOKEN_KEY);
-
+  ): Promise<void> {
+    const token = await this.getValidAccessToken();
     if (!token) return;
 
     const messageToSend: MessageSend = {
@@ -92,5 +93,22 @@ export class ChatService {
         this.messages.update((messages) => [...messages, newMessage]);
       }),
     );
+  }
+
+  private async getValidAccessToken(): Promise<string | null> {
+    const token = this.cookieService.get(ACCESS_TOKEN_KEY);
+    if (!token) return null;
+
+    if (!this.authService.isTokenExpired(token)) return token;
+
+    const { accessToken } = await firstValueFrom(
+      this.authService.refreshToken(),
+    );
+
+    return accessToken;
+  }
+
+  public ngOnDestroy(): void {
+    this.rxStomp.deactivate();
   }
 }

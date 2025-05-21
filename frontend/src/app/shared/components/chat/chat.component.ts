@@ -45,6 +45,7 @@ import { ToastrService } from 'ngx-toastr';
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
+  providers: [ChatService],
   animations: [
     trigger('buttonAnimation', [
       state('void', style({ transform: 'scale(0.8)', opacity: 0 })),
