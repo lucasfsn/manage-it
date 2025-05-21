@@ -143,8 +143,8 @@
   "notFound": {
     "TITLE": "Strona nie została znaleziona.",
     "guest": {
-      "DESCRIPTION": "Ta strona może być prywatna. Możesz ją zobaczyć po przejściu na",
-      "DESCRIPTION_LINK": "stronę logowania"
+      "DESCRIPTION": "Ta strona może być prywatna lub nie istnieć. Sprawdź adres URL lub wróć do",
+      "DESCRIPTION_LINK": "strony logowania"
     },
     "user": {
       "DESCRIPTION": "Ta strona może nie istnieć lub możesz nie mieć do niej dostępu. Sprawdź adres URL lub wróć do",
