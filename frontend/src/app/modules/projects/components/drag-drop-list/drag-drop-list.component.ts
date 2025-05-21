@@ -43,7 +43,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class DragDropListComponent implements OnInit {
   protected loading: boolean = false;
-  protected onlyMyTasks: boolean = true;
+  protected onlyMyTasks: boolean = false;
 
   public constructor(
     private dialog: MatDialog,

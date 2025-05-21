@@ -1,4 +1,6 @@
+import { LanguageCode } from '@/app/config/language.config';
 import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import { UserCredentials } from '@/app/features/dto/auth.model';
 import { Message } from '@/app/features/dto/chat.model';
 import { AuthService } from '@/app/features/services/auth.service';
@@ -71,10 +73,19 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     private route: ActivatedRoute,
     private toastrService: ToastrService,
     private mapperService: MapperService,
+    private translationService: TranslationService,
   ) {}
 
   protected get messages(): Message[] {
     return this.chatService.loadedMessages();
+  }
+
+  protected get dateFormat(): string {
+    const locale = this.translationService.loadedLanguage();
+
+    if (locale === LanguageCode.PL) return 'd MMM y, h:mm';
+
+    return 'd MMM y, h:mm a';
   }
 
   protected addEmoji(event: EmojiEvent): void {
