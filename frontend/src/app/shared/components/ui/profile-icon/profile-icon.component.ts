@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-profile-icon',
   imports: [CommonModule, RouterLink],
   templateUrl: './profile-icon.component.html',
-  styleUrl: './profile-icon.component.scss'
+  styleUrl: './profile-icon.component.scss',
 })
 export class ProfileIconComponent {
   @Input() public size: 'sm' | 'md' | 'lg' | 'xl' = 'md';

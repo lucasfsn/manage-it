@@ -1,14 +1,17 @@
 @if (project) {
-  <button
-    class="focus-ring flex aspect-square size-5.5 cursor-pointer items-center justify-center self-end rounded-full bg-sky-500 text-xs text-orange-100 transition-all hover:bg-sky-600 active:text-slate-900 dark:text-slate-950"
-    [ngClass]="{
-      'bg-sky-600 ring-2 ring-blue-800 hover:bg-sky-700': onlyMyTasks,
-    }"
-    [matTooltip]="'task.drag-and-drop.filter.ME_MODE' | translate"
-    (click)="toggleOnlyMyTasks()"
-  >
-    {{ currentUserInitials }}
-  </button>
+  @if (currentUser) {
+    <app-profile-icon
+      size="sm"
+      [firstName]="currentUser.firstName"
+      [lastName]="currentUser.lastName"
+      (click)="toggleOnlyMyTasks()"
+      [matTooltip]="'task.drag-and-drop.filter.ME_MODE' | translate"
+      class="self-end"
+      [ngClass]="{
+        '!bg-sky-600 !ring-2 !ring-blue-800 hover:!bg-sky-700': onlyMyTasks,
+      }"
+    />
+  }
   <div class="flex grow flex-col gap-4 lg:flex-row">
     <div
       class="flex h-full flex-1 flex-col items-center justify-start gap-2 rounded-lg bg-orange-100 p-4 text-gray-400 shadow-xs dark:bg-slate-950"
@@ -71,7 +74,7 @@
       @if (project.status !== ProjectStatus.COMPLETED) {
         <button
           class="focus-ring mx-auto flex w-auto items-center gap-1 self-center rounded-full p-2 text-sm transition-all hover:text-gray-500 active:text-sky-500"
-          (click)="openAddCardDialog(TaskStatus.NOT_STARTED)"
+          (click)="openAddTaskDialog(TaskStatus.NOT_STARTED)"
         >
           <mat-icon class="text-base">add</mat-icon>
           {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
@@ -139,7 +142,7 @@
       @if (project.status !== ProjectStatus.COMPLETED) {
         <button
           class="focus-ring flex w-auto items-center gap-1 self-center rounded-full p-2 text-sm transition-all hover:text-gray-500 active:text-sky-500"
-          (click)="openAddCardDialog(TaskStatus.IN_PROGRESS)"
+          (click)="openAddTaskDialog(TaskStatus.IN_PROGRESS)"
         >
           <mat-icon class="text-base">add</mat-icon>
           {{ "task.drag-and-drop.ADD_BUTTON" | translate }}
@@ -207,7 +210,7 @@
       @if (project.status !== ProjectStatus.COMPLETED) {
         <button
           class="focus-ring flex w-auto items-center gap-1 self-center rounded-full p-2 text-sm transition-all hover:text-gray-500 active:text-sky-500"
-          (click)="openAddCardDialog(TaskStatus.COMPLETED)"
+          (click)="openAddTaskDialog(TaskStatus.COMPLETED)"
         >
           <mat-icon class="text-base">add</mat-icon>
           {{ "task.drag-and-drop.ADD_BUTTON" | translate }}

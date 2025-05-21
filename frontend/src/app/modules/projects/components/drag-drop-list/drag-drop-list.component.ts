@@ -1,4 +1,5 @@
 import { MapperService } from '@/app/core/services/mapper.service';
+import { UserCredentials } from '@/app/features/dto/auth.model';
 import { Project, ProjectStatus, User } from '@/app/features/dto/project.model';
 import { Task, TaskStatus } from '@/app/features/dto/task.model';
 import { AuthService } from '@/app/features/services/auth.service';
@@ -70,11 +71,8 @@ export class DragDropListComponent implements OnInit {
     return ProjectStatus;
   }
 
-  protected get currentUserInitials(): string {
-    const user = this.authService.loadedUser();
-    if (!user) return '';
-
-    return `${user.firstName.charAt(0) + user.lastName.charAt(0)}`;
+  protected get currentUser(): UserCredentials | null {
+    return this.authService.loadedUser();
   }
 
   protected toggleOnlyMyTasks(): void {
@@ -117,7 +115,7 @@ export class DragDropListComponent implements OnInit {
     }
   }
 
-  protected openAddCardDialog(selectedStatus: TaskStatus): void {
+  protected openAddTaskDialog(selectedStatus: TaskStatus): void {
     if (!this.project) return;
 
     const dialogRef: MatDialogRef<TaskCreateFormComponent> = this.dialog.open(
@@ -132,22 +130,8 @@ export class DragDropListComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((newTask: Task | null) => {
-      if (newTask) this.addTaskToList(newTask);
+      if (newTask) this.groupTasksByStatus();
     });
-  }
-
-  private addTaskToList(task: Task): void {
-    switch (task.status) {
-      case TaskStatus.COMPLETED:
-        this.completedTasks.push(task);
-        break;
-      case TaskStatus.IN_PROGRESS:
-        this.inProgressTasks.push(task);
-        break;
-      case TaskStatus.NOT_STARTED:
-        this.notStartedTasks.push(task);
-        break;
-    }
   }
 
   protected handleMoveTask(task: Task, prevStatus: TaskStatus): void {
@@ -199,31 +183,29 @@ export class DragDropListComponent implements OnInit {
     }
   }
 
-  private filterTasksByUser(task: Task): boolean {
-    if (!task.members) return true; // TODO
+  private filterTasks(): Task[] {
+    if (!this.project) return [];
 
     const username = this.authService.getLoggedInUsername();
 
-    return (
-      !this.onlyMyTasks ||
-      task.members.some((member: User) => member.username === username)
+    if (!this.onlyMyTasks) return this.project.tasks;
+
+    return this.project.tasks.filter((task) =>
+      task.members.some((member: User) => member.username === username),
     );
   }
 
   private groupTasksByStatus(): void {
-    if (!this.project) return;
+    const tasks = this.filterTasks();
 
-    this.completedTasks = this.project.tasks.filter(
-      (task) =>
-        task.status === TaskStatus.COMPLETED && this.filterTasksByUser(task),
+    this.completedTasks = tasks.filter(
+      (task) => task.status === TaskStatus.COMPLETED,
     );
-    this.inProgressTasks = this.project.tasks.filter(
-      (task) =>
-        task.status === TaskStatus.IN_PROGRESS && this.filterTasksByUser(task),
+    this.inProgressTasks = tasks.filter(
+      (task) => task.status === TaskStatus.IN_PROGRESS,
     );
-    this.notStartedTasks = this.project.tasks.filter(
-      (task) =>
-        task.status === TaskStatus.NOT_STARTED && this.filterTasksByUser(task),
+    this.notStartedTasks = tasks.filter(
+      (task) => task.status === TaskStatus.NOT_STARTED,
     );
   }
 
