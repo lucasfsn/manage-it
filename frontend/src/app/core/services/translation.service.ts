@@ -1,7 +1,7 @@
 import { LanguageCode, LANGUAGES } from '@/app/config/language.config';
 import { LANGUAGE_KEY } from '@/app/shared/constants/local-storage.constant';
 import { Injectable, signal } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 })
 export class TranslationService {
   private language = signal<LanguageCode>(LanguageCode.EN);
-
   public loadedLanguage = this.language.asReadonly();
 
   public constructor(private translateService: TranslateService) {
@@ -39,6 +38,10 @@ export class TranslationService {
 
   public get(key: string): Observable<string> {
     return this.translateService.get(key);
+  }
+
+  public onLanguageChange(): Observable<LangChangeEvent> {
+    return this.translateService.onLangChange;
   }
 
   private storedUserLanguage(storedLanguage: string): LanguageCode {

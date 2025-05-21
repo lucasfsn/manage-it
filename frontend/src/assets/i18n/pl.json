@@ -108,7 +108,7 @@
       "NO_DEADLINES": "Brak nadchodzących terminów",
       "DEADLINE": "Termin realizacji",
       "DAY_LEFT": "Jutro",
-      "DAYS_LEFT": "{{daysLeft}} dni",
+      "DAYS_LEFT": "Pozostało {{daysLeft}} dni",
       "TODAY": "Dzisiaj"
     },
     "projectsSummary": {
@@ -450,7 +450,7 @@
     "mapper": {
       "projectStatus": {
         "IN_PROGRESS": "W trakcie",
-        "COMPLETED": "Zakończony"
+        "COMPLETED": "Ukończone"
       },
       "taskStatus": {
         "IN_PROGRESS": "W trakcie",
