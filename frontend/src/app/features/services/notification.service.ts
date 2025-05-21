@@ -9,7 +9,6 @@ import { catchError, map, Observable, tap, throwError } from 'rxjs';
 })
 export class NotificationService {
   private notifications = signal<Notification[]>([]);
-
   public loadedNotifications = this.notifications.asReadonly();
 
   public constructor(private http: HttpClient) {}

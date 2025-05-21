@@ -84,7 +84,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   protected get dateFormat(): string {
     const locale = this.translationService.loadedLanguage();
 
-    if (locale === LanguageCode.PL) return 'd MMM y, h:mm';
+    if (locale === LanguageCode.PL) return 'd MMM y, H:mm';
 
     return 'd MMM y, h:mm a';
   }

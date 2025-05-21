@@ -15,7 +15,6 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 })
 export class UserService {
   private user = signal<User | null>(null);
-
   public loadedUser = this.user.asReadonly();
 
   public constructor(

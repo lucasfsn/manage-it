@@ -11,7 +11,6 @@ export enum Theme {
 })
 export class ThemeService {
   private theme = signal<Theme>(Theme.DARK);
-
   public loadedTheme = this.theme.asReadonly();
 
   public constructor() {

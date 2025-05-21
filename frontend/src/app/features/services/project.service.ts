@@ -14,10 +14,11 @@ import { catchError, map, Observable, tap, throwError } from 'rxjs';
 })
 export class ProjectService {
   private allowAddToProject: boolean = false;
-  private projects = signal<Project[]>([]);
-  private project = signal<Project | null>(null);
 
+  private projects = signal<Project[]>([]);
   public loadedProjects = this.projects.asReadonly();
+
+  private project = signal<Project | null>(null);
   public loadedProject = this.project.asReadonly();
 
   public constructor(private http: HttpClient) {}

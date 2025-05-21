@@ -1,22 +1,21 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
-import { environment } from '@/environments/environment';
 import { Project, User } from '@/app/features/dto/project.model';
 import { Task, TaskData } from '@/app/features/dto/task.model';
 import { ProjectService } from '@/app/features/services/project.service';
+import { environment } from '@/environments/environment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, signal } from '@angular/core';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
   private task = signal<Task | null>(null);
-
   public loadedTask = this.task.asReadonly();
 
   public constructor(
     private http: HttpClient,
-    private projectService: ProjectService
+    private projectService: ProjectService,
   ) {}
 
   public createTask(project: Project, task: TaskData): Observable<Task> {
@@ -32,7 +31,7 @@ export class TaskService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -45,18 +44,18 @@ export class TaskService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
   public moveProjectTask(
     project: Project,
-    updatedTask: Task
+    updatedTask: Task,
   ): Observable<string> {
     const prevTask = this.task();
 
     const updatedProjectTasksList = project.tasks.map((t) =>
-      t.id === updatedTask.id ? { ...t, status: updatedTask.status } : t
+      t.id === updatedTask.id ? { ...t, status: updatedTask.status } : t,
     );
 
     this.projectService.setProject({
@@ -72,7 +71,7 @@ export class TaskService {
         { status: updatedTask.status },
         {
           responseType: 'text',
-        }
+        },
       )
       .pipe(
         catchError((err: HttpErrorResponse) => {
@@ -80,7 +79,7 @@ export class TaskService {
           this.task.set(prevTask);
 
           return throwError(() => err);
-        })
+        }),
       );
   }
 
@@ -92,19 +91,19 @@ export class TaskService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
   public updateTask(
     projectId: string,
     taskId: string,
-    updatedTask: TaskData
+    updatedTask: TaskData,
   ): Observable<Task> {
     return this.http
       .patch<Task>(
         `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`,
-        updatedTask
+        updatedTask,
       )
       .pipe(
         tap((res: Task) => {
@@ -112,19 +111,19 @@ export class TaskService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
   public addToTask(
     projectId: string,
     taskId: string,
-    user: User
+    user: User,
   ): Observable<Task> {
     return this.http
       .patch<Task>(
         `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/add`,
-        user
+        user,
       )
       .pipe(
         tap((res: Task) => {
@@ -132,19 +131,19 @@ export class TaskService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 
   public removeFromTask(
     projectId: string,
     taskId: string,
-    user: User
+    user: User,
   ): Observable<Task> {
     return this.http
       .patch<Task>(
         `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/remove`,
-        user
+        user,
       )
       .pipe(
         tap((res: Task) => {
@@ -152,7 +151,7 @@ export class TaskService {
         }),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
-        })
+        }),
       );
   }
 }
