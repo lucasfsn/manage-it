@@ -25,6 +25,5 @@ public class UpdateTaskRequestDto {
 
     private TaskPriority priority;
 
-    @FutureOrPresent(message = "Task due date cannot be in the past.")
     private LocalDate dueDate;
 }

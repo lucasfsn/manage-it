@@ -5,8 +5,9 @@ import com.manageit.manageit.feature.task.dto.TaskResponseDto;
 import com.manageit.manageit.feature.task.model.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueMappingStrategy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",  nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public interface TaskMapper {
     @Mapping(target = "projectId", expression = "java(task.getProject().getId())")
     @Mapping(target = "members", source = "users")

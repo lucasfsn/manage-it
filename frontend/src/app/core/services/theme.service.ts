@@ -1,4 +1,4 @@
-import { THEME_KEY } from '@/app/core/constants/local-storage.constant';
+import { THEME_KEY } from '@/app/shared/constants/local-storage.constant';
 import { Injectable, signal } from '@angular/core';
 
 export enum Theme {

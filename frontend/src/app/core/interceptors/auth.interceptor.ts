@@ -1,8 +1,8 @@
+import { AuthService } from '@/app/features/services/auth.service';
 import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY,
-} from '@/app/core/constants/cookie.constant';
-import { AuthService } from '@/app/features/services/auth.service';
+} from '@/app/shared/constants/cookie.constant';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -40,7 +40,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401 && !isRefreshTokenRequest)
         return handleTokenRefresh(req, next, authService);
 
-      if (error.status === 401) authService.logout();
+      if (error.status === 401) {
+        authService.logout();
+
+        return throwError(() => error);
+      }
 
       return throwError(() => error);
     }),
@@ -63,7 +67,7 @@ const handleTokenRefresh = (
   next: HttpHandlerFn,
   authService: AuthService,
 ): Observable<HttpEvent<unknown>> => {
-  if (refreshTokenSubject.value === null) {
+  if (refreshTokenSubject.value !== REFRESH_TOKEN_PENDING) {
     refreshTokenSubject.next(REFRESH_TOKEN_PENDING);
 
     return authService.refreshToken().pipe(

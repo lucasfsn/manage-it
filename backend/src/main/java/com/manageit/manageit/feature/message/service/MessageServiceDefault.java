@@ -10,7 +10,8 @@ import com.manageit.manageit.feature.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class MessageServiceDefault implements MessageService {
                 .chat(chat)
                 .user(userService.getUserByToken(token))
                 .content(content)
-                .createdAt(LocalDateTime.now())
+                .createdAt(OffsetDateTime.now(ZoneOffset.UTC))
                 .build();
         messageRepository.save(message);
         return messageMapper.toMessageDto(message);
@@ -49,7 +50,7 @@ public class MessageServiceDefault implements MessageService {
                 .chat(chat)
                 .user(userService.getUserByToken(token))
                 .content(content)
-                .createdAt(LocalDateTime.now())
+                .createdAt(OffsetDateTime.now(ZoneOffset.UTC))
                 .build();
         messageRepository.save(message);
         return messageMapper.toMessageDto(message);

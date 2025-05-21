@@ -87,12 +87,20 @@
         </button>
         <mat-menu #operationMenu="matMenu">
           <button mat-menu-item routerLink="/auth/login">
-            <mat-icon>login</mat-icon>
-            <span>{{ "header.LOGIN" | translate }}</span>
+            <mat-icon class="!text-gray-dark dark:!text-gray-light"
+              >login</mat-icon
+            >
+            <span class="text-gray-dark dark:text-gray-light">{{
+              "header.LOGIN" | translate
+            }}</span>
           </button>
           <button mat-menu-item routerLink="/auth/signup">
-            <mat-icon>person_add_alt</mat-icon>
-            <span>{{ "header.SIGN_UP_SHORT" | translate }}</span>
+            <mat-icon class="!text-gray-dark dark:!text-gray-light"
+              >person_add_alt</mat-icon
+            >
+            <span class="text-gray-dark dark:text-gray-light">{{
+              "header.SIGN_UP_SHORT" | translate
+            }}</span>
           </button>
         </mat-menu>
       </div>

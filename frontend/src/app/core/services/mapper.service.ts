@@ -53,9 +53,9 @@ export class MapperService {
         return this.translationService.translate(
           'utils.mapper.sortCriteria.NAME',
         );
-      case SortCriteria.START_DATE:
+      case SortCriteria.CREATED_AT:
         return this.translationService.translate(
-          'utils.mapper.sortCriteria.START_DATE',
+          'utils.mapper.sortCriteria.CREATED_AT',
         );
       case SortCriteria.END_DATE:
         return this.translationService.translate(

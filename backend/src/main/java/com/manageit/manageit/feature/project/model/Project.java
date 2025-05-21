@@ -55,9 +55,6 @@ public class Project {
     private LocalDateTime updatedAt;
 
     @Column(nullable = false)
-    private LocalDate startDate;
-
-    @Column(nullable = false)
     private LocalDate endDate;
 
 

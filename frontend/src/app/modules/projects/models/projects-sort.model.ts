@@ -1,13 +1,13 @@
 export enum SortCriteria {
   NAME = 'name',
-  START_DATE = 'startDate',
-  END_DATE = 'endDate',
+  CREATED_AT = 'createdAt',
+  END_DATE = 'deadline',
   COMPLETED_TASKS = 'completedTasks',
 }
 
 export enum SortOrder {
-  ASCENDING = 'ascending',
-  DESCENDING = 'descending',
+  ASCENDING = 'asc',
+  DESCENDING = 'desc',
 }
 
 export enum SortType {

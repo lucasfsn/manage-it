@@ -23,7 +23,6 @@ public class ProjectResponseDto {
     private ProjectStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private LocalDate startDate;
     private LocalDate endDate;
     private Integer completedTasks;
     private Integer totalTasks;

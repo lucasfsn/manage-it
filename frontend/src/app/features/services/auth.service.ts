@@ -1,8 +1,4 @@
 import {
-  ACCESS_TOKEN_KEY,
-  REFRESH_TOKEN_KEY,
-} from '@/app/core/constants/cookie.constant';
-import {
   AuthResponse,
   LoginCredentials,
   RefreshTokenResponse,
@@ -10,6 +6,10 @@ import {
   UpdateUserCredentials,
   UserCredentials,
 } from '@/app/features/dto/auth.model';
+import {
+  ACCESS_TOKEN_KEY,
+  REFRESH_TOKEN_KEY,
+} from '@/app/shared/constants/cookie.constant';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
@@ -76,7 +76,10 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    return this.cookieService.check(ACCESS_TOKEN_KEY);
+    const refreshToken = this.cookieService.get(REFRESH_TOKEN_KEY);
+    if (!refreshToken) return false;
+
+    return !this.isTokenExpired(refreshToken);
   }
 
   public getUserByToken(): Observable<UserCredentials> {
@@ -154,5 +157,16 @@ export class AuthService {
       true,
       'Strict',
     );
+  }
+
+  public isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (!payload.exp) return false;
+
+      return Date.now() > payload.exp * 1000;
+    } catch {
+      return true;
+    }
   }
 }

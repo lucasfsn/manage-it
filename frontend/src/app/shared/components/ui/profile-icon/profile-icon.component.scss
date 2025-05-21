@@ -1,4 +1,7 @@
 :host {
+  width: fit-content;
+  border-radius: calc(infinity * 1px);
+
   &:focus {
     outline: none;
   }
