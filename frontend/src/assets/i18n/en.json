@@ -447,7 +447,7 @@
     },
     "chat": {
       "TITLE": "Messages",
-      "PLACEHOLDER": "Message..."
+      "PLACEHOLDER": "Send message"
     },
     "mapper": {
       "projectStatus": {

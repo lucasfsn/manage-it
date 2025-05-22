@@ -16,6 +16,7 @@ import {
 } from '@angular/animations';
 import {
   AfterViewChecked,
+  AfterViewInit,
   Component,
   DestroyRef,
   ElementRef,
@@ -59,8 +60,12 @@ import { ToastrService } from 'ngx-toastr';
     ]),
   ],
 })
-export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class ChatComponent
+  implements OnInit, AfterViewChecked, OnDestroy, AfterViewInit
+{
   @ViewChild('scroll') private scroll!: ElementRef;
+  @ViewChild('input') private input!: ElementRef;
+
   private destroyRef = inject(DestroyRef);
   private projectId: string | null = null;
   private taskId: string | null = null;
@@ -159,6 +164,10 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.watchTopic();
     });
     this.checkWindowSizeAndToggleLock();
+  }
+
+  public ngAfterViewInit(): void {
+    this.input.nativeElement.focus();
   }
 
   public ngAfterViewChecked(): void {
