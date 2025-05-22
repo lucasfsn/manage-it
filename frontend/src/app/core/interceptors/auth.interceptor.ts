@@ -31,16 +31,18 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const cookieService = inject(CookieService);
 
   const isRefreshTokenRequest = req.url.includes('/refresh-token');
+  const isAuthRequest = req.url.includes('/authenticate');
+
   const token = isRefreshTokenRequest
     ? cookieService.get(REFRESH_TOKEN_KEY)
     : cookieService.get(ACCESS_TOKEN_KEY);
 
   return next(addAuthorizationHeader(req, token)).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 && !isRefreshTokenRequest)
+      if (error.status === 401 && !isRefreshTokenRequest && !isAuthRequest)
         return handleTokenRefresh(req, next, authService);
 
-      if (error.status === 401) {
+      if (error.status === 401 && !isAuthRequest) {
         authService.logout();
 
         return throwError(() => error);
