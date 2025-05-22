@@ -2,7 +2,7 @@
 @if (isLoading) {
   <app-spinner />
 } @else {
-  <div class="mb-12 flex-1 overflow-y-auto lg:mb-0">
+  <div class="mb-12 flex-1 overflow-y-auto lg:mb-0" cdkScrollable>
     <div class="xs:p-4 p-2 lg:pl-0">
       <router-outlet />
       @if (message) {

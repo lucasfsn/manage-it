@@ -6,6 +6,7 @@ import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { ConfirmModalComponent } from '@/app/shared/components/confirm-modal/confirm-modal.component';
 import { SpinnerComponent } from '@/app/shared/components/ui/spinner/spinner.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-main-layout',
@@ -14,6 +15,7 @@ import { SpinnerComponent } from '@/app/shared/components/ui/spinner/spinner.com
     SpinnerComponent,
     ConfirmModalComponent,
     SidebarComponent,
+    ScrollingModule,
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',

@@ -22,6 +22,7 @@ export interface Task {
   readonly dueDate: string;
   readonly projectStatus: ProjectStatus;
   readonly projectEndDate: string;
+  readonly updatedAt: string;
 }
 
 export interface TaskData {

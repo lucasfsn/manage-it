@@ -188,9 +188,16 @@ export class DragDropListComponent implements OnInit {
 
     const username = this.authService.getLoggedInUsername();
 
-    if (!this.onlyMyTasks) return this.project.tasks;
+    const tasks = this.project.tasks
+      .toSorted(
+        (a, b) =>
+          new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(),
+      )
+      .reverse();
 
-    return this.project.tasks.filter((task) =>
+    if (!this.onlyMyTasks) return tasks;
+
+    return tasks.filter((task) =>
       task.members.some((member: User) => member.username === username),
     );
   }
