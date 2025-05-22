@@ -1,20 +1,22 @@
-<h2 class="text-center text-2xl font-bold text-zinc-400">
+<h2 class="text-center text-2xl font-bold text-zinc-500 dark:text-zinc-400">
   {{ "notFound.TITLE" | translate }}
 </h2>
 @if (!isAuthenticated) {
   <p class="text-base">
     {{ "notFound.guest.DESCRIPTION" | translate }}
-    <a routerLink="/auth/login" class="text-sky-500">{{
-      "notFound.guest.DESCRIPTION_LINK" | translate
-    }}</a
+    <a
+      routerLink="/auth/login"
+      class="focus-outline text-sky-600 drop-shadow-sm dark:text-sky-500"
+      >{{ "notFound.guest.DESCRIPTION_LINK" | translate }}</a
     >.
   </p>
 } @else {
   <p class="text-base">
     {{ "notFound.user.DESCRIPTION" | translate }}
-    <a routerLink="/dashboard" class="focus-outline text-sky-500">{{
-      "notFound.user.DESCRIPTION_LINK" | translate
-    }}</a
+    <a
+      routerLink="/dashboard"
+      class="focus-outline text-sky-600 drop-shadow-sm dark:text-sky-500"
+      >{{ "notFound.user.DESCRIPTION_LINK" | translate }}</a
     >.
   </p>
 }
