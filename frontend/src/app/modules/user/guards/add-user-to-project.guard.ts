@@ -1,8 +1,8 @@
+import { ProjectService } from '@/app/features/services/project.service';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { ProjectService } from '@/app/features/services/project.service';
 
-export const allowAddUserToProjectGuard: CanActivateFn = () => {
+export const addUserToProjectGuard: CanActivateFn = () => {
   const projectService = inject(ProjectService);
   const router = inject(Router);
 

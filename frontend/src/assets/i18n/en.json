@@ -333,7 +333,8 @@
       "dueDate": {
         "LABEL": "Due Date",
         "errors": {
-          "REQUIRED": "Due date is required."
+          "REQUIRED": "Due date is required.",
+          "MAX_DATE": "The task due date cannot be later than the project's end date."
         }
       },
       "priority": {
@@ -358,7 +359,8 @@
       "dueDate": {
         "LABEL": "Due Date",
         "errors": {
-          "REQUIRED": "Due date is required."
+          "REQUIRED": "Due date is required.",
+          "MAX_DATE": "The task due date cannot be later than the project's end date."
         }
       },
       "priority": {
@@ -445,7 +447,7 @@
     },
     "chat": {
       "TITLE": "Messages",
-      "PLACEHOLDER": "Message..."
+      "PLACEHOLDER": "Send message"
     },
     "mapper": {
       "projectStatus": {

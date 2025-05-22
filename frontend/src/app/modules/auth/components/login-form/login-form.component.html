@@ -1,40 +1,38 @@
 <form
   [formGroup]="form"
-  class="mx-4 flex w-full max-w-150 flex-col gap-4 rounded-lg bg-orange-200 p-9 text-xs shadow-xs sm:w-2/3 sm:text-base dark:bg-slate-900"
+  class="flex w-full max-w-125 flex-col gap-2 rounded-lg bg-orange-200 p-3 py-5 text-xs shadow-xs sm:gap-4 sm:p-9 sm:text-base dark:bg-slate-900"
 >
-  <div class="flex flex-col gap-5">
-    <div
-      class="flex flex-col gap-3 border-b border-orange-300 pb-5 dark:border-slate-500"
-    >
-      <app-form-text-input-control
-        identifier="email"
-        type="email"
-        [control]="form.controls.email"
-        [placeholder]="'loginForm.email.PLACEHOLDER' | translate"
-      />
-      <app-form-text-input-control
-        identifier="password"
-        type="password"
-        [control]="form.controls.password"
-        [placeholder]="'loginForm.password.PLACEHOLDER' | translate"
-      />
-      <div class="flex justify-center">
-        <app-form-button
-          [disabled]="form.invalid || loading"
-          (handleClick)="onSubmit()"
-        >
-          @if (loading) {
-            {{ "utils.LOADING" | translate }}
-          } @else {
-            {{ "loginForm.buttons.LOG_IN" | translate }}
-          }
-        </app-form-button>
-      </div>
+  <div
+    class="flex flex-col gap-2 border-b border-orange-300 pb-3 sm:gap-3 sm:pb-5 dark:border-slate-500"
+  >
+    <app-form-text-input-control
+      identifier="email"
+      type="email"
+      [control]="form.controls.email"
+      [placeholder]="'loginForm.email.PLACEHOLDER' | translate"
+    />
+    <app-form-text-input-control
+      identifier="password"
+      type="password"
+      [control]="form.controls.password"
+      [placeholder]="'loginForm.password.PLACEHOLDER' | translate"
+    />
+    <div class="flex justify-center">
+      <app-form-button
+        [disabled]="form.invalid || loading"
+        (handleClick)="onSubmit()"
+      >
+        @if (loading) {
+          {{ "utils.LOADING" | translate }}
+        } @else {
+          {{ "loginForm.buttons.LOG_IN" | translate }}
+        }
+      </app-form-button>
     </div>
-    <a
-      routerLink="/auth/signup"
-      class="focus-ring w-fit self-center rounded-full px-1.5 py-0.5 text-xs text-sky-600 hover:text-sky-700 sm:text-sm dark:text-sky-400 dark:hover:text-sky-300"
-      >{{ "loginForm.buttons.SIGN_UP" | translate }}</a
-    >
   </div>
+  <a
+    routerLink="/auth/signup"
+    class="focus-ring w-fit self-center rounded-full px-1.5 py-0.5 text-xs text-sky-700 drop-shadow-sm hover:text-sky-800 sm:text-sm dark:text-sky-400 dark:hover:text-sky-300"
+    >{{ "loginForm.buttons.SIGN_UP" | translate }}</a
+  >
 </form>

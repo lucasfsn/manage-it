@@ -1,25 +1,29 @@
 <div class="flex flex-col gap-3 text-gray-500">
-  <div
-    class="flex gap-2 self-end rounded-full bg-orange-200 px-3 py-1 dark:bg-slate-950"
-  >
-    @if (members.length !== 0) {
-      <mat-icon
-        class="cursor-pointer transition-all hover:text-sky-600"
-        [class.text-sky-600]="showAssignees"
-        (click)="toggleShowAssignees()"
-        >manage_accounts</mat-icon
-      >
-    }
-    <mat-icon
-      class="cursor-pointer transition-all hover:text-sky-600"
-      [class.text-sky-600]="!showAssignees || members.length === 0"
-      (click)="toggleShowAddAssignee()"
-      >person_add</mat-icon
+  @if (members.length !== 0 || !isProjectFinished) {
+    <div
+      class="flex gap-2 self-end rounded-full bg-orange-200 px-3 py-1 dark:bg-slate-950"
     >
-  </div>
+      @if (members.length !== 0) {
+        <mat-icon
+          class="cursor-pointer transition-all hover:text-sky-600"
+          [class.text-sky-600]="showAssignees"
+          (click)="toggleShowAssignees()"
+          >manage_accounts</mat-icon
+        >
+      }
+      @if (!isProjectFinished) {
+        <mat-icon
+          class="cursor-pointer transition-all hover:text-sky-600"
+          [class.text-sky-600]="!showAssignees || members.length === 0"
+          (click)="toggleShowAddAssignee()"
+          >person_add</mat-icon
+        >
+      }
+    </div>
+  }
   @if (showAssignees && members.length !== 0) {
     <app-task-assignees-list />
-  } @else {
+  } @else if (!isProjectFinished) {
     <app-task-add-assignee />
   }
 </div>

@@ -1,41 +1,31 @@
 :host {
   display: flex;
   flex-direction: column;
-  background-color: #fed7aa;
+  background-color: var(--color-orange-200);
 }
 
 .search-results li {
   &:first-child {
-    border-top: 1px solid #fdba74;
+    border-top: 1px solid var(--color-orange-300);
   }
 
   &:last-child {
-    border-bottom: 1px solid #fdba74;
-  }
-
-  &:hover,
-  &:focus {
-    background-color: #eecaa4;
+    border-bottom: 1px solid var(--color-orange-300);
   }
 }
 
 :host-context(.dark) {
   :host {
-    background-color: #1e293b;
+    background-color: var(--color-slate-800);
   }
 
   .search-results li {
     &:first-child {
-      border-top: 1px solid #475569;
+      border-top: 1px solid var(--color-slate-700);
     }
 
     &:last-child {
-      border-bottom: 1px solid #475569;
-    }
-
-    &:hover,
-    &:focus {
-      background-color: #25324781;
+      border-bottom: 1px solid var(--color-slate-700);
     }
   }
 }

@@ -201,6 +201,10 @@ export class ProjectFormComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.form.patchValue({
+      endDate: getTodayDate(),
+    });
+
     const { isEditing } = this.route.snapshot.data as RouteData;
     this.isEditing = isEditing;
 

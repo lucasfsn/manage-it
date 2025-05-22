@@ -1,4 +1,4 @@
-import { allowAddUserToProjectGuard } from '@/app/modules/user/guards/allow-add-user-to-project.guard';
+import { addUserToProjectGuard } from '@/app/modules/user/guards/add-user-to-project.guard';
 import { UserComponent } from '@/app/modules/user/pages/user/user.component';
 import {
   userRedirectResolver,
@@ -30,7 +30,7 @@ export const USER_ROUTES: Routes = [
     resolve: {
       userResolver,
     },
-    canActivate: [allowAddUserToProjectGuard],
+    canActivate: [addUserToProjectGuard],
     data: {
       title: 'title.PROFILE',
     },

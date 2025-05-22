@@ -44,7 +44,7 @@
       }
     </div>
     <div
-      class="chat-input relative flex h-12 items-center rounded-full bg-orange-200 px-4 py-3 text-gray-800 shadow-sm focus-within:ring-2 focus-within:ring-sky-500 dark:bg-slate-950 dark:text-gray-200"
+      class="relative flex h-12 items-center rounded-full bg-orange-200 px-4 py-3 text-gray-800 shadow-sm focus-within:ring-2 focus-within:ring-sky-500 dark:bg-slate-950 dark:text-gray-200"
     >
       @if (showEmojiPicker) {
         <div
@@ -69,6 +69,7 @@
         </div>
       }
       <input
+        #input
         type="text"
         [placeholder]="'utils.chat.PLACEHOLDER' | translate"
         class="grow bg-transparent text-sm outline-hidden placeholder:text-gray-500 disabled:cursor-not-allowed"

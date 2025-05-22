@@ -2,6 +2,7 @@ import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
+import { ProjectStatus } from '@/app/features/dto/project.model';
 import { Task } from '@/app/features/dto/task.model';
 import { TaskService } from '@/app/features/services/task.service';
 import { TaskEditFormComponent } from '@/app/modules/task/components/task-edit-form/task-edit-form.component';
@@ -34,6 +35,12 @@ export class TaskMenuComponent {
 
   protected get task(): Task | null {
     return this.taskService.loadedTask();
+  }
+
+  protected get isProjectFinished(): boolean {
+    if (!this.task) return false;
+
+    return this.task.projectStatus === ProjectStatus.COMPLETED;
   }
 
   protected handleGoBack(): void {

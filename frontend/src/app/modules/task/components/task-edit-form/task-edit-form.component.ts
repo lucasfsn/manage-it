@@ -15,6 +15,7 @@ import {
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { maxLength, minLength, required } from '@/app/shared/validators';
+import { maxDate } from '@/app/shared/validators/max-date.validator';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -69,6 +70,10 @@ export class TaskEditFormComponent implements OnInit {
     },
     { updateOn: 'blur' },
   );
+
+  protected get maxDate(): string | null {
+    return this.taskService.loadedTask()?.projectEndDate || null;
+  }
 
   protected get disabled(): boolean {
     return this.form.invalid || !this.hasFormChanged() || this.loading;
@@ -157,5 +162,12 @@ export class TaskEditFormComponent implements OnInit {
 
   public ngOnInit(): void {
     this.fillFormWithDefaultValues();
+
+    const task = this.taskService.loadedTask();
+    if (!task) return;
+
+    this.form.controls.dueDate.addValidators([
+      maxDate(task.projectEndDate, 'task.editForm.dueDate.errors.MAX_DATE'),
+    ]);
   }
 }
