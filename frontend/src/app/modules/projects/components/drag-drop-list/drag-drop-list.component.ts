@@ -75,6 +75,10 @@ export class DragDropListComponent implements OnInit {
     return this.authService.loadedUser();
   }
 
+  protected get isDragAndDropDisabled(): boolean {
+    return this.loading || this.project?.status === ProjectStatus.COMPLETED;
+  }
+
   protected toggleOnlyMyTasks(): void {
     this.onlyMyTasks = !this.onlyMyTasks;
     this.groupTasksByStatus();
