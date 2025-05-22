@@ -333,7 +333,8 @@
       "dueDate": {
         "LABEL": "Preferowany termin realizacji",
         "errors": {
-          "REQUIRED": "Termin realizacji jest wymagany."
+          "REQUIRED": "Termin realizacji jest wymagany.",
+          "MAX_DATE": "Termin realizacji zadania nie może być późniejszy niż data zakończenia projektu."
         }
       },
       "priority": {
@@ -358,7 +359,8 @@
       "dueDate": {
         "LABEL": "Preferowany termin realizacji",
         "errors": {
-          "REQUIRED": "Termin realizacji jest wymagany."
+          "REQUIRED": "Termin realizacji jest wymagany.",
+          "MAX_DATE": "Termin realizacji zadania nie może być późniejszy niż data zakończenia projektu."
         }
       },
       "priority": {

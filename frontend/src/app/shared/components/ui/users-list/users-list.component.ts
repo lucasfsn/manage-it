@@ -14,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class UsersListComponent {
   @Input({ required: true }) public iconName!: string;
   @Input({ required: true }) public users: User[] = [];
+  @Input() public hideButton: boolean = false;
   @Output() public handleClick = new EventEmitter<User>();
 
   public constructor(private authService: AuthService) {}

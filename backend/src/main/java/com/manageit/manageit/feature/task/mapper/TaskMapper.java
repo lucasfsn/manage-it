@@ -11,6 +11,8 @@ import org.mapstruct.NullValueMappingStrategy;
 public interface TaskMapper {
     @Mapping(target = "projectId", expression = "java(task.getProject().getId())")
     @Mapping(target = "members", source = "users")
+    @Mapping(target = "projectStatus", expression = "java(task.getProject().getStatus())")
+    @Mapping(target = "projectEndDate", expression = "java(task.getProject().getEndDate())")
     TaskResponseDto toTaskResponseDto(Task task);
 
     @Mapping(target = "projectId", expression = "java(task.getProject().getId())")

@@ -1,4 +1,4 @@
-import { User } from '@/app/features/dto/project.model';
+import { ProjectStatus, User } from '@/app/features/dto/project.model';
 
 export enum TaskStatus {
   NOT_STARTED = 'NOT_STARTED',
@@ -20,6 +20,8 @@ export interface Task {
   readonly status: TaskStatus;
   readonly priority: Priority;
   readonly dueDate: string;
+  readonly projectStatus: ProjectStatus;
+  readonly projectEndDate: string;
 }
 
 export interface TaskData {
