@@ -26,7 +26,7 @@
         #notStartedList="cdkDropList"
         [cdkDropListData]="notStartedTasks"
         [cdkDropListConnectedTo]="[inProgressList, completedList]"
-        [cdkDropListDisabled]="loading"
+        [cdkDropListDisabled]="isDragAndDropDisabled"
         (cdkDropListDropped)="drop($event)"
         id="notStarted"
         cdkDropList
@@ -96,7 +96,7 @@
         #inProgressList="cdkDropList"
         [cdkDropListData]="inProgressTasks"
         [cdkDropListConnectedTo]="[completedList, notStartedList]"
-        [cdkDropListDisabled]="loading"
+        [cdkDropListDisabled]="isDragAndDropDisabled"
         (cdkDropListDropped)="drop($event)"
         id="inProgress"
         cdkDropList
@@ -166,7 +166,7 @@
         #completedList="cdkDropList"
         [cdkDropListData]="completedTasks"
         [cdkDropListConnectedTo]="[inProgressList, notStartedList]"
-        [cdkDropListDisabled]="loading"
+        [cdkDropListDisabled]="isDragAndDropDisabled"
         (cdkDropListDropped)="drop($event)"
         id="completed"
         cdkDropList

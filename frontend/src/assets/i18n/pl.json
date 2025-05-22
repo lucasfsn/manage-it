@@ -122,7 +122,7 @@
   },
   "notifications": {
     "TITLE": "Powiadomienia",
-    "MARK_ALL_AS_READ": "Oznacz wszystkie jako przeczytane",
+    "MARK_ALL_AS_READ": "Oznacz jako przeczytane",
     "NO_NOTIFICATIONS": "Brak powiadomień",
     "content": {
       "project": {
