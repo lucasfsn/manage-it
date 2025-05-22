@@ -1,4 +1,4 @@
-<div class="flex flex-col items-end gap-2">
+<div class="flex items-end justify-between gap-2">
   <app-button
     bgColor="bg-slate-400"
     textColor="text-slate-900"
@@ -7,22 +7,24 @@
   >
     <mat-icon>arrow_back</mat-icon>
   </app-button>
-  <div class="flex gap-2">
-    <app-button
-      bgColor="bg-sky-300"
-      textColor="text-slate-900"
-      hoverBgColor="hover:bg-sky-400"
-      (handleClick)="handleEdit()"
-    >
-      <mat-icon>edit</mat-icon>
-    </app-button>
-    <app-button
-      bgColor="bg-pink-900"
-      textColor="text-pink-200"
-      hoverBgColor="hover:bg-pink-950"
-      (handleClick)="handleDelete()"
-    >
-      <mat-icon>delete</mat-icon>
-    </app-button>
-  </div>
+  @if (!isProjectFinished) {
+    <div class="flex gap-2">
+      <app-button
+        bgColor="bg-sky-300"
+        textColor="text-slate-900"
+        hoverBgColor="hover:bg-sky-400"
+        (handleClick)="handleEdit()"
+      >
+        <mat-icon>edit</mat-icon>
+      </app-button>
+      <app-button
+        bgColor="bg-pink-900"
+        textColor="text-pink-200"
+        hoverBgColor="hover:bg-pink-950"
+        (handleClick)="handleDelete()"
+      >
+        <mat-icon>delete</mat-icon>
+      </app-button>
+    </div>
+  }
 </div>

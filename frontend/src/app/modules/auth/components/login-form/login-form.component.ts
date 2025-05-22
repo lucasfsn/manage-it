@@ -3,6 +3,7 @@ import { TranslationService } from '@/app/core/services/translation.service';
 import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { SAVED_LOGIN_FORM_DATA_KEY } from '@/app/shared/constants/local-storage.constant';
 import { email, required } from '@/app/shared/validators';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -82,7 +83,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const savedLoginForm = localStorage.getItem('saved-login-form');
+    const savedLoginForm = localStorage.getItem(SAVED_LOGIN_FORM_DATA_KEY);
 
     if (savedLoginForm) {
       const loadedData = JSON.parse(savedLoginForm) as { email: string | null };
@@ -94,7 +95,7 @@ export class LoginFormComponent implements OnInit {
       .subscribe({
         next: (value) => {
           localStorage.setItem(
-            'saved-login-form',
+            SAVED_LOGIN_FORM_DATA_KEY,
             JSON.stringify({ email: value.email }),
           );
         },

@@ -1,23 +1,20 @@
 package com.manageit.manageit.feature.message.mapper;
 
-import com.manageit.manageit.feature.message.dto.MessageDto;
-import com.manageit.manageit.feature.user.mapper.BasicUserMapper;
+import com.manageit.manageit.feature.message.dto.MessageResponseDto;
 import com.manageit.manageit.feature.message.model.Message;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Service
-@RequiredArgsConstructor
-public class MessageMapper {
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-    private final BasicUserMapper basicUserMapper;
+@Mapper(componentModel = "spring")
+public interface MessageMapper {
+    @Mapping(target = "sender", source = "user")
+    @Mapping(target = "createdAt", source = "createdAt")
+    MessageResponseDto toMessageDto(Message message);
 
-    public MessageDto toMessageDto(Message message) {
-        return MessageDto.builder()
-                .id(message.getId())
-                .sender(basicUserMapper.toBasicUserDto(message.getUser()))
-                .content(message.getContent())
-                .createdAt(message.getCreatedAt().toString())
-                .build();
+    default String map(OffsetDateTime value) {
+        return value != null ? value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) : null;
     }
 }

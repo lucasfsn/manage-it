@@ -11,7 +11,7 @@
     class="xs:pb-4 relative flex grow flex-col justify-between gap-3 overflow-hidden p-4 pb-16"
   >
     <div
-      class="flex max-h-4/5 flex-col gap-3 overflow-y-auto px-4 py-3 drop-shadow-sm"
+      class="flex max-h-4/5 flex-col gap-4 overflow-y-auto px-4 py-3 drop-shadow-sm"
       #scroll
     >
       @for (message of messages; track message.id) {
@@ -23,7 +23,7 @@
               [lastName]="message.sender.lastName"
               [hover]="false"
             />
-            <div class="flex h-full items-center gap-2">
+            <div class="flex h-full flex-col">
               @if (message.sender.username === currentUser?.username) {
                 <span class="text-sm font-semibold text-sky-600">You</span>
               } @else {
@@ -32,8 +32,8 @@
                   {{ message.sender.lastName }}</span
                 >
               }
-              <span class="text-sm text-gray-500">{{
-                message.createdAt | date: "medium"
+              <span class="text-xs text-gray-500">{{
+                message.createdAt | customDate: dateFormat
               }}</span>
             </div>
           </div>
@@ -44,7 +44,7 @@
       }
     </div>
     <div
-      class="chat-input relative flex h-12 items-center rounded-full bg-orange-200 px-4 py-3 text-gray-800 shadow-sm focus-within:ring-2 focus-within:ring-sky-500 dark:bg-slate-950 dark:text-gray-200"
+      class="relative flex h-12 items-center rounded-full bg-orange-200 px-4 py-3 text-gray-800 shadow-sm focus-within:ring-2 focus-within:ring-sky-500 dark:bg-slate-950 dark:text-gray-200"
     >
       @if (showEmojiPicker) {
         <div
@@ -69,9 +69,10 @@
         </div>
       }
       <input
+        #input
         type="text"
         [placeholder]="'utils.chat.PLACEHOLDER' | translate"
-        class="flex-1 bg-transparent text-sm outline-hidden placeholder:text-gray-500 disabled:cursor-not-allowed"
+        class="grow bg-transparent text-sm outline-hidden placeholder:text-gray-500 disabled:cursor-not-allowed"
         [formControl]="form"
         (keydown.enter)="sendMessage()"
       />
@@ -85,7 +86,7 @@
       @if (form.value && form.value.length > 0) {
         <button
           @buttonAnimation
-          class="focus-ring-inset flex aspect-square h-8 w-8 items-center justify-center rounded-full bg-orange-100 transition-all hover:bg-orange-300 disabled:cursor-not-allowed dark:bg-slate-900 dark:hover:bg-slate-800"
+          class="focus-ring-inset xs:flex hidden aspect-square h-8 w-8 items-center justify-center rounded-full bg-orange-100 transition-all hover:bg-orange-300 disabled:cursor-not-allowed dark:bg-slate-900 dark:hover:bg-slate-800"
           [disabled]="loading"
           (click)="sendMessage()"
         >

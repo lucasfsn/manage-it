@@ -1,5 +1,5 @@
 <nav
-  class="grid h-full grid-cols-1 justify-start gap-3 overflow-hidden shadow-xs lg:grid-rows-[auto_auto_1fr]"
+  class="dark:bg-primary bg-primary-light border-t-scrollbar-thumb fixed bottom-0 left-0 z-10 grid h-fit w-full grid-cols-1 justify-start gap-3 overflow-hidden border-t px-2 lg:static lg:h-full lg:grid-rows-[auto_auto_1fr] lg:border-t-0 lg:pt-2 lg:shadow-xs"
 >
   <button
     (click)="toggleSidebar()"
@@ -11,7 +11,7 @@
     <mat-icon>{{ isCollapsed ? "chevron_right" : "chevron_left" }}</mat-icon>
   </button>
   <div
-    class="mx-auto grid grid-cols-5 items-center lg:mx-0 lg:grid-cols-1 lg:grid-rows-5 lg:gap-0.5"
+    class="mx-auto grid grid-cols-5 items-center justify-around gap-x-2 lg:mx-0 lg:grid-cols-1 lg:grid-rows-5 lg:gap-y-0.5"
   >
     <button
       class="sidebar focus-ring-inset items-center justify-center rounded-lg hover:bg-orange-100 dark:hover:bg-slate-900"
@@ -30,7 +30,7 @@
     <button
       class="sidebar focus-ring-inset rounded-lg hover:bg-orange-100 dark:hover:bg-slate-900"
       routerLink="/dashboard"
-      routerLinkActive="text-sky-500"
+      routerLinkActive="text-sky-600 dark:text-sky-500"
     >
       <p class="sidebar-item">
         <mat-icon>space_dashboard</mat-icon>
@@ -45,7 +45,7 @@
     <button
       class="sidebar focus-ring-inset rounded-lg hover:bg-orange-100 dark:hover:bg-slate-900"
       routerLink="projects"
-      routerLinkActive="text-sky-500"
+      routerLinkActive="text-sky-600 dark:text-sky-500"
     >
       <p class="sidebar-item">
         <mat-icon>folder_open</mat-icon>
@@ -60,7 +60,7 @@
     <button
       class="sidebar focus-ring-inset w-auto rounded-lg hover:bg-orange-100 dark:hover:bg-slate-900"
       routerLink="notifications"
-      routerLinkActive="text-sky-500"
+      routerLinkActive="text-sky-600 dark:text-sky-500"
     >
       <p class="sidebar-item">
         <mat-icon>notifications</mat-icon>

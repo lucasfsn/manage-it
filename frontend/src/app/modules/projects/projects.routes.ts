@@ -1,6 +1,7 @@
 import { ProjectFormComponent } from '@/app/modules/projects/components/project-form/project-form.component';
 import { ProjectComponent } from '@/app/modules/projects/pages/project/project.component';
 import { ProjectsComponent } from '@/app/modules/projects/pages/projects/projects.component';
+import { projectFormResolver } from '@/app/modules/projects/resolvers/project-form.resolver';
 import { projectResolver } from '@/app/modules/projects/resolvers/project.resolver';
 import { projectsResolver } from '@/app/modules/projects/resolvers/projects.resolver';
 import { Routes } from '@angular/router';
@@ -28,7 +29,7 @@ export const PROJECTS_ROUTES: Routes = [
     path: ':projectId/edit',
     component: ProjectFormComponent,
     resolve: {
-      projectResolver,
+      projectFormResolver,
     },
     data: {
       title: 'title.PROJECT_EDIT',

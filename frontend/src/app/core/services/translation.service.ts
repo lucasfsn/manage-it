@@ -1,20 +1,18 @@
 import { LanguageCode, LANGUAGES } from '@/app/config/language.config';
-import { LANGUAGE_KEY } from '@/app/core/constants/local-storage.constants';
+import { LANGUAGE_KEY } from '@/app/shared/constants/local-storage.constant';
 import { Injectable, signal } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TranslationService {
-  private readonly LANGUAGE = LANGUAGE_KEY;
   private language = signal<LanguageCode>(LanguageCode.EN);
-
   public loadedLanguage = this.language.asReadonly();
 
   public constructor(private translateService: TranslateService) {
-    const storedLanguage = localStorage.getItem(this.LANGUAGE);
+    const storedLanguage = localStorage.getItem(LANGUAGE_KEY);
 
     const defaultLanguage = storedLanguage
       ? this.storedUserLanguage(storedLanguage)
@@ -31,7 +29,7 @@ export class TranslationService {
     this.translateService.use(newLangCode);
     this.language.set(newLangCode);
     this.changeHtmlLang(newLangCode);
-    localStorage.setItem(this.LANGUAGE, newLangCode);
+    localStorage.setItem(LANGUAGE_KEY, newLangCode);
   }
 
   public translate(key: string, params?: Record<string, unknown>): string {
@@ -40,6 +38,10 @@ export class TranslationService {
 
   public get(key: string): Observable<string> {
     return this.translateService.get(key);
+  }
+
+  public onLanguageChange(): Observable<LangChangeEvent> {
+    return this.translateService.onLangChange;
   }
 
   private storedUserLanguage(storedLanguage: string): LanguageCode {

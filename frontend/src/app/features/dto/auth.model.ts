@@ -26,6 +26,12 @@ export interface RegisterCredentials {
 }
 
 export interface AuthResponse {
-  readonly token: string;
+  readonly accessToken: string;
+  readonly refreshToken: string;
   readonly user: UserCredentials;
+}
+
+export interface RefreshTokenResponse {
+  readonly accessToken: string;
+  readonly refreshToken: string;
 }

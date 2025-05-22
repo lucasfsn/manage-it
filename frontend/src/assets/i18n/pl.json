@@ -106,9 +106,9 @@
     "upcomingDeadlines": {
       "TITLE": "Nadchodzące terminy",
       "NO_DEADLINES": "Brak nadchodzących terminów",
-      "DEADLINE": "Termin",
+      "DEADLINE": "Termin realizacji",
       "DAY_LEFT": "Jutro",
-      "DAYS_LEFT": "{{daysLeft}} dni",
+      "DAYS_LEFT": "Pozostało {{daysLeft}} dni",
       "TODAY": "Dzisiaj"
     },
     "projectsSummary": {
@@ -143,8 +143,8 @@
   "notFound": {
     "TITLE": "Strona nie została znaleziona.",
     "guest": {
-      "DESCRIPTION": "Ta strona może być prywatna. Możesz ją zobaczyć po przejściu na",
-      "DESCRIPTION_LINK": "stronę logowania"
+      "DESCRIPTION": "Ta strona może być prywatna lub nie istnieć. Sprawdź adres URL lub wróć do",
+      "DESCRIPTION_LINK": "strony logowania"
     },
     "user": {
       "DESCRIPTION": "Ta strona może nie istnieć lub możesz nie mieć do niej dostępu. Sprawdź adres URL lub wróć do",
@@ -219,8 +219,8 @@
   "projects": {
     "list": {
       "NO_PROJECTS": "Brak projektów",
-      "START_DATE": "Data rozpoczęcia",
-      "DEADLINE": "Termin",
+      "CREATED_AT": "Data utworzenia",
+      "DEADLINE": "Termin realizacji",
       "NO_TASKS": "Brak zadań w tej chwili",
       "COMPLETED_PERCENTAGE": "Ukończono"
     },
@@ -249,8 +249,8 @@
       "LEADER": "Lider projektu",
       "MEMBERS": "Członkowie",
       "STATUS": "Status",
-      "START_DATE": "Data rozpoczęcia",
-      "END_DATE": "Data zakończenia",
+      "CREATED_AT": "Data utworzenia",
+      "END_DATE": "Termin realizacji",
       "members": {
         "TITLE": "Zarządzaj członkami"
       },
@@ -282,18 +282,10 @@
           "MAX_LENGTH": "Opis projektu nie może mieć więcej niż {{maxLength}} znaków."
         }
       },
-      "startDate": {
-        "LABEL": "Data rozpoczęcia",
-        "errors": {
-          "REQUIRED": "Data rozpoczęcia jest wymagana.",
-          "MIN": "Data rozpoczęcia musi być co najmniej dzisiejsza."
-        }
-      },
       "endDate": {
-        "LABEL": "Data zakończenia",
+        "LABEL": "Termin realizacji",
         "errors": {
-          "REQUIRED": "Data zakończenia jest wymagana.",
-          "INVALID": "Data zakończenia nie może być wcześniejsza niż data rozpoczęcia."
+          "REQUIRED": "Termin realizacji jest wymagany."
         }
       },
       "buttons": {
@@ -306,7 +298,7 @@
   "task": {
     "details": {
       "STATUS": "Status",
-      "DUE_DATE": "Termin",
+      "DUE_DATE": "Termin realizacji",
       "PRIORITY": "Priorytet",
       "ASSIGNEES": "Przydzielone osoby",
       "NO_ASSIGNEES": "Brak"
@@ -322,6 +314,9 @@
         "COMPLETED": "Ukończone",
         "IN_PROGRESS": "W trakcie",
         "NOT_STARTED": "Nadchodzące"
+      },
+      "filter": {
+        "ME_MODE": "Filtruj zadania przydzielone do mnie"
       }
     },
     "createForm": {
@@ -336,10 +331,10 @@
         }
       },
       "dueDate": {
-        "LABEL": "Termin",
+        "LABEL": "Preferowany termin realizacji",
         "errors": {
-          "REQUIRED": "Termin jest wymagany.",
-          "MIN": "Data terminu musi być co najmniej dzisiejsza."
+          "REQUIRED": "Termin realizacji jest wymagany.",
+          "MAX_DATE": "Termin realizacji zadania nie może być późniejszy niż data zakończenia projektu."
         }
       },
       "priority": {
@@ -362,9 +357,10 @@
         }
       },
       "dueDate": {
-        "LABEL": "Termin",
+        "LABEL": "Preferowany termin realizacji",
         "errors": {
-          "REQUIRED": "Termin jest wymagany."
+          "REQUIRED": "Termin realizacji jest wymagany.",
+          "MAX_DATE": "Termin realizacji zadania nie może być późniejszy niż data zakończenia projektu."
         }
       },
       "priority": {
@@ -451,23 +447,23 @@
     },
     "chat": {
       "TITLE": "Wiadomości",
-      "PLACEHOLDER": "Napisz..."
+      "PLACEHOLDER": "Wyślij wiadomość"
     },
     "mapper": {
       "projectStatus": {
         "IN_PROGRESS": "W trakcie",
-        "COMPLETED": "Zakończony"
+        "COMPLETED": "Ukończone"
       },
       "taskStatus": {
         "IN_PROGRESS": "W trakcie",
-        "COMPLETED": "Ukończony",
+        "COMPLETED": "Ukończone",
         "NOT_STARTED": "Nadchodzące"
       },
       "sortCriteria": {
         "NAME": "Nazwa",
-        "START_DATE": "Data rozpoczęcia",
-        "END_DATE": "Data zakończenia",
-        "COMPLETED_TASKS": "Liczba ukończonych zadań"
+        "CREATED_AT": "Data utworzenia",
+        "END_DATE": "Termin realizacji",
+        "COMPLETED_TASKS": "Ukończone zadania"
       },
       "sortOrder": {
         "ASCENDING": "Rosnąco",

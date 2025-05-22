@@ -1,4 +1,4 @@
-<div class="flex h-full flex-col items-end gap-5 text-slate-600">
+<div class="flex h-full flex-col gap-5 text-slate-600">
   <app-button
     bgColor="bg-slate-400"
     textColor="text-slate-900"
@@ -37,22 +37,11 @@
       [maxLength]="1000"
     />
     <app-form-date-input-control
-      identifier="start-date"
-      [control]="form.controls.dates.controls.startDate"
-      [label]="'project.form.startDate.LABEL' | translate"
-      [min]="minDate"
-    />
-    <app-form-date-input-control
       identifier="end-date"
-      [control]="form.controls.dates.controls.endDate"
+      [control]="form.controls.endDate"
       [label]="'project.form.endDate.LABEL' | translate"
-      [min]="minDate"
+      [min]="minEndDate"
     />
-    @if (dateGroupErrors) {
-      <p class="text-sm text-red-500">
-        {{ dateGroupErrors }}
-      </p>
-    }
     <div class="mt-2 flex justify-between gap-2">
       <app-form-button
         type="reset"

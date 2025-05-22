@@ -11,12 +11,12 @@
 
   &:hover {
     transition: all 0.3s;
-    color: #0ea5e9;
     outline: none;
+    color: var(--color-sky-600);
 
     .profile-picture {
       transition: all 0.3s;
-      background-color: #0ea5e9;
+      background-color: var(--color-sky-600);
     }
   }
 
@@ -36,8 +36,26 @@
   }
 }
 
+.dark {
+  .sidebar {
+    &:hover {
+      color: var(--color-sky-500);
+
+      .profile-picture {
+        background-color: var(--color-sky-500);
+      }
+    }
+  }
+
+  .profile-active {
+    .profile-picture {
+      background-color: var(--color-sky-500);
+    }
+  }
+}
+
 .profile-active {
   .profile-picture {
-    background-color: #0ea5e9;
+    background-color: var(--color-sky-600);
   }
 }

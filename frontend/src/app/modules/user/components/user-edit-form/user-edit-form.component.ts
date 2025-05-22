@@ -6,15 +6,15 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 
-import {
-  PASSWORD_REGEX,
-  PERSON_NAME_REGEX,
-} from '@/app/core/constants/regex.constants';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import {
+  PASSWORD_REGEX,
+  PERSON_NAME_REGEX,
+} from '@/app/shared/constants/regex.constant';
 import {
   email,
   equalValues,

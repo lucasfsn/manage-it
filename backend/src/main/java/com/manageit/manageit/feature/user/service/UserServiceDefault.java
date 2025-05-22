@@ -1,14 +1,13 @@
 package com.manageit.manageit.feature.user.service;
 
 
-import com.manageit.manageit.feature.user.dto.BasicUserDto;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
-import com.manageit.manageit.feature.user.mapper.BasicUserMapper;
+import com.manageit.manageit.feature.user.dto.UserDetailsResponseDto;
 import com.manageit.manageit.feature.user.mapper.UserMapper;
 import com.manageit.manageit.feature.user.repository.UserRepository;
-import com.manageit.manageit.configuration.security.JwtService;
+import com.manageit.manageit.jwt.service.JwtService;
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
-import com.manageit.manageit.feature.user.dto.UpdateUserRequest;
+import com.manageit.manageit.feature.user.dto.UpdateUserRequestDto;
 import com.manageit.manageit.feature.user.model.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +27,22 @@ public class UserServiceDefault implements UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final BasicUserMapper basicUserMapper;
     private static final String EXCEPTION_MESSAGE = "No users found!";
 
     @Override
+    public User getUserOrThrow(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No user found with id: " + id));
+    }
+
+    @Override
+    public User getUserOrThrow(String id) {
+        return getUserOrThrow(UUID.fromString(id));
+    }
+
+    @Override
     public User getUserByToken(String token) {
-        String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        return getUserByUsername(username);
+        String id = jwtService.extractUserId(token.replace("Bearer ", ""));
+        return getUserOrThrow(UUID.fromString(id));
     }
 
     @Override
@@ -49,7 +57,7 @@ public class UserServiceDefault implements UserService {
     }
 
     @Override
-    public UserResponseDto findByUsername(User userDetails, String username) {
+    public UserDetailsResponseDto findByUsername(User userDetails, String username) {
         User user = getUserByUsername(username);
 
         List<Project> filteredProjects = user.getProjects().stream()
@@ -58,48 +66,48 @@ public class UserServiceDefault implements UserService {
                 .toList();
 
         if (userDetails.getName().equals(username)) {
-            return userMapper.toUserResponse(user, filteredProjects);
+            return userMapper.toUserDetailsResponseDto(user, filteredProjects);
         }
         return userMapper.toUserResponseWithoutEmail(user, filteredProjects);
     }
 
     @Override
-    public UserResponseDto updateUser(User userDetails, UpdateUserRequest updatedUser) {
+    public UserDetailsResponseDto updateUser(User user, UpdateUserRequestDto updatedUser) {
         if (updatedUser.getFirstName() != null) {
-            userDetails.setFirstName(updatedUser.getFirstName());
+            user.setFirstName(updatedUser.getFirstName());
         }
         if (updatedUser.getLastName() != null) {
-            userDetails.setLastName(updatedUser.getLastName());
+            user.setLastName(updatedUser.getLastName());
         }
         if (updatedUser.getEmail() != null) {
-            userDetails.setEmail(updatedUser.getEmail());
+            user.setEmail(updatedUser.getEmail());
         }
         if (updatedUser.getPassword() != null) {
-            userDetails.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
-        User savedUser = userRepository.save(userDetails);
-        return userMapper.toUserResponse(savedUser);
+        User savedUser = userRepository.save(user);
+        return userMapper.toUserDetailsResponseDto(savedUser);
     }
 
     @Override
-    public List<BasicUserDto> searchUsers(String pattern, UUID projectId, UUID taskId) {
+    public List<UserResponseDto> searchUsers(String pattern, UUID projectId, UUID taskId) {
         if (projectId != null && taskId != null) {
             return userRepository.findByPatternInProjectExcludingTask(pattern, projectId, taskId)
                     .map(users -> users.stream()
-                            .map(basicUserMapper::toBasicUserDto)
+                            .map(userMapper::toUserResponseDto)
                             .toList())
                     .orElseThrow(() -> new EntityNotFoundException(EXCEPTION_MESSAGE));
         }
         if (projectId != null) {
             return userRepository.findByPatternInAllFieldsNotInProject(pattern, projectId)
                     .map(users -> users.stream()
-                            .map(basicUserMapper::toBasicUserDto)
+                            .map(userMapper::toUserResponseDto)
                             .toList())
                     .orElseThrow(() -> new EntityNotFoundException(EXCEPTION_MESSAGE));
         }
         return userRepository.findByPatternInAllFields(pattern)
                 .map(users -> users.stream()
-                        .map(basicUserMapper::toBasicUserDto)
+                        .map(userMapper::toUserResponseDto)
                         .toList())
                 .orElseThrow(() -> new EntityNotFoundException(EXCEPTION_MESSAGE));
 

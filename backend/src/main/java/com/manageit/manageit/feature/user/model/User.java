@@ -80,6 +80,8 @@ public class User implements UserDetails, Principal {
         return email;
     }
 
+    //mapery zmienić, żeby getName stosowały
+
     @Override
     public boolean isAccountNonExpired() {
         return UserDetails.super.isAccountNonExpired(); //true

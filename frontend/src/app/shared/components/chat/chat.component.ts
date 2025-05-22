@@ -1,4 +1,6 @@
+import { LanguageCode } from '@/app/config/language.config';
 import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import { UserCredentials } from '@/app/features/dto/auth.model';
 import { Message } from '@/app/features/dto/chat.model';
 import { AuthService } from '@/app/features/services/auth.service';
@@ -14,6 +16,7 @@ import {
 } from '@angular/animations';
 import {
   AfterViewChecked,
+  AfterViewInit,
   Component,
   DestroyRef,
   ElementRef,
@@ -43,6 +46,7 @@ import { ToastrService } from 'ngx-toastr';
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
+  providers: [ChatService],
   animations: [
     trigger('buttonAnimation', [
       state('void', style({ transform: 'scale(0.8)', opacity: 0 })),
@@ -56,8 +60,12 @@ import { ToastrService } from 'ngx-toastr';
     ]),
   ],
 })
-export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class ChatComponent
+  implements OnInit, AfterViewChecked, OnDestroy, AfterViewInit
+{
   @ViewChild('scroll') private scroll!: ElementRef;
+  @ViewChild('input') private input!: ElementRef;
+
   private destroyRef = inject(DestroyRef);
   private projectId: string | null = null;
   private taskId: string | null = null;
@@ -71,10 +79,19 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     private route: ActivatedRoute,
     private toastrService: ToastrService,
     private mapperService: MapperService,
+    private translationService: TranslationService,
   ) {}
 
   protected get messages(): Message[] {
     return this.chatService.loadedMessages();
+  }
+
+  protected get dateFormat(): string {
+    const locale = this.translationService.loadedLanguage();
+
+    if (locale === LanguageCode.PL) return 'd MMM y, H:mm';
+
+    return 'd MMM y, h:mm a';
   }
 
   protected addEmoji(event: EmojiEvent): void {
@@ -147,6 +164,10 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.watchTopic();
     });
     this.checkWindowSizeAndToggleLock();
+  }
+
+  public ngAfterViewInit(): void {
+    this.input.nativeElement.focus();
   }
 
   public ngAfterViewChecked(): void {

@@ -50,13 +50,13 @@
         <div
           class="grid grid-cols-[auto_1fr] gap-x-4 rounded-lg bg-orange-200/30 px-1.5 py-0.5 text-xs text-gray-700 sm:px-2 sm:py-1 sm:text-sm dark:bg-slate-950 dark:text-gray-400"
         >
-          <span>{{ "projects.list.START_DATE" | translate }}:</span>
-          <span class="text-sky-500">
-            {{ project.startDate | date }}
+          <span>{{ "projects.list.CREATED_AT" | translate }}:</span>
+          <span class="text-sky-600 dark:text-sky-500">
+            {{ project.createdAt | customDate }}
           </span>
           <span>{{ "projects.list.DEADLINE" | translate }}:</span>
-          <span class="text-pink-500">
-            {{ project.endDate | date }}
+          <span class="text-pink-600 dark:text-pink-500">
+            {{ project.endDate | customDate }}
           </span>
         </div>
       </div>
@@ -78,7 +78,7 @@
           </span>
         </div>
       } @else {
-        <p class="text-xs text-gray-400 sm:text-sm">
+        <p class="text-xs text-gray-500 sm:text-sm dark:text-gray-400">
           {{ "projects.list.NO_TASKS" | translate }}
         </p>
       }

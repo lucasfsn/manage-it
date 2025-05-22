@@ -27,7 +27,7 @@
             <span>{{ "task.details.DUE_DATE" | translate }}</span>
           </p>
           <div class="text-sm text-orange-900 sm:text-base dark:text-slate-300">
-            {{ task.dueDate | date }}
+            {{ task.dueDate | customDate }}
           </div>
         </div>
         <div class="grid grid-cols-2 grid-rows-2 gap-2">
@@ -69,9 +69,9 @@
   </div>
   <app-button
     textColor="text-sky-100"
-    bgColor="bg-sky-500"
-    hoverBgColor="hover:bg-sky-600"
-    customClass="fixed bottom-4 right-4 z-50"
+    bgColor="bg-sky-600 dark:bg-sky-500"
+    hoverBgColor="hover:bg-sky-700 dark:hover:bg-sky-600"
+    customClass="fixed bottom-14 lg:bottom-4 right-4 z-50"
     [largeSize]="true"
     (handleClick)="toggleChat()"
   >

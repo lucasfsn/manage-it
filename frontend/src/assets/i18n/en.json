@@ -143,7 +143,7 @@
   "notFound": {
     "TITLE": "Page not found",
     "guest": {
-      "DESCRIPTION": "This page may be private. You may be able to view it by",
+      "DESCRIPTION": "This page may be private or not exist. Please check the URL or go back to the",
       "DESCRIPTION_LINK": "login page"
     },
     "user": {
@@ -219,7 +219,7 @@
   "projects": {
     "list": {
       "NO_PROJECTS": "No projects found",
-      "START_DATE": "Start date",
+      "CREATED_AT": "Created at",
       "DEADLINE": "Deadline",
       "NO_TASKS": "No tasks yet",
       "COMPLETED_PERCENTAGE": "Completed"
@@ -249,8 +249,8 @@
       "LEADER": "Project leader",
       "MEMBERS": "Members",
       "STATUS": "Status",
-      "START_DATE": "Start date",
-      "END_DATE": "End date",
+      "CREATED_AT": "Created at",
+      "END_DATE": "Deadline",
       "members": {
         "TITLE": "Manage members"
       },
@@ -282,18 +282,10 @@
           "MAX_LENGTH": "Project description cannot be more than {{maxLength}} characters long."
         }
       },
-      "startDate": {
-        "LABEL": "Start date",
-        "errors": {
-          "REQUIRED": "Start date is required.",
-          "MIN": "Start date must be at least today."
-        }
-      },
       "endDate": {
-        "LABEL": "End date",
+        "LABEL": "Deadline",
         "errors": {
-          "REQUIRED": "End date is required.",
-          "INVALID": "End date cannot be earlier than the start date."
+          "REQUIRED": "Deadline is required."
         }
       },
       "buttons": {
@@ -322,6 +314,9 @@
         "COMPLETED": "Completed",
         "IN_PROGRESS": "In Progress",
         "NOT_STARTED": "Upcoming"
+      },
+      "filter": {
+        "ME_MODE": "Filter for your tasks"
       }
     },
     "createForm": {
@@ -339,7 +334,7 @@
         "LABEL": "Due Date",
         "errors": {
           "REQUIRED": "Due date is required.",
-          "MIN": "Due date must be at least today."
+          "MAX_DATE": "The task due date cannot be later than the project's end date."
         }
       },
       "priority": {
@@ -364,7 +359,8 @@
       "dueDate": {
         "LABEL": "Due Date",
         "errors": {
-          "REQUIRED": "Due date is required."
+          "REQUIRED": "Due date is required.",
+          "MAX_DATE": "The task due date cannot be later than the project's end date."
         }
       },
       "priority": {
@@ -451,7 +447,7 @@
     },
     "chat": {
       "TITLE": "Messages",
-      "PLACEHOLDER": "Message..."
+      "PLACEHOLDER": "Send message"
     },
     "mapper": {
       "projectStatus": {
@@ -465,9 +461,9 @@
       },
       "sortCriteria": {
         "NAME": "Name",
-        "START_DATE": "Start date",
-        "END_DATE": "End date",
-        "COMPLETED_TASKS": "Completed Tasks"
+        "CREATED_AT": "Created at",
+        "END_DATE": "Deadline",
+        "COMPLETED_TASKS": "Completed tasks"
       },
       "sortOrder": {
         "ASCENDING": "Ascending",

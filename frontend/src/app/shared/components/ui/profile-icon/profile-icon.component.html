@@ -1,11 +1,11 @@
 <div
-  class="focus-ring flex aspect-square items-center justify-center rounded-full bg-sky-500 text-orange-100 transition-all active:text-slate-900 active:ring-0 dark:text-slate-950"
+  class="focus-ring flex aspect-square items-center justify-center rounded-full bg-sky-600 text-orange-100 transition-all dark:bg-sky-500 dark:text-slate-950"
   [ngClass]="{
     'h-24 w-24 text-4xl': size === 'xl',
     'text-md h-9 w-9': size === 'lg',
     'h-7 w-7 text-sm': size === 'md',
     'h-6 w-6 text-xs': size === 'sm',
-    'cursor-pointer hover:bg-sky-600': hover,
+    'cursor-pointer hover:bg-sky-700 dark:hover:bg-sky-600': hover,
   }"
   [routerLink]="routerLink"
 >

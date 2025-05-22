@@ -30,6 +30,7 @@
       identifier="due-date"
       [control]="form.controls.dueDate"
       [label]="'task.editForm.dueDate.LABEL' | translate"
+      [max]="maxDate"
     />
     <app-form-select-control
       identifier="status"

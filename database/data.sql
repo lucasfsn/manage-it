@@ -22,7 +22,6 @@ CREATE TABLE projects (
     status project_status NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP,
-    start_date DATE NOT NULL,
     end_date DATE NOT NULL
 );
 

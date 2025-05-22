@@ -1,14 +1,14 @@
-import {
-  PASSWORD_REGEX,
-  PERSON_NAME_REGEX,
-  USERNAME_REGEX,
-} from '@/app/core/constants/regex.constants';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { RegisterCredentials } from '@/app/features/dto/auth.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import {
+  PASSWORD_REGEX,
+  PERSON_NAME_REGEX,
+  USERNAME_REGEX,
+} from '@/app/shared/constants/regex.constant';
 import {
   email,
   equalValues,

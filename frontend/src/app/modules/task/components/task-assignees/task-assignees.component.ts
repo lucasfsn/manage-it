@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { User } from '@/app/features/dto/project.model';
+import { ProjectStatus, User } from '@/app/features/dto/project.model';
 import { TaskService } from '@/app/features/services/task.service';
 import { TaskAddAssigneeComponent } from '@/app/modules/task/components/task-add-assignee/task-add-assignee.component';
 import { TaskAssigneesListComponent } from '@/app/modules/task/components/task-assignees-list/task-assignees-list.component';
+import { Component } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-task-assignees',
@@ -13,7 +13,7 @@ import { TaskAssigneesListComponent } from '@/app/modules/task/components/task-a
     TaskAddAssigneeComponent,
   ],
   templateUrl: './task-assignees.component.html',
-  styleUrl: './task-assignees.component.scss'
+  styleUrl: './task-assignees.component.scss',
 })
 export class TaskAssigneesComponent {
   protected showAssignees = true;
@@ -22,6 +22,13 @@ export class TaskAssigneesComponent {
 
   protected get members(): User[] {
     return this.taskService.loadedTask()?.members || [];
+  }
+
+  protected get isProjectFinished(): boolean {
+    const task = this.taskService.loadedTask();
+    if (!task) return false;
+
+    return task.projectStatus === ProjectStatus.COMPLETED;
   }
 
   protected toggleShowAssignees(): void {

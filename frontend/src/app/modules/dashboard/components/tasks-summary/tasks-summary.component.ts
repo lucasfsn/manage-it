@@ -1,22 +1,27 @@
 import { MapperService } from '@/app/core/services/mapper.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import { Project } from '@/app/features/dto/project.model';
 import { TaskStatus } from '@/app/features/dto/task.model';
 import { ProjectService } from '@/app/features/services/project.service';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-tasks-summary',
-  imports: [BaseChartDirective, TranslateModule],
+  imports: [BaseChartDirective, TranslateModule, CommonModule],
   templateUrl: './tasks-summary.component.html',
   styleUrl: './tasks-summary.component.scss',
 })
 export class TasksSummaryComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
+
   public constructor(
     private projectService: ProjectService,
     private mapperService: MapperService,
+    private translationService: TranslationService,
   ) {}
 
   protected get taskCount(): number {
@@ -80,5 +85,11 @@ export class TasksSummaryComponent implements OnInit {
 
   public ngOnInit(): void {
     this.updateChartData();
+
+    const subscription = this.translationService
+      .onLanguageChange()
+      .subscribe(() => this.updateChartData());
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }
 }
