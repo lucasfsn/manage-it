@@ -77,9 +77,12 @@ export class AuthService {
 
   public isAuthenticated(): boolean {
     const accessToken = this.cookieService.get(ACCESS_TOKEN_KEY);
-    if (!accessToken) return false;
+    const refreshToken = this.cookieService.get(REFRESH_TOKEN_KEY);
+    if (!accessToken || !refreshToken) return false;
 
-    return !this.isTokenExpired(accessToken);
+    return (
+      !this.isTokenExpired(accessToken) || !this.isTokenExpired(refreshToken)
+    );
   }
 
   public getUserByToken(): Observable<UserCredentials> {
