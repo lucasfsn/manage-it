@@ -16,8 +16,12 @@ import {
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { getTodayDate } from '@/app/shared/utils/get-today-date.util';
-import { maxLength, minLength, required } from '@/app/shared/validators';
-import { maxDate } from '@/app/shared/validators/max-date.validator';
+import {
+  maxDateValidator,
+  maxLengthValidator,
+  minLengthValidator,
+  requiredValidator,
+} from '@/app/shared/validators';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -71,13 +75,21 @@ export class TaskCreateFormComponent implements OnInit {
     {
       description: new FormControl('', {
         validators: [
-          required('task.createForm.description.errors.REQUIRED'),
-          minLength(5, 'task.createForm.description.errors.MIN_LENGTH'),
-          maxLength(500, 'task.createForm.description.errors.MAX_LENGTH'),
+          requiredValidator('task.createForm.description.errors.REQUIRED'),
+          minLengthValidator(
+            5,
+            'task.createForm.description.errors.MIN_LENGTH',
+          ),
+          maxLengthValidator(
+            500,
+            'task.createForm.description.errors.MAX_LENGTH',
+          ),
         ],
       }),
       dueDate: new FormControl('', {
-        validators: [required('task.createForm.dueDate.errors.REQUIRED')],
+        validators: [
+          requiredValidator('task.createForm.dueDate.errors.REQUIRED'),
+        ],
       }),
       priority: new FormControl<Priority | null>(Priority.LOW),
     },
@@ -139,7 +151,10 @@ export class TaskCreateFormComponent implements OnInit {
     if (!project) return;
 
     this.form.controls.dueDate.addValidators([
-      maxDate(project.endDate, 'task.createForm.dueDate.errors.MAX_DATE'),
+      maxDateValidator(
+        project.endDate,
+        'task.createForm.dueDate.errors.MAX_DATE',
+      ),
     ]);
   }
 }

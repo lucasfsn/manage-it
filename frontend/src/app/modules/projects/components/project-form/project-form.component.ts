@@ -9,7 +9,11 @@ import { ButtonComponent } from '@/app/shared/components/ui/button/button.compon
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { getTodayDate } from '@/app/shared/utils/get-today-date.util';
 import { getTomorrowDate } from '@/app/shared/utils/get-tomorrow-date.util';
-import { maxLength, minLength, required } from '@/app/shared/validators';
+import {
+  maxLengthValidator,
+  minLengthValidator,
+  requiredValidator,
+} from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -59,20 +63,23 @@ export class ProjectFormComponent implements OnInit {
     {
       name: new FormControl('', {
         validators: [
-          required('project.form.name.errors.REQUIRED'),
-          minLength(5, 'project.form.name.errors.MIN_LENGTH'),
-          maxLength(100, 'project.form.name.errors.MAX_LENGTH'),
+          requiredValidator('project.form.name.errors.REQUIRED'),
+          minLengthValidator(5, 'project.form.name.errors.MIN_LENGTH'),
+          maxLengthValidator(100, 'project.form.name.errors.MAX_LENGTH'),
         ],
       }),
       description: new FormControl('', {
         validators: [
-          required('project.form.description.errors.REQUIRED'),
-          minLength(5, 'project.form.description.errors.MIN_LENGTH'),
-          maxLength(1000, 'project.form.description.errors.MAX_LENGTH'),
+          requiredValidator('project.form.description.errors.REQUIRED'),
+          minLengthValidator(5, 'project.form.description.errors.MIN_LENGTH'),
+          maxLengthValidator(
+            1000,
+            'project.form.description.errors.MAX_LENGTH',
+          ),
         ],
       }),
       endDate: new FormControl('', {
-        validators: [required('project.form.endDate.errors.REQUIRED')],
+        validators: [requiredValidator('project.form.endDate.errors.REQUIRED')],
       }),
     },
     { updateOn: 'blur' },
