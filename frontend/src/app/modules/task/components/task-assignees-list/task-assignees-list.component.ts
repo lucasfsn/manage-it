@@ -1,7 +1,7 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { User } from '@/app/features/dto/project.model';
+import { ProjectStatus, User } from '@/app/features/dto/project.model';
 import { TaskService } from '@/app/features/services/task.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import {
@@ -47,6 +47,13 @@ export class TaskAssigneesListComponent implements OnInit {
 
   protected get members(): User[] {
     return this.taskService.loadedTask()?.members || [];
+  }
+
+  protected get isProjectFinished(): boolean {
+    const task = this.taskService.loadedTask();
+    if (!task) return false;
+
+    return task.projectStatus === ProjectStatus.COMPLETED;
   }
 
   protected handleRemove(user: User): void {
