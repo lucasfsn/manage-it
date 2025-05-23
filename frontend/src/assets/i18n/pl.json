@@ -1,14 +1,14 @@
 {
   "loginForm": {
     "email": {
-      "PLACEHOLDER": "Wprowadź swój email",
+      "PLACEHOLDER": "Podaj email",
       "errors": {
         "REQUIRED": "Email jest wymagany.",
         "INVALID": "Proszę wprowadzić prawidłowy adres email."
       }
     },
     "password": {
-      "PLACEHOLDER": "Wprowadź swoje hasło",
+      "PLACEHOLDER": "Podaj hasło",
       "errors": {
         "REQUIRED": "Hasło jest wymagane.",
         "INVALID": "Hasło musi zawierać co najmniej 8 znaków, w tym co najmniej jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny."
@@ -22,7 +22,7 @@
   "signupForm": {
     "TITLE": "Potrzebujemy od Ciebie kilku danych, aby rozpocząć",
     "firstName": {
-      "PLACEHOLDER": "Wprowadź swoje imię",
+      "PLACEHOLDER": "Podaj imię",
       "errors": {
         "REQUIRED": "Imię jest wymagane.",
         "MIN_LENGTH": "Imię musi mieć co najmniej {{minLength}} znaki.",
@@ -31,7 +31,7 @@
       }
     },
     "lastName": {
-      "PLACEHOLDER": "Wprowadź swoje nazwisko",
+      "PLACEHOLDER": "Podaj nazwisko",
       "errors": {
         "REQUIRED": "Nazwisko jest wymagane.",
         "MIN_LENGTH": "Nazwisko musi mieć co najmniej {{minLength}} znaki.",
@@ -40,7 +40,7 @@
       }
     },
     "username": {
-      "PLACEHOLDER": "Wprowadź swoją nazwę użytkownika",
+      "PLACEHOLDER": "Wybierz nazwę użytkownika",
       "TOOLTIP": "Nazwa użytkownika jest stała i nie może być zmieniona później",
       "errors": {
         "REQUIRED": "Nazwa użytkownika jest wymagana.",
@@ -50,21 +50,21 @@
       }
     },
     "email": {
-      "PLACEHOLDER": "Wprowadź swój email",
+      "PLACEHOLDER": "Podaj adres email",
       "errors": {
         "REQUIRED": "Email jest wymagany.",
         "INVALID": "Proszę wprowadzić prawidłowy adres email."
       }
     },
     "password": {
-      "PLACEHOLDER": "Wprowadź swoje hasło",
+      "PLACEHOLDER": "Wprowadź hasło",
       "errors": {
         "REQUIRED": "Hasło jest wymagane.",
         "INVALID": "Hasło musi zawierać co najmniej 8 znaków, w tym co najmniej jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny."
       }
     },
     "confirmPassword": {
-      "PLACEHOLDER": "Potwierdź hasło",
+      "PLACEHOLDER": "Powtórz hasło",
       "errors": {
         "REQUIRED": "Potwierdzenie hasła jest wymagane.",
         "NOT_EQUAL": "Podane hasła nie pasują do siebie."
@@ -167,7 +167,7 @@
       "TITLE": "Edytuj profil",
       "firstName": {
         "LABEL": "Imię",
-        "PLACEHOLDER": "Wprowadź imię",
+        "PLACEHOLDER": "Edytuj imię",
         "errors": {
           "REQUIRED": "Imię jest wymagane.",
           "MIN_LENGTH": "Imię musi mieć co najmniej {{minLength}} znaki.",
@@ -177,7 +177,7 @@
       },
       "lastName": {
         "LABEL": "Nazwisko",
-        "PLACEHOLDER": "Wprowadź nazwisko",
+        "PLACEHOLDER": "Edytuj nazwisko",
         "errors": {
           "REQUIRED": "Nazwisko jest wymagane.",
           "MIN_LENGTH": "Nazwisko musi mieć co najmniej {{minLength}} znaki.",
@@ -187,7 +187,7 @@
       },
       "email": {
         "LABEL": "Email",
-        "PLACEHOLDER": "Wprowadź nowy email",
+        "PLACEHOLDER": "Zmień adres email",
         "errors": {
           "REQUIRED": "Email jest wymagany.",
           "INVALID": "Proszę wprowadzić prawidłowy adres email."
@@ -204,7 +204,7 @@
         }
       },
       "confirmPassword": {
-        "PLACEHOLDER": "Potwierdź hasło",
+        "PLACEHOLDER": "Powtórz nowe hasło",
         "errors": {
           "REQUIRED": "Potwierdzenie hasła jest wymagane.",
           "NOT_EQUAL": "Podane hasła nie pasują do siebie."

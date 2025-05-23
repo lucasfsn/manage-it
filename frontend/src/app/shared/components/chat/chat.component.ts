@@ -20,10 +20,12 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  EventEmitter,
   HostListener,
   inject,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -66,6 +68,8 @@ export class ChatComponent
   @ViewChild('scroll') private scroll!: ElementRef;
   @ViewChild('input') private input!: ElementRef;
 
+  @Output() public handleClose = new EventEmitter<void>();
+
   private destroyRef = inject(DestroyRef);
   private projectId: string | null = null;
   private taskId: string | null = null;
@@ -92,6 +96,10 @@ export class ChatComponent
     if (locale === LanguageCode.PL) return 'd MMM y, H:mm';
 
     return 'd MMM y, h:mm a';
+  }
+
+  protected onClick(): void {
+    this.handleClose.emit();
   }
 
   protected addEmoji(event: EmojiEvent): void {

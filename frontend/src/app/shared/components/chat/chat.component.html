@@ -1,14 +1,25 @@
 <div
-  class="xs:w-xs xs:right-4 xs:h-3/4 xs:max-h-150 xs:rounded-2xl xs:bottom-20 fixed right-0 bottom-0 z-40 flex h-full w-full origin-bottom-right flex-col overflow-hidden bg-orange-200 text-white shadow-lg lg:w-sm dark:bg-slate-950"
+  class="xs:w-xs xs:right-4 xs:h-3/4 xs:max-h-150 xs:rounded-2xl xs:bottom-26 fixed right-0 bottom-0 z-40 flex h-full w-full origin-bottom-right flex-col overflow-hidden bg-orange-200 text-white shadow-lg lg:w-sm dark:bg-slate-950"
   [@chatAnimation]
 >
   <div
-    class="border-none bg-orange-200 p-4 text-center text-gray-700 dark:bg-slate-950 dark:text-gray-300"
+    class="flex items-center border-none bg-orange-200 p-4 text-gray-700 dark:bg-slate-950 dark:text-gray-300"
   >
-    <h2 class="text-lg font-semibold">{{ "utils.chat.TITLE" | translate }}</h2>
+    <div class="xs:hidden flex flex-1"></div>
+    <h2 class="flex-1 text-center text-lg font-semibold">
+      {{ "utils.chat.TITLE" | translate }}
+    </h2>
+    <div class="xs:hidden flex flex-1 items-center justify-end">
+      <button
+        (click)="onClick()"
+        class="focus-ring flex items-center justify-center rounded-full hover:text-sky-500 active:text-sky-600"
+      >
+        <mat-icon class="shrink-0 scale-75">close</mat-icon>
+      </button>
+    </div>
   </div>
   <div
-    class="xs:pb-4 relative flex grow flex-col justify-between gap-3 overflow-hidden p-4 pb-16"
+    class="relative flex grow flex-col justify-between gap-3 overflow-hidden p-4 pb-4"
   >
     <div
       class="flex max-h-4/5 flex-col gap-4 overflow-y-auto px-4 py-3 drop-shadow-sm"

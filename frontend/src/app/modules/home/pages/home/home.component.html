@@ -1,11 +1,13 @@
-<h2 class="text-2xl leading-[1.125] font-bold shadow-xs sm:text-6xl">
+<h2
+  class="text-2xl leading-[1.125] font-bold shadow-xs sm:text-4xl lg:text-6xl"
+>
   {{ "homepage.TITLE" | translate }}
 </h2>
-<p class="text-sm text-slate-600 sm:text-base dark:text-slate-400">
+<p class="text-xs text-slate-600 sm:text-sm lg:text-base dark:text-slate-400">
   {{ "homepage.DESCRIPTION" | translate }}
 </p>
 <button
-  class="focus-ring mx-auto rounded-full bg-sky-600 px-4 py-3 text-sm font-medium text-slate-100 transition-all hover:bg-sky-700 active:text-sky-200"
+  class="focus-ring mx-auto rounded-full bg-sky-600 px-3 py-2 text-xs font-medium text-slate-100 transition-all hover:bg-sky-700 active:text-sky-200 sm:px-4 sm:py-3 sm:text-sm lg:text-base"
   routerLink="/auth/signup"
 >
   {{ "homepage.SIGN_UP" | translate }}

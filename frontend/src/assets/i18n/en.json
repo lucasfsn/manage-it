@@ -40,7 +40,7 @@
       }
     },
     "username": {
-      "PLACEHOLDER": "Enter your username",
+      "PLACEHOLDER": "Choose a username",
       "TOOLTIP": "Username is permanent and cannot be changed later",
       "errors": {
         "REQUIRED": "Username is required.",
@@ -57,14 +57,14 @@
       }
     },
     "password": {
-      "PLACEHOLDER": "Enter your password",
+      "PLACEHOLDER": "Create a password",
       "errors": {
         "REQUIRED": "Password is required.",
         "INVALID": "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character."
       }
     },
     "confirmPassword": {
-      "PLACEHOLDER": "Confirm password",
+      "PLACEHOLDER": "Repeat your password",
       "errors": {
         "REQUIRED": "Password confirmation is required.",
         "NOT_EQUAL": "Passwords do not match."
@@ -167,7 +167,7 @@
       "TITLE": "Edit profile",
       "firstName": {
         "LABEL": "First name",
-        "PLACEHOLDER": "Enter first name",
+        "PLACEHOLDER": "Edit your first name",
         "errors": {
           "REQUIRED": "First name is required.",
           "MIN_LENGTH": "First name must be at least {{minLength}} characters long.",
@@ -177,7 +177,7 @@
       },
       "lastName": {
         "LABEL": "Last name",
-        "PLACEHOLDER": "Enter last name",
+        "PLACEHOLDER": "Edit your last name",
         "errors": {
           "REQUIRED": "Last name is required.",
           "MIN_LENGTH": "Last name must be at least {{minLength}} characters long.",
@@ -187,7 +187,7 @@
       },
       "email": {
         "LABEL": "Email",
-        "PLACEHOLDER": "Enter new email",
+        "PLACEHOLDER": "Update your email",
         "errors": {
           "REQUIRED": "Email is required.",
           "INVALID": "Please enter a valid email address."
@@ -204,7 +204,7 @@
         }
       },
       "confirmPassword": {
-        "PLACEHOLDER": "Confirm password",
+        "PLACEHOLDER": "Repeat new password",
         "errors": {
           "REQUIRED": "Password confirmation is required.",
           "NOT_EQUAL": "Passwords do not match."
