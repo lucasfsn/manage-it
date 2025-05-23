@@ -20,6 +20,7 @@ import {
   maxDateValidator,
   maxLengthValidator,
   minLengthValidator,
+  profanityValidator,
   requiredValidator,
 } from '@/app/shared/validators';
 import { Component, inject, OnInit } from '@angular/core';
@@ -84,6 +85,7 @@ export class TaskCreateFormComponent implements OnInit {
             500,
             'task.createForm.description.errors.MAX_LENGTH',
           ),
+          profanityValidator('task.createForm.description.errors.PROFANITY'),
         ],
       }),
       dueDate: new FormControl('', {

@@ -27,7 +27,8 @@
         "REQUIRED": "Imię jest wymagane.",
         "MIN_LENGTH": "Imię musi mieć co najmniej {{minLength}} znaki.",
         "MAX_LENGTH": "Imię nie może mieć więcej niż {{maxLength}} znaków.",
-        "INVALID": "Imię nie może zawierać cyfr i znaków specjalnych."
+        "INVALID": "Imię nie może zawierać cyfr i znaków specjalnych.",
+        "PROFANITY": "Imię zawiera nieodpowiednie słowa."
       }
     },
     "lastName": {
@@ -36,7 +37,8 @@
         "REQUIRED": "Nazwisko jest wymagane.",
         "MIN_LENGTH": "Nazwisko musi mieć co najmniej {{minLength}} znaki.",
         "MAX_LENGTH": "Nazwisko nie może mieć więcej niż {{maxLength}} znaków.",
-        "INVALID": "Nazwisko nie może zawierać cyfr i znaków specjalnych."
+        "INVALID": "Nazwisko nie może zawierać cyfr i znaków specjalnych.",
+        "PROFANITY": "Nazwisko zawiera nieodpowiednie słowa."
       }
     },
     "username": {
@@ -46,14 +48,16 @@
         "REQUIRED": "Nazwa użytkownika jest wymagana.",
         "MIN_LENGTH": "Nazwa użytkownika musi mieć co najmniej {{minLength}} znaków.",
         "MAX_LENGTH": "Nazwa użytkownika nie może mieć więcej niż {{maxLength}} znaków.",
-        "INVALID": "Nazwa użytkownika nie może zawierać cyfr i znaków specjalnych."
+        "INVALID": "Nazwa użytkownika nie może zawierać cyfr i znaków specjalnych.",
+        "PROFANITY": "Nazwa użytkownika zawiera nieodpowiednie słowa."
       }
     },
     "email": {
       "PLACEHOLDER": "Podaj adres email",
       "errors": {
         "REQUIRED": "Email jest wymagany.",
-        "INVALID": "Proszę wprowadzić prawidłowy adres email."
+        "INVALID": "Proszę wprowadzić prawidłowy adres email.",
+        "PROFANITY": "Email zawiera nieodpowiednie słowa."
       }
     },
     "password": {
@@ -172,7 +176,8 @@
           "REQUIRED": "Imię jest wymagane.",
           "MIN_LENGTH": "Imię musi mieć co najmniej {{minLength}} znaki.",
           "MAX_LENGTH": "Imię nie może mieć więcej niż {{maxLength}} znaków.",
-          "INVALID": "Imię nie może zawierać cyfr i znaków specjalnych."
+          "INVALID": "Imię nie może zawierać cyfr i znaków specjalnych.",
+          "PROFANITY": "Imię zawiera nieodpowiednie słowa."
         }
       },
       "lastName": {
@@ -182,7 +187,8 @@
           "REQUIRED": "Nazwisko jest wymagane.",
           "MIN_LENGTH": "Nazwisko musi mieć co najmniej {{minLength}} znaki.",
           "MAX_LENGTH": "Nazwisko nie może mieć więcej niż {{maxLength}} znaków.",
-          "INVALID": "Nazwisko nie może zawierać cyfr i znaków specjalnych."
+          "INVALID": "Nazwisko nie może zawierać cyfr i znaków specjalnych.",
+          "PROFANITY": "Nazwisko zawiera nieodpowiednie słowa."
         }
       },
       "email": {
@@ -190,7 +196,8 @@
         "PLACEHOLDER": "Zmień adres email",
         "errors": {
           "REQUIRED": "Email jest wymagany.",
-          "INVALID": "Proszę wprowadzić prawidłowy adres email."
+          "INVALID": "Proszę wprowadzić prawidłowy adres email.",
+          "PROFANITY": "Email zawiera nieodpowiednie słowa."
         }
       },
       "passwords": {
@@ -270,7 +277,8 @@
         "errors": {
           "REQUIRED": "Nazwa projektu jest wymagana.",
           "MIN_LENGTH": "Nazwa projektu musi mieć co najmniej {{minLength}} znaków.",
-          "MAX_LENGTH": "Nazwa projektu nie może mieć więcej niż {{maxLength}} znaków."
+          "MAX_LENGTH": "Nazwa projektu nie może mieć więcej niż {{maxLength}} znaków.",
+          "PROFANITY": "Nazwa projektu zawiera nieodpowiednie słowa."
         }
       },
       "description": {
@@ -279,7 +287,8 @@
         "errors": {
           "REQUIRED": "Opis projektu jest wymagany.",
           "MIN_LENGTH": "Opis projektu musi mieć co najmniej {{minLength}} znaków.",
-          "MAX_LENGTH": "Opis projektu nie może mieć więcej niż {{maxLength}} znaków."
+          "MAX_LENGTH": "Opis projektu nie może mieć więcej niż {{maxLength}} znaków.",
+          "PROFANITY": "Opis projektu zawiera nieodpowiednie słowa."
         }
       },
       "endDate": {
@@ -327,7 +336,8 @@
         "errors": {
           "REQUIRED": "Opis zadania jest wymagany.",
           "MIN_LENGTH": "Opis zadania musi mieć co najmniej {{minLength}} znaków.",
-          "MAX_LENGTH": "Opis zadania nie może mieć więcej niż {{maxLength}} znaków."
+          "MAX_LENGTH": "Opis zadania nie może mieć więcej niż {{maxLength}} znaków.",
+          "PROFANITY": "Opis zadania zawiera nieodpowiednie słowa."
         }
       },
       "dueDate": {
@@ -353,7 +363,8 @@
         "errors": {
           "REQUIRED": "Opis zadania jest wymagany.",
           "MIN_LENGTH": "Opis zadania musi mieć co najmniej {{minLength}} znaków.",
-          "MAX_LENGTH": "Opis zadania nie może mieć więcej niż {{maxLength}} znaków."
+          "MAX_LENGTH": "Opis zadania nie może mieć więcej niż {{maxLength}} znaków.",
+          "PROFANITY": "Opis zadania zawiera nieodpowiednie słowa."
         }
       },
       "dueDate": {

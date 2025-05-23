@@ -18,6 +18,7 @@ import {
   maxDateValidator,
   maxLengthValidator,
   minLengthValidator,
+  profanityValidator,
   requiredValidator,
 } from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
@@ -65,6 +66,7 @@ export class TaskEditFormComponent implements OnInit {
         requiredValidator('task.editForm.description.errors.REQUIRED'),
         minLengthValidator(5, 'task.editForm.description.errors.MIN_LENGTH'),
         maxLengthValidator(500, 'task.editForm.description.errors.MAX_LENGTH'),
+        profanityValidator('task.editForm.description.errors.PROFANITY'),
       ]),
       status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED),
       priority: new FormControl<Priority | null>(Priority.LOW),

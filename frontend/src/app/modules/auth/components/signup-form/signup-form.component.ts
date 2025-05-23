@@ -15,6 +15,7 @@ import {
   maxLengthValidator,
   minLengthValidator,
   patternValidator,
+  profanityValidator,
   requiredValidator,
 } from '@/app/shared/validators';
 import { Component } from '@angular/core';
@@ -73,6 +74,7 @@ export class SignupFormComponent {
             PERSON_NAME_REGEX,
             'signupForm.firstName.errors.INVALID',
           ),
+          profanityValidator('signupForm.firstName.errors.PROFANITY'),
         ],
       }),
       lastName: new FormControl('', {
@@ -84,6 +86,7 @@ export class SignupFormComponent {
             PERSON_NAME_REGEX,
             'signupForm.lastName.errors.INVALID',
           ),
+          profanityValidator('signupForm.lastName.errors.PROFANITY'),
         ],
       }),
       username: new FormControl('', {
@@ -95,12 +98,14 @@ export class SignupFormComponent {
             USERNAME_REGEX,
             'signupForm.username.errors.INVALID',
           ),
+          profanityValidator('signupForm.username.errors.PROFANITY'),
         ],
       }),
       email: new FormControl('', {
         validators: [
           requiredValidator('signupForm.email.errors.REQUIRED'),
           emailValidator('signupForm.email.errors.INVALID'),
+          profanityValidator('signupForm.email.errors.PROFANITY'),
         ],
       }),
       passwords: new FormGroup<PasswordsForm>({

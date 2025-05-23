@@ -21,6 +21,7 @@ import {
   maxLengthValidator,
   minLengthValidator,
   patternValidator,
+  profanityValidator,
   requiredValidator,
 } from '@/app/shared/validators';
 import { TranslateModule } from '@ngx-translate/core';
@@ -73,6 +74,7 @@ export class UserEditFormComponent implements OnInit {
             PERSON_NAME_REGEX,
             'user.form.firstName.errors.INVALID',
           ),
+          profanityValidator('user.form.firstName.errors.PROFANITY'),
         ],
       }),
       lastName: new FormControl('', {
@@ -84,12 +86,14 @@ export class UserEditFormComponent implements OnInit {
             PERSON_NAME_REGEX,
             'user.form.lastName.errors.INVALID',
           ),
+          profanityValidator('user.form.lastName.errors.PROFANITY'),
         ],
       }),
       email: new FormControl('', {
         validators: [
           requiredValidator('user.form.email.errors.REQUIRED'),
           emailValidator('user.form.email.errors.INVALID'),
+          profanityValidator('user.form.email.errors.PROFANITY'),
         ],
       }),
       changePassword: new FormControl(false, {

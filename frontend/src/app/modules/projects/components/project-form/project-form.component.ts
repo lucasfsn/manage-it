@@ -12,6 +12,7 @@ import { getTomorrowDate } from '@/app/shared/utils/get-tomorrow-date.util';
 import {
   maxLengthValidator,
   minLengthValidator,
+  profanityValidator,
   requiredValidator,
 } from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
@@ -66,6 +67,7 @@ export class ProjectFormComponent implements OnInit {
           requiredValidator('project.form.name.errors.REQUIRED'),
           minLengthValidator(5, 'project.form.name.errors.MIN_LENGTH'),
           maxLengthValidator(100, 'project.form.name.errors.MAX_LENGTH'),
+          profanityValidator('project.form.name.errors.PROFANITY'),
         ],
       }),
       description: new FormControl('', {
@@ -76,6 +78,7 @@ export class ProjectFormComponent implements OnInit {
             1000,
             'project.form.description.errors.MAX_LENGTH',
           ),
+          profanityValidator('project.form.description.errors.PROFANITY'),
         ],
       }),
       endDate: new FormControl('', {

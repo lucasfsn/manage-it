@@ -7,4 +7,5 @@ export * from './max-length.validator';
 export * from './min-date.validator';
 export * from './min-length.validator';
 export * from './pattern.validator';
+export * from './profanity.validator';
 export * from './required.validator';
