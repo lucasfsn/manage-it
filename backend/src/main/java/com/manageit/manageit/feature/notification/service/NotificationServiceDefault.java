@@ -5,6 +5,7 @@ import com.manageit.manageit.feature.notification.mapper.NotificationMapper;
 import com.manageit.manageit.feature.notification.model.Notification;
 import com.manageit.manageit.feature.notification.repository.NotificationRepository;
 import com.manageit.manageit.feature.user.model.User;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,9 @@ public class NotificationServiceDefault implements NotificationService {
 
     @Override
     public void deleteNotification(UUID notificationId) {
+        if (!notificationRepository.existsById(notificationId)) {
+            throw new EntityNotFoundException("Notification not found with id " + notificationId);
+        }
         notificationRepository.deleteById(notificationId);
     }
 
