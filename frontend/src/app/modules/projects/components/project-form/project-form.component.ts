@@ -118,13 +118,13 @@ export class ProjectFormComponent implements OnInit {
   }
 
   protected handleGoBack(): void {
-    if (!this.project) {
-      this.router.navigate(['/projects']);
+    if (this.project && this.isEditing) {
+      this.router.navigate(['/projects', this.project.id]);
 
       return;
     }
 
-    this.router.navigate(['/projects', this.project.id]);
+    this.router.navigate(['/projects']);
   }
 
   protected onReset(): void {

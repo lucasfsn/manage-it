@@ -463,7 +463,7 @@
     "mapper": {
       "projectStatus": {
         "IN_PROGRESS": "W trakcie",
-        "COMPLETED": "Ukończone"
+        "COMPLETED": "Zakończony"
       },
       "taskStatus": {
         "IN_PROGRESS": "W trakcie",
