@@ -3,7 +3,6 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 const profanity = new Profanity({
   languages: ['en', 'de'],
-  wholeWord: false,
 });
 
 export function profanityValidator(message: string): ValidatorFn {
