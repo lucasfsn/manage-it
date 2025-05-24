@@ -1,3 +1,49 @@
+/* Mobile screen in landscape mode */
+@media (max-width: 56.25rem) and (max-height: 31.25rem) and (orientation: landscape) {
+  .chat-container {
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+
+    .close-button {
+      display: flex;
+    }
+  }
+}
+
+/* Mobile screen in portrait mode */
+@media (max-width: 31.25rem) and (orientation: portrait) {
+  .chat-container {
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+
+    .close-button {
+      display: flex;
+    }
+  }
+}
+
+/* Desktop screen */
+@media (min-height: 31.25rem) and (orientation: landscape),
+  (min-width: 31.25rem) and (orientation: portrait),
+  (min-width: 56.25rem) and (orientation: landscape) {
+  .chat-container {
+    border-radius: var(--radius-2xl);
+    max-height: calc(var(--spacing) * 150);
+    height: 75%;
+    width: var(--container-sm);
+    bottom: calc(var(--spacing) * 26);
+    right: calc(var(--spacing) * 4);
+
+    .close-button {
+      display: none;
+    }
+  }
+}
+
 :host-context(.dark) {
   ::ng-deep {
     .emoji-mart-dark {

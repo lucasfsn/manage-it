@@ -1,15 +1,15 @@
 <div
-  class="xs:w-xs xs:right-4 xs:h-3/4 xs:max-h-150 xs:rounded-2xl xs:bottom-26 fixed right-0 bottom-0 z-40 flex h-full w-full origin-bottom-right flex-col overflow-hidden bg-orange-200 text-white shadow-lg lg:bottom-18 lg:w-sm dark:bg-slate-950"
+  class="chat-container fixed z-40 flex origin-bottom-right flex-col overflow-hidden bg-orange-200 text-white shadow-lg lg:!bottom-18 dark:bg-slate-950"
   [@chatAnimation]
 >
   <div
     class="flex items-center border-none bg-orange-200 p-4 text-gray-700 dark:bg-slate-950 dark:text-gray-300"
   >
-    <div class="xs:hidden flex flex-1"></div>
+    <div class="close-button flex-1"></div>
     <h2 class="flex-1 text-center text-lg font-semibold">
       {{ "utils.chat.TITLE" | translate }}
     </h2>
-    <div class="xs:hidden flex flex-1 items-center justify-end">
+    <div class="close-button flex-1 items-center justify-end">
       <button
         (click)="onClick()"
         class="focus-ring flex items-center justify-center rounded-full hover:text-sky-500 active:text-sky-600"
@@ -97,7 +97,7 @@
       @if (form.value && form.value.length > 0) {
         <button
           @buttonAnimation
-          class="focus-ring-inset xs:flex hidden aspect-square h-8 w-8 items-center justify-center rounded-full bg-orange-100 transition-all hover:bg-orange-300 disabled:cursor-not-allowed dark:bg-slate-900 dark:hover:bg-slate-800"
+          class="focus-ring-inset close-button aspect-square h-8 w-8 items-center justify-center rounded-full bg-orange-100 transition-all hover:bg-orange-300 disabled:cursor-not-allowed dark:bg-slate-900 dark:hover:bg-slate-800"
           [disabled]="loading"
           (click)="sendMessage()"
         >
