@@ -32,9 +32,7 @@ export class ProjectService {
     return this.http
       .get<Response<Project[]>>(`${environment.apiUrl}/projects`)
       .pipe(
-        tap((res: Response<Project[]>) => {
-          this.projects.set(res.data);
-        }),
+        tap((res: Response<Project[]>) => this.projects.set(res.data)),
         map((res: Response<Project[]>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -46,9 +44,9 @@ export class ProjectService {
     return this.http
       .post<Response<Project>>(`${environment.apiUrl}/projects`, newProject)
       .pipe(
-        tap((res: Response<Project>) => {
-          this.projects.update((projects) => [...projects, res.data]);
-        }),
+        tap((res: Response<Project>) =>
+          this.projects.update((projects) => [...projects, res.data]),
+        ),
         map((res: Response<Project>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -60,9 +58,7 @@ export class ProjectService {
     return this.http
       .get<Response<Project>>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
-        tap((res: Response<Project>) => {
-          this.project.set(res.data);
-        }),
+        tap((res: Response<Project>) => this.project.set(res.data)),
         map((res: Response<Project>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -90,9 +86,7 @@ export class ProjectService {
         Response<Project>
       >(`${environment.apiUrl}/projects/${projectId}`, updatedProject)
       .pipe(
-        tap((res: Response<Project>) => {
-          this.project.set(res.data);
-        }),
+        tap((res: Response<Project>) => this.project.set(res.data)),
         map((res: Response<Project>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -109,9 +103,7 @@ export class ProjectService {
         },
       )
       .pipe(
-        tap((res: Response<Project>) => {
-          this.project.set(res.data);
-        }),
+        tap((res: Response<Project>) => this.project.set(res.data)),
         map((res: Response<Project>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -125,9 +117,7 @@ export class ProjectService {
         Response<null>
       >(`${environment.apiUrl}/projects/${projectId}/user/add`, user)
       .pipe(
-        tap(() => {
-          this.allowAddToProject = false;
-        }),
+        tap(() => (this.allowAddToProject = false)),
         map((res: Response<null>) => res.data),
         catchError((err: HttpErrorResponse) => {
           this.allowAddToProject = false;
@@ -143,9 +133,7 @@ export class ProjectService {
         Response<Project>
       >(`${environment.apiUrl}/projects/${projectId}/user/remove`, user)
       .pipe(
-        tap((res: Response<Project>) => {
-          this.project.set(res.data);
-        }),
+        tap((res: Response<Project>) => this.project.set(res.data)),
         map((res: Response<Project>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);

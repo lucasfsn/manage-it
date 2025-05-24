@@ -45,9 +45,7 @@ export class TaskService {
         Response<Task>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
       .pipe(
-        tap((res: Response<Task>) => {
-          this.task.set(res.data);
-        }),
+        tap((res: Response<Task>) => this.task.set(res.data)),
         map((res: Response<Task>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -110,9 +108,7 @@ export class TaskService {
         Response<Task>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`, updatedTask)
       .pipe(
-        tap((res: Response<Task>) => {
-          this.task.set(res.data);
-        }),
+        tap((res: Response<Task>) => this.task.set(res.data)),
         map((res: Response<Task>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
@@ -130,9 +126,7 @@ export class TaskService {
         Response<Task>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/add`, user)
       .pipe(
-        tap((res: Response<Task>) => {
-          this.task.set(res.data);
-        }),
+        tap((res: Response<Task>) => this.task.set(res.data)),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         }),
@@ -149,9 +143,7 @@ export class TaskService {
         Response<Task>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/remove`, user)
       .pipe(
-        tap((res: Response<Task>) => {
-          this.task.set(res.data);
-        }),
+        tap((res: Response<Task>) => this.task.set(res.data)),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         }),

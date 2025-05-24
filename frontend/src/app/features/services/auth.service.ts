@@ -94,9 +94,7 @@ export class AuthService {
     return this.http
       .get<Response<UserCredentials>>(`${environment.apiUrl}/auth/user`)
       .pipe(
-        tap((res: Response<UserCredentials>) => {
-          this.currentUser.set(res.data);
-        }),
+        tap((res: Response<UserCredentials>) => this.currentUser.set(res.data)),
         map((res: Response<UserCredentials>) => res.data),
         catchError((err: HttpErrorResponse) => {
           this.logout();

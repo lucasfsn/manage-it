@@ -27,9 +27,7 @@ export class UserService {
     return this.http
       .get<Response<User>>(`${environment.apiUrl}/users/${username}`)
       .pipe(
-        tap((res: Response<User>) => {
-          this.user.set(res.data);
-        }),
+        tap((res: Response<User>) => this.user.set(res.data)),
         map((res: Response<User>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);

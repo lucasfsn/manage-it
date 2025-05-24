@@ -80,9 +80,7 @@ export class ChatService implements OnDestroy {
     return this.http
       .get<Response<Message[]>>(`${environment.apiUrl}/${url}`)
       .pipe(
-        tap((res: Response<Message[]>) => {
-          this.messages.set(res.data);
-        }),
+        tap((res: Response<Message[]>) => this.messages.set(res.data)),
         map((res: Response<Message[]>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
