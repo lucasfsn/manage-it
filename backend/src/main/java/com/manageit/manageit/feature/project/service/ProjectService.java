@@ -23,7 +23,7 @@ public interface ProjectService {
 
     ProjectResponseDto updateProject(User owner, UUID projectId, UpdateProjectRequestDto request);
 
-    void addUserToProject(User user, UUID projectId, UserResponseDto request);
+    ProjectResponseDto addUserToProject(User user, UUID projectId, UserResponseDto request);
 
     ProjectResponseDto removeUserFromProject(User owner, UUID projectId, UserResponseDto request);
 }

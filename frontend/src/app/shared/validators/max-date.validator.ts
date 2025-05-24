@@ -7,6 +7,6 @@ export function maxDate(maxDate: string | null, message: string): ValidatorFn {
     const controlDate = new Date(control.value);
     const maximumDate = new Date(maxDate);
 
-    return controlDate > maximumDate ? { minDate: { message, maxDate } } : null;
+    return controlDate > maximumDate ? { maxDate: { message, maxDate } } : null;
   };
 }

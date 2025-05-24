@@ -76,7 +76,7 @@ export class TaskCreateFormComponent implements OnInit {
           maxLength(500, 'task.createForm.description.errors.MAX_LENGTH'),
         ],
       }),
-      dueDate: new FormControl(getTodayDate(), {
+      dueDate: new FormControl('', {
         validators: [required('task.createForm.dueDate.errors.REQUIRED')],
       }),
       priority: new FormControl<Priority | null>(Priority.LOW),
