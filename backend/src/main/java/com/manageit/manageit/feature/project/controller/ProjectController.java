@@ -7,6 +7,8 @@ import com.manageit.manageit.feature.project.dto.UpdateProjectRequestDto;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.project.service.ProjectService;
+import com.manageit.manageit.shared.dto.ResponseDto;
+import com.manageit.manageit.shared.enums.SuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,22 +28,30 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponseDto>> getProjects(
+    public ResponseDto<List<ProjectResponseDto>> getProjects(
             @AuthenticationPrincipal User userDetails
     ) {
-        return ResponseEntity.ok(projectService.getProjects(userDetails));
+        return new ResponseDto<>(
+                SuccessCode.RESPONSE_SUCCESSFUL,
+                "Projects found successfully",
+                projectService.getProjects(userDetails)
+        );
     }
 
     @GetMapping("{projectId}")
-    public ResponseEntity<ProjectResponseDto> getProject(
+    public ResponseDto<ProjectResponseDto> getProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId
     ) {
-        return ResponseEntity.ok(projectService.getProject(projectId, userDetails));
+        return new ResponseDto<>(
+                SuccessCode.RESPONSE_SUCCESSFUL,
+                "Project found successfully with id: " + projectId,
+                projectService.getProject(projectId, userDetails)
+        );
     }
 
     @PostMapping
-    public ResponseEntity<ProjectResponseDto> createProject(
+    public ResponseEntity<ResponseDto<ProjectResponseDto>> createProject(
             @AuthenticationPrincipal User userDetails,
             @Valid @RequestBody CreateProjectRequestDto createProjectRequest
     ) {
@@ -52,46 +62,66 @@ public class ProjectController {
                 .buildAndExpand(project.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(project);
+        return ResponseEntity.created(location).body(new ResponseDto<>(
+                SuccessCode.RESOURCE_CREATED,
+                "Project created successfully",
+                project
+        ));
     }
 
     @DeleteMapping("{projectId}")
-    public ResponseEntity<Void> deleteProject(
+    public ResponseEntity<ResponseDto<Void>> deleteProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId
     ) {
         projectService.deleteProject(userDetails, projectId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                new ResponseDto<>(
+                        SuccessCode.RESOURCE_DELETED,
+                        "Project deleted successfully with id: " + projectId,
+                        null
+                )
+        );
     }
 
     @PatchMapping("{projectId}")
-    public ResponseEntity<ProjectResponseDto> updateProject(
+    public ResponseDto<ProjectResponseDto> updateProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
             @Valid @RequestBody UpdateProjectRequestDto request
     ) {
         ProjectResponseDto updatedProject = projectService.updateProject(userDetails, projectId, request);
-        return ResponseEntity.ok(updatedProject);
+        return new ResponseDto<>(
+                SuccessCode.RESOURCE_UPDATED,
+                "Project updated successfully",
+                updatedProject
+        );
     }
 
     @PatchMapping("{projectId}/user/add")
-    public ResponseEntity<Void> addUserToProject(
+    public ResponseDto<ProjectResponseDto> addUserToProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
             @RequestBody UserResponseDto user
 
     ) {
-        projectService.addUserToProject(userDetails, projectId, user);
-        return ResponseEntity.noContent().build();
+        return new ResponseDto<>(
+                SuccessCode.RESOURCE_UPDATED,
+                "User added to project successfully",
+                projectService.addUserToProject(userDetails, projectId, user)
+        );
     }
 
     @PatchMapping("{projectId}/user/remove")
-    public ResponseEntity<ProjectResponseDto> removeUserFromProject(
+    public ResponseDto<ProjectResponseDto> removeUserFromProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
             @RequestBody UserResponseDto user
     ) {
-        ProjectResponseDto updatedProject = projectService.removeUserFromProject(userDetails, projectId, user);
-        return ResponseEntity.ok(updatedProject);
+        return new ResponseDto<>(
+                SuccessCode.RESOURCE_UPDATED,
+                "User removed from project successfully",
+                projectService.removeUserFromProject(userDetails, projectId, user)
+        );
     }
 }
