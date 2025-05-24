@@ -5,6 +5,8 @@ import com.manageit.manageit.feature.user.dto.UserDetailsResponseDto;
 import com.manageit.manageit.feature.user.dto.UpdateUserRequestDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.shared.dto.ResponseDto;
+import com.manageit.manageit.shared.enums.SuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,37 +23,54 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserDetailsResponseDto> getUser(
+    public ResponseDto<UserDetailsResponseDto> getUser(
             @AuthenticationPrincipal User userDetails,
             @PathVariable String username
     ) {
-        return ResponseEntity.ok(userService.findByUsername(userDetails, username));
+        return new ResponseDto<>(
+                SuccessCode.RESPONSE_SUCCESSFUL,
+                "User found successfully",
+                userService.findByUsername(userDetails, username)
+        );
     }
 
     @PatchMapping()
-    public ResponseEntity<UserDetailsResponseDto> updateUser(
+    public ResponseDto<UserDetailsResponseDto> updateUser(
             @AuthenticationPrincipal User userDetails,
             @Valid @RequestBody UpdateUserRequestDto updatedUser
     ) {
-        UserDetailsResponseDto updatedUserData = userService.updateUser(userDetails, updatedUser);
-        return ResponseEntity.ok(updatedUserData);
+        return new ResponseDto<>(
+                SuccessCode.RESOURCE_UPDATED,
+                "User updated successfully",
+                userService.updateUser(userDetails, updatedUser)
+        );
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<UserResponseDto>> searchUser(
+    public ResponseDto<List<UserResponseDto>> searchUser(
             @RequestParam("pattern") String pattern,
             @RequestParam(value = "projectId", required = false) UUID projectId,
             @RequestParam(value = "taskId", required = false) UUID taskId
     ) {
-        return ResponseEntity.ok(userService.searchUsers(pattern, projectId, taskId));
+        return new ResponseDto<>(
+                SuccessCode.RESPONSE_SUCCESSFUL,
+                "Users found successfully",
+                userService.searchUsers(pattern, projectId, taskId)
+        );
     }
 
     @DeleteMapping()
-    public ResponseEntity<Void> deleteUser(
+    public ResponseEntity<ResponseDto<Void>> deleteUser(
             @AuthenticationPrincipal User userDetails
     ) {
         userService.removeUser(userDetails);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                new ResponseDto<>(
+                        SuccessCode.RESOURCE_DELETED,
+                        "User deleted successfully",
+                        null
+                )
+        );
     }
 
 }
