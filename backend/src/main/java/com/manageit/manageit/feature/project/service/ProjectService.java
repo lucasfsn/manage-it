@@ -26,4 +26,6 @@ public interface ProjectService {
     ProjectResponseDto addUserToProject(User user, UUID projectId, UserResponseDto request);
 
     ProjectResponseDto removeUserFromProject(User owner, UUID projectId, UserResponseDto request);
+
+    void isProjectCompleted(Project project);
 }

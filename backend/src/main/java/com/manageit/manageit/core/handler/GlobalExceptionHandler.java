@@ -1,6 +1,7 @@
 package com.manageit.manageit.core.handler;
 
 import com.manageit.manageit.core.dto.ErrorResponseDto;
+import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.TokenUserMismatchException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
@@ -31,6 +32,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({UserNotInProjectException.class, UserNotInTaskException.class})
+    @ExceptionHandler({UserNotInProjectException.class, UserNotInTaskException.class, ProjectModificationNotAllowedException.class})
     public ResponseEntity<ErrorResponseDto> handleException(RuntimeException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
@@ -49,7 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.FORBIDDEN)
                 .body(
                         ErrorResponseDto.builder()
-                                .code(HttpStatus.FORBIDDEN.getReasonPhrase())
+                                .code(HttpStatus.FORBIDDEN.value())
                                 .message(exp.getMessage())
                                 .build()
                 );
@@ -65,7 +67,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(
                         ErrorResponseDto.builder()
-                                .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                                .code(HttpStatus.BAD_REQUEST.value())
                                 .message(exp.getMessage())
                                 .build()
                 );
@@ -87,7 +89,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         final ErrorResponseDto response = ErrorResponseDto.builder()
-                .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .code(HttpStatus.BAD_REQUEST.value())
                 .message(exp.getMessage())
                 .build();
 
@@ -105,7 +107,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(
                         ErrorResponseDto.builder()
-                                .code(HttpStatus.CONFLICT.getReasonPhrase())
+                                .code(HttpStatus.CONFLICT.value())
                                 .message("Data integrity violation occurred.")
                                 .build()
                 );
@@ -120,7 +122,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(
                         ErrorResponseDto.builder()
-                                .code(HttpStatus.CONFLICT.getReasonPhrase())
+                                .code(HttpStatus.CONFLICT.value())
                                 .message(exp.getMessage())
                                 .build()
                 );
@@ -137,7 +139,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ErrorResponseDto.builder()
-                        .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                        .code(HttpStatus.BAD_REQUEST.value())
                         .message("Validation failed")
                         .errors(invalidParameters)
                         .build()
@@ -154,7 +156,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(
                         ErrorResponseDto.builder()
-                                .code(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                                 .message(exp.getMessage())
                                 .build()
                 );
@@ -177,7 +179,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ErrorResponseDto.builder()
-                        .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                        .code(HttpStatus.BAD_REQUEST.value())
                         .message("Unexpected type specified")
                         .errors(List.of(
                                 new FieldValidationErrorsDto(
@@ -197,7 +199,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ErrorResponseDto.builder()
-                        .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                        .code(HttpStatus.BAD_REQUEST.value())
                         .message(String.format(
                                 "Failed to convert %s with value %s",
                                 exception.getPropertyName(), exception.getRequiredType()))
@@ -213,7 +215,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             @Nonnull WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ErrorResponseDto.builder()
-                        .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                        .code(HttpStatus.BAD_REQUEST.value())
                         .message(exception.getMessage())
                         .build()
         );
@@ -227,7 +229,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             @Nonnull final WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ErrorResponseDto.builder()
-                        .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                        .code(HttpStatus.BAD_REQUEST.value())
                         .message(exception.getMessage())
                         .build()
         );
@@ -242,7 +244,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             @Nonnull final WebRequest request) {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(
                 ErrorResponseDto.builder()
-                        .code(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase())
+                        .code(HttpStatus.METHOD_NOT_ALLOWED.value())
                         .message(exception.getMessage())
                         .build());
     }
@@ -273,7 +275,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(
                         ErrorResponseDto.builder()
-                                .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                                .code(HttpStatus.BAD_REQUEST.value())
                                 .message("Validation failed")
                                 .errors(validationErrors)
                                 .build()
@@ -294,7 +296,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(
                         ErrorResponseDto.builder()
-                                .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                                .code(HttpStatus.BAD_REQUEST.value())
                                 .message(exception.getMessage())
                                 .build()
                 );
@@ -318,6 +320,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                             invalidParameters.add(errors);
                         });
         return invalidParameters;
+    }
+
+    @Override
+    public ResponseEntity<Object> handleNoResourceFoundException(
+            @Nonnull NoResourceFoundException exception,
+            @Nonnull HttpHeaders headers,
+            @Nonnull HttpStatusCode status,
+            @Nonnull WebRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ErrorResponseDto.builder()
+                        .code(HttpStatus.NOT_FOUND.value())
+                        .message(exception.getMessage())
+                        .build()
+        );
     }
 
 }
