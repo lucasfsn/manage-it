@@ -5,6 +5,8 @@ import com.manageit.manageit.feature.message.dto.WebSocketRequestMessage;
 import com.manageit.manageit.feature.chat.model.Chat;
 import com.manageit.manageit.feature.chat.service.ChatService;
 import com.manageit.manageit.feature.message.service.MessageService;
+import com.manageit.manageit.shared.dto.ResponseDto;
+import com.manageit.manageit.shared.enums.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -47,19 +49,27 @@ public class ChatController {
 
 
     @GetMapping("/chat/projects/{projectId}")
-    public ResponseEntity<List<MessageResponseDto>> getChatMessages(
+    public ResponseDto<List<MessageResponseDto>> getChatMessages(
         @PathVariable UUID projectId
     ) {
         Chat chat = chatService.getChatByProjectIdAndTaskId(projectId, null);
-        return ResponseEntity.ok(messageService.getMessagesByChat(chat));
+        return new ResponseDto<>(
+                SuccessCode.RESPONSE_SUCCESSFUL,
+                "Messages found successfully for project: " + projectId,
+                messageService.getMessagesByChat(chat)
+        );
     }
 
     @GetMapping("/chat/projects/{projectId}/tasks/{taskId}")
-    public ResponseEntity<List<MessageResponseDto>> getChatMessages(
+    public ResponseDto<List<MessageResponseDto>> getChatMessages(
         @PathVariable UUID projectId,
         @PathVariable UUID taskId
     ) {
         Chat chat = chatService.getChatByProjectIdAndTaskId(projectId, taskId);
-        return ResponseEntity.ok(messageService.getMessagesByChat(chat));
+        return new ResponseDto<>(
+                SuccessCode.RESPONSE_SUCCESSFUL,
+                "Messages found successfully for task: " + taskId,
+                messageService.getMessagesByChat(chat)
+        );
     }
 }

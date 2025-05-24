@@ -1,5 +1,6 @@
 package com.manageit.manageit.feature.project.service;
 
+import com.manageit.manageit.core.exception.UserAlreadyInProjectException;
 import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
 import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
 import com.manageit.manageit.feature.project.dto.UpdateProjectRequestDto;
@@ -126,22 +127,24 @@ public class ProjectServiceDefault implements ProjectService {
 
     @Override
     @Transactional
-    public void addUserToProject(User user, UUID projectId, UserResponseDto request) {
+    public ProjectResponseDto addUserToProject(User user, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
         validateUserIsProjectOwner(user, project);
         User userToAdd = userService.getUserByUsername(request.getName());
-        if (!project.getMembers().contains(userToAdd)) {
-            project.getMembers().add(userToAdd);
-            project.setUpdatedAt(LocalDateTime.now());
-            projectRepository.save(project);
-            notificationService.createAndSendNotification(
-                    project.getMembers(),
-                    userToAdd,
-                    "project;join;" + project.getName(),
-                    project.getId(),
-                    null
-            );
+        if (project.getMembers().contains(userToAdd)) {
+            throw new UserAlreadyInProjectException("User " + userToAdd.getName() + " is already in project");
         }
+        project.getMembers().add(userToAdd);
+        project.setUpdatedAt(LocalDateTime.now());
+        ProjectResponseDto responseDto = projectMapper.toProjectResponseDto(project);
+        notificationService.createAndSendNotification(
+                project.getMembers(),
+                userToAdd,
+                "project;join;" + project.getName(),
+                project.getId(),
+                null
+        );
+        return responseDto;
     }
 
     @Override
