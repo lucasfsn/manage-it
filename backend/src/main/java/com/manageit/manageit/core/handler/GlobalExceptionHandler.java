@@ -1,6 +1,7 @@
 package com.manageit.manageit.core.handler;
 
 import com.manageit.manageit.core.dto.ErrorResponseDto;
+import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.TokenUserMismatchException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
@@ -39,7 +40,7 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({UserNotInProjectException.class, UserNotInTaskException.class})
+    @ExceptionHandler({UserNotInProjectException.class, UserNotInTaskException.class, ProjectModificationNotAllowedException.class})
     public ResponseEntity<ErrorResponseDto> handleException(RuntimeException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);

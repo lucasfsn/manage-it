@@ -1,20 +1,21 @@
 package com.manageit.manageit.feature.project.service;
 
+import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
 import com.manageit.manageit.core.exception.UserAlreadyInProjectException;
-import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
-import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
-import com.manageit.manageit.feature.project.dto.UpdateProjectRequestDto;
-import com.manageit.manageit.feature.task.repository.TaskRepository;
-import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
-import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.feature.chat.service.ChatService;
+import com.manageit.manageit.feature.notification.service.NotificationService;
+import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
+import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
+import com.manageit.manageit.feature.project.dto.UpdateProjectRequestDto;
 import com.manageit.manageit.feature.project.mapper.ProjectMapper;
 import com.manageit.manageit.feature.project.model.Project;
 import com.manageit.manageit.feature.project.model.ProjectStatus;
 import com.manageit.manageit.feature.project.repository.ProjectRepository;
+import com.manageit.manageit.feature.task.repository.TaskRepository;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
-import com.manageit.manageit.feature.chat.service.ChatService;
-import com.manageit.manageit.feature.notification.service.NotificationService;
+import com.manageit.manageit.feature.user.service.UserService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
@@ -172,6 +173,13 @@ public class ProjectServiceDefault implements ProjectService {
             return projectMapper.toProjectResponseDto(updatedProject);
         } else {
             throw new UserNotInProjectException("User is not a member of the project");
+        }
+    }
+
+    @Override
+    public void isProjectCompleted(Project project) {
+        if (project.getStatus() == ProjectStatus.COMPLETED) {
+            throw new ProjectModificationNotAllowedException("Cannot modify a completed project.");
         }
     }
 
