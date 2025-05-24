@@ -1,6 +1,7 @@
 import { UpdateUserCredentials } from '@/app/features/dto/auth.model';
 import { UpdateUser, User } from '@/app/features/dto/user.model';
 import { AuthService } from '@/app/features/services/auth.service';
+import { Response } from '@/app/shared/dto/response.model';
 import { environment } from '@/environments/environment';
 import {
   HttpClient,
@@ -8,7 +9,7 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -23,21 +24,24 @@ export class UserService {
   ) {}
 
   public getUserByUsername(username: string): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/users/${username}`).pipe(
-      tap((res: User) => {
-        this.user.set(res);
-      }),
-      catchError((err: HttpErrorResponse) => {
-        return throwError(() => err);
-      }),
-    );
+    return this.http
+      .get<Response<User>>(`${environment.apiUrl}/users/${username}`)
+      .pipe(
+        tap((res: Response<User>) => {
+          this.user.set(res.data);
+        }),
+        map((res: Response<User>) => res.data),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err);
+        }),
+      );
   }
 
   public updateUser(updatedData: UpdateUser): Observable<User> {
     return this.http
-      .patch<User>(`${environment.apiUrl}/users`, updatedData)
+      .patch<Response<User>>(`${environment.apiUrl}/users`, updatedData)
       .pipe(
-        tap((res: User) => {
+        tap((res: Response<User>) => {
           const loggedInUserData: UpdateUserCredentials = {
             firstName: updatedData.firstName,
             lastName: updatedData.lastName,
@@ -45,8 +49,9 @@ export class UserService {
           };
 
           this.authService.setUser(loggedInUserData);
-          this.user.set(res);
+          this.user.set(res.data);
         }),
+        map((res: Response<User>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         }),
@@ -65,8 +70,9 @@ export class UserService {
     if (taskId) params = params.set('taskId', taskId);
 
     return this.http
-      .get<User[]>(`${environment.apiUrl}/users/search`, { params })
+      .get<Response<User[]>>(`${environment.apiUrl}/users/search`, { params })
       .pipe(
+        map((res: Response<User[]>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         }),

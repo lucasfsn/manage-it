@@ -1,4 +1,5 @@
 import { Notification } from '@/app/features/dto/notification.model';
+import { Response } from '@/app/shared/dto/response.model';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
@@ -15,23 +16,21 @@ export class NotificationService {
 
   public getNotifications(): Observable<Notification[]> {
     return this.http
-      .get<Notification[]>(`${environment.apiUrl}/notifications`)
+      .get<Response<Notification[]>>(`${environment.apiUrl}/notifications`)
       .pipe(
-        map((notifications: Notification[]) =>
-          notifications.toSorted(
+        map((res: Response<Notification[]>) =>
+          res.data.toSorted(
             (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
           ),
         ),
-        tap((sortedNotifications: Notification[]) => {
-          this.notifications.set(sortedNotifications);
-        }),
+        tap((data: Notification[]) => this.notifications.set(data)),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         }),
       );
   }
 
-  public markAsRead(notificationId: string): Observable<string> {
+  public markAsRead(notificationId: string): Observable<null> {
     const prevNotifications = this.notifications();
 
     const updatedNotifications = this.notifications().filter(
@@ -41,10 +40,11 @@ export class NotificationService {
     this.notifications.set(updatedNotifications);
 
     return this.http
-      .delete(`${environment.apiUrl}/notifications/${notificationId}`, {
-        responseType: 'text',
-      })
+      .delete<
+        Response<null>
+      >(`${environment.apiUrl}/notifications/${notificationId}`)
       .pipe(
+        map((res: Response<null>) => res.data),
         catchError((err: HttpErrorResponse) => {
           this.notifications.set(prevNotifications);
 
@@ -53,16 +53,15 @@ export class NotificationService {
       );
   }
 
-  public markAllAsRead(): Observable<string> {
+  public markAllAsRead(): Observable<null> {
     const prevNotifications = this.notifications();
 
     this.notifications.set([]);
 
     return this.http
-      .delete(`${environment.apiUrl}/notifications`, {
-        responseType: 'text',
-      })
+      .delete<Response<null>>(`${environment.apiUrl}/notifications`)
       .pipe(
+        map((res: Response<null>) => res.data),
         catchError((err: HttpErrorResponse) => {
           this.notifications.set(prevNotifications);
 

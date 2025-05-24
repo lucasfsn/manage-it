@@ -10,12 +10,13 @@ import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY,
 } from '@/app/shared/constants/cookie.constant';
+import { Response } from '@/app/shared/dto/response.model';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, map, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -32,10 +33,10 @@ export class AuthService {
 
   public register(user: RegisterCredentials): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/auth/register`, user)
+      .post<Response<AuthResponse>>(`${environment.apiUrl}/auth/register`, user)
       .pipe(
-        tap((res: AuthResponse) => {
-          const { accessToken, refreshToken, user } = res;
+        tap((res: Response<AuthResponse>) => {
+          const { accessToken, refreshToken, user } = res.data;
 
           this.storeTokens(accessToken, refreshToken);
 
@@ -43,6 +44,7 @@ export class AuthService {
 
           this.router.navigate(['/dashboard']);
         }),
+        map((res: Response<AuthResponse>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         }),
@@ -51,10 +53,12 @@ export class AuthService {
 
   public login(user: LoginCredentials): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/auth/authenticate`, user)
+      .post<
+        Response<AuthResponse>
+      >(`${environment.apiUrl}/auth/authenticate`, user)
       .pipe(
-        tap((res: AuthResponse) => {
-          const { accessToken, refreshToken, user } = res;
+        tap((res: Response<AuthResponse>) => {
+          const { accessToken, refreshToken, user } = res.data;
 
           this.storeTokens(accessToken, refreshToken);
 
@@ -62,6 +66,7 @@ export class AuthService {
 
           this.router.navigate(['/dashboard']);
         }),
+        map((res: Response<AuthResponse>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         }),
@@ -87,11 +92,12 @@ export class AuthService {
 
   public getUserByToken(): Observable<UserCredentials> {
     return this.http
-      .get<UserCredentials>(`${environment.apiUrl}/auth/user`)
+      .get<Response<UserCredentials>>(`${environment.apiUrl}/auth/user`)
       .pipe(
-        tap((res: UserCredentials) => {
-          this.currentUser.set(res);
+        tap((res: Response<UserCredentials>) => {
+          this.currentUser.set(res.data);
         }),
+        map((res: Response<UserCredentials>) => res.data),
         catchError((err: HttpErrorResponse) => {
           this.logout();
 
@@ -121,16 +127,16 @@ export class AuthService {
     }
 
     return this.http
-      .post<RefreshTokenResponse>(
-        `${environment.apiUrl}/auth/refresh-token`,
-        {},
-      )
+      .post<
+        Response<RefreshTokenResponse>
+      >(`${environment.apiUrl}/auth/refresh-token`, {})
       .pipe(
-        tap((res: RefreshTokenResponse) => {
-          const { accessToken, refreshToken } = res;
+        tap((res: Response<RefreshTokenResponse>) => {
+          const { accessToken, refreshToken } = res.data;
 
           this.storeTokens(accessToken, refreshToken);
         }),
+        map((res: Response<RefreshTokenResponse>) => res.data),
         catchError((err: HttpErrorResponse) => {
           this.logout();
 

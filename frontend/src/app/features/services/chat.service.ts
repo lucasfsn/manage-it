@@ -1,12 +1,20 @@
 import { Message, MessageSend } from '@/app/features/dto/chat.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ACCESS_TOKEN_KEY } from '@/app/shared/constants/cookie.constant';
+import { Response } from '@/app/shared/dto/response.model';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, OnDestroy, signal } from '@angular/core';
 import { RxStomp } from '@stomp/rx-stomp';
 import { CookieService } from 'ngx-cookie-service';
-import { catchError, firstValueFrom, Observable, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  firstValueFrom,
+  map,
+  Observable,
+  tap,
+  throwError,
+} from 'rxjs';
 
 @Injectable()
 export class ChatService implements OnDestroy {
@@ -69,14 +77,17 @@ export class ChatService implements OnDestroy {
       ? `chat/projects/${projectId}/tasks/${taskId}`
       : `chat/projects/${projectId}`;
 
-    return this.http.get<Message[]>(`${environment.apiUrl}/${url}`).pipe(
-      tap((messages: Message[]) => {
-        this.messages.set(messages);
-      }),
-      catchError((err: HttpErrorResponse) => {
-        return throwError(() => err);
-      }),
-    );
+    return this.http
+      .get<Response<Message[]>>(`${environment.apiUrl}/${url}`)
+      .pipe(
+        tap((res: Response<Message[]>) => {
+          this.messages.set(res.data);
+        }),
+        map((res: Response<Message[]>) => res.data),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(() => err);
+        }),
+      );
   }
 
   public watchTopic(

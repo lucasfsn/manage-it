@@ -152,8 +152,8 @@ export class ProjectFormComponent implements OnInit {
   private createProject(project: ProjectRequest): void {
     this.loading = true;
     this.projectService.createProject(project).subscribe({
-      next: (projectId: string) => {
-        this.router.navigate(['/projects', projectId]);
+      next: (project: Project) => {
+        this.router.navigate(['/projects', project.id]);
         this.toastrService.success(
           this.translationService.translate('toast.success.project.CREATE'),
         );
