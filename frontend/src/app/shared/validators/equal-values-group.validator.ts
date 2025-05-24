@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-export function equalValuesGroup<T>(
+export function equalValuesGroupValidator<T>(
   controlName1: string,
   controlName2: string,
 ): ValidatorFn {
@@ -8,6 +8,6 @@ export function equalValuesGroup<T>(
     const value1 = control.get(controlName1)?.value as T | null;
     const value2 = control.get(controlName2)?.value as T | null;
 
-    return value1 === value2 ? null : { equalValues: true };
+    return value1 === value2 ? null : { equalValuesGroup: true };
   };
 }

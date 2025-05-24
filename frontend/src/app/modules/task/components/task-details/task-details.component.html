@@ -69,23 +69,5 @@
       </div>
     </div>
   </div>
-  <app-button
-    textColor="text-sky-100"
-    bgColor="bg-sky-600 dark:bg-sky-500"
-    hoverBgColor="hover:bg-sky-700 dark:hover:bg-sky-600"
-    customClass="fixed bottom-14 lg:bottom-4 right-4 z-50"
-    [largeSize]="true"
-    (handleClick)="toggleChat()"
-  >
-    <mat-icon class="transition-transform" [class.rotate-180]="showChat">
-      @if (showChat) {
-        keyboard_arrow_up
-      } @else {
-        chat
-      }
-    </mat-icon>
-  </app-button>
-}
-@if (showChat) {
-  <app-chat />
+  <app-chat-toggle />
 }

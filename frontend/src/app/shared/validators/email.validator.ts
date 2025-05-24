@@ -5,7 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 
-export function email(message: string): ValidatorFn {
+export function emailValidator(message: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const error = Validators.email(control);
 

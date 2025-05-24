@@ -1,8 +1,7 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { Task, TaskStatus } from '@/app/features/dto/task.model';
 import { TaskService } from '@/app/features/services/task.service';
-import { ChatComponent } from '@/app/shared/components/chat/chat.component';
-import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
+import { ChatToggleComponent } from '@/app/shared/components/chat-toggle/chat-toggle.component';
 import { PriorityComponent } from '@/app/shared/components/ui/priority/priority.component';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
@@ -20,23 +19,16 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
     DatePipe,
     ProfileIconComponent,
-    ChatComponent,
-    ButtonComponent,
+    ChatToggleComponent,
   ],
   templateUrl: './task-details.component.html',
   styleUrl: './task-details.component.scss',
 })
 export class TaskDetailsComponent {
-  protected showChat: boolean = false;
-
   public constructor(
     private taskService: TaskService,
     private mapperService: MapperService,
   ) {}
-
-  protected toggleChat(): void {
-    this.showChat = !this.showChat;
-  }
 
   protected get TaskStatus(): typeof TaskStatus {
     return TaskStatus;

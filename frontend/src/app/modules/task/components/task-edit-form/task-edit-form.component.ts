@@ -14,8 +14,13 @@ import {
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
-import { maxLength, minLength, required } from '@/app/shared/validators';
-import { maxDate } from '@/app/shared/validators/max-date.validator';
+import {
+  maxDateValidator,
+  maxLengthValidator,
+  minLengthValidator,
+  profanityValidator,
+  requiredValidator,
+} from '@/app/shared/validators';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -58,14 +63,17 @@ export class TaskEditFormComponent implements OnInit {
   protected form: FormGroup<TaskEditForm> = new FormGroup<TaskEditForm>(
     {
       description: new FormControl('', [
-        required('task.editForm.description.errors.REQUIRED'),
-        minLength(5, 'task.editForm.description.errors.MIN_LENGTH'),
-        maxLength(500, 'task.editForm.description.errors.MAX_LENGTH'),
+        requiredValidator('task.editForm.description.errors.REQUIRED'),
+        minLengthValidator(5, 'task.editForm.description.errors.MIN_LENGTH'),
+        maxLengthValidator(500, 'task.editForm.description.errors.MAX_LENGTH'),
+        profanityValidator('task.editForm.description.errors.PROFANITY'),
       ]),
       status: new FormControl<TaskStatus | null>(TaskStatus.NOT_STARTED),
       priority: new FormControl<Priority | null>(Priority.LOW),
       dueDate: new FormControl('', {
-        validators: [required('task.editForm.dueDate.errors.REQUIRED')],
+        validators: [
+          requiredValidator('task.editForm.dueDate.errors.REQUIRED'),
+        ],
       }),
     },
     { updateOn: 'blur' },
@@ -167,7 +175,10 @@ export class TaskEditFormComponent implements OnInit {
     if (!task) return;
 
     this.form.controls.dueDate.addValidators([
-      maxDate(task.projectEndDate, 'task.editForm.dueDate.errors.MAX_DATE'),
+      maxDateValidator(
+        task.projectEndDate,
+        'task.editForm.dueDate.errors.MAX_DATE',
+      ),
     ]);
   }
 }

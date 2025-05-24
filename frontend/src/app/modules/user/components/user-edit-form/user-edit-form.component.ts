@@ -16,12 +16,13 @@ import {
   PERSON_NAME_REGEX,
 } from '@/app/shared/constants/regex.constant';
 import {
-  email,
-  equalValues,
-  maxLength,
-  minLength,
-  pattern,
-  required,
+  emailValidator,
+  equalValuesValidator,
+  maxLengthValidator,
+  minLengthValidator,
+  patternValidator,
+  profanityValidator,
+  requiredValidator,
 } from '@/app/shared/validators';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -66,24 +67,33 @@ export class UserEditFormComponent implements OnInit {
     {
       firstName: new FormControl('', {
         validators: [
-          required('user.form.firstName.errors.REQUIRED'),
-          minLength(2, 'user.form.firstName.errors.MIN_LENGTH'),
-          maxLength(50, 'user.form.firstName.errors.MAX_LENGTH'),
-          pattern(PERSON_NAME_REGEX, 'user.form.firstName.errors.INVALID'),
+          requiredValidator('user.form.firstName.errors.REQUIRED'),
+          minLengthValidator(2, 'user.form.firstName.errors.MIN_LENGTH'),
+          maxLengthValidator(50, 'user.form.firstName.errors.MAX_LENGTH'),
+          patternValidator(
+            PERSON_NAME_REGEX,
+            'user.form.firstName.errors.INVALID',
+          ),
+          profanityValidator('user.form.firstName.errors.PROFANITY'),
         ],
       }),
       lastName: new FormControl('', {
         validators: [
-          required('user.form.lastName.errors.REQUIRED'),
-          minLength(2, 'user.form.lastName.errors.MIN_LENGTH'),
-          maxLength(50, 'user.form.lastName.errors.MAX_LENGTH'),
-          pattern(PERSON_NAME_REGEX, 'user.form.lastName.errors.INVALID'),
+          requiredValidator('user.form.lastName.errors.REQUIRED'),
+          minLengthValidator(2, 'user.form.lastName.errors.MIN_LENGTH'),
+          maxLengthValidator(50, 'user.form.lastName.errors.MAX_LENGTH'),
+          patternValidator(
+            PERSON_NAME_REGEX,
+            'user.form.lastName.errors.INVALID',
+          ),
+          profanityValidator('user.form.lastName.errors.PROFANITY'),
         ],
       }),
       email: new FormControl('', {
         validators: [
-          required('user.form.email.errors.REQUIRED'),
-          email('user.form.email.errors.INVALID'),
+          requiredValidator('user.form.email.errors.REQUIRED'),
+          emailValidator('user.form.email.errors.INVALID'),
+          profanityValidator('user.form.email.errors.PROFANITY'),
         ],
       }),
       changePassword: new FormControl(false, {
@@ -171,14 +181,17 @@ export class UserEditFormComponent implements OnInit {
     return new FormGroup<PasswordsForm>({
       password: new FormControl('', {
         validators: [
-          required('user.form.password.errors.REQUIRED'),
-          pattern(PASSWORD_REGEX, 'user.form.password.errors.INVALID'),
+          requiredValidator('user.form.password.errors.REQUIRED'),
+          patternValidator(PASSWORD_REGEX, 'user.form.password.errors.INVALID'),
         ],
       }),
       confirmPassword: new FormControl('', {
         validators: [
-          required('user.form.confirmPassword.errors.REQUIRED'),
-          equalValues('password', 'user.form.confirmPassword.errors.NOT_EQUAL'),
+          requiredValidator('user.form.confirmPassword.errors.REQUIRED'),
+          equalValuesValidator(
+            'password',
+            'user.form.confirmPassword.errors.NOT_EQUAL',
+          ),
         ],
       }),
     });

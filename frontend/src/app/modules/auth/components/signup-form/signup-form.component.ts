@@ -10,12 +10,13 @@ import {
   USERNAME_REGEX,
 } from '@/app/shared/constants/regex.constant';
 import {
-  email,
-  equalValues,
-  maxLength,
-  minLength,
-  pattern,
-  required,
+  emailValidator,
+  equalValuesValidator,
+  maxLengthValidator,
+  minLengthValidator,
+  patternValidator,
+  profanityValidator,
+  requiredValidator,
 } from '@/app/shared/validators';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -66,45 +67,61 @@ export class SignupFormComponent {
     {
       firstName: new FormControl('', {
         validators: [
-          required('signupForm.firstName.errors.REQUIRED'),
-          minLength(2, 'signupForm.firstName.errors.MIN_LENGTH'),
-          maxLength(50, 'signupForm.firstName.errors.MAX_LENGTH'),
-          pattern(PERSON_NAME_REGEX, 'signupForm.firstName.errors.INVALID'),
+          requiredValidator('signupForm.firstName.errors.REQUIRED'),
+          minLengthValidator(2, 'signupForm.firstName.errors.MIN_LENGTH'),
+          maxLengthValidator(50, 'signupForm.firstName.errors.MAX_LENGTH'),
+          patternValidator(
+            PERSON_NAME_REGEX,
+            'signupForm.firstName.errors.INVALID',
+          ),
+          profanityValidator('signupForm.firstName.errors.PROFANITY'),
         ],
       }),
       lastName: new FormControl('', {
         validators: [
-          required('signupForm.lastName.errors.REQUIRED'),
-          minLength(2, 'signupForm.lastName.errors.MIN_LENGTH'),
-          maxLength(50, 'signupForm.lastName.errors.MAX_LENGTH'),
-          pattern(PERSON_NAME_REGEX, 'signupForm.lastName.errors.INVALID'),
+          requiredValidator('signupForm.lastName.errors.REQUIRED'),
+          minLengthValidator(2, 'signupForm.lastName.errors.MIN_LENGTH'),
+          maxLengthValidator(50, 'signupForm.lastName.errors.MAX_LENGTH'),
+          patternValidator(
+            PERSON_NAME_REGEX,
+            'signupForm.lastName.errors.INVALID',
+          ),
+          profanityValidator('signupForm.lastName.errors.PROFANITY'),
         ],
       }),
       username: new FormControl('', {
         validators: [
-          required('signupForm.username.errors.REQUIRED'),
-          minLength(8, 'signupForm.username.errors.MIN_LENGTH'),
-          maxLength(30, 'signupForm.username.errors.MAX_LENGTH'),
-          pattern(USERNAME_REGEX, 'signupForm.username.errors.INVALID'),
+          requiredValidator('signupForm.username.errors.REQUIRED'),
+          minLengthValidator(8, 'signupForm.username.errors.MIN_LENGTH'),
+          maxLengthValidator(30, 'signupForm.username.errors.MAX_LENGTH'),
+          patternValidator(
+            USERNAME_REGEX,
+            'signupForm.username.errors.INVALID',
+          ),
+          profanityValidator('signupForm.username.errors.PROFANITY'),
         ],
       }),
       email: new FormControl('', {
         validators: [
-          required('signupForm.email.errors.REQUIRED'),
-          email('signupForm.email.errors.INVALID'),
+          requiredValidator('signupForm.email.errors.REQUIRED'),
+          emailValidator('signupForm.email.errors.INVALID'),
+          profanityValidator('signupForm.email.errors.PROFANITY'),
         ],
       }),
       passwords: new FormGroup<PasswordsForm>({
         password: new FormControl('', {
           validators: [
-            required('signupForm.password.errors.REQUIRED'),
-            pattern(PASSWORD_REGEX, 'signupForm.password.errors.INVALID'),
+            requiredValidator('signupForm.password.errors.REQUIRED'),
+            patternValidator(
+              PASSWORD_REGEX,
+              'signupForm.password.errors.INVALID',
+            ),
           ],
         }),
         confirmPassword: new FormControl('', {
           validators: [
-            required('signupForm.confirmPassword.errors.REQUIRED'),
-            equalValues(
+            requiredValidator('signupForm.confirmPassword.errors.REQUIRED'),
+            equalValuesValidator(
               'password',
               'signupForm.confirmPassword.errors.NOT_EQUAL',
             ),

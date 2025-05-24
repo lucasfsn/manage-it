@@ -1,0 +1,101 @@
+/* Mobile screen in landscape mode */
+@media (max-width: 56.25rem) and (max-height: 31.25rem) and (orientation: landscape) {
+  .chat-container {
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+
+    .close-button {
+      display: flex;
+    }
+  }
+}
+
+/* Mobile screen in portrait mode */
+@media (max-width: 31.25rem) and (orientation: portrait) {
+  .chat-container {
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+
+    .close-button {
+      display: flex;
+    }
+  }
+}
+
+/* Desktop screen */
+@media (min-height: 31.25rem) and (orientation: landscape),
+  (min-width: 31.25rem) and (orientation: portrait),
+  (min-width: 56.25rem) and (orientation: landscape) {
+  .chat-container {
+    border-radius: 1rem; // rounded-2xl
+    max-height: 37.5rem; // max-h-150
+    height: 75%;
+    width: 24rem; // max-w-sm
+    bottom: 6.5rem; // bottom-26
+    right: 1rem; // right-4
+
+    .close-button {
+      display: none;
+    }
+  }
+}
+
+:host-context(.dark) {
+  ::ng-deep {
+    .emoji-mart-dark {
+      .emoji-mart-category-label {
+        span {
+          background-color: #020617;
+          color: #9ca3af;
+        }
+      }
+
+      .emoji-mart-search {
+        input {
+          background-color: #020617;
+          border-bottom: 1px solid #192231;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .emoji-mart-bar {
+    display: none;
+  }
+
+  .emoji-mart-anchors {
+    display: none;
+  }
+
+  .emoji-mart-dark {
+    .emoji-mart-category-label {
+      span {
+        background-color: #fed7aa;
+        color: #9ca3af;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+      }
+    }
+
+    .emoji-mart-search {
+      input {
+        background-color: #fed7aa;
+        color: black;
+        border: none;
+        border-radius: 0;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+
+        &::placeholder {
+          color: #6b7280;
+        }
+      }
+    }
+  }
+}
