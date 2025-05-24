@@ -120,13 +120,14 @@ export class TaskService {
     projectId: string,
     taskId: string,
     user: User,
-  ): Observable<Response<Task>> {
+  ): Observable<Task> {
     return this.http
       .patch<
         Response<Task>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/add`, user)
       .pipe(
         tap((res: Response<Task>) => this.task.set(res.data)),
+        map((res: Response<Task>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         }),
@@ -137,13 +138,14 @@ export class TaskService {
     projectId: string,
     taskId: string,
     user: User,
-  ): Observable<Response<Task>> {
+  ): Observable<Task> {
     return this.http
       .patch<
         Response<Task>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/remove`, user)
       .pipe(
         tap((res: Response<Task>) => this.task.set(res.data)),
+        map((res: Response<Task>) => res.data),
         catchError((err: HttpErrorResponse) => {
           return throwError(() => err);
         }),
