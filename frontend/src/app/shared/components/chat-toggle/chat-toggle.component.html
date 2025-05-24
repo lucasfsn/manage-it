@@ -1,0 +1,19 @@
+<app-button
+  textColor="text-sky-100"
+  bgColor="bg-sky-600 dark:bg-sky-500"
+  hoverBgColor="hover:bg-sky-700 dark:hover:bg-sky-600"
+  [customClass]="toggleButtonClass"
+  [largeSize]="true"
+  (handleClick)="toggleChat()"
+>
+  <mat-icon class="transition-transform" [class.rotate-180]="showChat">
+    @if (showChat) {
+      keyboard_arrow_up
+    } @else {
+      chat
+    }
+  </mat-icon>
+</app-button>
+@if (showChat) {
+  <app-chat (handleClose)="toggleChat()" />
+}

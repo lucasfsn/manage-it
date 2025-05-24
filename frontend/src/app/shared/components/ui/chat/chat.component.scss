@@ -31,12 +31,12 @@
   (min-width: 31.25rem) and (orientation: portrait),
   (min-width: 56.25rem) and (orientation: landscape) {
   .chat-container {
-    border-radius: var(--radius-2xl);
-    max-height: calc(var(--spacing) * 150);
+    border-radius: 1rem; // rounded-2xl
+    max-height: 37.5rem; // max-h-150
     height: 75%;
-    width: var(--container-sm);
-    bottom: calc(var(--spacing) * 26);
-    right: calc(var(--spacing) * 4);
+    width: 24rem; // max-w-sm
+    bottom: 6.5rem; // bottom-26
+    right: 1rem; // right-4
 
     .close-button {
       display: none;
