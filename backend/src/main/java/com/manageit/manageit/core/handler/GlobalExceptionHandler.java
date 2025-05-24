@@ -96,31 +96,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(response);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDto> handleException(MethodArgumentNotValidException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-        List<FieldValidationErrorsDto> validationErrors = exp.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> new FieldValidationErrorsDto(
-                        HttpStatus.BAD_REQUEST,
-                        error.getField(),
-                        error.getDefaultMessage()
-                ))
-                .toList();
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(
-                        ErrorResponseDto.builder()
-                                .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                                .message("Validation failed")
-                                .errors(validationErrors)
-                                .build()
-                );
-    }
-
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseDto> handleException(DataIntegrityViolationException exp) {
         if (log.isErrorEnabled()) {
@@ -147,22 +122,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         ErrorResponseDto.builder()
                                 .code(HttpStatus.CONFLICT.getReasonPhrase())
                                 .message(exp.getMessage())
-                                .build()
-                );
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponseDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-        final String message = "Invalid request body format or value.";
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(
-                        ErrorResponseDto.builder()
-                                .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                                .message(message)
                                 .build()
                 );
     }
@@ -287,6 +246,60 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         .message(exception.getMessage())
                         .build());
     }
+
+    @Override
+    public ResponseEntity<Object> handleMethodArgumentNotValid(
+            @Nonnull final MethodArgumentNotValidException exception,
+            @Nonnull final HttpHeaders headers,
+            @Nonnull final HttpStatusCode status,
+            @Nonnull final WebRequest request) {
+        if (log.isErrorEnabled()) {
+            log.error(exception.getMessage(), exception);
+        }
+
+        final List<FieldValidationErrorsDto> validationErrors =
+                exception.getBindingResult().getFieldErrors().stream()
+                        .map(
+                                fieldError ->
+                                        FieldValidationErrorsDto.builder()
+                                                .errorCode(HttpStatus.BAD_REQUEST)
+                                                .field(fieldError.getField())
+                                                .message(fieldError.getDefaultMessage())
+                                                .build())
+                        .toList();
+
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                                .message("Validation failed")
+                                .errors(validationErrors)
+                                .build()
+                );
+    }
+
+    @Override
+    public ResponseEntity<Object> handleHttpMessageNotReadable(
+            @Nonnull final HttpMessageNotReadableException exception,
+            @Nonnull final HttpHeaders headers,
+            @Nonnull final HttpStatusCode status,
+            @Nonnull final WebRequest request) {
+        if (log.isErrorEnabled()) {
+            log.error(exception.getMessage(), exception);
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                                .message(exception.getMessage())
+                                .build()
+                );
+    }
+
 
     private List<FieldValidationErrorsDto> processInvalidParameters(
             ConstraintViolationException exception) {
