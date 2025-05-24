@@ -99,6 +99,7 @@ public class ProjectServiceDefault implements ProjectService {
         Project project = getProjectById(projectId);
         String message;
         validateUserIsProjectOwner(managedOwner, project);
+        isProjectCompleted(project);
         if (request.getStatus() != null) {
             project.setStatus(request.getStatus());
             message = "project;complete;" + project.getName();
@@ -130,6 +131,7 @@ public class ProjectServiceDefault implements ProjectService {
     @Transactional
     public ProjectResponseDto addUserToProject(User user, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
+        isProjectCompleted(project);
         validateUserIsProjectOwner(user, project);
         User userToAdd = userService.getUserByUsername(request.getName());
         if (project.getMembers().contains(userToAdd)) {
@@ -153,6 +155,7 @@ public class ProjectServiceDefault implements ProjectService {
     public ProjectResponseDto removeUserFromProject(User owner, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
         validateUserIsProjectOwner(owner, project);
+        isProjectCompleted(project);
         if (project.getOwner().getName().equals(request.getName())) {
             throw new IllegalArgumentException("Project owner cannot remove themselves from the project.");
         }

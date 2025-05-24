@@ -1,23 +1,23 @@
 package com.manageit.manageit.feature.task.service;
 
 
-import com.manageit.manageit.feature.task.dto.CreateTaskRequestDto;
-import com.manageit.manageit.feature.task.dto.TaskResponseDto;
-import com.manageit.manageit.feature.task.dto.TaskDetailsResponseDto;
-import com.manageit.manageit.feature.task.dto.UpdateTaskRequestDto;
-import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInTaskException;
-import com.manageit.manageit.feature.user.service.UserService;
-import com.manageit.manageit.feature.task.mapper.TaskMapper;
-import com.manageit.manageit.feature.project.model.Project;
-import com.manageit.manageit.feature.task.repository.TaskRepository;
-import com.manageit.manageit.feature.task.model.Task;
-import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.chat.service.ChatService;
 import com.manageit.manageit.feature.notification.service.NotificationService;
+import com.manageit.manageit.feature.project.model.Project;
 import com.manageit.manageit.feature.project.service.ProjectService;
+import com.manageit.manageit.feature.task.dto.CreateTaskRequestDto;
+import com.manageit.manageit.feature.task.dto.TaskDetailsResponseDto;
+import com.manageit.manageit.feature.task.dto.TaskResponseDto;
+import com.manageit.manageit.feature.task.dto.UpdateTaskRequestDto;
+import com.manageit.manageit.feature.task.mapper.TaskMapper;
+import com.manageit.manageit.feature.task.model.Task;
+import com.manageit.manageit.feature.task.repository.TaskRepository;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
+import com.manageit.manageit.feature.user.model.User;
+import com.manageit.manageit.feature.user.service.UserService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
@@ -66,6 +66,7 @@ public class TaskServiceDefault implements TaskService {
         User managedOwner = entityManager.merge(owner);
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(owner, project);
+        projectService.isProjectCompleted(project);
         Task task = Task.builder()
                 .project(project)
                 .description(createTaskRequest.getDescription())
@@ -93,6 +94,7 @@ public class TaskServiceDefault implements TaskService {
         User managedUser = entityManager.merge(user);
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(user, project);
+        projectService.isProjectCompleted(project);
         Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
@@ -113,6 +115,7 @@ public class TaskServiceDefault implements TaskService {
         User managedUpdater = entityManager.merge(updater);
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(updater, project);
+        projectService.isProjectCompleted(project);
         Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
@@ -149,6 +152,7 @@ public class TaskServiceDefault implements TaskService {
         Project project = projectService.getProjectById(projectId);
         User userToAdd = userService.getUserByUsername(request.getName());
         checkIfUserIsMemberOfProject(user, project);
+        projectService.isProjectCompleted(project);
         if (!project.getMembers().contains(userToAdd)) {
             throw new UserNotInProjectException("User " + userToAdd.getName() + " is not member of project");
         }
@@ -178,6 +182,7 @@ public class TaskServiceDefault implements TaskService {
     public TaskResponseDto removeUserFromTask(User user, UUID taskId, UUID projectId, UserResponseDto request) {
         Project project = projectService.getProjectById(projectId);
         checkIfUserIsMemberOfProject(user, project);
+        projectService.isProjectCompleted(project);
         Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
