@@ -2,8 +2,10 @@ package com.manageit.manageit.shared.dto;
 
 import com.manageit.manageit.shared.enums.SuccessCode;
 import jakarta.annotation.Nullable;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
 
 public record ResponseDto<T>(
         SuccessCode code,
