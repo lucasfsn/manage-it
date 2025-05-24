@@ -148,6 +148,7 @@ public class TaskServiceDefault implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskResponseDto addUserToTask(User user, UUID taskId, UUID projectId, UserResponseDto request) {
         Project project = projectService.getProjectById(projectId);
         User userToAdd = userService.getUserByUsername(request.getName());
