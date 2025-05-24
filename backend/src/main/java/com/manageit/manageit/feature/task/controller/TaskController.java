@@ -7,6 +7,8 @@ import com.manageit.manageit.feature.task.dto.UpdateTaskRequestDto;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.task.service.TaskService;
+import com.manageit.manageit.shared.dto.ResponseDto;
+import com.manageit.manageit.shared.enums.SuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +27,20 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping("/{taskId}")
-    public ResponseEntity<TaskResponseDto> getTask(
+    public ResponseDto<TaskResponseDto> getTask(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId
     ) {
-        return ResponseEntity.ok(taskService.getTask(userDetails, projectId, taskId));
+        return new ResponseDto<>(
+                SuccessCode.RESPONSE_SUCCESSFUL,
+                "Task found successfully with id: " + taskId,
+                taskService.getTask(userDetails, projectId, taskId)
+        );
     }
 
     @PostMapping
-    public ResponseEntity<TaskDetailsResponseDto> addTaskToProject(
+    public ResponseEntity<ResponseDto<TaskDetailsResponseDto>> addTaskToProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID projectId,
             @Valid @RequestBody CreateTaskRequestDto createTaskRequest
@@ -45,50 +51,74 @@ public class TaskController {
                 .path("/{id}")
                 .buildAndExpand(task.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(task);
+        return ResponseEntity.created(location).body(
+                new ResponseDto<>(
+                        SuccessCode.RESOURCE_CREATED,
+                        "Task created and added to project successfully",
+                        task
+                )
+        );
     }
 
     @DeleteMapping("/{taskId}")
-    public ResponseEntity<Void> removeTask(
+    public ResponseEntity<ResponseDto<Void>> removeTask(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId
     ) {
         taskService.deleteTask(userDetails, taskId, projectId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                new ResponseDto<>(
+                        SuccessCode.RESOURCE_DELETED,
+                        "Task deleted successfully with id: " + taskId,
+                        null
+                )
+        );
     }
 
     @PatchMapping("/{taskId}")
-    public ResponseEntity<TaskResponseDto> updateTask(
+    public ResponseDto<TaskResponseDto> updateTask(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
             @Valid @RequestBody UpdateTaskRequestDto updateTaskRequest
     ) {
         TaskResponseDto updatedTask = taskService.updateTask(userDetails, taskId, projectId, updateTaskRequest);
-        return ResponseEntity.ok(updatedTask);
+        return new ResponseDto<>(
+                SuccessCode.RESOURCE_UPDATED,
+                "Task updated successfully with id: " + taskId,
+                updatedTask
+        );
     }
 
     @PatchMapping("/{taskId}/user/add")
-    public ResponseEntity<TaskResponseDto> addUserToTask(
+    public ResponseDto<TaskResponseDto> addUserToTask(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
             @RequestBody UserResponseDto request
     ) {
         TaskResponseDto updatedTask = taskService.addUserToTask(userDetails, taskId, projectId, request);
-        return ResponseEntity.ok(updatedTask);
+        return new ResponseDto<>(
+                SuccessCode.RESOURCE_UPDATED,
+                "User added to task successfully with id: " + taskId,
+                updatedTask
+        );
     }
 
     @PatchMapping("/{taskId}/user/remove")
-    public ResponseEntity<TaskResponseDto> removeUserFromProject(
+    public ResponseDto<TaskResponseDto> removeUserFromProject(
             @AuthenticationPrincipal User userDetails,
             @PathVariable UUID taskId,
             @PathVariable UUID projectId,
             @RequestBody UserResponseDto request
     ) {
         TaskResponseDto updatedTask = taskService.removeUserFromTask(userDetails, taskId, projectId, request);
-        return ResponseEntity.ok(updatedTask);
+        return new ResponseDto<>(
+                SuccessCode.RESOURCE_UPDATED,
+                "User removed from task successfully with id: " + taskId,
+                updatedTask
+        );
     }
 
 }

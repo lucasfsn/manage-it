@@ -29,7 +29,7 @@ public class UserController {
     ) {
         return new ResponseDto<>(
                 SuccessCode.RESPONSE_SUCCESSFUL,
-                "User found successfully",
+                "User found successfully with username: " + username,
                 userService.findByUsername(userDetails, username)
         );
     }
