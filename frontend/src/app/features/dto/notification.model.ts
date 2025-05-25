@@ -1,24 +1,10 @@
-import { User } from '@/app/features/dto/project.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
 
-export interface Notification {
+export interface NotificationDto {
   readonly id: string;
-  readonly user: User;
+  readonly user: UserSummaryDto;
   readonly message: string;
   readonly date: string;
   readonly projectId: string;
   readonly taskId?: string;
-}
-
-export enum NotificationType {
-  PROJECT = 'project',
-  TASK = 'task',
-}
-
-export enum NotificationOperation {
-  COMPLETE = 'complete',
-  UPDATE = 'update',
-  JOIN = 'join',
-  LEAVE = 'leave',
-  CREATE = 'create',
-  DELETE = 'delete',
 }

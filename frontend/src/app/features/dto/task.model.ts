@@ -1,33 +1,24 @@
-import { ProjectStatus, User } from '@/app/features/dto/project.model';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
+import { TaskPriority } from '@/app/modules/task/types/task-priority.type';
+import { TaskStatus } from '@/app/modules/task/types/task-status.type';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
 
-export enum TaskStatus {
-  NOT_STARTED = 'NOT_STARTED',
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-}
-
-export enum Priority {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-}
-
-export interface Task {
+export interface TaskDto {
   readonly id: string;
   readonly projectId: string;
-  readonly members: User[];
+  readonly members: UserSummaryDto[];
   readonly description: string;
   readonly status: TaskStatus;
-  readonly priority: Priority;
+  readonly priority: TaskPriority;
   readonly dueDate: string;
   readonly projectStatus: ProjectStatus;
   readonly projectEndDate: string;
   readonly updatedAt: string;
 }
 
-export interface TaskData {
+export interface TaskPayload {
   readonly description: string;
   readonly status: TaskStatus;
-  readonly priority: Priority;
+  readonly priority: TaskPriority;
   readonly dueDate: string;
 }

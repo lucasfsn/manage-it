@@ -1,15 +1,28 @@
 import { TranslationService } from '@/app/core/services/translation.service';
-import {
-  NotificationOperation,
-  NotificationType,
-} from '@/app/features/dto/notification.model';
-import { ProjectStatus } from '@/app/features/dto/project.model';
-import { Priority, TaskStatus } from '@/app/features/dto/task.model';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import {
   SortCriteria,
   SortOrder,
-} from '@/app/modules/projects/models/projects-sort.model';
+} from '@/app/modules/projects/types/projects-sort.type';
+import { TaskPriority } from '@/app/modules/task/types/task-priority.type';
+import { TaskStatus } from '@/app/modules/task/types/task-status.type';
 import { Injectable } from '@angular/core';
+
+type ErrorResponseResource = 'project' | 'task' | 'user' | 'default';
+
+enum NotificationType {
+  PROJECT = 'project',
+  TASK = 'task',
+}
+
+enum NotificationOperation {
+  COMPLETE = 'complete',
+  UPDATE = 'update',
+  JOIN = 'join',
+  LEAVE = 'leave',
+  CREATE = 'create',
+  DELETE = 'delete',
+}
 
 @Injectable({
   providedIn: 'root',
@@ -81,48 +94,42 @@ export class MapperService {
     }
   }
 
-  public priorityMapper(priority: Priority): string {
+  public priorityMapper(priority: TaskPriority): string {
     switch (priority) {
-      case Priority.LOW:
+      case TaskPriority.LOW:
         return this.translationService.translate('utils.mapper.priority.LOW');
-      case Priority.MEDIUM:
+      case TaskPriority.MEDIUM:
         return this.translationService.translate(
           'utils.mapper.priority.MEDIUM',
         );
-      case Priority.HIGH:
+      case TaskPriority.HIGH:
         return this.translationService.translate('utils.mapper.priority.HIGH');
     }
   }
 
   public errorToastMapper(
     code: number,
-    resourceName?: 'project' | 'task' | 'user',
+    resourceName: ErrorResponseResource = 'default',
   ): string {
     switch (code) {
-      case 400:
-        return this.translationService.translate('toast.error.400');
-      case 401:
-        return this.translationService.translate('toast.error.401');
       case 403:
-      case 404:
-        return this.translateResourceError(code, resourceName || 'default');
+      case 404: {
+        const resource = this.translationService.translate(
+          `toast.resource.${resourceName.toUpperCase()}`,
+        );
+
+        return this.translationService.translate(`toast.error.${code}`, {
+          resource,
+        });
+      }
+      case 400:
+      case 401:
       case 500:
-        return this.translationService.translate('toast.error.500');
       case 503:
-        return this.translationService.translate('toast.error.503');
+        return this.translationService.translate(`toast.error.${code}`);
       default:
         return this.translationService.translate('toast.error.DEFAULT');
     }
-  }
-
-  private translateResourceError(code: number, resourceName: string): string {
-    const resource = this.translationService.translate(
-      `toast.resource.${resourceName.toUpperCase()}`,
-    );
-
-    return this.translationService.translate(`toast.error.${code}`, {
-      resource,
-    });
   }
 
   public notificationMessageMapper(message: string): string {

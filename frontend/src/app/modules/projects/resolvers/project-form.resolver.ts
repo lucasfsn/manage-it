@@ -1,14 +1,15 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
-import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, map, of } from 'rxjs';
 
-export const projectFormResolver: ResolveFn<Project | null> = (route) => {
+export const projectFormResolver: ResolveFn<ProjectDto | null> = (route) => {
   const loadingService = inject(LoadingService);
   const projectService = inject(ProjectService);
   const mapperService = inject(MapperService);

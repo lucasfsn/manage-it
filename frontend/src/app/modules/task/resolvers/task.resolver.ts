@@ -1,14 +1,14 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
-import { Task } from '@/app/features/dto/task.model';
+import { TaskDto } from '@/app/features/dto/task.model';
 import { TaskService } from '@/app/features/services/task.service';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
 
-export const taskResolver: ResolveFn<Task | null> = (route) => {
+export const taskResolver: ResolveFn<TaskDto | null> = (route) => {
   const loadingService = inject(LoadingService);
   const taskService = inject(TaskService);
   const mapperService = inject(MapperService);

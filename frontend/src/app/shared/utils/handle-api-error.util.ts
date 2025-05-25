@@ -1,4 +1,4 @@
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 

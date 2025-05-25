@@ -1,9 +1,10 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProjectManageMembersComponent } from '@/app/modules/projects/components/project-manage-members/project-manage-members.component';
 import { ProjectMenuComponent } from '@/app/modules/projects/components/project-menu/project-menu.component';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { ChatToggleComponent } from '@/app/shared/components/chat-toggle/chat-toggle.component';
 import { SearchComponent } from '@/app/shared/components/search/search.component';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
@@ -36,7 +37,7 @@ export class ProjectDetailsComponent {
     private mapperService: MapperService,
   ) {}
 
-  protected get project(): Project | null {
+  protected get project(): ProjectDto | null {
     return this.projectService.loadedProject();
   }
 

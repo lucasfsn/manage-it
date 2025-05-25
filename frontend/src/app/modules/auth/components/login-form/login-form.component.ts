@@ -4,7 +4,7 @@ import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { SAVED_LOGIN_FORM_DATA_KEY } from '@/app/shared/constants/local-storage.constant';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { emailValidator, requiredValidator } from '@/app/shared/validators';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';

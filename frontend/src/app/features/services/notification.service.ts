@@ -1,5 +1,5 @@
-import { Notification } from '@/app/features/dto/notification.model';
-import { Response } from '@/app/shared/dto/response.model';
+import { NotificationDto } from '@/app/features/dto/notification.model';
+import { Response } from '@/app/shared/types/response.type';
 import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -10,21 +10,21 @@ import { catchError, map, Observable, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class NotificationService {
-  private notifications = signal<Notification[]>([]);
+  private notifications = signal<NotificationDto[]>([]);
   public loadedNotifications = this.notifications.asReadonly();
 
   public constructor(private http: HttpClient) {}
 
-  public getNotifications(): Observable<Notification[]> {
+  public getNotifications(): Observable<NotificationDto[]> {
     return this.http
-      .get<Response<Notification[]>>(`${environment.apiUrl}/notifications`)
+      .get<Response<NotificationDto[]>>(`${environment.apiUrl}/notifications`)
       .pipe(
-        map((res: Response<Notification[]>) =>
+        map((res: Response<NotificationDto[]>) =>
           res.data.toSorted(
             (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
           ),
         ),
-        tap((data: Notification[]) => this.notifications.set(data)),
+        tap((data: NotificationDto[]) => this.notifications.set(data)),
         catchError(handleApiError),
       );
   }

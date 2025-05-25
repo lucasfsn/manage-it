@@ -1,7 +1,7 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { ProjectStatus } from '@/app/features/dto/project.model';
-import { ProjectsFilters } from '@/app/modules/projects/models/projects-filter.model';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
+import { ProjectsFilters } from '@/app/modules/projects/types/projects-filter.type';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
 import {
   FormRadioControlComponent,

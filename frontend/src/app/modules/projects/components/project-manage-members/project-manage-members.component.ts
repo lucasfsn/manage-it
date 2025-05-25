@@ -1,9 +1,10 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { Project, User } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,15 +30,15 @@ export class ProjectManageMembersComponent {
     private mapperService: MapperService,
   ) {}
 
-  protected get project(): Project | null {
+  protected get project(): ProjectDto | null {
     return this.projectService.loadedProject();
   }
 
-  protected get members(): User[] {
+  protected get members(): UserSummaryDto[] {
     return this.project?.members || [];
   }
 
-  protected handleRemove(user: User): void {
+  protected handleRemove(user: UserSummaryDto): void {
     const projectId = this.project?.id;
     if (!projectId) return;
 
@@ -70,7 +71,7 @@ export class ProjectManageMembersComponent {
     this.dialogRef.close();
   }
 
-  protected handleNavigateToProfile(user: User): void {
+  protected handleNavigateToProfile(user: UserSummaryDto): void {
     this.router.navigate(['/users', user.username]);
     this.dialogRef.close();
   }

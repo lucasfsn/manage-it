@@ -1,13 +1,10 @@
-import { UpdateUser, User } from '@/app/features/dto/user.model';
-import { UserService } from '@/app/features/services/user.service';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { ToastrService } from 'ngx-toastr';
-
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
+import {
+  UpdateUserPayload,
+  UserProfileDto,
+} from '@/app/features/dto/user.model';
+import { UserService } from '@/app/features/services/user.service';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
@@ -15,7 +12,7 @@ import {
   PASSWORD_REGEX,
   PERSON_NAME_REGEX,
 } from '@/app/shared/constants/regex.constant';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import {
   emailValidator,
   equalValuesValidator,
@@ -25,7 +22,12 @@ import {
   profanityValidator,
   requiredValidator,
 } from '@/app/shared/validators';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 interface PasswordsForm {
   readonly password: FormControl<string | null>;
@@ -104,7 +106,7 @@ export class UserEditFormComponent implements OnInit {
     { updateOn: 'blur' },
   );
 
-  protected get userData(): User | null {
+  protected get userData(): UserProfileDto | null {
     return this.userService.loadedUser();
   }
 
@@ -131,7 +133,7 @@ export class UserEditFormComponent implements OnInit {
   protected onSubmit(): void {
     if (this.form.invalid || !this.userData) return;
 
-    const updatedUserData: UpdateUser = {
+    const updatedUserData: UpdateUserPayload = {
       firstName: this.form.value.firstName!,
       lastName: this.form.value.lastName!,
       email: this.form.value.email!,

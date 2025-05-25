@@ -1,16 +1,15 @@
 import {
-  AuthResponse,
-  LoginCredentials,
-  RefreshTokenResponse,
-  RegisterCredentials,
-  UpdateUserCredentials,
-  UserCredentials,
+  AuthDto,
+  AuthPayload,
+  RefreshTokenDto,
+  SignupPayload,
+  UserDto,
 } from '@/app/features/dto/auth.model';
 import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY,
 } from '@/app/shared/constants/cookie.constant';
-import { Response } from '@/app/shared/dto/response.model';
+import { Response } from '@/app/shared/types/response.type';
 import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -19,11 +18,17 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 
+interface UpdateLoggedInUser {
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly email: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUser = signal<UserCredentials | null>(null);
+  private currentUser = signal<UserDto | null>(null);
   public loadedUser = this.currentUser.asReadonly();
 
   public constructor(
@@ -32,11 +37,11 @@ export class AuthService {
     private cookieService: CookieService,
   ) {}
 
-  public register(user: RegisterCredentials): Observable<AuthResponse> {
+  public register(user: SignupPayload): Observable<AuthDto> {
     return this.http
-      .post<Response<AuthResponse>>(`${environment.apiUrl}/auth/register`, user)
+      .post<Response<AuthDto>>(`${environment.apiUrl}/auth/register`, user)
       .pipe(
-        tap((res: Response<AuthResponse>) => {
+        tap((res: Response<AuthDto>) => {
           const { accessToken, refreshToken, user } = res.data;
 
           this.storeTokens(accessToken, refreshToken);
@@ -45,18 +50,16 @@ export class AuthService {
 
           this.router.navigate(['/dashboard']);
         }),
-        map((res: Response<AuthResponse>) => res.data),
+        map((res: Response<AuthDto>) => res.data),
         catchError(handleApiError),
       );
   }
 
-  public login(user: LoginCredentials): Observable<AuthResponse> {
+  public login(user: AuthPayload): Observable<AuthDto> {
     return this.http
-      .post<
-        Response<AuthResponse>
-      >(`${environment.apiUrl}/auth/authenticate`, user)
+      .post<Response<AuthDto>>(`${environment.apiUrl}/auth/authenticate`, user)
       .pipe(
-        tap((res: Response<AuthResponse>) => {
+        tap((res: Response<AuthDto>) => {
           const { accessToken, refreshToken, user } = res.data;
 
           this.storeTokens(accessToken, refreshToken);
@@ -65,7 +68,7 @@ export class AuthService {
 
           this.router.navigate(['/dashboard']);
         }),
-        map((res: Response<AuthResponse>) => res.data),
+        map((res: Response<AuthDto>) => res.data),
         catchError(handleApiError),
       );
   }
@@ -87,12 +90,12 @@ export class AuthService {
     );
   }
 
-  public getUserByToken(): Observable<UserCredentials> {
+  public getUserByToken(): Observable<UserDto> {
     return this.http
-      .get<Response<UserCredentials>>(`${environment.apiUrl}/auth/user`)
+      .get<Response<UserDto>>(`${environment.apiUrl}/auth/user`)
       .pipe(
-        tap((res: Response<UserCredentials>) => this.currentUser.set(res.data)),
-        map((res: Response<UserCredentials>) => res.data),
+        tap((res: Response<UserDto>) => this.currentUser.set(res.data)),
+        map((res: Response<UserDto>) => res.data),
         catchError((err: HttpErrorResponse) => {
           this.logout();
 
@@ -101,7 +104,7 @@ export class AuthService {
       );
   }
 
-  public setUser(updatedData: UpdateUserCredentials): void {
+  public setUser(updatedData: UpdateLoggedInUser): void {
     const user = this.currentUser();
     if (!user) return;
 
@@ -112,7 +115,7 @@ export class AuthService {
     return this.currentUser()?.username;
   }
 
-  public refreshToken(): Observable<RefreshTokenResponse> {
+  public refreshToken(): Observable<RefreshTokenDto> {
     const refreshTokenValue = this.cookieService.check(REFRESH_TOKEN_KEY);
 
     if (!refreshTokenValue) {
@@ -123,15 +126,15 @@ export class AuthService {
 
     return this.http
       .post<
-        Response<RefreshTokenResponse>
+        Response<RefreshTokenDto>
       >(`${environment.apiUrl}/auth/refresh-token`, {})
       .pipe(
-        tap((res: Response<RefreshTokenResponse>) => {
+        tap((res: Response<RefreshTokenDto>) => {
           const { accessToken, refreshToken } = res.data;
 
           this.storeTokens(accessToken, refreshToken);
         }),
-        map((res: Response<RefreshTokenResponse>) => res.data),
+        map((res: Response<RefreshTokenDto>) => res.data),
         catchError((err: HttpErrorResponse) => {
           this.logout();
 

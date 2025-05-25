@@ -1,9 +1,9 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
-import { User } from '@/app/features/dto/user.model';
+import { UserProfileDto } from '@/app/features/dto/user.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { UserService } from '@/app/features/services/user.service';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -22,7 +22,7 @@ export const userRedirectResolver: ResolveFn<void> = () => {
   }
 };
 
-export const userResolver: ResolveFn<User | null> = (route) => {
+export const userResolver: ResolveFn<UserProfileDto | null> = (route) => {
   const loadingService = inject(LoadingService);
   const userService = inject(UserService);
   const mapperService = inject(MapperService);

@@ -1,17 +1,8 @@
-import { Task } from '@/app/features/dto/task.model';
+import { TaskDto } from '@/app/features/dto/task.model';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
 
-export enum ProjectStatus {
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-}
-
-export interface User {
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly username: string;
-}
-
-export interface Project {
+export interface ProjectDto {
   readonly id: string;
   readonly name: string;
   readonly description: string;
@@ -20,20 +11,12 @@ export interface Project {
   readonly completedTasks: number;
   readonly totalTasks: number;
   readonly status: ProjectStatus;
-  readonly owner: User;
-  readonly members: User[];
-  readonly tasks: Task[];
+  readonly owner: UserSummaryDto;
+  readonly members: UserSummaryDto[];
+  readonly tasks: TaskDto[];
 }
 
-export interface UserProject {
-  readonly id: string;
-  readonly name: string;
-  readonly description: string;
-  readonly status: ProjectStatus;
-  readonly members: User[];
-}
-
-export interface ProjectRequest {
+export interface ProjectPayload {
   readonly name: string;
   readonly description: string;
   readonly endDate: string;

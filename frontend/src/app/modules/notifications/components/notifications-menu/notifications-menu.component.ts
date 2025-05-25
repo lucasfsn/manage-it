@@ -1,7 +1,7 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { Notification } from '@/app/features/dto/notification.model';
+import { NotificationDto } from '@/app/features/dto/notification.model';
 import { NotificationService } from '@/app/features/services/notification.service';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -28,7 +28,7 @@ export class NotificationsMenuComponent {
     });
   }
 
-  protected get notifications(): Notification[] {
+  protected get notifications(): NotificationDto[] {
     return this.notificationService.loadedNotifications();
   }
 }

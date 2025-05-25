@@ -1,12 +1,12 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { User } from '@/app/features/dto/project.model';
 import { TaskService } from '@/app/features/services/task.service';
 import { UserService } from '@/app/features/services/user.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { UsersListComponent } from '@/app/shared/components/ui/users-list/users-list.component';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,7 +30,7 @@ import { ToastrService } from 'ngx-toastr';
 export class TaskAddAssigneeComponent {
   protected loading: boolean = false;
   protected form = new FormControl<string>('');
-  protected searchResults: User[] = [];
+  protected searchResults: UserSummaryDto[] = [];
 
   public constructor(
     private userService: UserService,
@@ -41,11 +41,11 @@ export class TaskAddAssigneeComponent {
     private mapperService: MapperService,
   ) {}
 
-  protected get members(): User[] {
+  protected get members(): UserSummaryDto[] {
     return this.taskService.loadedTask()?.members ?? [];
   }
 
-  protected handleAdd(user: User): void {
+  protected handleAdd(user: UserSummaryDto): void {
     const task = this.taskService.loadedTask();
     if (!task) return;
 

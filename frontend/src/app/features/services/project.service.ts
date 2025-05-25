@@ -1,10 +1,7 @@
-import {
-  Project,
-  ProjectRequest,
-  ProjectStatus,
-  User,
-} from '@/app/features/dto/project.model';
-import { Response } from '@/app/shared/dto/response.model';
+import { ProjectDto, ProjectPayload } from '@/app/features/dto/project.model';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { Response } from '@/app/shared/types/response.type';
 import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -17,10 +14,10 @@ import { catchError, map, Observable, tap } from 'rxjs';
 export class ProjectService {
   private allowAddToProject: boolean = false;
 
-  private projects = signal<Project[]>([]);
+  private projects = signal<ProjectDto[]>([]);
   public loadedProjects = this.projects.asReadonly();
 
-  private project = signal<Project | null>(null);
+  private project = signal<ProjectDto | null>(null);
   public loadedProject = this.project.asReadonly();
 
   public constructor(private http: HttpClient) {}
@@ -29,34 +26,34 @@ export class ProjectService {
     return this.allowAddToProject;
   }
 
-  public getProjects(): Observable<Project[]> {
+  public getProjects(): Observable<ProjectDto[]> {
     return this.http
-      .get<Response<Project[]>>(`${environment.apiUrl}/projects`)
+      .get<Response<ProjectDto[]>>(`${environment.apiUrl}/projects`)
       .pipe(
-        tap((res: Response<Project[]>) => this.projects.set(res.data)),
-        map((res: Response<Project[]>) => res.data),
+        tap((res: Response<ProjectDto[]>) => this.projects.set(res.data)),
+        map((res: Response<ProjectDto[]>) => res.data),
         catchError(handleApiError),
       );
   }
 
-  public createProject(newProject: ProjectRequest): Observable<Project> {
+  public createProject(newProject: ProjectPayload): Observable<ProjectDto> {
     return this.http
-      .post<Response<Project>>(`${environment.apiUrl}/projects`, newProject)
+      .post<Response<ProjectDto>>(`${environment.apiUrl}/projects`, newProject)
       .pipe(
-        tap((res: Response<Project>) =>
+        tap((res: Response<ProjectDto>) =>
           this.projects.update((projects) => [...projects, res.data]),
         ),
-        map((res: Response<Project>) => res.data),
+        map((res: Response<ProjectDto>) => res.data),
         catchError(handleApiError),
       );
   }
 
-  public getProject(projectId: string): Observable<Project> {
+  public getProject(projectId: string): Observable<ProjectDto> {
     return this.http
-      .get<Response<Project>>(`${environment.apiUrl}/projects/${projectId}`)
+      .get<Response<ProjectDto>>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
-        tap((res: Response<Project>) => this.project.set(res.data)),
-        map((res: Response<Project>) => res.data),
+        tap((res: Response<ProjectDto>) => this.project.set(res.data)),
+        map((res: Response<ProjectDto>) => res.data),
         catchError(handleApiError),
       );
   }
@@ -72,35 +69,38 @@ export class ProjectService {
 
   public updateProject(
     projectId: string,
-    updatedProject: ProjectRequest,
-  ): Observable<Project> {
+    updatedProject: ProjectPayload,
+  ): Observable<ProjectDto> {
     return this.http
       .patch<
-        Response<Project>
+        Response<ProjectDto>
       >(`${environment.apiUrl}/projects/${projectId}`, updatedProject)
       .pipe(
-        tap((res: Response<Project>) => this.project.set(res.data)),
-        map((res: Response<Project>) => res.data),
+        tap((res: Response<ProjectDto>) => this.project.set(res.data)),
+        map((res: Response<ProjectDto>) => res.data),
         catchError(handleApiError),
       );
   }
 
-  public completeProject(project: Project): Observable<Project> {
+  public completeProject(project: ProjectDto): Observable<ProjectDto> {
     return this.http
-      .patch<Response<Project>>(
+      .patch<Response<ProjectDto>>(
         `${environment.apiUrl}/projects/${project.id}`,
         {
           status: ProjectStatus.COMPLETED,
         },
       )
       .pipe(
-        tap((res: Response<Project>) => this.project.set(res.data)),
-        map((res: Response<Project>) => res.data),
+        tap((res: Response<ProjectDto>) => this.project.set(res.data)),
+        map((res: Response<ProjectDto>) => res.data),
         catchError(handleApiError),
       );
   }
 
-  public addToProject(projectId: string, user: User): Observable<null> {
+  public addToProject(
+    projectId: string,
+    user: UserSummaryDto,
+  ): Observable<null> {
     return this.http
       .patch<
         Response<null>
@@ -116,14 +116,17 @@ export class ProjectService {
       );
   }
 
-  public removeFromProject(user: User, projectId: string): Observable<Project> {
+  public removeFromProject(
+    user: UserSummaryDto,
+    projectId: string,
+  ): Observable<ProjectDto> {
     return this.http
       .patch<
-        Response<Project>
+        Response<ProjectDto>
       >(`${environment.apiUrl}/projects/${projectId}/user/remove`, user)
       .pipe(
-        tap((res: Response<Project>) => this.project.set(res.data)),
-        map((res: Response<Project>) => res.data),
+        tap((res: Response<ProjectDto>) => this.project.set(res.data)),
+        map((res: Response<ProjectDto>) => res.data),
         catchError(handleApiError),
       );
   }
@@ -132,7 +135,7 @@ export class ProjectService {
     this.allowAddToProject = true;
   }
 
-  public setProject(project: Project): void {
+  public setProject(project: ProjectDto): void {
     this.project.set(project);
   }
 }

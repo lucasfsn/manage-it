@@ -1,18 +1,13 @@
-import { User } from '@/app/features/dto/project.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
 
-export interface Message {
+export interface MessageDto {
   readonly id: string;
   readonly content: string;
-  readonly sender: User;
+  readonly sender: UserSummaryDto;
   readonly createdAt: string;
 }
 
-export interface MessageSend {
+export interface MessagePayload {
   readonly content: string;
   readonly token: string;
-}
-
-export interface MessageQueue {
-  readonly destination: string;
-  readonly body: string;
 }

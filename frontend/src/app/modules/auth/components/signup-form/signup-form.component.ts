@@ -1,6 +1,6 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { RegisterCredentials } from '@/app/features/dto/auth.model';
+import { SignupPayload } from '@/app/features/dto/auth.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
@@ -9,7 +9,7 @@ import {
   PERSON_NAME_REGEX,
   USERNAME_REGEX,
 } from '@/app/shared/constants/regex.constant';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import {
   emailValidator,
   equalValuesValidator,
@@ -138,7 +138,7 @@ export class SignupFormComponent {
       return;
     }
 
-    const registerCredentials: RegisterCredentials = {
+    const registerCredentials: SignupPayload = {
       firstName: this.form.value.firstName ?? '',
       lastName: this.form.value.lastName ?? '',
       username: this.form.value.username ?? '',

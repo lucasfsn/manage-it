@@ -1,4 +1,4 @@
-import { User } from '@/app/features/dto/user.model';
+import { UserProfileDto } from '@/app/features/dto/user.model';
 import { UserService } from '@/app/features/services/user.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
@@ -15,7 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class UserHeaderComponent {
   public constructor(private userService: UserService) {}
 
-  protected get user(): User | null {
+  protected get user(): UserProfileDto | null {
     return this.userService.loadedUser();
   }
 }

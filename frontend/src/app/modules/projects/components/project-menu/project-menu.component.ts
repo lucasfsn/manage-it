@@ -2,11 +2,12 @@ import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
-import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -32,7 +33,7 @@ export class ProjectMenuComponent {
     private router: Router,
   ) {}
 
-  protected get project(): Project | null {
+  protected get project(): ProjectDto | null {
     return this.projectService.loadedProject();
   }
 

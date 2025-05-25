@@ -1,14 +1,15 @@
-import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProjectsFilterComponent } from '@/app/modules/projects/components/projects-filter/projects-filter.component';
 import { ProjectsSortComponent } from '@/app/modules/projects/components/projects-sort/projects-sort.component';
-import { ProjectsFilters } from '@/app/modules/projects/models/projects-filter.model';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
+import { ProjectsFilters } from '@/app/modules/projects/types/projects-filter.type';
 import {
   ProjectsSort,
   SortCriteria,
   SortOrder,
-} from '@/app/modules/projects/models/projects-sort.model';
+} from '@/app/modules/projects/types/projects-sort.type';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import { enumValueValidator } from '@/app/shared/validators';
 import { DecimalPipe } from '@angular/common';
@@ -38,7 +39,7 @@ interface ProjectsParams extends Params {
   styleUrl: './projects-list.component.scss',
 })
 export class ProjectsListComponent implements OnInit {
-  protected sortedAndFilteredProjects: Project[] = [];
+  protected sortedAndFilteredProjects: ProjectDto[] = [];
 
   protected sortCriteria: SortCriteria = SortCriteria.NAME;
   protected sortOrder: SortOrder = SortOrder.ASCENDING;
@@ -54,7 +55,7 @@ export class ProjectsListComponent implements OnInit {
     private projectService: ProjectService,
   ) {}
 
-  protected get projects(): Project[] {
+  protected get projects(): ProjectDto[] {
     return this.projectService.loadedProjects();
   }
 
@@ -80,7 +81,7 @@ export class ProjectsListComponent implements OnInit {
     this.updateQueryParams();
   }
 
-  private sortProjects(projects: Project[]): Project[] {
+  private sortProjects(projects: ProjectDto[]): ProjectDto[] {
     return projects.toSorted((a, b) => {
       let comparison = 0;
       switch (this.sortCriteria) {
@@ -104,7 +105,7 @@ export class ProjectsListComponent implements OnInit {
     });
   }
 
-  private filterProjects(): Project[] {
+  private filterProjects(): ProjectDto[] {
     return this.projects.filter((project) => {
       const matchesName =
         !this.filterName ||

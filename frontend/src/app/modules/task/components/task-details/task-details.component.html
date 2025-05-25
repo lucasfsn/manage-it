@@ -60,10 +60,13 @@
             <span>{{ "task.details.PRIORITY" | translate }}</span>
           </p>
           <div class="mr-auto hidden sm:flex">
-            <app-priority textSize="text-base" [priority]="task.priority" />
+            <app-task-priority
+              textSize="text-base"
+              [priority]="task.priority"
+            />
           </div>
           <div class="mr-auto flex sm:hidden">
-            <app-priority textSize="text-sm" [priority]="task.priority" />
+            <app-task-priority textSize="text-sm" [priority]="task.priority" />
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
-import { Project, User } from '@/app/features/dto/project.model';
-import { Task, TaskData } from '@/app/features/dto/task.model';
+import { ProjectDto } from '@/app/features/dto/project.model';
+import { TaskDto, TaskPayload } from '@/app/features/dto/task.model';
 import { ProjectService } from '@/app/features/services/project.service';
-import { Response } from '@/app/shared/dto/response.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { Response } from '@/app/shared/types/response.type';
 import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -12,7 +13,7 @@ import { catchError, map, Observable, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class TaskService {
-  private task = signal<Task | null>(null);
+  private task = signal<TaskDto | null>(null);
   public loadedTask = this.task.asReadonly();
 
   public constructor(
@@ -20,39 +21,42 @@ export class TaskService {
     private projectService: ProjectService,
   ) {}
 
-  public createTask(project: Project, task: TaskData): Observable<Task> {
+  public createTask(
+    project: ProjectDto,
+    task: TaskPayload,
+  ): Observable<TaskDto> {
     return this.http
       .post<
-        Response<Task>
+        Response<TaskDto>
       >(`${environment.apiUrl}/projects/${project.id}/tasks`, task)
       .pipe(
-        tap((res: Response<Task>) => {
+        tap((res: Response<TaskDto>) => {
           const updatedProject = {
             ...project,
             tasks: [...project.tasks, res.data],
           };
           this.projectService.setProject(updatedProject);
         }),
-        map((res: Response<Task>) => res.data),
+        map((res: Response<TaskDto>) => res.data),
         catchError(handleApiError),
       );
   }
 
-  public getTask(projectId: string, taskId: string): Observable<Task> {
+  public getTask(projectId: string, taskId: string): Observable<TaskDto> {
     return this.http
       .get<
-        Response<Task>
+        Response<TaskDto>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
       .pipe(
-        tap((res: Response<Task>) => this.task.set(res.data)),
-        map((res: Response<Task>) => res.data),
+        tap((res: Response<TaskDto>) => this.task.set(res.data)),
+        map((res: Response<TaskDto>) => res.data),
         catchError(handleApiError),
       );
   }
 
   public moveProjectTask(
-    project: Project,
-    updatedTask: Task,
+    project: ProjectDto,
+    updatedTask: TaskDto,
   ): Observable<null> {
     const prevTask = this.task();
 
@@ -96,15 +100,15 @@ export class TaskService {
   public updateTask(
     projectId: string,
     taskId: string,
-    updatedTask: TaskData,
-  ): Observable<Task> {
+    updatedTask: TaskPayload,
+  ): Observable<TaskDto> {
     return this.http
       .patch<
-        Response<Task>
+        Response<TaskDto>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`, updatedTask)
       .pipe(
-        tap((res: Response<Task>) => this.task.set(res.data)),
-        map((res: Response<Task>) => res.data),
+        tap((res: Response<TaskDto>) => this.task.set(res.data)),
+        map((res: Response<TaskDto>) => res.data),
         catchError(handleApiError),
       );
   }
@@ -112,15 +116,15 @@ export class TaskService {
   public addToTask(
     projectId: string,
     taskId: string,
-    user: User,
-  ): Observable<Task> {
+    user: UserSummaryDto,
+  ): Observable<TaskDto> {
     return this.http
       .patch<
-        Response<Task>
+        Response<TaskDto>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/add`, user)
       .pipe(
-        tap((res: Response<Task>) => this.task.set(res.data)),
-        map((res: Response<Task>) => res.data),
+        tap((res: Response<TaskDto>) => this.task.set(res.data)),
+        map((res: Response<TaskDto>) => res.data),
         catchError(handleApiError),
       );
   }
@@ -128,15 +132,15 @@ export class TaskService {
   public removeFromTask(
     projectId: string,
     taskId: string,
-    user: User,
-  ): Observable<Task> {
+    user: UserSummaryDto,
+  ): Observable<TaskDto> {
     return this.http
       .patch<
-        Response<Task>
+        Response<TaskDto>
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/remove`, user)
       .pipe(
-        tap((res: Response<Task>) => this.task.set(res.data)),
-        map((res: Response<Task>) => res.data),
+        tap((res: Response<TaskDto>) => this.task.set(res.data)),
+        map((res: Response<TaskDto>) => res.data),
         catchError(handleApiError),
       );
   }

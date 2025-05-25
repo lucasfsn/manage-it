@@ -1,4 +1,4 @@
-import { UserCredentials } from '@/app/features/dto/auth.model';
+import { UserDto } from '@/app/features/dto/auth.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { SearchComponent } from '@/app/shared/components/search/search.component';
 import {
@@ -38,7 +38,7 @@ export class SidebarComponent implements OnInit {
     private authService: AuthService,
   ) {}
 
-  protected get user(): UserCredentials | null {
+  protected get user(): UserDto | null {
     return this.authService.loadedUser();
   }
 

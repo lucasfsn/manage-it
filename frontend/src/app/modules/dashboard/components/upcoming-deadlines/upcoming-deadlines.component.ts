@@ -1,6 +1,7 @@
 import { TranslationService } from '@/app/core/services/translation.service';
-import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -18,7 +19,7 @@ export class UpcomingDeadlinesComponent {
     private translationService: TranslationService,
   ) {}
 
-  protected get projects(): Project[] {
+  protected get projects(): ProjectDto[] {
     return this.projectService
       .loadedProjects()
       .filter(
@@ -28,7 +29,7 @@ export class UpcomingDeadlinesComponent {
       );
   }
 
-  protected sortedProjectsByEndDate(): Project[] {
+  protected sortedProjectsByEndDate(): ProjectDto[] {
     return this.projects.toSorted(
       (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime(),
     );

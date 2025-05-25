@@ -1,4 +1,4 @@
-export interface UserCredentials {
+export interface UserDto {
   readonly id: string;
   readonly firstName: string;
   readonly lastName: string;
@@ -6,32 +6,26 @@ export interface UserCredentials {
   readonly username: string;
 }
 
-export interface UpdateUserCredentials {
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly email: string;
+export interface AuthDto {
+  readonly accessToken: string;
+  readonly refreshToken: string;
+  readonly user: UserDto;
 }
 
-export interface LoginCredentials {
+export interface RefreshTokenDto {
+  readonly accessToken: string;
+  readonly refreshToken: string;
+}
+
+export interface AuthPayload {
   readonly email: string;
   readonly password: string;
 }
 
-export interface RegisterCredentials {
+export interface SignupPayload {
   readonly username: string;
   readonly firstName: string;
   readonly lastName: string;
   readonly email: string;
   readonly password: string;
-}
-
-export interface AuthResponse {
-  readonly accessToken: string;
-  readonly refreshToken: string;
-  readonly user: UserCredentials;
-}
-
-export interface RefreshTokenResponse {
-  readonly accessToken: string;
-  readonly refreshToken: string;
 }
