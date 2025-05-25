@@ -8,7 +8,7 @@ let apiContext: APIRequestContext;
 
 test.beforeAll(async ({ playwright }) => {
   const authenticationResponse = await authenticateUser('jan.kowalski@mail.com', '1qazXSW@');
-  token = authenticationResponse.accessToken;;
+  token = authenticationResponse.accessToken;
 
   apiContext = await playwright.request.newContext({
     baseURL: baseUrl,
@@ -25,7 +25,7 @@ test.afterAll(async () => {
 test('should add a task to a project', async ({ projectId, storeTestData }) => {
   const dueDate = new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().slice(0, 10);
   const taskData = {
-    description: 'Test task',
+    description: 'Test task description',
     status: 'IN_PROGRESS', // 'IN_PROGRESS', 'COMPLETED' or 'NOT_STARTED'
     priority: 'MEDIUM', // 'MEDIUM', 'HIGH' or 'LOW'
     dueDate: dueDate,
@@ -38,13 +38,18 @@ test('should add a task to a project', async ({ projectId, storeTestData }) => {
   expect(response.status()).toBe(201);
   const responseBody = await response.json();
 
-  expect(responseBody.projectId).toBe(projectId);
-  expect(responseBody.description).toBe(taskData.description);
-  expect(responseBody.status).toBe(taskData.status);
-  expect(responseBody.priority).toBe(taskData.priority);
-  expect(responseBody.dueDate).toBe(taskData.dueDate);
+  expect(responseBody).toHaveProperty('code');
+  expect(responseBody).toHaveProperty('message');
+  expect(responseBody).toHaveProperty('data');
+  expect(responseBody.message).toBe('Task created and added to project successfully');
 
-  storeTestData({taskId: responseBody.id});
+  expect(responseBody.data.projectId).toBe(projectId);
+  expect(responseBody.data.description).toBe(taskData.description);
+  expect(responseBody.data.status).toBe(taskData.status);
+  expect(responseBody.data.priority).toBe(taskData.priority);
+  expect(responseBody.data.dueDate).toBe(taskData.dueDate);
+
+  storeTestData({taskId: responseBody.data.id});
 });
 
 test('should return an error when description is empty', async ({ projectId }) => {
@@ -63,15 +68,26 @@ test('should return an error when description is empty', async ({ projectId }) =
   expect(response.status()).toBe(400);
 
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe('BAD_REQUEST');  
-  expect(responseBody.validationErrors).toBeInstanceOf(Array);
-  expect(responseBody.validationErrors).toContain('Task description cannot be empty.');
+  expect(responseBody.code).toBe(400);
+  expect(responseBody.message).toBe("Validation failed");
+  expect(responseBody).toHaveProperty('timestamp');
+  expect(responseBody.errors).toBeInstanceOf(Array);
+  
+  expect(responseBody.errors).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        errorCode: "BAD_REQUEST",
+        field: "description",
+        message: "Task description cannot be empty."
+      })
+    ])
+  );
 });
 
 test('should return an error when task status is incorrect', async ({ projectId }) => {
   const dueDate = new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().slice(0, 10);
   const taskData = {
-    description: 'Test Task',
+    description: 'Test Task Description',
     status: 'BAD_STATUS',
     priority: 'MEDIUM',
     dueDate: dueDate,
@@ -84,13 +100,13 @@ test('should return an error when task status is incorrect', async ({ projectId 
   expect(response.status()).toBe(400);
 
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe('BAD_REQUEST');
+  expect(responseBody.code).toBe(400);  
 });
 
 test('should return an error when task priority is incorrect', async ({ projectId }) => {
   const dueDate = new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().slice(0, 10);
   const taskData = {
-    description: 'Test Task',
+    description: 'Test Task Description',
     status: 'NOT_STARTED',
     priority: 'BAD_PRIORITY',
     dueDate: dueDate,
@@ -103,13 +119,13 @@ test('should return an error when task priority is incorrect', async ({ projectI
   expect(response.status()).toBe(400);
 
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe('BAD_REQUEST');
+  expect(responseBody.code).toBe(400);
 });
 
 test('should return an error when dueDate is in the past', async ({ projectId }) => {
   const dueDate = new Date(new Date().setDate(new Date().getDate() - 3)).toISOString().slice(0, 10);
   const taskData = {
-    description: 'Test Task',
+    description: 'Test Task Description',
     status: 'NOT_STARTED',
     priority: 'HIGH',
     dueDate: dueDate,
@@ -122,9 +138,52 @@ test('should return an error when dueDate is in the past', async ({ projectId })
   expect(response.status()).toBe(400);
   
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe('BAD_REQUEST');
-  expect(responseBody.validationErrors).toBeInstanceOf(Array);
-  expect(responseBody.validationErrors).toContain('Task due date cannot be in the past.');
+  expect(responseBody.code).toBe(400);
+  expect(responseBody.message).toBe("Validation failed");
+  expect(responseBody).toHaveProperty('timestamp');
+  expect(responseBody.errors).toBeInstanceOf(Array);
+  
+  expect(responseBody.errors).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        errorCode: "BAD_REQUEST",
+        field: "dueDate",
+        message: "Task due date cannot be in the past."
+      })
+    ])
+  );
+});
+
+test('should return an error when dueDate is after project end date', async ({ projectId }) => {
+  const dueDate = new Date(new Date().setDate(new Date().getDate() + 50)).toISOString().slice(0, 10);
+  const taskData = {
+    description: 'Task with due date after project end',
+    status: 'NOT_STARTED',
+    priority: 'HIGH',
+    dueDate: dueDate,
+  };
+
+  const response = await apiContext.post(`/api/v1/projects/${projectId}/tasks`, {
+    data: taskData,
+  });
+
+  expect(response.status()).toBe(400);
+  
+  const responseBody = await response.json();
+  expect(responseBody.code).toBe(400);
+  expect(responseBody.message).toBe("Validation failed");
+  expect(responseBody).toHaveProperty('timestamp');
+  expect(responseBody.errors).toBeInstanceOf(Array);
+  
+  expect(responseBody.errors).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        errorCode: "BAD_REQUEST",
+        field: "dueDate",
+        message: "Task due date cannot be after project end date."
+      })
+    ])
+  );
 });
 
 test('should not add task to project with COMPLETED status', async ({ projectId2 }) => {
@@ -140,7 +199,8 @@ test('should not add task to project with COMPLETED status', async ({ projectId2
     data: taskData,
   });
 
-  expect(response.status()).toBe(400);
+  expect(response.status()).toBe(403);
 
-  // dodaje taska do projektu o statusie COMPLETED. prawdopodobnie błąd.
+  const responseBody = await response.json();
+  expect(responseBody.message).toBe("Cannot modify a completed project.");
 });

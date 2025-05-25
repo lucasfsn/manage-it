@@ -38,13 +38,11 @@ test('should create new projects', async ({ storeTestData }) => {
   expect(response.status()).toBe(201);
   const responseBody = await response.json();
 
-  // Sprawdzenie struktury ResponseDto
   expect(responseBody).toHaveProperty('code');
   expect(responseBody).toHaveProperty('message');
   expect(responseBody).toHaveProperty('data');
   expect(responseBody.message).toBe('Project created successfully');
 
-  // Sprawdzenie danych projektu w responseBody.data
   expect(responseBody.data.name).toBe(projectData.name);
   expect(responseBody.data.description).toBe(projectData.description);
   expect(responseBody.data.endDate).toBe(projectData.endDate);
@@ -64,7 +62,6 @@ test('should create new projects', async ({ storeTestData }) => {
 
   storeTestData({ projectId: responseBody.data.id });
 
-  // create project and change status to COMPLETED 
   const endDate2 = new Date(new Date().setDate(new Date().getDate() + 18)).toISOString().slice(0, 10);
 
   const completedProjectData = {
@@ -118,7 +115,6 @@ test('should return an error when name and description are empty', async () => {
   expect(responseBody).toHaveProperty('timestamp');
   expect(responseBody.errors).toBeInstanceOf(Array);
   
-  // Sprawdzenie czy zawiera błędy walidacji dla name i description
   expect(responseBody.errors).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
@@ -161,7 +157,6 @@ test('should return an error when name and description are too short', async () 
   expect(responseBody).toHaveProperty('timestamp');
   expect(responseBody.errors).toBeInstanceOf(Array);
   
-  // Sprawdzenie czy zawiera błędy walidacji dla długości
   expect(responseBody.errors).toEqual(
     expect.arrayContaining([
       expect.objectContaining({

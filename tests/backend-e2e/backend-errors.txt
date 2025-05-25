@@ -1,0 +1,8 @@
+TASKI
+
+- Można dodać taska do projektu dłuuugo po zakończeniu tego projektu
+- Można ustawić dueDate dla taska w przeszłości 
+
+PROJEKTY
+
+- Gdy dodajemy ponownie tego samego użytkownika do tego samego projektu - to mamy błąd 500. DO POPRAWY   

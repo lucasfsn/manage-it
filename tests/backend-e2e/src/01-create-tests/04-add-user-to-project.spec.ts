@@ -32,18 +32,31 @@ test('should add a user to a project', async ({ projectId }) => {
     data: userData,
   });
 
-  expect(response.status()).toBe(204);
+  expect(response.status()).toBe(200);
+  const responseData = await response.json();
 
-  const getResponse = await apiContext.get(`/api/v1/projects/${projectId}`);
-
-  expect(getResponse.status()).toBe(200);  
-  const projectData = await getResponse.json();
-
-  expect(projectData.id).toBe(projectId);
-  expect(Array.isArray(projectData.members)).toBe(true);
-  const memberUsernames = projectData.members.map(member => member.username);
+  expect(responseData.message).toBe("User added to project successfully")
+  expect(responseData.data.id).toBe(projectId);
+  expect(Array.isArray(responseData.data.members)).toBe(true);
+  const memberUsernames = responseData.data.members.map(member => member.username);
   expect(memberUsernames).toContain(username);
 });
+
+test('should not add the same user to a project again', async ({ projectId }) => {
+  const username = 'jakis_username';
+  const userData = {
+    username: username,
+  };
+
+  const response = await apiContext.patch(`/api/v1/projects/${projectId}/user/add`, {
+    data: userData,
+  });
+
+  expect(response.status()).toBe(409); // czy jakikolwiek inny kod, byle nie 500
+
+  // daje 500
+});
+
 
 test('should not add non-existing user to a project', async ({ projectId }) => {
   const nonExistingUsername = 'non_existing';
@@ -57,7 +70,6 @@ test('should not add non-existing user to a project', async ({ projectId }) => {
 
   expect(response.status()).toBe(404);
   const responseData = await response.json();
-  expect(responseData.httpStatus).toBe("NOT_FOUND");
   expect(responseData.message).toBe(`No user found with username: ${nonExistingUsername}`);
 });
 
@@ -74,7 +86,6 @@ test('should not add user to a non-existing project', async () => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No project found with id: ${nonExistentId}`);
 });
 
@@ -91,6 +102,5 @@ test('should return error while adding user to a project with invalid id', async
 
   expect(response.status()).toBe(400);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("BAD_REQUEST");
-  expect(responseBody.errorDescription).toBe(`Invalid UUID format`);
+  expect(responseBody.message).toBe(`Unexpected type specified`);
 });
