@@ -75,7 +75,6 @@ class ProjectServiceTest {
                 taskRepository
         );
 
-        // Użyj refleksji aby ustawić EntityManager (bo to @PersistenceContext)
         try {
             var field = ProjectServiceDefault.class.getDeclaredField("entityManager");
             field.setAccessible(true);
@@ -90,11 +89,16 @@ class ProjectServiceTest {
         testProject = createTestProject();
     }
 
-    private User createTestUser(String name, UUID id) {
-        User user = new User();
-        user.setId(id);
-        user.setUsername(name);
-        return user;
+    private User createTestUser(String username, UUID id) {
+        return User.builder()
+                .id(id)
+                .username(username)
+                .firstName("Test")
+                .lastName("User")
+                .email(username + "@test.com")
+                .password("password123")
+                .projects(new ArrayList<>())
+                .build();
     }
 
     private Project createTestProject() {
@@ -144,7 +148,7 @@ class ProjectServiceTest {
         List<ProjectResponseDto> result = projectService.getProjects(testUser);
 
         assertEquals(1, result.size());
-        assertEquals(responseDto, result.get(0));
+        assertEquals(responseDto, result.getFirst());
         verify(projectRepository).findByMembers_Username(testUser.getName());
         verify(projectMapper).toProjectResponseDto(testProject);
     }
@@ -337,6 +341,7 @@ class ProjectServiceTest {
 
     @Test
     void shouldRemoveUserFromProject_Successfully() {
+        // Given
         User userToRemove = createTestUser("usertoremove", UUID.randomUUID());
         testProject.getMembers().add(userToRemove);
 
