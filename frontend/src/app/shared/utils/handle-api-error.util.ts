@@ -9,6 +9,7 @@ export function handleApiError(err: HttpErrorResponse): Observable<never> {
         code: 401,
         message: 'INVALID_AUTH_DATA',
         timestamp: new Date().toISOString(),
+        data: null,
       }),
     );
 
