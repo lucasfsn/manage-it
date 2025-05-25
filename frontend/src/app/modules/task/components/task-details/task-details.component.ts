@@ -1,8 +1,9 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { Task, TaskStatus } from '@/app/features/dto/task.model';
+import { TaskDto } from '@/app/features/dto/task.dto';
 import { TaskService } from '@/app/features/services/task.service';
+import { TaskPriorityComponent } from '@/app/modules/task/components/task-priority/task-priority.component';
+import { TaskStatus } from '@/app/modules/task/types/task-status.type';
 import { ChatToggleComponent } from '@/app/shared/components/chat-toggle/chat-toggle.component';
-import { PriorityComponent } from '@/app/shared/components/ui/priority/priority.component';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import { Component } from '@angular/core';
@@ -15,11 +16,11 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     MatIconModule,
     RouterLink,
-    PriorityComponent,
     TranslateModule,
     DatePipe,
     ProfileIconComponent,
     ChatToggleComponent,
+    TaskPriorityComponent,
   ],
   templateUrl: './task-details.component.html',
   styleUrl: './task-details.component.scss',
@@ -34,7 +35,7 @@ export class TaskDetailsComponent {
     return TaskStatus;
   }
 
-  protected get task(): Task | null {
+  protected get task(): TaskDto | null {
     return this.taskService.loadedTask();
   }
 

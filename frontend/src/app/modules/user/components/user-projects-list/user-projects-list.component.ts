@@ -1,20 +1,18 @@
+import { UserProfileProjectsDto } from '@/app/features/dto/user.dto';
+import { UserService } from '@/app/features/services/user.service';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import {
-  ProjectStatus,
-  UserProject,
-} from '@/app/features/dto/project.model';
-import { UserService } from '@/app/features/services/user.service';
 
 @Component({
   selector: 'app-user-projects-list',
   imports: [RouterLink, TranslateModule],
   templateUrl: './user-projects-list.component.html',
-  styleUrl: './user-projects-list.component.scss'
+  styleUrl: './user-projects-list.component.scss',
 })
 export class UserProjectsListComponent {
-  protected commonProjects: UserProject[] = [];
+  protected commonProjects: UserProfileProjectsDto[] = [];
 
   public constructor(private userService: UserService) {}
 
@@ -22,7 +20,7 @@ export class UserProjectsListComponent {
     return ProjectStatus;
   }
 
-  protected get userProjects(): UserProject[] {
+  protected get userProjects(): UserProfileProjectsDto[] {
     return this.userService.loadedUser()?.projects || [];
   }
 }

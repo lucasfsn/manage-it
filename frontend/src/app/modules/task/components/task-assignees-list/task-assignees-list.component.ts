@@ -1,14 +1,16 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { ProjectStatus, User } from '@/app/features/dto/project.model';
 import { TaskService } from '@/app/features/services/task.service';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import {
   PageEvent,
   PaginatorComponent,
 } from '@/app/shared/components/paginator/paginator.component';
 import { UsersListComponent } from '@/app/shared/components/ui/users-list/users-list.component';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -32,7 +34,7 @@ export class TaskAssigneesListComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   protected form = new FormControl<string>('');
   protected filteredUsersCount = 0;
-  protected paginatedUsers: User[] = [];
+  protected paginatedUsers: UserSummaryDto[] = [];
   protected currentPage = 0;
   protected pageSize = 5;
   protected pageSizes = [this.pageSize, 10, 15];
@@ -45,7 +47,7 @@ export class TaskAssigneesListComponent implements OnInit {
     private mapperService: MapperService,
   ) {}
 
-  protected get members(): User[] {
+  protected get members(): UserSummaryDto[] {
     return this.taskService.loadedTask()?.members || [];
   }
 
@@ -56,7 +58,7 @@ export class TaskAssigneesListComponent implements OnInit {
     return task.projectStatus === ProjectStatus.COMPLETED;
   }
 
-  protected handleRemove(user: User): void {
+  protected handleRemove(user: UserSummaryDto): void {
     const task = this.taskService.loadedTask();
     if (!task) return;
 
@@ -71,8 +73,11 @@ export class TaskAssigneesListComponent implements OnInit {
           )}`,
         );
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'task',
+        );
         this.toastrService.error(localeMessage);
         this.loadingService.loadingOff();
       },
@@ -102,7 +107,7 @@ export class TaskAssigneesListComponent implements OnInit {
     this.updatePaginatedUsers(filteredUsers);
   }
 
-  private updatePaginatedUsers(users: User[]): void {
+  private updatePaginatedUsers(users: UserSummaryDto[]): void {
     const start = this.currentPage * this.pageSize;
     const end = start + this.pageSize;
     this.paginatedUsers = users.slice(start, end);

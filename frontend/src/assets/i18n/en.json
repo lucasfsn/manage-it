@@ -412,12 +412,25 @@
       }
     },
     "error": {
-      "BAD_CREDENTIALS": "Email and password do not match",
-      "409_EMAIL": "Email is already in use",
-      "409_USERNAME": "Username is already in use",
-      "401": "You are not authorized to perform this action",
-      "404": "Resource not found",
+      "400": "Oops! Something went wrong with your request",
+      "401": "Login failed. Please check your data, then try again",
+      "403": "You do not have permission to access this {{resource}}",
+      "404": "The requested {{resource}}  was not found",
+      "409": "It looks like this {{field}} is already taken",
+      "500": "A server error occurred",
+      "503": "The service is temporarily unavailable",
       "DEFAULT": "An unexpected error has occurred"
+    },
+    "resource": {
+      "PROJECT": "project",
+      "TASK": "task",
+      "USER": "user",
+      "DEFAULT": "resource"
+    },
+    "field": {
+      "EMAIL": "email",
+      "USERNAME": "username",
+      "NAME": "name"
     }
   },
   "title": {

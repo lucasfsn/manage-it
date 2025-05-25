@@ -1,4 +1,4 @@
-import { ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 
 export interface ProjectsFilters {
   readonly name: string;

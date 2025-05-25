@@ -1,8 +1,9 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { User } from '@/app/features/dto/user.model';
+import { UserProfileDto } from '@/app/features/dto/user.dto';
 import { ProjectService } from '@/app/features/services/project.service';
 import { UserService } from '@/app/features/services/user.service';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -28,7 +29,7 @@ export class UserProjectAddButtonComponent implements OnInit {
     private mapperService: MapperService,
   ) {}
 
-  private get user(): User | null {
+  private get user(): UserProfileDto | null {
     return this.userService.loadedUser();
   }
 
@@ -48,8 +49,11 @@ export class UserProjectAddButtonComponent implements OnInit {
         );
         this.router.navigate(['/projects', this.projectId]);
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'project',
+        );
         this.toastrService.error(localeMessage);
         this.loading = false;
       },

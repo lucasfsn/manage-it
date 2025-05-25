@@ -1,14 +1,18 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { UserCredentials } from '@/app/features/dto/auth.model';
-import { Project, ProjectStatus, User } from '@/app/features/dto/project.model';
-import { Task, TaskStatus } from '@/app/features/dto/task.model';
+import { UserDto } from '@/app/features/dto/auth.dto';
+import { ProjectDto } from '@/app/features/dto/project.dto';
+import { TaskDto } from '@/app/features/dto/task.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { TaskService } from '@/app/features/services/task.service';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { TaskCreateFormComponent } from '@/app/modules/task/components/task-create-form/task-create-form.component';
-import { PriorityComponent } from '@/app/shared/components/ui/priority/priority.component';
+import { TaskPriorityComponent } from '@/app/modules/task/components/task-priority/task-priority.component';
+import { TaskStatus } from '@/app/modules/task/types/task-status.type';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -32,12 +36,12 @@ import { ToastrService } from 'ngx-toastr';
     DatePipe,
     CdkDropList,
     CdkDrag,
-    PriorityComponent,
     RouterLink,
     TranslateModule,
     ProfileIconComponent,
     MatTooltipModule,
     CommonModule,
+    TaskPriorityComponent,
   ],
   templateUrl: './drag-drop-list.component.html',
   styleUrl: './drag-drop-list.component.scss',
@@ -55,11 +59,11 @@ export class DragDropListComponent implements OnInit {
     private authService: AuthService,
   ) {}
 
-  protected completedTasks: Task[] = [];
-  protected inProgressTasks: Task[] = [];
-  protected notStartedTasks: Task[] = [];
+  protected completedTasks: TaskDto[] = [];
+  protected inProgressTasks: TaskDto[] = [];
+  protected notStartedTasks: TaskDto[] = [];
 
-  protected get project(): Project | null {
+  protected get project(): ProjectDto | null {
     return this.projectService.loadedProject();
   }
 
@@ -71,7 +75,7 @@ export class DragDropListComponent implements OnInit {
     return ProjectStatus;
   }
 
-  protected get currentUser(): UserCredentials | null {
+  protected get currentUser(): UserDto | null {
     return this.authService.loadedUser();
   }
 
@@ -84,7 +88,7 @@ export class DragDropListComponent implements OnInit {
     this.groupTasksByStatus();
   }
 
-  protected drop(event: CdkDragDrop<Task[]>): void {
+  protected drop(event: CdkDragDrop<TaskDto[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -133,18 +137,21 @@ export class DragDropListComponent implements OnInit {
       },
     );
 
-    dialogRef.afterClosed().subscribe((newTask: Task | null) => {
+    dialogRef.afterClosed().subscribe((newTask: TaskDto | null) => {
       if (newTask) this.groupTasksByStatus();
     });
   }
 
-  protected handleMoveTask(task: Task, prevStatus: TaskStatus): void {
+  protected handleMoveTask(task: TaskDto, prevStatus: TaskStatus): void {
     if (!this.project) return;
 
     this.loading = true;
     this.taskService.moveProjectTask(this.project, task).subscribe({
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'task',
+        );
         this.toastrService.error(localeMessage);
         this.restoreTaskState(task, prevStatus);
         this.loading = false;
@@ -155,7 +162,7 @@ export class DragDropListComponent implements OnInit {
     });
   }
 
-  private restoreTaskState(task: Task, prevStatus: TaskStatus): void {
+  private restoreTaskState(task: TaskDto, prevStatus: TaskStatus): void {
     switch (task.status) {
       case TaskStatus.COMPLETED:
         this.completedTasks = this.completedTasks.filter(
@@ -187,7 +194,7 @@ export class DragDropListComponent implements OnInit {
     }
   }
 
-  private filterTasks(): Task[] {
+  private filterTasks(): TaskDto[] {
     if (!this.project) return [];
 
     const username = this.authService.getLoggedInUsername();
@@ -202,7 +209,9 @@ export class DragDropListComponent implements OnInit {
     if (!this.onlyMyTasks) return tasks;
 
     return tasks.filter((task) =>
-      task.members.some((member: User) => member.username === username),
+      task.members.some(
+        (member: UserSummaryDto) => member.username === username,
+      ),
     );
   }
 

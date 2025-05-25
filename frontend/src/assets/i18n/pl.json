@@ -388,23 +388,23 @@
   },
   "toast": {
     "success": {
-      "LOGOUT": "Pomyślnie wylogowano",
-      "LOGIN": "Pomyślnie zalogowano",
-      "SIGNUP": "Pomyślnie zarejestrowano",
+      "LOGOUT": "Wylogowano pomyślnie",
+      "LOGIN": "Zalogowano pomyślnie",
+      "SIGNUP": "Rejestracja zakończona pomyślnie",
       "task": {
-        "CREATE": "Zadanie zostało dodane",
-        "UPDATE": "Zadanie zostało zaktualizowane",
-        "DELETE": "Zadanie zostało usunięte",
+        "CREATE": "Dodano zadanie",
+        "UPDATE": "Zaktualizowano zadanie",
+        "DELETE": "Usunięto zadanie",
         "member": {
           "ADD": "został dodany(a) do zadania",
           "REMOVE": "został usunięty(a) z zadania"
         }
       },
       "project": {
-        "CREATE": "Projekt został utworzony",
-        "UPDATE": "Projekt został zaktualizowany",
-        "DELETE": "Projekt został usunięty",
-        "COMPLETE": "Projekt został oznaczony jako ukończony",
+        "CREATE": "Utworzono projekt",
+        "UPDATE": "Zaktualizowano projekt",
+        "DELETE": "Usunięto projekt",
+        "COMPLETE": "Oznaczono projekt jako ukończony",
         "member": {
           "ADD": "został dodany(a) do projektu",
           "REMOVE": "został usunięty(a) z projektu"
@@ -412,12 +412,25 @@
       }
     },
     "error": {
-      "BAD_CREDENTIALS": "Podany email oraz hasło są nieprawidłowe",
-      "409_EMAIL": "Email jest już zajęty",
-      "409_USERNAME": "Nazwa użytkownika jest już zajęta",
-      "401": "Nie masz dostępu do tego zasobu",
-      "404": "Nie znaleziono strony",
+      "400": "Ups! Coś poszło nie tak z Twoim żądaniem",
+      "401": "Nie udało się zalogować. Sprawdź dane i spróbuj ponownie",
+      "403": "Niestety, nie posiadasz wymaganych uprawnień, aby uzyskać dostęp do tego {{resource}}",
+      "404": "Przepraszamy, ale nie mogliśmy znaleźć tego {{resource}}",
+      "409": "Wygląda na to, że {{field}} jest już zajęty",
+      "500": "Wystąpił błąd serwera",
+      "503": "Serwer jest obecnie niedostępny",
       "DEFAULT": "Wystąpił nieoczekiwany błąd"
+    },
+    "resource": {
+      "PROJECT": "projektu",
+      "TASK": "zadania",
+      "USER": "użytkownika",
+      "DEFAULT": "zasobu"
+    },
+    "field": {
+      "EMAIL": "adres email",
+      "USERNAME": "nazwa użytkownika",
+      "NAME": "nazwa"
     }
   },
   "title": {
