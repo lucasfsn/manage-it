@@ -1,3 +1,3 @@
-export type ErrorResponseConflict = 'name' | 'email' | 'username' | 'default';
+export type ErrorResponseConflict = 'name' | 'email' | 'username';
 
 export type ErrorResponseResource = 'project' | 'task' | 'user' | 'default';

@@ -430,8 +430,7 @@
     "field": {
       "EMAIL": "email",
       "USERNAME": "username",
-      "NAME": "name",
-      "DEFAULT": "field"
+      "NAME": "name"
     }
   },
   "title": {
