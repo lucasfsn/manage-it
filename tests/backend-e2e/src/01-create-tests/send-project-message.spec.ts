@@ -9,7 +9,7 @@ const baseUrl = 'ws://localhost:8080/api/v1/ws';
 
 test.beforeAll(async () => {
   const authenticationResponse = await authenticateUser('jan.kowalski@mail.com', '1qazXSW@');
-  token = authenticationResponse.token;
+  token = authenticationResponse.accessToken;;
 });
 
 test('should send and receive a message to a project chat', async ({ projectId }) => {

@@ -17,11 +17,17 @@
 # springdoc:
 #   default-produces-media-type: application/json
 
+# logging:
+#   level:
+#     root: INFO
+
 # application:
 #   security:
 #     jwt:
 #       secret-key: ${JWT_SECRET_KEY}
-#       expiration: 86400000 # 1 day
+#       expiration: 300 # 5min
+#       refresh-token:
+#         expiration: 18000 # 5hours
 #     frontend:
 #       url: ${FRONTEND_URL}
 
@@ -56,8 +62,8 @@ logging:
 application:
   security:
     jwt:
-      secret-key: ${JWT_SECRET_KEY}
-      expiration: 300 # 5min
+      secret-key: i1OoH6mKPAxzFfJ4R3eOAtYPc5jh0az4RoU9nk10HOnRFZtXpGLXdj4B1beAoTWx
+      expiration: 86400000 # 300 # 5min
       refresh-token:
         expiration: 18000 # 5hours
     frontend:

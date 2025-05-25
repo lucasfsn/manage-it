@@ -4,7 +4,7 @@ import { baseUrl } from '../../playwright.config';
 
 test('should return a list of projects for user with projects', async ({ playwright }) => {
   const authResponse = await authenticateUser('jan.kowalski@mail.com', '1qazXSW@');
-  const token = authResponse.token;
+  const token = authResponse.accessToken;;
   const userData = authResponse.user;
 
   const apiContext = await playwright.request.newContext({
@@ -48,7 +48,7 @@ test('should return a list of projects for user with projects', async ({ playwri
 
 test('should return an empty array for user without projects', async ({ playwright }) => {
     const authResponse = await authenticateUser('testowy@mail.com', '1qazXSW@');
-    const token = authResponse.token;
+    const token = authResponse.accessToken;;
 
     const apiContext = await playwright.request.newContext({
       baseURL: baseUrl,

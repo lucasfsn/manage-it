@@ -8,7 +8,7 @@ let apiContext: APIRequestContext;
 
 test.beforeAll(async ({ playwright }) => {
   const authenticationResponse = await authenticateUser('jan.kowalski@mail.com', '1qazXSW@');
-  token = authenticationResponse.token;
+  token = authenticationResponse.accessToken;;
 
   apiContext = await playwright.request.newContext({
     baseURL: baseUrl,

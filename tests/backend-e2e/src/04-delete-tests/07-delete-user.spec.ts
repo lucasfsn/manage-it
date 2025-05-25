@@ -5,7 +5,7 @@ import { baseUrl } from '../../playwright.config';
 
 test('should delete user jan_kowalski', async ({ playwright }) => {
   const authenticationResponse = await authenticateUser('jan.kowalski@mail.com', '1qazXSW@');
-  const token = authenticationResponse.token;
+  const token = authenticationResponse.accessToken;;
 
   const apiContext: APIRequestContext = await playwright.request.newContext({
     baseURL: baseUrl,
@@ -22,7 +22,7 @@ test('should delete user jan_kowalski', async ({ playwright }) => {
 
 test('should delete user jakis_username', async ({ playwright }) => {
   const authenticationResponse = await authenticateUser('testowy@mail.com', '1qazXSW@');
-  const token = authenticationResponse.token;
+  const token = authenticationResponse.accessToken;
 
   const apiContext: APIRequestContext = await playwright.request.newContext({
     baseURL: baseUrl,
