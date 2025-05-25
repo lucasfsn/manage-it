@@ -6,6 +6,7 @@ import { Project, ProjectStatus } from '@/app/features/dto/project.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -71,8 +72,11 @@ export class ProjectMenuComponent {
           );
           this.router.navigate(['/projects']);
         },
-        error: () => {
-          const localeMessage = this.mapperService.errorToastMapper();
+        error: (error: ErrorResponse) => {
+          const localeMessage = this.mapperService.errorToastMapper(
+            error.code,
+            'project',
+          );
           this.toastrService.error(localeMessage);
           this.loadingService.loadingOff();
         },
@@ -104,8 +108,11 @@ export class ProjectMenuComponent {
             this.translationService.translate('toast.success.project.COMPLETE'),
           );
         },
-        error: () => {
-          const localeMessage = this.mapperService.errorToastMapper();
+        error: (error: ErrorResponse) => {
+          const localeMessage = this.mapperService.errorToastMapper(
+            error.code,
+            'project',
+          );
           this.toastrService.error(localeMessage);
           this.loadingService.loadingOff();
         },

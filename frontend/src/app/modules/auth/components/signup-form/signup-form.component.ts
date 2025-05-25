@@ -9,6 +9,7 @@ import {
   PERSON_NAME_REGEX,
   USERNAME_REGEX,
 } from '@/app/shared/constants/regex.constant';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import {
   emailValidator,
   equalValuesValidator,
@@ -152,12 +153,8 @@ export class SignupFormComponent {
           this.translationService.translate('toast.success.SIGNUP'),
         );
       },
-      error: (error) => {
-        const localeMessage = this.mapperService.errorToastMapper(
-          error.status,
-          error.error.errorDescription,
-          error.error.message,
-        );
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(error.code);
         this.toastrService.error(localeMessage);
         this.loading = false;
       },

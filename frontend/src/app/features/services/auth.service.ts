@@ -11,12 +11,13 @@ import {
   REFRESH_TOKEN_KEY,
 } from '@/app/shared/constants/cookie.constant';
 import { Response } from '@/app/shared/dto/response.model';
+import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { catchError, EMPTY, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -45,9 +46,7 @@ export class AuthService {
           this.router.navigate(['/dashboard']);
         }),
         map((res: Response<AuthResponse>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -67,9 +66,7 @@ export class AuthService {
           this.router.navigate(['/dashboard']);
         }),
         map((res: Response<AuthResponse>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -99,7 +96,7 @@ export class AuthService {
         catchError((err: HttpErrorResponse) => {
           this.logout();
 
-          return throwError(() => err.error);
+          return handleApiError(err);
         }),
       );
   }
@@ -138,7 +135,7 @@ export class AuthService {
         catchError((err: HttpErrorResponse) => {
           this.logout();
 
-          return throwError(() => err.error);
+          return handleApiError(err);
         }),
       );
   }

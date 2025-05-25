@@ -7,6 +7,7 @@ import { FormTextInputControlComponent } from '@/app/shared/components/form-cont
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { getTodayDate } from '@/app/shared/utils/get-today-date.util';
 import { getTomorrowDate } from '@/app/shared/utils/get-tomorrow-date.util';
 import {
@@ -158,8 +159,11 @@ export class ProjectFormComponent implements OnInit {
           this.translationService.translate('toast.success.project.CREATE'),
         );
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'project',
+        );
         this.toastrService.error(localeMessage);
         this.loading = false;
       },
@@ -181,8 +185,11 @@ export class ProjectFormComponent implements OnInit {
           this.translationService.translate('toast.success.project.UPDATE'),
         );
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'project',
+        );
         this.toastrService.error(localeMessage);
         this.loading = false;
       },

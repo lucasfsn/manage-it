@@ -2,14 +2,11 @@ import { UpdateUserCredentials } from '@/app/features/dto/auth.model';
 import { UpdateUser, User } from '@/app/features/dto/user.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { Response } from '@/app/shared/dto/response.model';
+import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -29,9 +26,7 @@ export class UserService {
       .pipe(
         tap((res: Response<User>) => this.user.set(res.data)),
         map((res: Response<User>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -50,9 +45,7 @@ export class UserService {
           this.user.set(res.data);
         }),
         map((res: Response<User>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -71,9 +64,7 @@ export class UserService {
       .get<Response<User[]>>(`${environment.apiUrl}/users/search`, { params })
       .pipe(
         map((res: Response<User[]>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 }

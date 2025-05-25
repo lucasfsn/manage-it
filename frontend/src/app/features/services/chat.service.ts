@@ -2,19 +2,13 @@ import { Message, MessageSend } from '@/app/features/dto/chat.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ACCESS_TOKEN_KEY } from '@/app/shared/constants/cookie.constant';
 import { Response } from '@/app/shared/dto/response.model';
+import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy, signal } from '@angular/core';
 import { RxStomp } from '@stomp/rx-stomp';
 import { CookieService } from 'ngx-cookie-service';
-import {
-  catchError,
-  firstValueFrom,
-  map,
-  Observable,
-  tap,
-  throwError,
-} from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, tap } from 'rxjs';
 
 @Injectable()
 export class ChatService implements OnDestroy {
@@ -82,9 +76,7 @@ export class ChatService implements OnDestroy {
       .pipe(
         tap((res: Response<Message[]>) => this.messages.set(res.data)),
         map((res: Response<Message[]>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 

@@ -8,6 +8,7 @@ import { TaskService } from '@/app/features/services/task.service';
 import { TaskCreateFormComponent } from '@/app/modules/task/components/task-create-form/task-create-form.component';
 import { PriorityComponent } from '@/app/shared/components/ui/priority/priority.component';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import {
   CdkDrag,
@@ -143,8 +144,11 @@ export class DragDropListComponent implements OnInit {
 
     this.loading = true;
     this.taskService.moveProjectTask(this.project, task).subscribe({
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'task',
+        );
         this.toastrService.error(localeMessage);
         this.restoreTaskState(task, prevStatus);
         this.loading = false;

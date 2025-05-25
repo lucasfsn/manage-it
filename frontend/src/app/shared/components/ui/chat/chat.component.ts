@@ -6,6 +6,7 @@ import { Message } from '@/app/features/dto/chat.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ChatService } from '@/app/features/services/chat.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import {
   animate,
@@ -130,8 +131,8 @@ export class ChatComponent
 
     this.loading = true;
     this.chatService.getChatHistory(this.projectId, this.taskId).subscribe({
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(error.code);
         this.toastrService.error(localeMessage);
         this.loading = false;
       },

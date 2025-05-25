@@ -9,6 +9,7 @@ import {
   PaginatorComponent,
 } from '@/app/shared/components/paginator/paginator.component';
 import { UsersListComponent } from '@/app/shared/components/ui/users-list/users-list.component';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -71,8 +72,11 @@ export class TaskAssigneesListComponent implements OnInit {
           )}`,
         );
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'task',
+        );
         this.toastrService.error(localeMessage);
         this.loadingService.loadingOff();
       },

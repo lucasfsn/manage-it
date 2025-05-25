@@ -1,19 +1,31 @@
-import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { MapperService } from '@/app/core/services/mapper.service';
 import { Notification } from '@/app/features/dto/notification.model';
 import { NotificationService } from '@/app/features/services/notification.service';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-notifications-menu',
   imports: [TranslateModule],
   templateUrl: './notifications-menu.component.html',
-  styleUrl: './notifications-menu.component.scss'
+  styleUrl: './notifications-menu.component.scss',
 })
 export class NotificationsMenuComponent {
-  public constructor(private notificationService: NotificationService) {}
+  public constructor(
+    private notificationService: NotificationService,
+    private mapperService: MapperService,
+    private toastrService: ToastrService,
+  ) {}
 
   protected markAllAsRead(): void {
-    this.notificationService.markAllAsRead().subscribe();
+    this.notificationService.markAllAsRead().subscribe({
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(error.code);
+        this.toastrService.error(localeMessage);
+      },
+    });
   }
 
   protected get notifications(): Notification[] {

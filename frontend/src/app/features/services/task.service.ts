@@ -2,10 +2,11 @@ import { Project, User } from '@/app/features/dto/project.model';
 import { Task, TaskData } from '@/app/features/dto/task.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { Response } from '@/app/shared/dto/response.model';
+import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -33,9 +34,7 @@ export class TaskService {
           this.projectService.setProject(updatedProject);
         }),
         map((res: Response<Task>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -47,9 +46,7 @@ export class TaskService {
       .pipe(
         tap((res: Response<Task>) => this.task.set(res.data)),
         map((res: Response<Task>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -80,7 +77,7 @@ export class TaskService {
           this.projectService.setProject(project);
           this.task.set(prevTask);
 
-          return throwError(() => err);
+          return handleApiError(err);
         }),
       );
   }
@@ -92,9 +89,7 @@ export class TaskService {
       >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
       .pipe(
         map((res: Response<null>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -110,9 +105,7 @@ export class TaskService {
       .pipe(
         tap((res: Response<Task>) => this.task.set(res.data)),
         map((res: Response<Task>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -128,9 +121,7 @@ export class TaskService {
       .pipe(
         tap((res: Response<Task>) => this.task.set(res.data)),
         map((res: Response<Task>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -146,9 +137,7 @@ export class TaskService {
       .pipe(
         tap((res: Response<Task>) => this.task.set(res.data)),
         map((res: Response<Task>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 }

@@ -3,6 +3,7 @@ import { TranslationService } from '@/app/core/services/translation.service';
 import { Project, User } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -51,8 +52,11 @@ export class ProjectManageMembersComponent {
           )}`,
         );
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'project',
+        );
         this.toastrService.error(localeMessage);
         this.loading = false;
       },

@@ -95,39 +95,34 @@ export class MapperService {
   }
 
   public errorToastMapper(
-    status?: number,
-    errorDescription?: string,
-    message?: string,
+    code: number,
+    resourceName?: 'project' | 'task' | 'user',
   ): string {
-    if (!status)
-      return this.translationService.translate('toast.error.DEFAULT');
-
-    switch (status) {
+    switch (code) {
+      case 400:
+        return this.translationService.translate('toast.error.400');
       case 401:
-        return this.translationService.translate(
-          errorDescription?.toLowerCase() === 'bad credentials'
-            ? 'toast.error.BAD_CREDENTIALS'
-            : 'toast.error.401',
-        );
+        return this.translationService.translate('toast.error.401');
+      case 403:
       case 404:
-        return this.translationService.translate('toast.error.404');
-      case 409:
-        return this.translationService.translate(
-          this.getConflictTranslationKey(message),
-        );
+        return this.translateResourceError(code, resourceName || 'default');
+      case 500:
+        return this.translationService.translate('toast.error.500');
+      case 503:
+        return this.translationService.translate('toast.error.503');
       default:
         return this.translationService.translate('toast.error.DEFAULT');
     }
   }
 
-  private getConflictTranslationKey(message?: string): string {
-    if (message?.toLowerCase().includes('username')) {
-      return 'toast.error.409_USERNAME';
-    } else if (message?.toLowerCase().includes('email')) {
-      return 'toast.error.409_EMAIL';
-    }
+  private translateResourceError(code: number, resourceName: string): string {
+    const resource = this.translationService.translate(
+      `toast.resource.${resourceName.toUpperCase()}`,
+    );
 
-    return 'toast.error.409';
+    return this.translationService.translate(`toast.error.${code}`, {
+      resource,
+    });
   }
 
   public notificationMessageMapper(message: string): string {

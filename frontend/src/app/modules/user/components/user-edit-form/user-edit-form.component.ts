@@ -15,6 +15,7 @@ import {
   PASSWORD_REGEX,
   PERSON_NAME_REGEX,
 } from '@/app/shared/constants/regex.constant';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import {
   emailValidator,
   equalValuesValidator,
@@ -143,8 +144,11 @@ export class UserEditFormComponent implements OnInit {
 
     this.loadingService.loadingOn();
     this.userService.updateUser(updatedUserData).subscribe({
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'user',
+        );
         this.toastrService.error(localeMessage);
         this.loadingService.loadingOff();
       },

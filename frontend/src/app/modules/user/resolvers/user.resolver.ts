@@ -1,12 +1,13 @@
-import { inject } from '@angular/core';
-import { ResolveFn, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { catchError, finalize, of } from 'rxjs';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { User } from '@/app/features/dto/user.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { UserService } from '@/app/features/services/user.service';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { inject } from '@angular/core';
+import { ResolveFn, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, finalize, of } from 'rxjs';
 
 export const userRedirectResolver: ResolveFn<void> = () => {
   const authService = inject(AuthService);
@@ -33,8 +34,11 @@ export const userResolver: ResolveFn<User | null> = (route) => {
     loadingService.loadingOn();
 
     return userService.getUserByUsername(username).pipe(
-      catchError((error) => {
-        const localeMessage = mapperService.errorToastMapper(error.status);
+      catchError((error: ErrorResponse) => {
+        const localeMessage = mapperService.errorToastMapper(
+          error.code,
+          'user',
+        );
         toastrService.error(localeMessage);
         router.navigate(['/']);
 

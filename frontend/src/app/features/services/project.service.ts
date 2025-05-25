@@ -5,10 +5,11 @@ import {
   User,
 } from '@/app/features/dto/project.model';
 import { Response } from '@/app/shared/dto/response.model';
+import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -34,9 +35,7 @@ export class ProjectService {
       .pipe(
         tap((res: Response<Project[]>) => this.projects.set(res.data)),
         map((res: Response<Project[]>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -48,9 +47,7 @@ export class ProjectService {
           this.projects.update((projects) => [...projects, res.data]),
         ),
         map((res: Response<Project>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -60,9 +57,7 @@ export class ProjectService {
       .pipe(
         tap((res: Response<Project>) => this.project.set(res.data)),
         map((res: Response<Project>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -71,9 +66,7 @@ export class ProjectService {
       .delete<Response<null>>(`${environment.apiUrl}/projects/${projectId}`)
       .pipe(
         map((res: Response<null>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -88,9 +81,7 @@ export class ProjectService {
       .pipe(
         tap((res: Response<Project>) => this.project.set(res.data)),
         map((res: Response<Project>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -105,9 +96,7 @@ export class ProjectService {
       .pipe(
         tap((res: Response<Project>) => this.project.set(res.data)),
         map((res: Response<Project>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -122,7 +111,7 @@ export class ProjectService {
         catchError((err: HttpErrorResponse) => {
           this.allowAddToProject = false;
 
-          return throwError(() => err);
+          return handleApiError(err);
         }),
       );
   }
@@ -135,9 +124,7 @@ export class ProjectService {
       .pipe(
         tap((res: Response<Project>) => this.project.set(res.data)),
         map((res: Response<Project>) => res.data),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 

@@ -89,7 +89,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         final ErrorResponseDto response = ErrorResponseDto.builder()
-                .code(HttpStatus.BAD_REQUEST.value())
+                .code(HttpStatus.NOT_FOUND.value())
                 .message(exp.getMessage())
                 .build();
 

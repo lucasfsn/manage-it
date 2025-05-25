@@ -1,11 +1,12 @@
-import { inject } from '@angular/core';
-import { ResolveFn, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { catchError, finalize, of } from 'rxjs';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { Task } from '@/app/features/dto/task.model';
 import { TaskService } from '@/app/features/services/task.service';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { inject } from '@angular/core';
+import { ResolveFn, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, finalize, of } from 'rxjs';
 
 export const taskResolver: ResolveFn<Task | null> = (route) => {
   const loadingService = inject(LoadingService);
@@ -23,10 +24,16 @@ export const taskResolver: ResolveFn<Task | null> = (route) => {
     loadingService.loadingOn();
 
     return taskService.getTask(projectId, taskId).pipe(
-      catchError((error) => {
-        const localeMessage = mapperService.errorToastMapper(error.status);
+      catchError((error: ErrorResponse) => {
+        const localeMessage = mapperService.errorToastMapper(
+          error.code,
+          'task',
+        );
         toastrService.error(localeMessage);
-        router.navigate(['/projects', projectId]);
+
+        const redirectUrl =
+          error.code === 404 ? `/projects/${projectId}` : '/projects';
+        router.navigate([redirectUrl]);
 
         return of(null);
       }),

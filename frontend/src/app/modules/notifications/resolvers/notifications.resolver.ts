@@ -1,11 +1,12 @@
-import { inject } from '@angular/core';
-import { ResolveFn, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { catchError, finalize, of } from 'rxjs';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { Notification } from '@/app/features/dto/notification.model';
 import { NotificationService } from '@/app/features/services/notification.service';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
+import { inject } from '@angular/core';
+import { ResolveFn, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, finalize, of } from 'rxjs';
 
 export const notificationsResolver: ResolveFn<
   Notification[] | undefined
@@ -19,8 +20,8 @@ export const notificationsResolver: ResolveFn<
   loadingService.loadingOn();
 
   return notificationService.getNotifications().pipe(
-    catchError(() => {
-      const localeMessage = mapperService.errorToastMapper();
+    catchError((error: ErrorResponse) => {
+      const localeMessage = mapperService.errorToastMapper(error.code);
       toastrService.error(localeMessage);
       router.navigate(['/']);
 

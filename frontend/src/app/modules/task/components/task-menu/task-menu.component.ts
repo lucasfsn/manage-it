@@ -7,6 +7,7 @@ import { Task } from '@/app/features/dto/task.model';
 import { TaskService } from '@/app/features/services/task.service';
 import { TaskEditFormComponent } from '@/app/modules/task/components/task-edit-form/task-edit-form.component';
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -69,8 +70,11 @@ export class TaskMenuComponent {
             this.translationService.translate('toast.success.task.DELETE'),
           );
         },
-        error: () => {
-          const localeMessage = this.mapperService.errorToastMapper();
+        error: (error: ErrorResponse) => {
+          const localeMessage = this.mapperService.errorToastMapper(
+            error.code,
+            'task',
+          );
           this.toastrService.error(localeMessage);
           this.loadingService.loadingOff();
         },

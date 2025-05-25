@@ -15,6 +15,7 @@ import {
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { getTodayDate } from '@/app/shared/utils/get-today-date.util';
 import {
   maxDateValidator,
@@ -140,8 +141,11 @@ export class TaskCreateFormComponent implements OnInit {
           this.translationService.translate('toast.success.task.CREATE'),
         );
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'task',
+        );
         this.toastrService.error(localeMessage);
         this.loading = false;
       },

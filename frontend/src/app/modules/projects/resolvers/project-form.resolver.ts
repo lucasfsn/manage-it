@@ -2,6 +2,7 @@ import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { Project, ProjectStatus } from '@/app/features/dto/project.model';
 import { ProjectService } from '@/app/features/services/project.service';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -26,8 +27,11 @@ export const projectFormResolver: ResolveFn<Project | null> = (route) => {
 
         return null;
       }),
-      catchError((error) => {
-        const localeMessage = mapperService.errorToastMapper(error.status);
+      catchError((error: ErrorResponse) => {
+        const localeMessage = mapperService.errorToastMapper(
+          error.code,
+          'project',
+        );
         toastrService.error(localeMessage);
         router.navigate(['/projects']);
 

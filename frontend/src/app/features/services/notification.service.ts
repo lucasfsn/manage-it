@@ -1,9 +1,10 @@
 import { Notification } from '@/app/features/dto/notification.model';
 import { Response } from '@/app/shared/dto/response.model';
+import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +25,7 @@ export class NotificationService {
           ),
         ),
         tap((data: Notification[]) => this.notifications.set(data)),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        catchError(handleApiError),
       );
   }
 
@@ -48,7 +47,7 @@ export class NotificationService {
         catchError((err: HttpErrorResponse) => {
           this.notifications.set(prevNotifications);
 
-          return throwError(() => err);
+          return handleApiError(err);
         }),
       );
   }
@@ -65,7 +64,7 @@ export class NotificationService {
         catchError((err: HttpErrorResponse) => {
           this.notifications.set(prevNotifications);
 
-          return throwError(() => err);
+          return handleApiError(err);
         }),
       );
   }

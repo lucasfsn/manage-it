@@ -3,6 +3,7 @@ import { TranslationService } from '@/app/core/services/translation.service';
 import { User } from '@/app/features/dto/user.model';
 import { ProjectService } from '@/app/features/services/project.service';
 import { UserService } from '@/app/features/services/user.service';
+import { ErrorResponse } from '@/app/shared/dto/error-response.model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -48,8 +49,11 @@ export class UserProjectAddButtonComponent implements OnInit {
         );
         this.router.navigate(['/projects', this.projectId]);
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'project',
+        );
         this.toastrService.error(localeMessage);
         this.loading = false;
       },
