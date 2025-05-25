@@ -1,4 +1,4 @@
-import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 
 export interface NotificationDto {
   readonly id: string;

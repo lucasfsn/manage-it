@@ -1,6 +1,6 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
-import { NotificationDto } from '@/app/features/dto/notification.model';
+import { NotificationDto } from '@/app/features/dto/notification.dto';
 import { NotificationService } from '@/app/features/services/notification.service';
 import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { inject } from '@angular/core';

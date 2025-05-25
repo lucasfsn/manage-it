@@ -1,6 +1,6 @@
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
-import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';

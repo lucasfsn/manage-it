@@ -1,9 +1,9 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { ProjectDto } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
-import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';

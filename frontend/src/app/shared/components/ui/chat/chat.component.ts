@@ -1,8 +1,8 @@
 import { LanguageCode } from '@/app/config/language.config';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { UserDto } from '@/app/features/dto/auth.model';
-import { MessageDto } from '@/app/features/dto/chat.model';
+import { UserDto } from '@/app/features/dto/auth.dto';
+import { MessageDto } from '@/app/features/dto/chat.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ChatService } from '@/app/features/services/chat.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';

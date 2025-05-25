@@ -1,5 +1,5 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { NotificationDto } from '@/app/features/dto/notification.model';
+import { NotificationDto } from '@/app/features/dto/notification.dto';
 import { NotificationService } from '@/app/features/services/notification.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { TimeAgoPipe } from '@/app/shared/pipes/time-ago.pipe';

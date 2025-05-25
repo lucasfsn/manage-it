@@ -1,6 +1,6 @@
 export interface Response<T> {
-  code: string;
-  message: string;
-  timestamp: string;
-  data: T;
+  readonly code: string;
+  readonly message: string;
+  readonly timestamp: string;
+  readonly data: T;
 }

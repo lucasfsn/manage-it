@@ -1,6 +1,6 @@
-import { ProjectDto, ProjectPayload } from '@/app/features/dto/project.model';
+import { ProjectDto, ProjectPayload } from '@/app/features/dto/project.dto';
 import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
-import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { Response } from '@/app/shared/types/response.type';
 import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';

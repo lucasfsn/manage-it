@@ -1,4 +1,4 @@
-import { UserDto } from '@/app/features/dto/auth.model';
+import { UserDto } from '@/app/features/dto/auth.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { SearchComponent } from '@/app/shared/components/search/search.component';
 import {

@@ -1,4 +1,4 @@
-import { UserProfileProjectsDto } from '@/app/features/dto/user.model';
+import { UserProfileProjectsDto } from '@/app/features/dto/user.dto';
 import { UserService } from '@/app/features/services/user.service';
 import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { Component } from '@angular/core';

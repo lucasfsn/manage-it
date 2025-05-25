@@ -2,7 +2,7 @@ import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { TaskDto } from '@/app/features/dto/task.model';
+import { TaskDto } from '@/app/features/dto/task.dto';
 import { TaskService } from '@/app/features/services/task.service';
 import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { TaskEditFormComponent } from '@/app/modules/task/components/task-edit-form/task-edit-form.component';

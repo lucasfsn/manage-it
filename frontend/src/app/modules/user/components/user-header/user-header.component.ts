@@ -1,4 +1,4 @@
-import { UserProfileDto } from '@/app/features/dto/user.model';
+import { UserProfileDto } from '@/app/features/dto/user.dto';
 import { UserService } from '@/app/features/services/user.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';

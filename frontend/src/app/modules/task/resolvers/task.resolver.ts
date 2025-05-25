@@ -1,6 +1,6 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
-import { TaskDto } from '@/app/features/dto/task.model';
+import { TaskDto } from '@/app/features/dto/task.dto';
 import { TaskService } from '@/app/features/services/task.service';
 import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { inject } from '@angular/core';

@@ -5,7 +5,7 @@ import { TaskService } from '@/app/features/services/task.service';
 import { UserService } from '@/app/features/services/user.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { UsersListComponent } from '@/app/shared/components/ui/users-list/users-list.component';
-import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';

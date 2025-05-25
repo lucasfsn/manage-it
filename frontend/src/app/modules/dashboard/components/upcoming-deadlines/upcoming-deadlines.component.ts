@@ -1,5 +1,5 @@
 import { TranslationService } from '@/app/core/services/translation.service';
-import { ProjectDto } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';

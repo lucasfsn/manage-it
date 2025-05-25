@@ -9,7 +9,7 @@ import {
   PaginatorComponent,
 } from '@/app/shared/components/paginator/paginator.component';
 import { UsersListComponent } from '@/app/shared/components/ui/users-list/users-list.component';
-import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';

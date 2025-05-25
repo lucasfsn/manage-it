@@ -416,6 +416,7 @@
       "401": "Nie udało się zalogować. Sprawdź dane i spróbuj ponownie",
       "403": "Niestety, nie posiadasz wymaganych uprawnień, aby uzyskać dostęp do tego {{resource}}",
       "404": "Przepraszamy, ale nie mogliśmy znaleźć tego {{resource}}",
+      "409": "Wygląda na to, że {{field}} jest już zajęty",
       "500": "Wystąpił błąd serwera",
       "503": "Serwer jest obecnie niedostępny",
       "DEFAULT": "Wystąpił nieoczekiwany błąd"
@@ -425,6 +426,12 @@
       "TASK": "zadania",
       "USER": "użytkownika",
       "DEFAULT": "zasobu"
+    },
+    "field": {
+      "EMAIL": "adres email",
+      "USERNAME": "nazwa użytkownika",
+      "NAME": "nazwa",
+      "DEFAULT": "pole"
     }
   },
   "title": {

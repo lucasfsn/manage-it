@@ -1,5 +1,5 @@
 import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
-import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 
 export interface UserProfileProjectsDto {
   readonly id: string;

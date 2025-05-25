@@ -1,6 +1,6 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { ProjectDto, ProjectPayload } from '@/app/features/dto/project.model';
+import { ProjectDto, ProjectPayload } from '@/app/features/dto/project.dto';
 import { ProjectService } from '@/app/features/services/project.service';
 import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';

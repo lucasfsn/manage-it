@@ -1,6 +1,6 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
-import { UserDto } from '@/app/features/dto/auth.model';
+import { UserDto } from '@/app/features/dto/auth.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { inject } from '@angular/core';

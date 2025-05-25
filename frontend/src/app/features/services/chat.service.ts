@@ -1,4 +1,4 @@
-import { MessageDto, MessagePayload } from '@/app/features/dto/chat.model';
+import { MessageDto, MessagePayload } from '@/app/features/dto/chat.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ACCESS_TOKEN_KEY } from '@/app/shared/constants/cookie.constant';
 import { Response } from '@/app/shared/types/response.type';

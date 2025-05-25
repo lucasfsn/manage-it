@@ -2,7 +2,7 @@ import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { ProjectDto } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';

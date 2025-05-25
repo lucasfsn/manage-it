@@ -4,7 +4,7 @@ import {
   RefreshTokenDto,
   SignupPayload,
   UserDto,
-} from '@/app/features/dto/auth.model';
+} from '@/app/features/dto/auth.dto';
 import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY,

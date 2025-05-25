@@ -1,4 +1,4 @@
-import { NotificationDto } from '@/app/features/dto/notification.model';
+import { NotificationDto } from '@/app/features/dto/notification.dto';
 import { Response } from '@/app/shared/types/response.type';
 import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';

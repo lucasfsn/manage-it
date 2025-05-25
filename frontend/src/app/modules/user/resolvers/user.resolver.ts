@@ -1,6 +1,6 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
-import { UserProfileDto } from '@/app/features/dto/user.model';
+import { UserProfileDto } from '@/app/features/dto/user.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { UserService } from '@/app/features/services/user.service';
 import { ErrorResponse } from '@/app/shared/types/error-response.type';

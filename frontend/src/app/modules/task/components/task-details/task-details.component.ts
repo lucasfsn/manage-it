@@ -1,5 +1,5 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { TaskDto } from '@/app/features/dto/task.model';
+import { TaskDto } from '@/app/features/dto/task.dto';
 import { TaskService } from '@/app/features/services/task.service';
 import { TaskPriorityComponent } from '@/app/modules/task/components/task-priority/task-priority.component';
 import { TaskStatus } from '@/app/modules/task/types/task-status.type';

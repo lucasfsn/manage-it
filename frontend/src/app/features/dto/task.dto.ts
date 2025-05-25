@@ -1,7 +1,7 @@
 import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { TaskPriority } from '@/app/modules/task/types/task-priority.type';
 import { TaskStatus } from '@/app/modules/task/types/task-status.type';
-import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 
 export interface TaskDto {
   readonly id: string;

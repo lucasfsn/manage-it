@@ -1,5 +1,5 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { ProjectDto } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProjectManageMembersComponent } from '@/app/modules/projects/components/project-manage-members/project-manage-members.component';

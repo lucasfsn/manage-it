@@ -6,9 +6,11 @@ import {
 } from '@/app/modules/projects/types/projects-sort.type';
 import { TaskPriority } from '@/app/modules/task/types/task-priority.type';
 import { TaskStatus } from '@/app/modules/task/types/task-status.type';
+import {
+  ErrorResponseConflict,
+  ErrorResponseResource,
+} from '@/app/shared/types/errors.type';
 import { Injectable } from '@angular/core';
-
-type ErrorResponseResource = 'project' | 'task' | 'user' | 'default';
 
 enum NotificationType {
   PROJECT = 'project',
@@ -110,26 +112,56 @@ export class MapperService {
   public errorToastMapper(
     code: number,
     resourceName: ErrorResponseResource = 'default',
+    fieldName?: ErrorResponseConflict,
   ): string {
-    switch (code) {
-      case 403:
-      case 404: {
-        const resource = this.translationService.translate(
-          `toast.resource.${resourceName.toUpperCase()}`,
-        );
+    if (this.isResourceError(code))
+      return this.handleResourceError(code, resourceName);
 
-        return this.translationService.translate(`toast.error.${code}`, {
-          resource,
-        });
-      }
-      case 400:
-      case 401:
-      case 500:
-      case 503:
-        return this.translationService.translate(`toast.error.${code}`);
-      default:
-        return this.translationService.translate('toast.error.DEFAULT');
-    }
+    if (this.isConflictError(code) && fieldName)
+      return this.handleConflictError(code, fieldName);
+
+    if (this.isGenericError(code))
+      return this.translationService.translate(`toast.error.${code}`);
+
+    return this.translationService.translate('toast.error.DEFAULT');
+  }
+
+  private handleResourceError(
+    code: number,
+    resourceName: ErrorResponseResource,
+  ): string {
+    const resource = this.translationService.translate(
+      `toast.resource.${resourceName.toUpperCase()}`,
+    );
+
+    return this.translationService.translate(`toast.error.${code}`, {
+      resource,
+    });
+  }
+
+  private handleConflictError(
+    code: number,
+    fieldName: ErrorResponseConflict,
+  ): string {
+    const field = this.translationService.translate(
+      `toast.field.${fieldName.toUpperCase()}`,
+    );
+
+    return this.translationService.translate(`toast.error.${code}`, {
+      field,
+    });
+  }
+
+  private isResourceError(code: number): boolean {
+    return code === 403 || code === 404;
+  }
+
+  private isConflictError(code: number): boolean {
+    return code === 409;
+  }
+
+  private isGenericError(code: number): boolean {
+    return [400, 401, 500, 503].includes(code);
   }
 
   public notificationMessageMapper(message: string): string {

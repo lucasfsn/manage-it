@@ -1,9 +1,6 @@
 import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
-import {
-  UpdateUserPayload,
-  UserProfileDto,
-} from '@/app/features/dto/user.model';
+import { UpdateUserPayload, UserProfileDto } from '@/app/features/dto/user.dto';
 import { UserService } from '@/app/features/services/user.service';
 import { FormCheckboxControlComponent } from '@/app/shared/components/form-controls/form-checkbox-control/form-checkbox-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';

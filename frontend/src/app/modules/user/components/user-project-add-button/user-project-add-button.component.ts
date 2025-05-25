@@ -1,6 +1,6 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { UserProfileDto } from '@/app/features/dto/user.model';
+import { UserProfileDto } from '@/app/features/dto/user.dto';
 import { ProjectService } from '@/app/features/services/project.service';
 import { UserService } from '@/app/features/services/user.service';
 import { ErrorResponse } from '@/app/shared/types/error-response.type';

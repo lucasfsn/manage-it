@@ -1,7 +1,7 @@
-import { ProjectDto } from '@/app/features/dto/project.model';
-import { TaskDto, TaskPayload } from '@/app/features/dto/task.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
+import { TaskDto, TaskPayload } from '@/app/features/dto/task.dto';
 import { ProjectService } from '@/app/features/services/project.service';
-import { UserSummaryDto } from '@/app/shared/dto/user-summary.model';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { Response } from '@/app/shared/types/response.type';
 import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';

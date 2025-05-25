@@ -1,7 +1,4 @@
-import {
-  UpdateUserPayload,
-  UserProfileDto,
-} from '@/app/features/dto/user.model';
+import { UpdateUserPayload, UserProfileDto } from '@/app/features/dto/user.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { Response } from '@/app/shared/types/response.type';
 import { handleApiError } from '@/app/shared/utils/handle-api-error.util';

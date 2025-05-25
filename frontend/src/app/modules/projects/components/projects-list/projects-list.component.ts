@@ -1,4 +1,4 @@
-import { ProjectDto } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProjectsFilterComponent } from '@/app/modules/projects/components/projects-filter/projects-filter.component';
