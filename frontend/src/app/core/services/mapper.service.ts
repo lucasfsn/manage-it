@@ -1,15 +1,30 @@
 import { TranslationService } from '@/app/core/services/translation.service';
-import {
-  NotificationOperation,
-  NotificationType,
-} from '@/app/features/dto/notification.model';
-import { ProjectStatus } from '@/app/features/dto/project.model';
-import { Priority, TaskStatus } from '@/app/features/dto/task.model';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import {
   SortCriteria,
   SortOrder,
-} from '@/app/modules/projects/models/projects-sort.model';
+} from '@/app/modules/projects/types/projects-sort.type';
+import { TaskPriority } from '@/app/modules/task/types/task-priority.type';
+import { TaskStatus } from '@/app/modules/task/types/task-status.type';
+import {
+  ErrorResponseConflict,
+  ErrorResponseResource,
+} from '@/app/shared/types/errors.type';
 import { Injectable } from '@angular/core';
+
+enum NotificationType {
+  PROJECT = 'project',
+  TASK = 'task',
+}
+
+enum NotificationOperation {
+  COMPLETE = 'complete',
+  UPDATE = 'update',
+  JOIN = 'join',
+  LEAVE = 'leave',
+  CREATE = 'create',
+  DELETE = 'delete',
+}
 
 @Injectable({
   providedIn: 'root',
@@ -81,53 +96,72 @@ export class MapperService {
     }
   }
 
-  public priorityMapper(priority: Priority): string {
+  public priorityMapper(priority: TaskPriority): string {
     switch (priority) {
-      case Priority.LOW:
+      case TaskPriority.LOW:
         return this.translationService.translate('utils.mapper.priority.LOW');
-      case Priority.MEDIUM:
+      case TaskPriority.MEDIUM:
         return this.translationService.translate(
           'utils.mapper.priority.MEDIUM',
         );
-      case Priority.HIGH:
+      case TaskPriority.HIGH:
         return this.translationService.translate('utils.mapper.priority.HIGH');
     }
   }
 
   public errorToastMapper(
-    status?: number,
-    errorDescription?: string,
-    message?: string,
+    code: number,
+    resourceName: ErrorResponseResource = 'default',
+    fieldName?: ErrorResponseConflict,
   ): string {
-    if (!status)
-      return this.translationService.translate('toast.error.DEFAULT');
+    if (this.isResourceError(code))
+      return this.handleResourceError(code, resourceName);
 
-    switch (status) {
-      case 401:
-        return this.translationService.translate(
-          errorDescription?.toLowerCase() === 'bad credentials'
-            ? 'toast.error.BAD_CREDENTIALS'
-            : 'toast.error.401',
-        );
-      case 404:
-        return this.translationService.translate('toast.error.404');
-      case 409:
-        return this.translationService.translate(
-          this.getConflictTranslationKey(message),
-        );
-      default:
-        return this.translationService.translate('toast.error.DEFAULT');
-    }
+    if (this.isConflictError(code) && fieldName)
+      return this.handleConflictError(code, fieldName);
+
+    if (this.isGenericError(code))
+      return this.translationService.translate(`toast.error.${code}`);
+
+    return this.translationService.translate('toast.error.DEFAULT');
   }
 
-  private getConflictTranslationKey(message?: string): string {
-    if (message?.toLowerCase().includes('username')) {
-      return 'toast.error.409_USERNAME';
-    } else if (message?.toLowerCase().includes('email')) {
-      return 'toast.error.409_EMAIL';
-    }
+  private handleResourceError(
+    code: number,
+    resourceName: ErrorResponseResource,
+  ): string {
+    const resource = this.translationService.translate(
+      `toast.resource.${resourceName.toUpperCase()}`,
+    );
 
-    return 'toast.error.409';
+    return this.translationService.translate(`toast.error.${code}`, {
+      resource,
+    });
+  }
+
+  private handleConflictError(
+    code: number,
+    fieldName: ErrorResponseConflict,
+  ): string {
+    const field = this.translationService.translate(
+      `toast.field.${fieldName.toUpperCase()}`,
+    );
+
+    return this.translationService.translate(`toast.error.${code}`, {
+      field,
+    });
+  }
+
+  private isResourceError(code: number): boolean {
+    return code === 403 || code === 404;
+  }
+
+  private isConflictError(code: number): boolean {
+    return code === 409;
+  }
+
+  private isGenericError(code: number): boolean {
+    return [400, 401, 500, 503].includes(code);
   }
 
   public notificationMessageMapper(message: string): string {

@@ -1,7 +1,8 @@
-import { ProjectStatus, User } from '@/app/features/dto/project.model';
 import { TaskService } from '@/app/features/services/task.service';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { TaskAddAssigneeComponent } from '@/app/modules/task/components/task-add-assignee/task-add-assignee.component';
 import { TaskAssigneesListComponent } from '@/app/modules/task/components/task-assignees-list/task-assignees-list.component';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -20,7 +21,7 @@ export class TaskAssigneesComponent {
 
   public constructor(private taskService: TaskService) {}
 
-  protected get members(): User[] {
+  protected get members(): UserSummaryDto[] {
     return this.taskService.loadedTask()?.members || [];
   }
 

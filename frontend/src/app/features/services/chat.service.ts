@@ -1,18 +1,20 @@
-import { Message, MessageSend } from '@/app/features/dto/chat.model';
+import { MessageDto, MessagePayload } from '@/app/features/dto/chat.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ACCESS_TOKEN_KEY } from '@/app/shared/constants/cookie.constant';
+import { Response } from '@/app/shared/types/response.type';
+import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy, signal } from '@angular/core';
 import { RxStomp } from '@stomp/rx-stomp';
 import { CookieService } from 'ngx-cookie-service';
-import { catchError, firstValueFrom, Observable, tap, throwError } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, tap } from 'rxjs';
 
 @Injectable()
 export class ChatService implements OnDestroy {
   private rxStomp: RxStomp = new RxStomp();
 
-  private messages = signal<Message[]>([]);
+  private messages = signal<MessageDto[]>([]);
   public loadedMessages = this.messages.asReadonly();
 
   public constructor(
@@ -44,7 +46,7 @@ export class ChatService implements OnDestroy {
     const token = await this.getValidAccessToken();
     if (!token) return;
 
-    const messageToSend: MessageSend = {
+    const messageToSend: MessagePayload = {
       content: message,
       token,
     };
@@ -62,34 +64,33 @@ export class ChatService implements OnDestroy {
   public getChatHistory(
     projectId: string,
     taskId: string | null = null,
-  ): Observable<Message[]> {
+  ): Observable<MessageDto[]> {
     this.messages.set([]);
 
     const url = taskId
       ? `chat/projects/${projectId}/tasks/${taskId}`
       : `chat/projects/${projectId}`;
 
-    return this.http.get<Message[]>(`${environment.apiUrl}/${url}`).pipe(
-      tap((messages: Message[]) => {
-        this.messages.set(messages);
-      }),
-      catchError((err: HttpErrorResponse) => {
-        return throwError(() => err);
-      }),
-    );
+    return this.http
+      .get<Response<MessageDto[]>>(`${environment.apiUrl}/${url}`)
+      .pipe(
+        tap((res: Response<MessageDto[]>) => this.messages.set(res.data)),
+        map((res: Response<MessageDto[]>) => res.data),
+        catchError(handleApiError),
+      );
   }
 
   public watchTopic(
     projectId: string,
     taskId: string | null = null,
-  ): Observable<Message> {
+  ): Observable<MessageDto> {
     const topic = taskId
       ? `/join/tasks/${taskId}`
       : `/join/projects/${projectId}`;
 
-    return new Observable<Message>(() =>
+    return new Observable<MessageDto>(() =>
       this.rxStomp.watch(topic).subscribe((message) => {
-        const newMessage: Message = JSON.parse(message.body) as Message;
+        const newMessage: MessageDto = JSON.parse(message.body) as MessageDto;
         this.messages.update((messages) => [...messages, newMessage]);
       }),
     );

@@ -10,11 +10,6 @@ export enum SortOrder {
   DESCENDING = 'desc',
 }
 
-export enum SortType {
-  CRITERIA,
-  ORDER,
-}
-
 export interface ProjectsSort {
   readonly criteria: SortCriteria;
   readonly order: SortOrder;

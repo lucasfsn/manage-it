@@ -1,12 +1,13 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { Project, ProjectRequest } from '@/app/features/dto/project.model';
+import { ProjectDto, ProjectPayload } from '@/app/features/dto/project.dto';
 import { ProjectService } from '@/app/features/services/project.service';
 import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { getTodayDate } from '@/app/shared/utils/get-today-date.util';
 import { getTomorrowDate } from '@/app/shared/utils/get-tomorrow-date.util';
 import {
@@ -88,7 +89,7 @@ export class ProjectFormComponent implements OnInit {
     { updateOn: 'blur' },
   );
 
-  protected get project(): Project | null {
+  protected get project(): ProjectDto | null {
     return this.projectService.loadedProject();
   }
 
@@ -140,7 +141,7 @@ export class ProjectFormComponent implements OnInit {
   protected onSubmit(): void {
     if (this.form.invalid) return;
 
-    const projectData: ProjectRequest = this.getProjectData();
+    const projectData: ProjectPayload = this.getProjectData();
 
     if (this.isEditing) {
       this.updateProject(projectData);
@@ -149,17 +150,20 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
-  private createProject(project: ProjectRequest): void {
+  private createProject(project: ProjectPayload): void {
     this.loading = true;
     this.projectService.createProject(project).subscribe({
-      next: (projectId: string) => {
-        this.router.navigate(['/projects', projectId]);
+      next: (project: ProjectDto) => {
+        this.router.navigate(['/projects', project.id]);
         this.toastrService.success(
           this.translationService.translate('toast.success.project.CREATE'),
         );
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'project',
+        );
         this.toastrService.error(localeMessage);
         this.loading = false;
       },
@@ -169,7 +173,7 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  private updateProject(project: ProjectRequest): void {
+  private updateProject(project: ProjectPayload): void {
     const projectId = this.project?.id;
     if (!projectId) return;
 
@@ -181,8 +185,11 @@ export class ProjectFormComponent implements OnInit {
           this.translationService.translate('toast.success.project.UPDATE'),
         );
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'project',
+        );
         this.toastrService.error(localeMessage);
         this.loading = false;
       },
@@ -192,7 +199,7 @@ export class ProjectFormComponent implements OnInit {
     });
   }
 
-  private getProjectData(): ProjectRequest {
+  private getProjectData(): ProjectPayload {
     return {
       name: this.form.value.name ?? '',
       description: this.form.value.description ?? '',

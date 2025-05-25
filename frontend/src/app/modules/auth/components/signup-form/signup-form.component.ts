@@ -1,6 +1,6 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { RegisterCredentials } from '@/app/features/dto/auth.model';
+import { SignupPayload } from '@/app/features/dto/auth.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
@@ -9,6 +9,8 @@ import {
   PERSON_NAME_REGEX,
   USERNAME_REGEX,
 } from '@/app/shared/constants/regex.constant';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
+import { ErrorResponseConflict } from '@/app/shared/types/errors.type';
 import {
   emailValidator,
   equalValuesValidator,
@@ -137,7 +139,7 @@ export class SignupFormComponent {
       return;
     }
 
-    const registerCredentials: RegisterCredentials = {
+    const registerCredentials: SignupPayload = {
       firstName: this.form.value.firstName ?? '',
       lastName: this.form.value.lastName ?? '',
       username: this.form.value.username ?? '',
@@ -152,11 +154,18 @@ export class SignupFormComponent {
           this.translationService.translate('toast.success.SIGNUP'),
         );
       },
-      error: (error) => {
+      error: (error: ErrorResponse) => {
+        const validFields: Record<string, ErrorResponseConflict> = {
+          email: 'email',
+          username: 'username',
+        };
+
+        const field = validFields[error.data?.at(0)?.field ?? ''] ?? undefined;
+
         const localeMessage = this.mapperService.errorToastMapper(
-          error.status,
-          error.error.errorDescription,
-          error.error.message,
+          error.code,
+          'default',
+          field,
         );
         this.toastrService.error(localeMessage);
         this.loading = false;

@@ -1,11 +1,13 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { Notification } from '@/app/features/dto/notification.model';
+import { NotificationDto } from '@/app/features/dto/notification.dto';
 import { NotificationService } from '@/app/features/services/notification.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { TimeAgoPipe } from '@/app/shared/pipes/time-ago.pipe';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-notifications-list',
@@ -17,10 +19,11 @@ export class NotificationsListComponent {
   public constructor(
     private notificationService: NotificationService,
     private mapperService: MapperService,
+    private toastrService: ToastrService,
     private router: Router,
   ) {}
 
-  protected get notifications(): Notification[] {
+  protected get notifications(): NotificationDto[] {
     return this.notificationService.loadedNotifications();
   }
 
@@ -28,7 +31,7 @@ export class NotificationsListComponent {
     return this.mapperService.notificationMessageMapper(message);
   }
 
-  protected markAsReadAndOpen(notification: Notification): void {
+  protected markAsReadAndOpen(notification: NotificationDto): void {
     const { id, projectId, taskId } = notification;
 
     if (taskId) {
@@ -37,6 +40,11 @@ export class NotificationsListComponent {
       this.router.navigate(['/projects', projectId]);
     }
 
-    this.notificationService.markAsRead(id).subscribe();
+    this.notificationService.markAsRead(id).subscribe({
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(error.code);
+        this.toastrService.error(localeMessage);
+      },
+    });
   }
 }
