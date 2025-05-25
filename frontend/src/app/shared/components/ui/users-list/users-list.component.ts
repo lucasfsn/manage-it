@@ -1,6 +1,6 @@
-import { User } from '@/app/features/dto/project.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,13 +13,13 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class UsersListComponent {
   @Input({ required: true }) public iconName!: string;
-  @Input({ required: true }) public users: User[] = [];
+  @Input({ required: true }) public users: UserSummaryDto[] = [];
   @Input() public hideButton: boolean = false;
-  @Output() public handleClick = new EventEmitter<User>();
+  @Output() public handleClick = new EventEmitter<UserSummaryDto>();
 
   public constructor(private authService: AuthService) {}
 
-  protected onClick(user: User): void {
+  protected onClick(user: UserSummaryDto): void {
     this.handleClick.emit(user);
   }
 

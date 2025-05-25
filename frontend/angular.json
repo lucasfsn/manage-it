@@ -36,6 +36,7 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src/app/assets/styles"]
             },
+            "allowedCommonJsDependencies": ["@2toad/profanity"],
             "scripts": []
           },
           "configurations": {

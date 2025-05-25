@@ -1,8 +1,8 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { Project } from '@/app/features/dto/project.model';
-import { TaskStatus } from '@/app/features/dto/task.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
 import { ProjectService } from '@/app/features/services/project.service';
+import { TaskStatus } from '@/app/modules/task/types/task-status.type';
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -27,7 +27,7 @@ export class TasksSummaryComponent implements OnInit {
   protected get taskCount(): number {
     return this.projectService
       .loadedProjects()
-      .reduce((prev, curr: Project) => prev + curr.totalTasks, 0);
+      .reduce((prev, curr: ProjectDto) => prev + curr.totalTasks, 0);
   }
 
   protected barChartData: ChartData<'bar'> = {

@@ -3,7 +3,7 @@ import {
   ProjectsSort,
   SortCriteria,
   SortOrder,
-} from '@/app/modules/projects/models/projects-sort.model';
+} from '@/app/modules/projects/types/projects-sort.type';
 import {
   FormSelectControlComponent,
   SelectOption,

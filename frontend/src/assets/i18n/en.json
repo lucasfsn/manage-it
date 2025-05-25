@@ -27,7 +27,8 @@
         "REQUIRED": "First name is required.",
         "MIN_LENGTH": "First name must be at least {{minLength}} characters long.",
         "MAX_LENGTH": "First name cannot be more than {{maxLength}} characters long.",
-        "INVALID": "First name cannot contain numbers and special characters."
+        "INVALID": "First name cannot contain numbers and special characters.",
+        "PROFANITY": "First name cannot contain profanity."
       }
     },
     "lastName": {
@@ -36,35 +37,38 @@
         "REQUIRED": "Last name is required.",
         "MIN_LENGTH": "Last name must be at least {{minLength}} characters long.",
         "MAX_LENGTH": "Last name cannot be more than {{maxLength}} characters long.",
-        "INVALID": "Last name cannot contain numbers and special characters."
+        "INVALID": "Last name cannot contain numbers and special characters.",
+        "PROFANITY": "Last name cannot contain profanity."
       }
     },
     "username": {
-      "PLACEHOLDER": "Enter your username",
+      "PLACEHOLDER": "Choose a username",
       "TOOLTIP": "Username is permanent and cannot be changed later",
       "errors": {
         "REQUIRED": "Username is required.",
         "MIN_LENGTH": "Username must be at least {{minLength}} characters long.",
         "MAX_LENGTH": "Username cannot be more than {{maxLength}} characters long.",
-        "INVALID": "Username cannot contain numbers and special characters."
+        "INVALID": "Username cannot contain numbers and special characters.",
+        "PROFANITY": "Username cannot contain profanity."
       }
     },
     "email": {
       "PLACEHOLDER": "Enter your email",
       "errors": {
         "REQUIRED": "Email is required.",
-        "INVALID": "Please enter a valid email address."
+        "INVALID": "Please enter a valid email address.",
+        "PROFANITY": "Email cannot contain profanity."
       }
     },
     "password": {
-      "PLACEHOLDER": "Enter your password",
+      "PLACEHOLDER": "Create a password",
       "errors": {
         "REQUIRED": "Password is required.",
         "INVALID": "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character."
       }
     },
     "confirmPassword": {
-      "PLACEHOLDER": "Confirm password",
+      "PLACEHOLDER": "Repeat your password",
       "errors": {
         "REQUIRED": "Password confirmation is required.",
         "NOT_EQUAL": "Passwords do not match."
@@ -167,30 +171,33 @@
       "TITLE": "Edit profile",
       "firstName": {
         "LABEL": "First name",
-        "PLACEHOLDER": "Enter first name",
+        "PLACEHOLDER": "Edit your first name",
         "errors": {
           "REQUIRED": "First name is required.",
           "MIN_LENGTH": "First name must be at least {{minLength}} characters long.",
           "MAX_LENGTH": "First name cannot be more than {{maxLength}} characters long.",
-          "INVALID": "First name cannot contain numbers and special characters."
+          "INVALID": "First name cannot contain numbers and special characters.",
+          "PROFANITY": "First name cannot contain profanity."
         }
       },
       "lastName": {
         "LABEL": "Last name",
-        "PLACEHOLDER": "Enter last name",
+        "PLACEHOLDER": "Edit your last name",
         "errors": {
           "REQUIRED": "Last name is required.",
           "MIN_LENGTH": "Last name must be at least {{minLength}} characters long.",
           "MAX_LENGTH": "Last name cannot be more than {{maxLength}} characters long.",
-          "INVALID": "Last name cannot contain numbers and special characters."
+          "INVALID": "Last name cannot contain numbers and special characters.",
+          "PROFANITY": "Last name cannot contain profanity."
         }
       },
       "email": {
         "LABEL": "Email",
-        "PLACEHOLDER": "Enter new email",
+        "PLACEHOLDER": "Update your email",
         "errors": {
           "REQUIRED": "Email is required.",
-          "INVALID": "Please enter a valid email address."
+          "INVALID": "Please enter a valid email address.",
+          "PROFANITY": "Email cannot contain profanity."
         }
       },
       "passwords": {
@@ -204,7 +211,7 @@
         }
       },
       "confirmPassword": {
-        "PLACEHOLDER": "Confirm password",
+        "PLACEHOLDER": "Repeat new password",
         "errors": {
           "REQUIRED": "Password confirmation is required.",
           "NOT_EQUAL": "Passwords do not match."
@@ -270,7 +277,8 @@
         "errors": {
           "REQUIRED": "Project name is required.",
           "MIN_LENGTH": "Project name must be at least {{minLength}} characters long.",
-          "MAX_LENGTH": "Project name cannot be more than {{maxLength}} characters long."
+          "MAX_LENGTH": "Project name cannot be more than {{maxLength}} characters long.",
+          "PROFANITY": "Project name cannot contain profanity."
         }
       },
       "description": {
@@ -279,7 +287,8 @@
         "errors": {
           "REQUIRED": "Project description is required.",
           "MIN_LENGTH": "Project description must be at least {{minLength}} characters long.",
-          "MAX_LENGTH": "Project description cannot be more than {{maxLength}} characters long."
+          "MAX_LENGTH": "Project description cannot be more than {{maxLength}} characters long.",
+          "PROFANITY": "Project description cannot contain profanity."
         }
       },
       "endDate": {
@@ -327,7 +336,8 @@
         "errors": {
           "REQUIRED": "Task description is required.",
           "MIN_LENGTH": "Task description must be at least {{minLength}} characters long.",
-          "MAX_LENGTH": "Task description cannot be more than {{maxLength}} characters long."
+          "MAX_LENGTH": "Task description cannot be more than {{maxLength}} characters long.",
+          "PROFANITY": "Task description cannot contain profanity."
         }
       },
       "dueDate": {
@@ -353,7 +363,8 @@
         "errors": {
           "REQUIRED": "Task description is required.",
           "MIN_LENGTH": "Task description must be at least {{minLength}} characters long.",
-          "MAX_LENGTH": "Task description cannot be more than {{maxLength}} characters long."
+          "MAX_LENGTH": "Task description cannot be more than {{maxLength}} characters long.",
+          "PROFANITY": "Task description cannot contain profanity."
         }
       },
       "dueDate": {
@@ -401,12 +412,25 @@
       }
     },
     "error": {
-      "BAD_CREDENTIALS": "Email and password do not match",
-      "409_EMAIL": "Email is already in use",
-      "409_USERNAME": "Username is already in use",
-      "401": "You are not authorized to perform this action",
-      "404": "Resource not found",
+      "400": "Oops! Something went wrong with your request",
+      "401": "Login failed. Please check your data, then try again",
+      "403": "You do not have permission to access this {{resource}}",
+      "404": "The requested {{resource}}  was not found",
+      "409": "It looks like this {{field}} is already taken",
+      "500": "A server error occurred",
+      "503": "The service is temporarily unavailable",
       "DEFAULT": "An unexpected error has occurred"
+    },
+    "resource": {
+      "PROJECT": "project",
+      "TASK": "task",
+      "USER": "user",
+      "DEFAULT": "resource"
+    },
+    "field": {
+      "EMAIL": "email",
+      "USERNAME": "username",
+      "NAME": "name"
     }
   },
   "title": {

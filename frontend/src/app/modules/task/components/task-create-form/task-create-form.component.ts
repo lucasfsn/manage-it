@@ -1,13 +1,10 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import {
-  Priority,
-  Task,
-  TaskData,
-  TaskStatus,
-} from '@/app/features/dto/task.model';
+import { TaskDto, TaskPayload } from '@/app/features/dto/task.dto';
 import { ProjectService } from '@/app/features/services/project.service';
 import { TaskService } from '@/app/features/services/task.service';
+import { TaskPriority } from '@/app/modules/task/types/task-priority.type';
+import { TaskStatus } from '@/app/modules/task/types/task-status.type';
 import { FormDateInputControlComponent } from '@/app/shared/components/form-controls/form-date-input-control/form-date-input-control.component';
 import {
   FormSelectControlComponent,
@@ -15,9 +12,15 @@ import {
 } from '@/app/shared/components/form-controls/form-select-control/form-select-control.component';
 import { FormTextareaInputControlComponent } from '@/app/shared/components/form-controls/form-textarea-input-control/form-textarea-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import { getTodayDate } from '@/app/shared/utils/get-today-date.util';
-import { maxLength, minLength, required } from '@/app/shared/validators';
-import { maxDate } from '@/app/shared/validators/max-date.validator';
+import {
+  maxDateValidator,
+  maxLengthValidator,
+  minLengthValidator,
+  profanityValidator,
+  requiredValidator,
+} from '@/app/shared/validators';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -33,7 +36,7 @@ import { ToastrService } from 'ngx-toastr';
 interface TaskCreateForm {
   readonly description: FormControl<string | null>;
   readonly dueDate: FormControl<string | null>;
-  readonly priority: FormControl<Priority | null>;
+  readonly priority: FormControl<TaskPriority | null>;
 }
 
 @Component({
@@ -71,15 +74,24 @@ export class TaskCreateFormComponent implements OnInit {
     {
       description: new FormControl('', {
         validators: [
-          required('task.createForm.description.errors.REQUIRED'),
-          minLength(5, 'task.createForm.description.errors.MIN_LENGTH'),
-          maxLength(500, 'task.createForm.description.errors.MAX_LENGTH'),
+          requiredValidator('task.createForm.description.errors.REQUIRED'),
+          minLengthValidator(
+            5,
+            'task.createForm.description.errors.MIN_LENGTH',
+          ),
+          maxLengthValidator(
+            500,
+            'task.createForm.description.errors.MAX_LENGTH',
+          ),
+          profanityValidator('task.createForm.description.errors.PROFANITY'),
         ],
       }),
       dueDate: new FormControl('', {
-        validators: [required('task.createForm.dueDate.errors.REQUIRED')],
+        validators: [
+          requiredValidator('task.createForm.dueDate.errors.REQUIRED'),
+        ],
       }),
-      priority: new FormControl<Priority | null>(Priority.LOW),
+      priority: new FormControl<TaskPriority | null>(TaskPriority.LOW),
     },
     { updateOn: 'blur' },
   );
@@ -89,7 +101,7 @@ export class TaskCreateFormComponent implements OnInit {
   }
 
   protected get priorities(): SelectOption[] {
-    return Object.values(Priority).map((priority) => ({
+    return Object.values(TaskPriority).map((priority) => ({
       value: priority,
       label: this.mapperService.priorityMapper(priority),
     }));
@@ -101,7 +113,7 @@ export class TaskCreateFormComponent implements OnInit {
 
   protected onReset(): void {
     this.form.reset({
-      priority: Priority.LOW,
+      priority: TaskPriority.LOW,
       dueDate: getTodayDate(),
     });
   }
@@ -110,7 +122,7 @@ export class TaskCreateFormComponent implements OnInit {
     const project = this.projectService.loadedProject();
     if (this.form.invalid || !project) return;
 
-    const newTask: TaskData = {
+    const newTask: TaskPayload = {
       status: this.selectedStatus,
       description: this.form.value.description!,
       priority: this.form.value.priority!,
@@ -119,15 +131,18 @@ export class TaskCreateFormComponent implements OnInit {
 
     this.loading = true;
     this.taskService.createTask(project, newTask).subscribe({
-      next: (newTask: Task) => {
+      next: (newTask: TaskDto) => {
         this.loading = false;
         this.dialogRef.close(newTask);
         this.toastrService.success(
           this.translationService.translate('toast.success.task.CREATE'),
         );
       },
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(
+          error.code,
+          'task',
+        );
         this.toastrService.error(localeMessage);
         this.loading = false;
       },
@@ -139,7 +154,10 @@ export class TaskCreateFormComponent implements OnInit {
     if (!project) return;
 
     this.form.controls.dueDate.addValidators([
-      maxDate(project.endDate, 'task.createForm.dueDate.errors.MAX_DATE'),
+      maxDateValidator(
+        project.endDate,
+        'task.createForm.dueDate.errors.MAX_DATE',
+      ),
     ]);
   }
 }

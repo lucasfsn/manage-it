@@ -1,6 +1,6 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { RegisterCredentials } from '@/app/features/dto/auth.model';
+import { SignupPayload } from '@/app/features/dto/auth.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
@@ -9,13 +9,16 @@ import {
   PERSON_NAME_REGEX,
   USERNAME_REGEX,
 } from '@/app/shared/constants/regex.constant';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
+import { ErrorResponseConflict } from '@/app/shared/types/errors.type';
 import {
-  email,
-  equalValues,
-  maxLength,
-  minLength,
-  pattern,
-  required,
+  emailValidator,
+  equalValuesValidator,
+  maxLengthValidator,
+  minLengthValidator,
+  patternValidator,
+  profanityValidator,
+  requiredValidator,
 } from '@/app/shared/validators';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -66,45 +69,61 @@ export class SignupFormComponent {
     {
       firstName: new FormControl('', {
         validators: [
-          required('signupForm.firstName.errors.REQUIRED'),
-          minLength(2, 'signupForm.firstName.errors.MIN_LENGTH'),
-          maxLength(50, 'signupForm.firstName.errors.MAX_LENGTH'),
-          pattern(PERSON_NAME_REGEX, 'signupForm.firstName.errors.INVALID'),
+          requiredValidator('signupForm.firstName.errors.REQUIRED'),
+          minLengthValidator(2, 'signupForm.firstName.errors.MIN_LENGTH'),
+          maxLengthValidator(50, 'signupForm.firstName.errors.MAX_LENGTH'),
+          patternValidator(
+            PERSON_NAME_REGEX,
+            'signupForm.firstName.errors.INVALID',
+          ),
+          profanityValidator('signupForm.firstName.errors.PROFANITY'),
         ],
       }),
       lastName: new FormControl('', {
         validators: [
-          required('signupForm.lastName.errors.REQUIRED'),
-          minLength(2, 'signupForm.lastName.errors.MIN_LENGTH'),
-          maxLength(50, 'signupForm.lastName.errors.MAX_LENGTH'),
-          pattern(PERSON_NAME_REGEX, 'signupForm.lastName.errors.INVALID'),
+          requiredValidator('signupForm.lastName.errors.REQUIRED'),
+          minLengthValidator(2, 'signupForm.lastName.errors.MIN_LENGTH'),
+          maxLengthValidator(50, 'signupForm.lastName.errors.MAX_LENGTH'),
+          patternValidator(
+            PERSON_NAME_REGEX,
+            'signupForm.lastName.errors.INVALID',
+          ),
+          profanityValidator('signupForm.lastName.errors.PROFANITY'),
         ],
       }),
       username: new FormControl('', {
         validators: [
-          required('signupForm.username.errors.REQUIRED'),
-          minLength(8, 'signupForm.username.errors.MIN_LENGTH'),
-          maxLength(30, 'signupForm.username.errors.MAX_LENGTH'),
-          pattern(USERNAME_REGEX, 'signupForm.username.errors.INVALID'),
+          requiredValidator('signupForm.username.errors.REQUIRED'),
+          minLengthValidator(8, 'signupForm.username.errors.MIN_LENGTH'),
+          maxLengthValidator(30, 'signupForm.username.errors.MAX_LENGTH'),
+          patternValidator(
+            USERNAME_REGEX,
+            'signupForm.username.errors.INVALID',
+          ),
+          profanityValidator('signupForm.username.errors.PROFANITY'),
         ],
       }),
       email: new FormControl('', {
         validators: [
-          required('signupForm.email.errors.REQUIRED'),
-          email('signupForm.email.errors.INVALID'),
+          requiredValidator('signupForm.email.errors.REQUIRED'),
+          emailValidator('signupForm.email.errors.INVALID'),
+          profanityValidator('signupForm.email.errors.PROFANITY'),
         ],
       }),
       passwords: new FormGroup<PasswordsForm>({
         password: new FormControl('', {
           validators: [
-            required('signupForm.password.errors.REQUIRED'),
-            pattern(PASSWORD_REGEX, 'signupForm.password.errors.INVALID'),
+            requiredValidator('signupForm.password.errors.REQUIRED'),
+            patternValidator(
+              PASSWORD_REGEX,
+              'signupForm.password.errors.INVALID',
+            ),
           ],
         }),
         confirmPassword: new FormControl('', {
           validators: [
-            required('signupForm.confirmPassword.errors.REQUIRED'),
-            equalValues(
+            requiredValidator('signupForm.confirmPassword.errors.REQUIRED'),
+            equalValuesValidator(
               'password',
               'signupForm.confirmPassword.errors.NOT_EQUAL',
             ),
@@ -120,7 +139,7 @@ export class SignupFormComponent {
       return;
     }
 
-    const registerCredentials: RegisterCredentials = {
+    const registerCredentials: SignupPayload = {
       firstName: this.form.value.firstName ?? '',
       lastName: this.form.value.lastName ?? '',
       username: this.form.value.username ?? '',
@@ -135,11 +154,18 @@ export class SignupFormComponent {
           this.translationService.translate('toast.success.SIGNUP'),
         );
       },
-      error: (error) => {
+      error: (error: ErrorResponse) => {
+        const validFields: Record<string, ErrorResponseConflict> = {
+          email: 'email',
+          username: 'username',
+        };
+
+        const field = validFields[error.data?.at(0)?.field ?? ''] ?? undefined;
+
         const localeMessage = this.mapperService.errorToastMapper(
-          error.status,
-          error.error.errorDescription,
-          error.error.message,
+          error.code,
+          'default',
+          field,
         );
         this.toastrService.error(localeMessage);
         this.loading = false;

@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-export function equalValues<T>(
+export function equalValuesValidator<T>(
   otherControlName: string,
   message: string,
 ): ValidatorFn {

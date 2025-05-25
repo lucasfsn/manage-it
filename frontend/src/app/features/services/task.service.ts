@@ -1,16 +1,19 @@
-import { Project, User } from '@/app/features/dto/project.model';
-import { Task, TaskData } from '@/app/features/dto/task.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
+import { TaskDto, TaskPayload } from '@/app/features/dto/task.dto';
 import { ProjectService } from '@/app/features/services/project.service';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
+import { Response } from '@/app/shared/types/response.type';
+import { handleApiError } from '@/app/shared/utils/handle-api-error.util';
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private task = signal<Task | null>(null);
+  private task = signal<TaskDto | null>(null);
   public loadedTask = this.task.asReadonly();
 
   public constructor(
@@ -18,40 +21,43 @@ export class TaskService {
     private projectService: ProjectService,
   ) {}
 
-  public createTask(project: Project, task: TaskData): Observable<Task> {
+  public createTask(
+    project: ProjectDto,
+    task: TaskPayload,
+  ): Observable<TaskDto> {
     return this.http
-      .post<Task>(`${environment.apiUrl}/projects/${project.id}/tasks`, task)
+      .post<
+        Response<TaskDto>
+      >(`${environment.apiUrl}/projects/${project.id}/tasks`, task)
       .pipe(
-        tap((res: Task) => {
+        tap((res: Response<TaskDto>) => {
           const updatedProject = {
             ...project,
-            tasks: [...project.tasks, res],
+            tasks: [...project.tasks, res.data],
           };
           this.projectService.setProject(updatedProject);
         }),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        map((res: Response<TaskDto>) => res.data),
+        catchError(handleApiError),
       );
   }
 
-  public getTask(projectId: string, taskId: string): Observable<Task> {
+  public getTask(projectId: string, taskId: string): Observable<TaskDto> {
     return this.http
-      .get<Task>(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
+      .get<
+        Response<TaskDto>
+      >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
       .pipe(
-        tap((res: Task) => {
-          this.task.set(res);
-        }),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        tap((res: Response<TaskDto>) => this.task.set(res.data)),
+        map((res: Response<TaskDto>) => res.data),
+        catchError(handleApiError),
       );
   }
 
   public moveProjectTask(
-    project: Project,
-    updatedTask: Task,
-  ): Observable<string> {
+    project: ProjectDto,
+    updatedTask: TaskDto,
+  ): Observable<null> {
     const prevTask = this.task();
 
     const updatedProjectTasksList = project.tasks.map((t) =>
@@ -66,92 +72,76 @@ export class TaskService {
     this.task.set(updatedTask);
 
     return this.http
-      .patch(
-        `${environment.apiUrl}/projects/${project.id}/tasks/${updatedTask.id}`,
-        { status: updatedTask.status },
-        {
-          responseType: 'text',
-        },
-      )
+      .patch<
+        Response<null>
+      >(`${environment.apiUrl}/projects/${project.id}/tasks/${updatedTask.id}`, { status: updatedTask.status })
       .pipe(
+        map((res: Response<null>) => res.data),
         catchError((err: HttpErrorResponse) => {
           this.projectService.setProject(project);
           this.task.set(prevTask);
 
-          return throwError(() => err);
+          return handleApiError(err);
         }),
       );
   }
 
-  public deleteTask(projectId: string, taskId: string): Observable<string> {
+  public deleteTask(projectId: string, taskId: string): Observable<null> {
     return this.http
-      .delete(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`, {
-        responseType: 'text',
-      })
+      .delete<
+        Response<null>
+      >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`)
       .pipe(
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        map((res: Response<null>) => res.data),
+        catchError(handleApiError),
       );
   }
 
   public updateTask(
     projectId: string,
     taskId: string,
-    updatedTask: TaskData,
-  ): Observable<Task> {
+    updatedTask: TaskPayload,
+  ): Observable<TaskDto> {
     return this.http
-      .patch<Task>(
-        `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`,
-        updatedTask,
-      )
+      .patch<
+        Response<TaskDto>
+      >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}`, updatedTask)
       .pipe(
-        tap((res: Task) => {
-          this.task.set(res);
-        }),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        tap((res: Response<TaskDto>) => this.task.set(res.data)),
+        map((res: Response<TaskDto>) => res.data),
+        catchError(handleApiError),
       );
   }
 
   public addToTask(
     projectId: string,
     taskId: string,
-    user: User,
-  ): Observable<Task> {
+    user: UserSummaryDto,
+  ): Observable<TaskDto> {
     return this.http
-      .patch<Task>(
-        `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/add`,
-        user,
-      )
+      .patch<
+        Response<TaskDto>
+      >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/add`, user)
       .pipe(
-        tap((res: Task) => {
-          this.task.set(res);
-        }),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        tap((res: Response<TaskDto>) => this.task.set(res.data)),
+        map((res: Response<TaskDto>) => res.data),
+        catchError(handleApiError),
       );
   }
 
   public removeFromTask(
     projectId: string,
     taskId: string,
-    user: User,
-  ): Observable<Task> {
+    user: UserSummaryDto,
+  ): Observable<TaskDto> {
     return this.http
-      .patch<Task>(
-        `${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/remove`,
-        user,
-      )
+      .patch<
+        Response<TaskDto>
+      >(`${environment.apiUrl}/projects/${projectId}/tasks/${taskId}/user/remove`, user)
       .pipe(
-        tap((res: Task) => {
-          this.task.set(res);
-        }),
-        catchError((err: HttpErrorResponse) => {
-          return throwError(() => err);
-        }),
+        tap((res: Response<TaskDto>) => this.task.set(res.data)),
+        map((res: Response<TaskDto>) => res.data),
+        catchError(handleApiError),
       );
   }
 }

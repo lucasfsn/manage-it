@@ -1,19 +1,19 @@
 package com.manageit.manageit.feature.user.service;
 
 
-import com.manageit.manageit.feature.user.dto.UserResponseDto;
-import com.manageit.manageit.feature.user.dto.UserDetailsResponseDto;
-import com.manageit.manageit.feature.user.mapper.UserMapper;
-import com.manageit.manageit.feature.user.repository.UserRepository;
-import com.manageit.manageit.jwt.service.JwtService;
+import com.manageit.manageit.feature.project.model.Project;
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
 import com.manageit.manageit.feature.user.dto.UpdateUserRequestDto;
+import com.manageit.manageit.feature.user.dto.UserDetailsResponseDto;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
+import com.manageit.manageit.feature.user.mapper.UserMapper;
 import com.manageit.manageit.feature.user.model.User;
+import com.manageit.manageit.feature.user.repository.UserRepository;
+import com.manageit.manageit.jwt.service.JwtService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.manageit.manageit.feature.project.model.Project;
 
 import java.util.List;
 import java.util.UUID;
@@ -114,6 +114,9 @@ public class UserServiceDefault implements UserService {
     }
 
     public void removeUser(User userDetails) {
+        if (!userRepository.existsById(userDetails.getId())) {
+            throw new EntityNotFoundException("User not found with id: " + userDetails.getId());
+        }
         userRepository.deleteById(userDetails.getId());
     }
 }

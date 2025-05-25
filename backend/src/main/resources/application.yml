@@ -59,7 +59,7 @@ application:
       secret-key: ${JWT_SECRET_KEY}
       expiration: 300 # 5min
       refresh-token:
-        expiration: 1800 # 30min
+        expiration: 18000 # 5hours
     frontend:
       url: http://localhost:4200
 

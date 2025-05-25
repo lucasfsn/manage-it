@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueMappingStrategy;
 
-@Mapper(componentModel = "spring",  nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+@Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public interface TaskMapper {
     @Mapping(target = "projectId", expression = "java(task.getProject().getId())")
     @Mapping(target = "members", source = "users")
@@ -17,5 +17,7 @@ public interface TaskMapper {
 
     @Mapping(target = "projectId", expression = "java(task.getProject().getId())")
     @Mapping(target = "members", source = "users")
+    @Mapping(target = "projectStatus", expression = "java(task.getProject().getStatus())")
+    @Mapping(target = "projectEndDate", expression = "java(task.getProject().getEndDate())")
     TaskDetailsResponseDto toTaskDetailsResponseDto(Task task);
 }

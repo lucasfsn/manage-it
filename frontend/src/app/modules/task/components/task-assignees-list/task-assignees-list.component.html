@@ -10,7 +10,7 @@
     iconName="person_remove"
     [users]="paginatedUsers"
     (handleClick)="handleRemove($event)"
-    [hideButton]="true"
+    [hideButton]="isProjectFinished"
   />
   <app-paginator
     [length]="filteredUsersCount"

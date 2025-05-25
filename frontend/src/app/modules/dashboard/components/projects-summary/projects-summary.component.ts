@@ -1,7 +1,8 @@
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
 import { ProjectService } from '@/app/features/services/project.service';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
@@ -45,7 +46,7 @@ export class ProjectsSummaryComponent implements OnInit {
     },
   };
 
-  protected get projects(): Project[] {
+  protected get projects(): ProjectDto[] {
     return this.projectService.loadedProjects();
   }
 

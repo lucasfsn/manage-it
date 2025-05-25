@@ -1,12 +1,13 @@
 import { LanguageCode } from '@/app/config/language.config';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
-import { UserCredentials } from '@/app/features/dto/auth.model';
-import { Message } from '@/app/features/dto/chat.model';
+import { UserDto } from '@/app/features/dto/auth.dto';
+import { MessageDto } from '@/app/features/dto/chat.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ChatService } from '@/app/features/services/chat.service';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
 import {
   animate,
   state,
@@ -20,10 +21,12 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  EventEmitter,
   HostListener,
   inject,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -66,6 +69,8 @@ export class ChatComponent
   @ViewChild('scroll') private scroll!: ElementRef;
   @ViewChild('input') private input!: ElementRef;
 
+  @Output() public handleClose = new EventEmitter<void>();
+
   private destroyRef = inject(DestroyRef);
   private projectId: string | null = null;
   private taskId: string | null = null;
@@ -82,7 +87,7 @@ export class ChatComponent
     private translationService: TranslationService,
   ) {}
 
-  protected get messages(): Message[] {
+  protected get messages(): MessageDto[] {
     return this.chatService.loadedMessages();
   }
 
@@ -94,6 +99,10 @@ export class ChatComponent
     return 'd MMM y, h:mm a';
   }
 
+  protected onClick(): void {
+    this.handleClose.emit();
+  }
+
   protected addEmoji(event: EmojiEvent): void {
     this.form.setValue((this.form.value ?? '') + event.emoji.native);
   }
@@ -102,7 +111,7 @@ export class ChatComponent
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  protected get currentUser(): UserCredentials | null {
+  protected get currentUser(): UserDto | null {
     return this.authService.loadedUser();
   }
 
@@ -122,8 +131,8 @@ export class ChatComponent
 
     this.loading = true;
     this.chatService.getChatHistory(this.projectId, this.taskId).subscribe({
-      error: () => {
-        const localeMessage = this.mapperService.errorToastMapper();
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(error.code);
         this.toastrService.error(localeMessage);
         this.loading = false;
       },

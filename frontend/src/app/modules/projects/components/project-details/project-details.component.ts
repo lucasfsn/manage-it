@@ -1,12 +1,12 @@
 import { MapperService } from '@/app/core/services/mapper.service';
-import { Project, ProjectStatus } from '@/app/features/dto/project.model';
+import { ProjectDto } from '@/app/features/dto/project.dto';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { ProjectManageMembersComponent } from '@/app/modules/projects/components/project-manage-members/project-manage-members.component';
 import { ProjectMenuComponent } from '@/app/modules/projects/components/project-menu/project-menu.component';
-import { ChatComponent } from '@/app/shared/components/chat/chat.component';
+import { ProjectStatus } from '@/app/modules/projects/types/project-status.type';
+import { ChatToggleComponent } from '@/app/shared/components/chat-toggle/chat-toggle.component';
 import { SearchComponent } from '@/app/shared/components/search/search.component';
-import { ButtonComponent } from '@/app/shared/components/ui/button/button.component';
 import { ProfileIconComponent } from '@/app/shared/components/ui/profile-icon/profile-icon.component';
 import { DatePipe } from '@/app/shared/pipes/date.pipe';
 import { Component } from '@angular/core';
@@ -22,17 +22,14 @@ import { TranslateModule } from '@ngx-translate/core';
     MatIconModule,
     DatePipe,
     TranslateModule,
-    ButtonComponent,
     ProfileIconComponent,
-    ChatComponent,
     ProjectMenuComponent,
+    ChatToggleComponent,
   ],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss',
 })
 export class ProjectDetailsComponent {
-  protected showChat: boolean = false;
-
   public constructor(
     private dialog: MatDialog,
     private authService: AuthService,
@@ -40,7 +37,7 @@ export class ProjectDetailsComponent {
     private mapperService: MapperService,
   ) {}
 
-  protected get project(): Project | null {
+  protected get project(): ProjectDto | null {
     return this.projectService.loadedProject();
   }
 
@@ -52,10 +49,6 @@ export class ProjectDetailsComponent {
     return (
       this.project?.owner.username === this.authService.getLoggedInUsername()
     );
-  }
-
-  protected toggleChat(): void {
-    this.showChat = !this.showChat;
   }
 
   protected showAllMembers(): void {

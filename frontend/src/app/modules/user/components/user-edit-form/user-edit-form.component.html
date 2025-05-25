@@ -17,8 +17,8 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <form [formGroup]="form" class="flex flex-col gap-2 px-3 py-2">
-    <div class="flex flex-col gap-3">
+  <form [formGroup]="form" class="flex flex-col gap-4 px-3 py-2">
+    <div class="flex flex-col gap-1.5 sm:gap-3">
       <app-form-text-input-control
         identifier="first-name"
         [control]="form.controls.firstName"
@@ -38,14 +38,14 @@
         [placeholder]="'user.form.email.PLACEHOLDER' | translate"
         [label]="'user.form.email.LABEL' | translate"
       />
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-1.5">
         <app-form-checkbox-control
           identifier="change-password"
           [control]="form.controls.changePassword"
           [label]="'user.form.passwords.LABEL' | translate"
         />
         @if (showPasswordFields) {
-          <div class="flex flex-row gap-3">
+          <div class="flex flex-col gap-1.5 sm:gap-3">
             <app-form-text-input-control
               identifier="password"
               type="password"

@@ -1,256 +1,339 @@
 package com.manageit.manageit.core.handler;
 
-import com.manageit.manageit.core.dto.ExceptionResponseDto;
+import com.manageit.manageit.core.dto.ErrorResponseDto;
+import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.TokenUserMismatchException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInTaskException;
+import com.manageit.manageit.shared.dto.FieldValidationErrorsDto;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.ConversionNotSupportedException;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.manageit.manageit.core.dto.Error.*;
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ExceptionResponseDto> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
-
-        if (ex.getRequiredType() != null && ex.getRequiredType().equals(UUID.class)) {
-            String name = ex.getName();
-            String value = ex.getValue() != null ? ex.getValue().toString() : "null";
-
-            if (log.isErrorEnabled()) {
-                log.error("Invalid UUID format: {} = {}", name, value, ex);
-            }
-
-            String message = String.format("Parameter '%s' should be a valid UUID, but the value '%s' could not be parsed.",
-                    name, value);
-
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(
-                            ExceptionResponseDto.builder()
-                                    .timestamp(LocalDateTime.now())
-                                    .httpStatus(HttpStatus.BAD_REQUEST)
-                                    .errorDescription("Invalid UUID format")
-                                    .message(message)
-                                    .build()
-                    );
-        }
-
-        return handleException(ex);
-    }
-
-    @ExceptionHandler(TokenUserMismatchException.class)
-    public ResponseEntity<ExceptionResponseDto> handleException(TokenUserMismatchException exp) {
-
-        return ResponseEntity.status(TOKEN_MISMATCH.getHttpStatus())
-                .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .httpStatus(TOKEN_MISMATCH.getHttpStatus())
-                                .errorDescription(exp.getMessage())
-                                .message(TOKEN_MISMATCH.getDescription())
-                                .build()
-                );
-    }
-
-    @ExceptionHandler({UserNotInProjectException.class, UserNotInTaskException.class})
-    public ResponseEntity<ExceptionResponseDto> handleException(RuntimeException exp) {
+    @ExceptionHandler({UserNotInProjectException.class, UserNotInTaskException.class, ProjectModificationNotAllowedException.class})
+    public ResponseEntity<ErrorResponseDto> handleException(RuntimeException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
-        String message = INSUFFICIENT_PERMISSIONS.getDescription();
-        if (exp.getMessage() != null && !exp.getMessage().isEmpty()) {
-            message = exp.getMessage();
-        }
+
         return ResponseEntity
-                .status(INSUFFICIENT_PERMISSIONS.getHttpStatus())
+                .status(HttpStatus.FORBIDDEN)
                 .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .httpStatus(INSUFFICIENT_PERMISSIONS.getHttpStatus())
-                                .errorDescription(exp.getMessage())
-                                .message(message)
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.FORBIDDEN.value())
+                                .message(exp.getMessage())
                                 .build()
                 );
     }
 
     @ExceptionHandler(TaskNotInProjectException.class)
-    public ResponseEntity<ExceptionResponseDto> handleException(TaskNotInProjectException exp) {
+    public ResponseEntity<ErrorResponseDto> handleException(TaskNotInProjectException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
-        String message = TASK_NOT_IN_PROJECT.getDescription();
-        if (exp.getMessage() != null && !exp.getMessage().isEmpty()) {
-            message = exp.getMessage();
-        }
+
         return ResponseEntity
-                .status(TASK_NOT_IN_PROJECT.getHttpStatus())
+                .status(HttpStatus.BAD_REQUEST)
                 .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .httpStatus(TASK_NOT_IN_PROJECT.getHttpStatus())
-                                .errorDescription(exp.getMessage())
-                                .message(message)
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.BAD_REQUEST.value())
+                                .message(exp.getMessage())
                                 .build()
                 );
     }
 
-    @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<Void> handleException() {
+
+    @ExceptionHandler({BadCredentialsException.class, ExpiredJwtException.class, TokenUserMismatchException.class})
+    public ResponseEntity<Void> handleUnauthorizedException(RuntimeException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-
-
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ExceptionResponseDto> handleException(BadCredentialsException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-        return ResponseEntity
-                .status(BAD_CREDENTIALS.getHttpStatus())
-                .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .httpStatus(BAD_CREDENTIALS.getHttpStatus())
-                                .errorDescription(exp.getMessage())
-                                .message(BAD_CREDENTIALS.getDescription())
-                                .build()
-                );
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ExceptionResponseDto> handleException(EntityNotFoundException exp) {
+    public ResponseEntity<ErrorResponseDto> handleException(EntityNotFoundException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
-        String message = ENTITY_NOT_FOUND.getDescription();
-        if (exp.getMessage() != null && !exp.getMessage().isEmpty()) {
-            message = exp.getMessage();
-        }
-        return ResponseEntity
-                .status(ENTITY_NOT_FOUND.getHttpStatus())
-                .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .httpStatus(ENTITY_NOT_FOUND.getHttpStatus())
-                                .errorDescription(exp.getMessage())
-                                .message(message)
-                                .build()
-                );
-    }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponseDto> handleException(MethodArgumentNotValidException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-        Set<String> errors = new HashSet<>();
-        exp.getBindingResult().getAllErrors().forEach(err -> errors.add(err.getDefaultMessage()));
+        final ErrorResponseDto response = ErrorResponseDto.builder()
+                .code(HttpStatus.NOT_FOUND.value())
+                .message(exp.getMessage())
+                .build();
+
         return ResponseEntity
-                .status(VALIDATION_ERROR.getHttpStatus())
-                .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .httpStatus(VALIDATION_ERROR.getHttpStatus())
-                                .errorDescription(VALIDATION_ERROR.getDescription())
-                                .message(errors.iterator().next())
-                                .validationErrors(errors)
-                                .build()
-                );
+                .status(HttpStatus.NOT_FOUND)
+                .body(response);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ExceptionResponseDto> handleDataIntegrityViolationException(DataIntegrityViolationException exp) {
+    public ResponseEntity<ErrorResponseDto> handleException(DataIntegrityViolationException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
-        String message = DATA_INTEGRITY_VIOLATION.getDescription();
-        if (exp.getCause() instanceof ConstraintViolationException constraintException) {
-            String constraintName = constraintException.getConstraintName();
-            if ("users_email_key".equals(constraintName)) {
-                message = "Email already exists.";
-            } else if ("users_username_key".equals(constraintName)) {
-                message = "Username already exists.";
-            }
-        }
         return ResponseEntity
-                .status(DATA_INTEGRITY_VIOLATION.getHttpStatus())
+                .status(HttpStatus.CONFLICT)
                 .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .httpStatus(DATA_INTEGRITY_VIOLATION.getHttpStatus())
-                                .errorDescription(exp.getMessage())
-                                .message(message)
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.CONFLICT.value())
+                                .message("Data integrity violation occurred.")
                                 .build()
                 );
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ExceptionResponseDto> handleException(IllegalStateException exp) {
+    public ResponseEntity<ErrorResponseDto> handleException(IllegalStateException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
         return ResponseEntity
-                .status(ILLEGAL_STATE.getHttpStatus())
+                .status(HttpStatus.CONFLICT)
                 .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .errorDescription(ILLEGAL_STATE.getDescription())
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.CONFLICT.value())
                                 .message(exp.getMessage())
                                 .build()
                 );
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ExceptionResponseDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException exp) {
+    @ExceptionHandler({ConstraintViolationException.class})
+    public ResponseEntity<Object> handleConstraintViolationException(
+            final ConstraintViolationException exception, final ServletWebRequest request) {
         if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
+            log.error(exception.getMessage(), exception);
         }
-        return ResponseEntity
-                .status(INVALID_REQUEST_BODY.getHttpStatus())
-                .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .httpStatus(INVALID_REQUEST_BODY.getHttpStatus())
-                                .errorDescription(INVALID_REQUEST_BODY.getDescription())
-                                .message(INVALID_REQUEST_BODY.getDescription())
-                                .build()
-                );
+        final List<FieldValidationErrorsDto> invalidParameters =
+                processInvalidParameters(exception);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponseDto.builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message("Validation failed")
+                        .errors(invalidParameters)
+                        .build()
+        );
     }
+
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponseDto> handleException(Exception exp) {
+    public ResponseEntity<ErrorResponseDto> handleException(Exception exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
         return ResponseEntity
-                .status(INTERNAL_ERROR.getHttpStatus())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(
-                        ExceptionResponseDto.builder()
-                                .timestamp(LocalDateTime.now())
-                                .errorDescription(INTERNAL_ERROR.getDescription())
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                                 .message(exp.getMessage())
                                 .build()
                 );
     }
+
+
+    @Override
+    public ResponseEntity<Object> handleTypeMismatch(
+            @Nonnull TypeMismatchException exception,
+            @Nonnull HttpHeaders headers,
+            @Nonnull HttpStatusCode status,
+            @Nonnull WebRequest request) {
+        if (log.isErrorEnabled()) {
+            log.error(exception.getMessage(), exception);
+        }
+        String parameter = exception.getPropertyName();
+        if (exception instanceof MethodArgumentTypeMismatchException castedException) {
+            parameter = castedException.getName();
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponseDto.builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message("Unexpected type specified")
+                        .errors(List.of(
+                                new FieldValidationErrorsDto(
+                                        HttpStatus.BAD_REQUEST, parameter, "Unexpected type")))
+                        .build());
+    }
+
+    @Override
+    public ResponseEntity<Object> handleConversionNotSupported(
+            @Nonnull final ConversionNotSupportedException exception,
+            @Nonnull final HttpHeaders headers,
+            @Nonnull final HttpStatusCode status,
+            @Nonnull final WebRequest request) {
+        if (log.isErrorEnabled()) {
+            log.error(exception.getMessage(), exception);
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponseDto.builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message(String.format(
+                                "Failed to convert %s with value %s",
+                                exception.getPropertyName(), exception.getRequiredType()))
+                        .build()
+        );
+    }
+
+    @Override
+    public ResponseEntity<Object> handleMissingPathVariable(
+            @Nonnull MissingPathVariableException exception,
+            @Nonnull HttpHeaders headers,
+            @Nonnull HttpStatusCode status,
+            @Nonnull WebRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponseDto.builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message(exception.getMessage())
+                        .build()
+        );
+    }
+
+    @Override
+    public ResponseEntity<Object> handleHttpMediaTypeNotSupported(
+            @Nonnull HttpMediaTypeNotSupportedException exception,
+            @Nonnull final HttpHeaders headers,
+            @Nonnull final HttpStatusCode status,
+            @Nonnull final WebRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponseDto.builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message(exception.getMessage())
+                        .build()
+        );
+
+    }
+
+    @Override
+    public ResponseEntity<Object> handleHttpRequestMethodNotSupported(
+            @Nonnull final HttpRequestMethodNotSupportedException exception,
+            @Nonnull final HttpHeaders headers,
+            @Nonnull final HttpStatusCode status,
+            @Nonnull final WebRequest request) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(
+                ErrorResponseDto.builder()
+                        .code(HttpStatus.METHOD_NOT_ALLOWED.value())
+                        .message(exception.getMessage())
+                        .build());
+    }
+
+    @Override
+    public ResponseEntity<Object> handleMethodArgumentNotValid(
+            @Nonnull final MethodArgumentNotValidException exception,
+            @Nonnull final HttpHeaders headers,
+            @Nonnull final HttpStatusCode status,
+            @Nonnull final WebRequest request) {
+        if (log.isErrorEnabled()) {
+            log.error(exception.getMessage(), exception);
+        }
+
+        final List<FieldValidationErrorsDto> validationErrors =
+                exception.getBindingResult().getFieldErrors().stream()
+                        .map(
+                                fieldError ->
+                                        FieldValidationErrorsDto.builder()
+                                                .errorCode(HttpStatus.BAD_REQUEST)
+                                                .field(fieldError.getField())
+                                                .message(fieldError.getDefaultMessage())
+                                                .build())
+                        .toList();
+
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.BAD_REQUEST.value())
+                                .message("Validation failed")
+                                .errors(validationErrors)
+                                .build()
+                );
+    }
+
+    @Override
+    public ResponseEntity<Object> handleHttpMessageNotReadable(
+            @Nonnull final HttpMessageNotReadableException exception,
+            @Nonnull final HttpHeaders headers,
+            @Nonnull final HttpStatusCode status,
+            @Nonnull final WebRequest request) {
+        if (log.isErrorEnabled()) {
+            log.error(exception.getMessage(), exception);
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.BAD_REQUEST.value())
+                                .message(exception.getMessage())
+                                .build()
+                );
+    }
+
+
+    private List<FieldValidationErrorsDto> processInvalidParameters(
+            ConstraintViolationException exception) {
+        final List<FieldValidationErrorsDto> invalidParameters = new ArrayList<>();
+        exception
+                .getConstraintViolations()
+                .forEach(
+                        constraintViolation -> {
+                            Path propertyPath = constraintViolation.getPropertyPath();
+                            List<String> path = new ArrayList<>();
+                            propertyPath.forEach(property -> path.add(property.toString()));
+                            final FieldValidationErrorsDto errors = new FieldValidationErrorsDto();
+                            errors.setErrorCode(HttpStatus.BAD_REQUEST);
+                            errors.setField(path.getLast());
+                            errors.setMessage(constraintViolation.getMessage());
+                            invalidParameters.add(errors);
+                        });
+        return invalidParameters;
+    }
+
+    @Override
+    public ResponseEntity<Object> handleNoResourceFoundException(
+            @Nonnull NoResourceFoundException exception,
+            @Nonnull HttpHeaders headers,
+            @Nonnull HttpStatusCode status,
+            @Nonnull WebRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ErrorResponseDto.builder()
+                        .code(HttpStatus.NOT_FOUND.value())
+                        .message(exception.getMessage())
+                        .build()
+        );
+    }
+
 }

@@ -57,3 +57,28 @@
     )
   );
 }
+
+.chat-toggle-button {
+  /* Mobile screen in landscape mode */
+  @media (max-width: 56.25rem) and (max-height: 31.25rem) and (orientation: landscape) {
+    & {
+      display: none !important;
+    }
+  }
+
+  /* Mobile screen in portrait mode */
+  @media (max-width: 31.25rem) and (orientation: portrait) {
+    & {
+      display: none !important;
+    }
+  }
+
+  /* Desktop screen */
+  @media (min-height: 31.25rem) and (orientation: landscape),
+    (min-width: 31.25rem) and (orientation: portrait),
+    (min-width: 56.25rem) and (orientation: landscape) {
+    & {
+      display: flex !important;
+    }
+  }
+}

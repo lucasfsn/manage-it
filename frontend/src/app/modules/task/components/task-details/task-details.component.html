@@ -60,32 +60,17 @@
             <span>{{ "task.details.PRIORITY" | translate }}</span>
           </p>
           <div class="mr-auto hidden sm:flex">
-            <app-priority textSize="text-base" [priority]="task.priority" />
+            <app-task-priority
+              textSize="text-base"
+              [priority]="task.priority"
+            />
           </div>
           <div class="mr-auto flex sm:hidden">
-            <app-priority textSize="text-sm" [priority]="task.priority" />
+            <app-task-priority textSize="text-sm" [priority]="task.priority" />
           </div>
         </div>
       </div>
     </div>
   </div>
-  <app-button
-    textColor="text-sky-100"
-    bgColor="bg-sky-600 dark:bg-sky-500"
-    hoverBgColor="hover:bg-sky-700 dark:hover:bg-sky-600"
-    customClass="fixed bottom-14 lg:bottom-4 right-4 z-50"
-    [largeSize]="true"
-    (handleClick)="toggleChat()"
-  >
-    <mat-icon class="transition-transform" [class.rotate-180]="showChat">
-      @if (showChat) {
-        keyboard_arrow_up
-      } @else {
-        chat
-      }
-    </mat-icon>
-  </app-button>
-}
-@if (showChat) {
-  <app-chat />
+  <app-chat-toggle />
 }

@@ -1,8 +1,8 @@
-import { User } from '@/app/features/dto/project.model';
 import { AuthService } from '@/app/features/services/auth.service';
 import { ProjectService } from '@/app/features/services/project.service';
 import { UserService } from '@/app/features/services/user.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
+import { UserSummaryDto } from '@/app/shared/dto/user-summary.dto';
 import { Component, Inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -31,7 +31,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class SearchComponent {
   protected loading: boolean = false;
   protected form = new FormControl<string>('');
-  protected searchResults: User[] = [];
+  protected searchResults: UserSummaryDto[] = [];
 
   public constructor(
     private dialogRef: MatDialogRef<SearchComponent>,

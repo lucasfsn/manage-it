@@ -1,20 +1,21 @@
 package com.manageit.manageit.feature.project.service;
 
+import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
 import com.manageit.manageit.core.exception.UserAlreadyInProjectException;
-import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
-import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
-import com.manageit.manageit.feature.project.dto.UpdateProjectRequestDto;
-import com.manageit.manageit.feature.task.repository.TaskRepository;
-import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
-import com.manageit.manageit.feature.user.service.UserService;
+import com.manageit.manageit.feature.chat.service.ChatService;
+import com.manageit.manageit.feature.notification.service.NotificationService;
+import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
+import com.manageit.manageit.feature.project.dto.ProjectResponseDto;
+import com.manageit.manageit.feature.project.dto.UpdateProjectRequestDto;
 import com.manageit.manageit.feature.project.mapper.ProjectMapper;
 import com.manageit.manageit.feature.project.model.Project;
 import com.manageit.manageit.feature.project.model.ProjectStatus;
 import com.manageit.manageit.feature.project.repository.ProjectRepository;
+import com.manageit.manageit.feature.task.repository.TaskRepository;
+import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.model.User;
-import com.manageit.manageit.feature.chat.service.ChatService;
-import com.manageit.manageit.feature.notification.service.NotificationService;
+import com.manageit.manageit.feature.user.service.UserService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
@@ -98,6 +99,7 @@ public class ProjectServiceDefault implements ProjectService {
         Project project = getProjectById(projectId);
         String message;
         validateUserIsProjectOwner(managedOwner, project);
+        isProjectCompleted(project);
         if (request.getStatus() != null) {
             project.setStatus(request.getStatus());
             message = "project;complete;" + project.getName();
@@ -129,6 +131,7 @@ public class ProjectServiceDefault implements ProjectService {
     @Transactional
     public ProjectResponseDto addUserToProject(User user, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
+        isProjectCompleted(project);
         validateUserIsProjectOwner(user, project);
         User userToAdd = userService.getUserByUsername(request.getName());
         if (project.getMembers().contains(userToAdd)) {
@@ -152,6 +155,7 @@ public class ProjectServiceDefault implements ProjectService {
     public ProjectResponseDto removeUserFromProject(User owner, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
         validateUserIsProjectOwner(owner, project);
+        isProjectCompleted(project);
         if (project.getOwner().getName().equals(request.getName())) {
             throw new IllegalArgumentException("Project owner cannot remove themselves from the project.");
         }
@@ -172,6 +176,13 @@ public class ProjectServiceDefault implements ProjectService {
             return projectMapper.toProjectResponseDto(updatedProject);
         } else {
             throw new UserNotInProjectException("User is not a member of the project");
+        }
+    }
+
+    @Override
+    public void isProjectCompleted(Project project) {
+        if (project.getStatus() == ProjectStatus.COMPLETED) {
+            throw new ProjectModificationNotAllowedException("Cannot modify a completed project.");
         }
     }
 

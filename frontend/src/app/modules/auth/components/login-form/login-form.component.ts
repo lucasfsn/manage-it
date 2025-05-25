@@ -4,7 +4,8 @@ import { AuthService } from '@/app/features/services/auth.service';
 import { FormTextInputControlComponent } from '@/app/shared/components/form-controls/form-text-input-control-control/form-text-input-control.component';
 import { FormButtonComponent } from '@/app/shared/components/ui/form-button/form-button.component';
 import { SAVED_LOGIN_FORM_DATA_KEY } from '@/app/shared/constants/local-storage.constant';
-import { email, required } from '@/app/shared/validators';
+import { ErrorResponse } from '@/app/shared/types/error-response.type';
+import { emailValidator, requiredValidator } from '@/app/shared/validators';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -44,12 +45,12 @@ export class LoginFormComponent implements OnInit {
     {
       email: new FormControl('', {
         validators: [
-          required('loginForm.email.errors.REQUIRED'),
-          email('loginForm.email.errors.INVALID'),
+          requiredValidator('loginForm.email.errors.REQUIRED'),
+          emailValidator('loginForm.email.errors.INVALID'),
         ],
       }),
       password: new FormControl('', {
-        validators: [required('loginForm.password.errors.REQUIRED')],
+        validators: [requiredValidator('loginForm.password.errors.REQUIRED')],
       }),
     },
     { updateOn: 'blur' },
@@ -68,11 +69,8 @@ export class LoginFormComponent implements OnInit {
           this.translationService.translate('toast.success.LOGIN'),
         );
       },
-      error: (error) => {
-        const localeMessage = this.mapperService.errorToastMapper(
-          error.status,
-          error.error.errorDescription,
-        );
+      error: (error: ErrorResponse) => {
+        const localeMessage = this.mapperService.errorToastMapper(error.code);
         this.toastrService.error(localeMessage);
         this.loading = false;
       },
