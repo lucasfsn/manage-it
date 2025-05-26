@@ -70,7 +70,12 @@ export class LoginFormComponent implements OnInit {
         );
       },
       error: (error: ErrorResponse) => {
-        const localeMessage = this.mapperService.errorToastMapper(error.code);
+        const localeMessage =
+          error.code === 401
+            ? this.translationService.translate(
+                'loginForm.errors.INVALID_CREDENTIALS',
+              )
+            : this.mapperService.errorToastMapper(error.code);
         this.toastrService.error(localeMessage);
         this.loading = false;
       },

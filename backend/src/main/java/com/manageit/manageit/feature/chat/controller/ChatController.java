@@ -16,13 +16,13 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
-
 public class ChatController {
     private final ChatService chatService;
     private final MessageService messageService;
@@ -45,10 +45,8 @@ public class ChatController {
         return messageService.saveMessageToTaskChat(taskId, requset.getToken(), requset.getContent());
     }
 
-
-
-
     @GetMapping("/chat/projects/{projectId}")
+    @ResponseBody
     public ResponseDto<List<MessageResponseDto>> getChatMessages(
         @PathVariable UUID projectId
     ) {
@@ -61,6 +59,7 @@ public class ChatController {
     }
 
     @GetMapping("/chat/projects/{projectId}/tasks/{taskId}")
+    @ResponseBody
     public ResponseDto<List<MessageResponseDto>> getChatMessages(
         @PathVariable UUID projectId,
         @PathVariable UUID taskId
