@@ -26,7 +26,7 @@ test('should get chat messages for a project', async ({ projectId }) => {
   const response = await apiContext.get(`/api/v1/chat/projects/${projectId}`);
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
-  expect(Array.isArray(responseBody)).toBe(true);
+  expect(Array.isArray(responseBody.data)).toBe(true);
 });
 
 test('should return an error if the project does not exist', async () => {

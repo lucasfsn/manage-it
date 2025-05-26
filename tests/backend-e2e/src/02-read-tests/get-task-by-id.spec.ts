@@ -27,12 +27,13 @@ test('should get a task by id', async ({ projectId, taskId }) => {
 
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
-
-  expect(responseBody.id).toBe(taskId);
-  expect(responseBody).toHaveProperty("description");
-  expect(responseBody).toHaveProperty("status");
-  expect(responseBody).toHaveProperty("priority");
-  expect(responseBody).toHaveProperty("dueDate");
+  
+  expect(responseBody.message).toBe(`Task found successfully with id: ${taskId}`)
+  expect(responseBody.data.id).toBe(taskId);
+  expect(responseBody.data).toHaveProperty("description");
+  expect(responseBody.data).toHaveProperty("status");
+  expect(responseBody.data).toHaveProperty("priority");
+  expect(responseBody.data).toHaveProperty("dueDate");
 });
 
 test('should return 404 if task is not found', async ({ projectId }) => {
@@ -41,7 +42,6 @@ test('should return 404 if task is not found', async ({ projectId }) => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No task found with id: ${nonExistentTaskId}`);
 });
 
@@ -50,4 +50,6 @@ test('should return 400 if task id is invalid', async ({ projectId }) => {
   const response = await apiContext.get(`/api/v1/projects/${projectId}/tasks/${invalidTaskId}`);
 
   expect(response.status()).toBe(400);
+  const responseBody = await response.json();
+  expect(responseBody.message).toBe(`Unexpected type specified`);
 });

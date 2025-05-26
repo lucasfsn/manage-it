@@ -29,10 +29,10 @@ test('should get user by username', async () => {
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
 
-  expect(responseBody.username).toBe(username);
-  expect(responseBody.firstName).toBeDefined();
-  expect(responseBody.lastName).toBeDefined();
-  expect(responseBody.email).toBeDefined();
+  expect(responseBody.data.username).toBe(username);
+  expect(responseBody.data.firstName).toBeDefined();
+  expect(responseBody.data.lastName).toBeDefined();
+  expect(responseBody.data.email).toBeDefined();
 });
 
 test('should get user by username for not authenticated user', async () => {
@@ -42,10 +42,10 @@ test('should get user by username for not authenticated user', async () => {
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
 
-  expect(responseBody.username).toBe(username);
-  expect(responseBody.firstName).toBeDefined();
-  expect(responseBody.lastName).toBeDefined();
-  expect(responseBody.email).not.toBeDefined();
+  expect(responseBody.data.username).toBe(username);
+  expect(responseBody.data.firstName).toBeDefined();
+  expect(responseBody.data.lastName).toBeDefined();
+  expect(responseBody.data.email).not.toBeDefined();
 });
 
 test('should return 404 if user not found', async () => {
@@ -54,6 +54,5 @@ test('should return 404 if user not found', async () => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No user found with username: ${username}`);
 });

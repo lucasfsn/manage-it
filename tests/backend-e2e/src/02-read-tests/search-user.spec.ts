@@ -29,9 +29,9 @@ test('should search users by pattern', async () => {
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
 
-  expect(responseBody).toBeInstanceOf(Array);
-  expect(responseBody.length).toBeGreaterThan(0);
-  responseBody.forEach(user => {
+  expect(responseBody.data).toBeInstanceOf(Array);
+  expect(responseBody.data.length).toBeGreaterThan(0);
+  responseBody.data.forEach(user => {
     expect(user.username).toContain(pattern);
   });
 });
@@ -43,6 +43,6 @@ test('should return empty list if no users match the pattern', async () => {
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
 
-  expect(responseBody).toBeInstanceOf(Array);
-  expect(responseBody.length).toBe(0);
+  expect(responseBody.data).toBeInstanceOf(Array);
+  expect(responseBody.data.length).toBe(0);
 });

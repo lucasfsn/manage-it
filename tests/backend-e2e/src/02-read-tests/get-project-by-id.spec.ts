@@ -28,7 +28,7 @@ test('should return a project by id', async ({ projectId }) => {
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
 
-  expect(responseBody.id).toBe(projectId);
+  expect(responseBody.data.id).toBe(projectId);
 });
 
 test('should return 404 if project is not found', async () => {
@@ -38,7 +38,6 @@ test('should return 404 if project is not found', async () => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No project found with id: ${nonExistentId}`);
 });
 
@@ -49,6 +48,5 @@ test('should return 400 if invalid ID format', async () => {
   expect(response.status()).toBe(400);
   
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("BAD_REQUEST");
-  expect(responseBody.errorDescription).toBe(`Invalid UUID format`);
+  expect(responseBody.message).toBe(`Unexpected type specified`);
 });
