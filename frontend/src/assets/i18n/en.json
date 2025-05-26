@@ -421,11 +421,11 @@
       "404": "The requested {{resource}}  was not found",
       "409": {
         "FIELD_CONFLICT": "It looks like this {{field}} is already taken",
-        "DEFAULT": "The operation could not be performed"
+        "DEFAULT": "The operation could not be performed due to a data conflict"
       },
       "500": "A server error occurred",
       "503": "The service is temporarily unavailable",
-      "DEFAULT": "An unexpected error has occurred due to a data conflict"
+      "DEFAULT": "An unexpected error has occurred"
     },
     "resource": {
       "PROJECT": "project",
