@@ -75,11 +75,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler({BadCredentialsException.class, ExpiredJwtException.class, TokenUserMismatchException.class})
-    public ResponseEntity<Void> handleUnauthorizedException(RuntimeException exp) {
+    public ResponseEntity<ErrorResponseDto> handleUnauthorizedException(RuntimeException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.UNAUTHORIZED.value())
+                                .message(exp.getMessage())
+                                .build()
+                );
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

@@ -109,61 +109,6 @@ export class MapperService {
     }
   }
 
-  public errorToastMapper(
-    code: number,
-    resourceName: ErrorResponseResource = 'default',
-    fieldName?: ErrorResponseConflict,
-  ): string {
-    if (this.isResourceError(code))
-      return this.handleResourceError(code, resourceName);
-
-    if (this.isConflictError(code) && fieldName)
-      return this.handleConflictError(code, fieldName);
-
-    if (this.isGenericError(code))
-      return this.translationService.translate(`toast.error.${code}`);
-
-    return this.translationService.translate('toast.error.DEFAULT');
-  }
-
-  private handleResourceError(
-    code: number,
-    resourceName: ErrorResponseResource,
-  ): string {
-    const resource = this.translationService.translate(
-      `toast.resource.${resourceName.toUpperCase()}`,
-    );
-
-    return this.translationService.translate(`toast.error.${code}`, {
-      resource,
-    });
-  }
-
-  private handleConflictError(
-    code: number,
-    fieldName: ErrorResponseConflict,
-  ): string {
-    const field = this.translationService.translate(
-      `toast.field.${fieldName.toUpperCase()}`,
-    );
-
-    return this.translationService.translate(`toast.error.${code}`, {
-      field,
-    });
-  }
-
-  private isResourceError(code: number): boolean {
-    return code === 403 || code === 404;
-  }
-
-  private isConflictError(code: number): boolean {
-    return code === 409;
-  }
-
-  private isGenericError(code: number): boolean {
-    return [400, 401, 500, 503].includes(code);
-  }
-
   public notificationMessageMapper(message: string): string {
     const [type, operation, projectName] = message.split(';');
     let translationKey = '';
@@ -213,5 +158,66 @@ export class MapperService {
       default:
         return '';
     }
+  }
+
+  public errorToastMapper(
+    code: number,
+    resourceName: ErrorResponseResource = 'default',
+    fieldName?: ErrorResponseConflict,
+  ): string {
+    if (this.isResourceError(code))
+      return this.handleResourceError(code, resourceName);
+
+    if (this.isConflictError(code))
+      return this.handleConflictError(code, fieldName);
+
+    if (this.isGenericError(code))
+      return this.translationService.translate(`toast.error.${code}`);
+
+    return this.translationService.translate('toast.error.DEFAULT');
+  }
+
+  private handleResourceError(
+    code: number,
+    resourceName: ErrorResponseResource,
+  ): string {
+    const resource = this.translationService.translate(
+      `toast.resource.${resourceName.toUpperCase()}`,
+    );
+
+    return this.translationService.translate(`toast.error.${code}`, {
+      resource,
+    });
+  }
+
+  private handleConflictError(
+    code: number,
+    fieldName?: ErrorResponseConflict,
+  ): string {
+    if (!fieldName)
+      return this.translationService.translate(`toast.error.${code}.DEFAULT`);
+
+    const field = this.translationService.translate(
+      `toast.field.${fieldName.toUpperCase()}`,
+    );
+
+    return this.translationService.translate(
+      `toast.error.${code}.FIELD_CONFLICT`,
+      {
+        field,
+      },
+    );
+  }
+
+  private isResourceError(code: number): boolean {
+    return code === 403 || code === 404;
+  }
+
+  private isConflictError(code: number): boolean {
+    return code === 409;
+  }
+
+  private isGenericError(code: number): boolean {
+    return [400, 401, 500, 503].includes(code);
   }
 }
