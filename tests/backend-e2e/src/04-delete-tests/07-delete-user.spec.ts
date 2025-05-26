@@ -15,7 +15,7 @@ test('should delete user jan_kowalski', async ({ playwright }) => {
   });
 
   const response = await apiContext.delete('/api/v1/users');
-  expect(response.status()).toBe(204);
+  expect(response.status()).toBe(200);
 
   await apiContext.dispose();
 });
@@ -32,7 +32,24 @@ test('should delete user jakis_username', async ({ playwright }) => {
   });
 
   const response = await apiContext.delete('/api/v1/users');
-  expect(response.status()).toBe(204);
+  expect(response.status()).toBe(200);
+
+  await apiContext.dispose();
+});
+
+test('should delete user trzeci_user', async ({ playwright }) => {
+  const authenticationResponse = await authenticateUser('trzeci.user@mail.com', '1qazXSW@');
+  const token = authenticationResponse.accessToken;;
+
+  const apiContext: APIRequestContext = await playwright.request.newContext({
+    baseURL: baseUrl,
+    extraHTTPHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const response = await apiContext.delete('/api/v1/users');
+  expect(response.status()).toBe(200);
 
   await apiContext.dispose();
 });

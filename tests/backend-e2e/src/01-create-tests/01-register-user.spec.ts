@@ -29,6 +29,21 @@ test('should register a new user with valid data', async ({ request }) => {
   expect(responseBody.data.user.email).toBe(userData.email);
   expect(responseBody.data.user.firstName).toBe(userData.firstName);
   expect(responseBody.data.user.lastName).toBe(userData.lastName);
+
+  // rejestracja kolejnego użytkownika, aby umożliwić testowanie
+  const userData3 = {
+    username: 'trzeci_user',
+    firstName: 'Trzeci',
+    lastName: 'User',
+    email: 'trzeci.user@mail.com',
+    password: '1qazXSW@',
+  };
+
+  const response3 = await request.post(`${baseUrl}/auth/register`, {
+    data: userData3,
+  });
+
+  expect(response3.status()).toBe(201);
 });
 
 test('should return an error when registering with missing username', async ({ request }) => {

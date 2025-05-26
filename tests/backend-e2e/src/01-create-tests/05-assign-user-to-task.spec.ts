@@ -22,7 +22,7 @@ test.afterAll(async () => {
   await apiContext.dispose();
 });
 
-test('should add a user (project member) to a task', async ({ projectId, taskId }) => {
+test('should assign a user (project member) to a task', async ({ projectId, taskId }) => {
   const username = 'jan_kowalski';
   const userData = {
     username: username,
@@ -34,10 +34,12 @@ test('should add a user (project member) to a task', async ({ projectId, taskId 
 
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
-  expect(responseBody.members.some(user => user.username === userData.username)).toBe(true);
+  expect(responseBody.data.id).toBe(taskId);
+  expect(responseBody.data.projectId).toBe(projectId);
+  expect(responseBody.data.members.some(user => user.username === userData.username)).toBe(true);
 });
 
-test('should not add user who is already assigned to a task', async ({ projectId, taskId }) => {
+test('should not assign user who is already assigned to a task', async ({ projectId, taskId }) => {
   const username = 'jan_kowalski';
   const userData = {
     username: username,
@@ -52,8 +54,8 @@ test('should not add user who is already assigned to a task', async ({ projectId
   expect(responseBody.message).toBe("User is already a member of the task");
 });
 
-test('should not add user (not a member of the project) to a task', async ({ projectId, taskId }) => {
-  const username = 'jakis_username';
+test('should not assign user (not a member of the project) to a task', async ({ projectId, taskId }) => {
+  const username = 'trzeci_user';
   const userData = {
     username: username,
   };
@@ -62,13 +64,9 @@ test('should not add user (not a member of the project) to a task', async ({ pro
     data: userData,
   });
 
-  expect(response.status()).toBe(401);
+  expect(response.status()).toBe(403);
   const responseBody = await response.json();
-
-  expect(responseBody.httpStatus).toBe('UNAUTHORIZED');
   expect(responseBody.message).toBe(`User ${username} is not member of project`);
-
-  // dodaje użytkownika, który nie jest członkiem projektu do taska przypisanego do tego projektu 
 });
 
 test('should not assign non-existing user to a task', async ({ projectId, taskId }) => {
@@ -83,7 +81,6 @@ test('should not assign non-existing user to a task', async ({ projectId, taskId
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe('NOT_FOUND');
   expect(responseBody.message).toBe(`No user found with username: ${username}`);
 });
 
@@ -99,7 +96,6 @@ test('should return 404 if task is not found', async ({ projectId }) => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No task found with id: ${nonExistentTaskId}`);
 });
 
@@ -115,7 +111,6 @@ test('should return error if task has invalid id', async ({ projectId }) => {
 
   expect(response.status()).toBe(400);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("BAD_REQUEST");
-  expect(responseBody.errorDescription).toBe(`Invalid UUID format`);
+  expect(responseBody.message).toBe(`Unexpected type specified`);
 });
 
