@@ -25,22 +25,25 @@ test.afterAll(async () => {
 test('should delete a notification by id', async ({ notificationId }) => {
   const response = await apiContext.delete(`/api/v1/notifications/${notificationId}`);
 
-  expect(response.status()).toBe(204);
+  expect(response.status()).toBe(200);
+  const responseBody = await response.json();
+  expect(responseBody.message).toBe(`Notification deleted successfully with id: ${notificationId}`)
 
   const getResponse = await apiContext.get('/api/v1/notifications');
-  
-    expect(getResponse.status()).toBe(200);
-    const responseBody = await getResponse.json();
-    expect(Array.isArray(responseBody)).toBe(true);
-    expect(responseBody.length).toBe(1);
+  expect(getResponse.status()).toBe(200);
+  const getResponseBody = await getResponse.json();
+  expect(Array.isArray(getResponseBody.data)).toBe(true);
+  expect(getResponseBody.data.length).toBe(3);
 });
 
-test('should let delete a notification with non-existent id', async () => {
+test('should not delete a notification with non-existent id', async () => {
   const nonExistentNotificationId = '00000000-0000-0000-0000-000000000000';
 
   const response = await apiContext.delete(`/api/v1/notifications/${nonExistentNotificationId}`);
 
-  expect(response.status()).toBe(204);
+  expect(response.status()).toBe(404);
+  const responseBody = await response.json();
+  expect(responseBody.message).toBe(`Notification not found with id ${nonExistentNotificationId}`)
 });
 
 test('should return error while deleting notification with invalid id', async () => {

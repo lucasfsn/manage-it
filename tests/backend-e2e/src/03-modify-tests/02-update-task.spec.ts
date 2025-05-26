@@ -38,11 +38,11 @@ test('should update a task', async ({ projectId, taskId }) => {
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
 
-  expect(responseBody.id).toBe(taskId);
-  expect(responseBody.description).toBe(updatedTaskData.description);
-  expect(responseBody.status).toBe(updatedTaskData.status);
-  expect(responseBody.priority).toBe(updatedTaskData.priority);
-  expect(responseBody.dueDate).toBe(updatedTaskData.dueDate);
+  expect(responseBody.data.id).toBe(taskId);
+  expect(responseBody.data.description).toBe(updatedTaskData.description);
+  expect(responseBody.data.status).toBe(updatedTaskData.status);
+  expect(responseBody.data.priority).toBe(updatedTaskData.priority);
+  expect(responseBody.data.dueDate).toBe(updatedTaskData.dueDate);
 });
 
 test('should return an error when description is empty', async ({ projectId, taskId }) => {
@@ -121,7 +121,6 @@ test('should return 404 if task is not found', async ({ projectId }) => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No task found with id: ${nonExistentTaskId}`);
 });
 

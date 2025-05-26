@@ -34,7 +34,7 @@ test('should remove a user from a task', async ({ projectId, taskId }) => {
 
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
-  expect(responseBody.members.some(user => user.username === userData.username)).toBe(false);
+  expect(responseBody.data.members.some(user => user.username === userData.username)).toBe(false);
 });
 
 test('should not remove user (not a project member) from a task', async ({ projectId, taskId }) => {
@@ -47,10 +47,8 @@ test('should not remove user (not a project member) from a task', async ({ proje
     data: userData,
   });
 
-  expect(response.status()).toBe(401);
+  expect(response.status()).toBe(403);
   const responseBody = await response.json();
-
-  expect(responseBody.httpStatus).toBe('UNAUTHORIZED');
   expect(responseBody.message).toBe(`User is not a member of the task`);
 });
 
@@ -66,7 +64,6 @@ test('should not remove non-existing user from a task', async ({ projectId, task
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe('NOT_FOUND');
   expect(responseBody.message).toBe(`No user found with username: ${username}`);
 });
 
@@ -82,7 +79,6 @@ test('should return 404 if task is not found', async ({ projectId }) => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No task found with id: ${nonExistentTaskId}`);
 });
 

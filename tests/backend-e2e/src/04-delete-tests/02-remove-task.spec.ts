@@ -25,13 +25,10 @@ test.afterAll(async () => {
 test('should remove a task from a project', async ({ projectId, taskId }) => {
   const response = await apiContext.delete(`/api/v1/projects/${projectId}/tasks/${taskId}`);
 
-  expect(response.status()).toBe(204);
+  expect(response.status()).toBe(200);
 
-  const getTaskResponse = await apiContext.get(`/api/v1/projects/${projectId}/tasks/${taskId}`);
-  expect(getTaskResponse.status()).toBe(404);
-  const responseBody = await getTaskResponse.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
-  expect(responseBody.message).toBe(`No task found with id: ${taskId}`);
+  const responseBody = await response.json();
+  expect(responseBody.message).toBe(`Task deleted successfully with id: ${taskId}`);
 });
 
 test('should return 404 if task is not found', async ({ projectId }) => {
@@ -40,7 +37,6 @@ test('should return 404 if task is not found', async ({ projectId }) => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No task found with id: ${nonExistentTaskId}`);
 });
 

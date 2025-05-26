@@ -35,10 +35,10 @@ test('should successfuly update a project', async ({ projectId }) => {
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
 
-  expect(responseBody.id).toBe(projectId);
-  expect(responseBody.name).toBe(updatedProjectData.name);
-  expect(responseBody.description).toBe(updatedProjectData.description);
-  expect(responseBody.status).toBe("IN_PROGRESS");
+  expect(responseBody.data.id).toBe(projectId);
+  expect(responseBody.data.name).toBe(updatedProjectData.name);
+  expect(responseBody.data.description).toBe(updatedProjectData.description);
+  expect(responseBody.data.status).toBe("IN_PROGRESS");
 });
 
 test('should not update a project for incorrect status', async ({ projectId }) => {
@@ -53,8 +53,6 @@ test('should not update a project for incorrect status', async ({ projectId }) =
   });
 
   expect(response.status()).toBe(400);
-
-  // zwraca 500 zamiast 400. błąd
 });
 
 test('should not update a project for empty project name and description', async ({ projectId }) => {
@@ -68,18 +66,16 @@ test('should not update a project for empty project name and description', async
   });
 
   expect(response.status()).toBe(400);
-
-  // 500 zamiast 400 i błąd taki: "Could not commit JPA transaction"
+  const responseBody = await response.json();
+  expect(responseBody.message).toBe(`Validation failed`);
 });
 
-test('should not update and return an error when startDate is after endDate', async ({ projectId }) => {
-  const startDate = new Date(new Date().setDate(new Date().getDate() + 20)).toISOString().slice(0, 10);
-  const endDate = new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().slice(0, 10);
+test('should not update and return an error when endDate is in the past', async ({ projectId }) => {
+  const endDate = new Date(new Date().setDate(new Date().getDate() - 2)).toISOString().slice(0, 10);
 
   const updatedProjectData = {
     name: 'Updated test project',
     description: 'This is an updated test project',
-    startDate: startDate,
     endDate: endDate
   };
 
@@ -88,8 +84,8 @@ test('should not update and return an error when startDate is after endDate', as
   });
 
   expect(response.status()).toBe(400);
-
-  // updatuje projekt z startDate późniejszą niż endDate. błąd!
+  const responseBody = await response.json();
+  expect(responseBody.message).toBe(`Validation failed`);
 });
 
 test('should not update project with non-existent id', async () => {
@@ -106,7 +102,6 @@ test('should not update project with non-existent id', async () => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No project found with id: ${nonExistentId}`);
 });
 

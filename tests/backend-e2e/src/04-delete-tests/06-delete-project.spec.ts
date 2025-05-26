@@ -25,17 +25,18 @@ test.afterAll(async () => {
 test('should delete a project by id', async ({ projectId, projectId2 }) => {
   const response = await apiContext.delete(`/api/v1/projects/${projectId}`);
 
-  expect(response.status()).toBe(204);
+  expect(response.status()).toBe(200);
+  const responseBody = await response.json();
+  expect(responseBody.message).toBe(`Project deleted successfully with id: ${projectId}`);
 
   const getResponse = await apiContext.get(`/api/v1/projects/${projectId}`);
   expect(getResponse.status()).toBe(404);
 
-  const responseBody = await getResponse.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
-  expect(responseBody.message).toBe(`No project found with id: ${projectId}`);
+  const getResponseBody = await getResponse.json();
+  expect(getResponseBody.message).toBe(`No project found with id: ${projectId}`);
 
   const response2 = await apiContext.delete(`/api/v1/projects/${projectId2}`);
-  expect(response2.status()).toBe(204);
+  expect(response2.status()).toBe(200);
 });
 
 test('should not delete project with non-existent id', async () => {
@@ -45,7 +46,6 @@ test('should not delete project with non-existent id', async () => {
 
   expect(response.status()).toBe(404);
   const responseBody = await response.json();
-  expect(responseBody.httpStatus).toBe("NOT_FOUND");
   expect(responseBody.message).toBe(`No project found with id: ${nonExistentId}`);
 });
 
