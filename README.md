@@ -8,7 +8,8 @@ Project Management App that allows you to easily organize work in your team.
   - [Main Features](#main-features)
   - [Technologies Used](#technologies-used)
 - [Run Locally](#run-locally)
-- [Run in Production](#run-in-production)
+  - [Development Mode](#running-in-development-mode)
+  - [Production Mode](#running-in-production-mode)
 - [Contact](#contact)
 
 ## Overview
@@ -35,9 +36,12 @@ Project Management App that allows you to easily organize work in your team.
 ![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
 ![SpringBoot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-45ba4b?style=for-the-badge&logo=Playwright&logoColor=white)
+![JUnit](https://img.shields.io/badge/Junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white)
 
 ## Run Locally
 
+### Running in Development Mode
 Clone the project
 
 ```bash
@@ -63,7 +67,7 @@ The --watch flag enables automatic reload of the server when source files change
 Once started, the application will be available at:
 http://localhost:4200
 
-## Run in Production
+### Running in Production Mode
 
 To run the application in **production mode**, use the following command:
 
@@ -73,6 +77,6 @@ To run the application in **production mode**, use the following command:
 
 > **Note:** Before running the application in production mode, make sure to update the `.env` file with production-specific values. These values may differ from those used in development mode (e.g., database credentials, API URLs, JWT secret key, etc.).
 
-### Contact
+## Contact
 
-For questions please contact [lukasz.nowosielski02@gmail.com](mailto:lukasz.nowosielski02@gmail.com).
+For questions please contact [lukasz.nowosielski02@gmail.com](mailto:lukasz.nowosielski02@gmail.com)
