@@ -15,6 +15,7 @@ import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 
@@ -76,6 +77,7 @@ export class AuthService {
   public logout(): void {
     this.cookieService.delete(ACCESS_TOKEN_KEY, '/');
     this.cookieService.delete(REFRESH_TOKEN_KEY, '/');
+    this.currentUser.set(null);
 
     this.router.navigate(['/']);
   }
@@ -83,7 +85,6 @@ export class AuthService {
   public isAuthenticated(): boolean {
     const accessToken = this.cookieService.get(ACCESS_TOKEN_KEY);
     const refreshToken = this.cookieService.get(REFRESH_TOKEN_KEY);
-    if (!accessToken || !refreshToken) return false;
 
     return (
       !this.isTokenExpired(accessToken) || !this.isTokenExpired(refreshToken)
@@ -136,11 +137,25 @@ export class AuthService {
         }),
         map((res: Response<RefreshTokenDto>) => res.data),
         catchError((err: HttpErrorResponse) => {
+          console.log('elo - authservice');
           this.logout();
 
           return handleApiError(err);
         }),
       );
+  }
+
+  public isTokenExpired(token: string): boolean {
+    try {
+      const decodedToken = jwtDecode(token);
+      if (!decodedToken.exp) return true;
+
+      const currentTime = Date.now() / 1000;
+
+      return decodedToken.exp < currentTime;
+    } catch {
+      return true;
+    }
   }
 
   private storeTokens(accessToken: string, refreshToken: string): void {
@@ -164,16 +179,5 @@ export class AuthService {
       true,
       'Strict',
     );
-  }
-
-  public isTokenExpired(token: string): boolean {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      if (!payload.exp) return false;
-
-      return Date.now() > payload.exp * 1000;
-    } catch {
-      return true;
-    }
   }
 }
