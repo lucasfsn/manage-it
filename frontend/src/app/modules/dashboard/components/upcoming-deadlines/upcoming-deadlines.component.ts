@@ -14,6 +14,8 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './upcoming-deadlines.component.scss',
 })
 export class UpcomingDeadlinesComponent {
+  private readonly DEADLINE_THRESHOLD_DAYS = 14;
+
   public constructor(
     private projectService: ProjectService,
     private translationService: TranslationService,
@@ -24,7 +26,8 @@ export class UpcomingDeadlinesComponent {
       .loadedProjects()
       .filter(
         (project) =>
-          this.isUpcomingDeadline(project.endDate) &&
+          this.calculateDaysLeft(project.endDate) <=
+            this.DEADLINE_THRESHOLD_DAYS &&
           project.status !== ProjectStatus.COMPLETED,
       );
   }
@@ -35,10 +38,10 @@ export class UpcomingDeadlinesComponent {
     );
   }
 
-  protected deadlineClass(endDate: string, status: ProjectStatus): string {
-    if (status === ProjectStatus.COMPLETED) return 'text-sky-500';
-
+  protected deadlineClass(endDate: string): string {
     const daysLeft = this.calculateDaysLeft(endDate);
+
+    if (daysLeft < 0) return 'text-red-900';
 
     if (daysLeft <= 1) return 'text-red-700 dark:text-red-500';
 
@@ -47,10 +50,13 @@ export class UpcomingDeadlinesComponent {
     return 'text-green-700 dark:text-green-500';
   }
 
-  protected deadlineMessage(endDate: string, status: ProjectStatus): string {
-    if (status === ProjectStatus.COMPLETED) return 'Completed';
-
+  protected deadlineMessage(endDate: string): string {
     const daysLeft = this.calculateDaysLeft(endDate);
+
+    if (daysLeft < 0)
+      return this.translationService.translate(
+        'dashboard.upcomingDeadlines.OVERDUE',
+      );
 
     if (daysLeft === 0)
       return this.translationService.translate(
@@ -76,11 +82,5 @@ export class UpcomingDeadlinesComponent {
     const timeDiff = end.getTime() - currentDate.getTime();
 
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
-  }
-
-  private isUpcomingDeadline(endDate: string): boolean {
-    const daysLeft = this.calculateDaysLeft(endDate);
-
-    return daysLeft >= 0 && daysLeft <= 30;
   }
 }
