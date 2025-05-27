@@ -24,10 +24,10 @@
         </p>
         <p
           class="text-xs sm:text-sm font-semibold {{
-            deadlineClass(project.endDate, project.status)
+            deadlineClass(project.endDate)
           }}"
         >
-          {{ deadlineMessage(project.endDate, project.status) }}
+          {{ deadlineMessage(project.endDate) }}
         </p>
       </div>
     </button>
