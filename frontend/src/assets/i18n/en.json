@@ -116,7 +116,8 @@
       "DEADLINE": "Deadline",
       "DAY_LEFT": "Tomorrow",
       "DAYS_LEFT": "{{daysLeft}} days left",
-      "TODAY": "Today"
+      "TODAY": "Today",
+      "OVERDUE": "Overdue"
     },
     "projectsSummary": {
       "TITLE": "Projects summary",

@@ -116,7 +116,8 @@
       "DEADLINE": "Termin realizacji",
       "DAY_LEFT": "Jutro",
       "DAYS_LEFT": "Pozostało {{daysLeft}} dni",
-      "TODAY": "Dzisiaj"
+      "TODAY": "Dzisiaj",
+      "OVERDUE": "Po terminie"
     },
     "projectsSummary": {
       "TITLE": "Podsumowanie projektów",
@@ -420,7 +421,7 @@
       "403": "Niestety, nie posiadasz wymaganych uprawnień, aby uzyskać dostęp do tego {{resource}}",
       "404": "Przepraszamy, ale nie mogliśmy znaleźć tego {{resource}}",
       "409": {
-        "FIELD_CONFLICT": "Wygląda na to, że {{field}} jest już zajęty",
+        "FIELD_CONFLICT": "Wygląda na to, że {{field}} jest już w użyciu",
         "DEFAULT": "Nie można wykonać operacji z powodu konfliktu danych"
       },
       "500": "Wystąpił błąd serwera",
