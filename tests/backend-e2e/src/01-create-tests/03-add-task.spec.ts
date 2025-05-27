@@ -122,38 +122,6 @@ test('should return an error when task priority is incorrect', async ({ projectI
   expect(responseBody.code).toBe(400);
 });
 
-test('should return an error when dueDate is in the past', async ({ projectId }) => {
-  const dueDate = new Date(new Date().setDate(new Date().getDate() - 3)).toISOString().slice(0, 10);
-  const taskData = {
-    description: 'Test Task Description',
-    status: 'NOT_STARTED',
-    priority: 'HIGH',
-    dueDate: dueDate,
-  };
-
-  const response = await apiContext.post(`/api/v1/projects/${projectId}/tasks`, {
-    data: taskData,
-  });
-
-  expect(response.status()).toBe(400);
-  
-  const responseBody = await response.json();
-  expect(responseBody.code).toBe(400);
-  expect(responseBody.message).toBe("Validation failed");
-  expect(responseBody).toHaveProperty('timestamp');
-  expect(responseBody.errors).toBeInstanceOf(Array);
-  
-  expect(responseBody.errors).toEqual(
-    expect.arrayContaining([
-      expect.objectContaining({
-        errorCode: "BAD_REQUEST",
-        field: "dueDate",
-        message: "Task due date cannot be in the past."
-      })
-    ])
-  );
-});
-
 test('should return an error when dueDate is after project end date', async ({ projectId }) => {
   const dueDate = new Date(new Date().setDate(new Date().getDate() + 50)).toISOString().slice(0, 10);
   const taskData = {

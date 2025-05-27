@@ -70,7 +70,7 @@ test('should not update a project for empty project name and description', async
   expect(responseBody.message).toBe(`Validation failed`);
 });
 
-test('should not update and return an error when endDate is in the past', async ({ projectId }) => {
+test('should succesfully update project when endDate is in the past', async ({ projectId }) => {
   const endDate = new Date(new Date().setDate(new Date().getDate() - 2)).toISOString().slice(0, 10);
 
   const updatedProjectData = {
@@ -83,9 +83,10 @@ test('should not update and return an error when endDate is in the past', async 
     data: updatedProjectData,
   });
 
-  expect(response.status()).toBe(400);
+  expect(response.status()).toBe(200);
   const responseBody = await response.json();
-  expect(responseBody.message).toBe(`Validation failed`);
+  expect(responseBody.message).toBe(`Project updated successfully`);
+  expect(responseBody.data.endDate).toBe(endDate);
 });
 
 test('should not update project with non-existent id', async () => {

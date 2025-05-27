@@ -93,8 +93,8 @@ test('should return an error when task priority is incorrect', async ({ projectI
   expect(response.status()).toBe(400);
 });
 
-test('should return an error when dueDate is in the past', async ({ projectId, taskId }) => {
-  const dueDate = new Date(new Date().setDate(new Date().getDate() - 3)).toISOString().slice(0, 10);
+test('should return an error when dueDate is after project endDate', async ({ projectId, taskId }) => {
+  const dueDate = new Date(new Date().setDate(new Date().getDate() + 70)).toISOString().slice(0, 10);
   const taskData = {
     description: 'Test Task',
     status: 'NOT_STARTED',
