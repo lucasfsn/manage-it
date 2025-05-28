@@ -42,11 +42,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401 && !isRefreshTokenRequest && !isAuthRequest)
         return handleTokenRefresh(req, next, authService);
 
-      if (error.status === 401 && !isAuthRequest) {
-        authService.logout();
-
-        return throwError(() => error);
-      }
+      if (error.status === 401 && !isAuthRequest) authService.logout();
 
       return throwError(() => error);
     }),

@@ -19,12 +19,6 @@ import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 
-interface UpdateLoggedInUser {
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly email: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -75,8 +69,7 @@ export class AuthService {
   }
 
   public logout(): void {
-    this.cookieService.delete(ACCESS_TOKEN_KEY, '/');
-    this.cookieService.delete(REFRESH_TOKEN_KEY, '/');
+    this.clearTokens();
     this.currentUser.set(null);
 
     this.router.navigate(['/']);
@@ -85,6 +78,8 @@ export class AuthService {
   public isAuthenticated(): boolean {
     const accessToken = this.cookieService.get(ACCESS_TOKEN_KEY);
     const refreshToken = this.cookieService.get(REFRESH_TOKEN_KEY);
+
+    if (!accessToken || !refreshToken) return false;
 
     return (
       !this.isTokenExpired(accessToken) || !this.isTokenExpired(refreshToken)
@@ -105,7 +100,7 @@ export class AuthService {
       );
   }
 
-  public setUser(updatedData: UpdateLoggedInUser): void {
+  public setUser(updatedData: Partial<UserDto>): void {
     const user = this.currentUser();
     if (!user) return;
 
@@ -117,9 +112,9 @@ export class AuthService {
   }
 
   public refreshToken(): Observable<RefreshTokenDto> {
-    const refreshTokenValue = this.cookieService.check(REFRESH_TOKEN_KEY);
+    const hasRefreshToken = this.cookieService.check(REFRESH_TOKEN_KEY);
 
-    if (!refreshTokenValue) {
+    if (!hasRefreshToken) {
       this.logout();
 
       return EMPTY;
@@ -137,7 +132,6 @@ export class AuthService {
         }),
         map((res: Response<RefreshTokenDto>) => res.data),
         catchError((err: HttpErrorResponse) => {
-          console.log('elo - authservice');
           this.logout();
 
           return handleApiError(err);
@@ -156,6 +150,11 @@ export class AuthService {
     } catch {
       return true;
     }
+  }
+
+  public clearTokens(): void {
+    this.cookieService.delete(ACCESS_TOKEN_KEY, '/');
+    this.cookieService.delete(REFRESH_TOKEN_KEY, '/');
   }
 
   private storeTokens(accessToken: string, refreshToken: string): void {

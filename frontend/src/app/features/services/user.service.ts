@@ -38,13 +38,12 @@ export class UserService {
       >(`${environment.apiUrl}/users`, updatedData)
       .pipe(
         tap((res: Response<UserProfileDto>) => {
-          const loggedInUserData = {
-            firstName: updatedData.firstName,
-            lastName: updatedData.lastName,
-            email: updatedData.email,
-          };
-
-          this.authService.setUser(loggedInUserData);
+          this.authService.setUser({
+            username: res.data.username,
+            firstName: res.data.firstName,
+            lastName: res.data.lastName,
+            email: res.data.email,
+          });
           this.user.set(res.data);
         }),
         map((res: Response<UserProfileDto>) => res.data),
