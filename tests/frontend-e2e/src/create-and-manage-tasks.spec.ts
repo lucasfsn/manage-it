@@ -2,13 +2,11 @@ import { test, expect } from '@playwright/test';
 import { login } from './helpers/login';
 import { delete_notifications } from './helpers/delete_notifications';
 
-test('create project, add new tasks and edit task', async ({ page }) => {
+test('should create project, add new tasks and edit task', async ({ page }) => {
   // Dynamiczne daty
   const today = new Date();
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() + 1); // Jutro
-  const endDate = new Date(startDate);
-  endDate.setDate(startDate.getDate() + 31); // Za 31 dni
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + 31); // Za 31 dni
 
   const task1DueDate = new Date(today);
   task1DueDate.setDate(today.getDate() + 8);
@@ -16,7 +14,6 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   task2DueDate.setDate(today.getDate() + 12);
 
   const formatDate = (date: Date): string => date.toISOString().split('T')[0];
-  const startDateStr = formatDate(startDate);
   const endDateStr = formatDate(endDate);
   const task1DueDateStr = formatDate(task1DueDate);
   const task2DueDateStr = formatDate(task2DueDate);
@@ -32,14 +29,14 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await page.getByRole('button').filter({ hasText: 'add' }).click();
   await page.getByRole('textbox', { name: 'Project name' }).fill('Testowy projekt');
   await page.getByRole('textbox', { name: 'Description' }).fill('Projekt do testowania tasków');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);
-  await page.getByRole('textbox', { name: 'End Date' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Deadline' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Project name' }).click();
   await page.getByRole('button', { name: 'Create Project' }).click();
 
   await expect(page).toHaveURL(/\/projects\/[a-f0-9-]{36}/);
 
   // dodanie taska o statusie ukończony
-  await page.locator('app-drag-drop-list div').filter({ hasText: 'Completed add Add another task' }).getByRole('button').click();
+  await page.getByRole('button', { name: 'Add another task' }).nth(2).click();
   await expect(page.getByText('add_taskAdd TaskcloseDescription0/500Due DatePriority Low Medium High Reset')).toBeVisible();
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('New completed task');
@@ -56,24 +53,25 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await expect(page.locator('#completed')).toContainText(`New completed task High schedule ${task1DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`);
 
   // sprawdzanie stanu projektu (ile procent tasków w projekcie jest ukończonych)
-  await page.getByText('folder_open Projects').click();
-  await expect(page.locator('app-projects-list')).toContainText(`Testowy projekt Projekt do testowania tasków Start date: ${startDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} Deadline: ${endDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 100% Completed`);
-  await page.locator('div').filter({ hasText: 'Testowy projekt Projekt do' }).nth(2).click();
+  await page.getByRole('button', { name: 'Projects' }).click();
+  await expect(page.locator('app-projects-list')).toContainText(`Testowy projekt Projekt do testowania tasków Created at: ${today.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} Deadline: ${endDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 100% Completed`);
+  await page.getByRole('button', { name: 'Testowy projekt Projekt do' }).click();
 
   // dodanie nowego taska - tym razem jako nadchodzący
-  await page.locator('app-drag-drop-list div').filter({ hasText: 'Upcoming add Add another task' }).getByRole('button').click();
+  await page.getByRole('button', { name: 'Add another task' }).first().click();
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Task for future');
   await page.getByRole('textbox', { name: 'Due Date' }).fill(task2DueDateStr);
+  await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('button', { name: 'Create task' }).click();
 
   await expect(page.getByRole('alert', { name: 'Task has been created' })).toBeVisible();
   await expect(page.locator('#notStarted')).toContainText(`Task for future Low schedule ${task2DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`);
 
   // sprawdzanie stanu projektu (ile procent tasków w projekcie jest ukończonych)
-  await page.getByText('folder_open Projects').click();
-  await expect(page.locator('app-projects-list')).toContainText(`Testowy projekt Projekt do testowania tasków Start date: ${startDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} Deadline: ${endDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 50% Completed`);
-  await page.locator('div').filter({ hasText: 'Testowy projekt Projekt do' }).nth(2).click();
+  await page.getByRole('button', { name: 'Projects' }).click();
+  await expect(page.locator('app-projects-list')).toContainText(`Testowy projekt Projekt do testowania tasków Created at: ${today.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} Deadline: ${endDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 50% Completed`);
+  await page.getByRole('button', { name: 'Testowy projekt Projekt do' }).click();
 
   // edycja taska 
   await page.getByText(`Task for future Low schedule ${task2DueDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`).click();
@@ -106,19 +104,16 @@ test('create project, add new tasks and edit task', async ({ page }) => {
   await delete_notifications(page);
 });
 
-test('create project with tasks and add new members to task', async ({ page }) => {
+test('should create project with tasks and assign new members to task', async ({ page }) => {
   // Dynamiczne daty
   const today = new Date();
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() + 1); // Jutro
-  const endDate = new Date(startDate);
-  endDate.setDate(startDate.getDate() + 31); // Za 31 dni
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + 31); // Za 31 dni
 
   const task1DueDate = new Date(today);
   task1DueDate.setDate(today.getDate() + 8);
 
   const formatDate = (date: Date): string => date.toISOString().split('T')[0];
-  const startDateStr = formatDate(startDate);
   const endDateStr = formatDate(endDate);
   const task1DueDateStr = formatDate(task1DueDate);
 
@@ -133,17 +128,18 @@ test('create project with tasks and add new members to task', async ({ page }) =
   await page.getByRole('button').filter({ hasText: 'add' }).click();
   await page.getByRole('textbox', { name: 'Project name' }).fill('Taskowy projekt');
   await page.getByRole('textbox', { name: 'Description' }).fill('Projekt do tasków');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);
-  await page.getByRole('textbox', { name: 'End Date' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Deadline' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Project name' }).click();
   await page.getByRole('button', { name: 'Create Project' }).click();
 
   await expect(page).toHaveURL(/\/projects\/[a-f0-9-]{36}/);
 
   // utworzenie nowego taska
-  await page.locator('app-drag-drop-list div').filter({ hasText: 'In Progress add Add another' }).getByRole('button').click();
+  await page.getByRole('button', { name: 'Add another task' }).nth(1).click();
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Add member to task');
   await page.getByRole('textbox', { name: 'Due Date' }).fill(task1DueDateStr);
+  await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('button', { name: 'Create task' }).click();
   
   await expect(page.getByRole('alert', { name: 'Task has been created' })).toBeVisible();

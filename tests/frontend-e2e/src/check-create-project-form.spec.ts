@@ -3,7 +3,7 @@ import { login } from './helpers/login';
 
 const globalToday = new Date().toISOString().split('T')[0];
 
-test('create project form with invalid data', async ({ page }) => {
+test('should display errors while creating project with invalid inputs', async ({ page }) => {
   await login(page, 'johndoe@mail.com', '1qazXSW@');
     
   await page.getByText('Projects', { exact: true }).click();
@@ -20,18 +20,16 @@ test('create project form with invalid data', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Description' }).fill('x');
   await page.getByRole('textbox', { name: 'Description' }).press('Tab');
   await expect(page.locator('app-form-textarea-input-control')).toContainText('Project description must be at least 5 characters long.');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill('2025-03-01');
-  await expect(page.locator('form')).toContainText('Start date must be at least today.');
-  await page.getByRole('textbox', { name: 'End Date' }).fill('2025-03-26');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill(globalToday);
-  await expect(page.locator('form')).toContainText('End date cannot be earlier than the start date.');
+  await page.getByRole('textbox', { name: 'Deadline' }).fill('2025-03-26');
+  await page.getByRole('textbox', { name: 'Deadline' }).press('Tab');
+  await expect(page.locator('form')).toContainText('The project deadline must be in the future.');
 
   await page.getByRole('button', { name: 'Create Project' }).waitFor();
   await expect(page.getByRole('button', { name: 'Create Project' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Create Project' })).toBeDisabled();
 });
 
-test('check if reset form button is working', async ({ page }) => {
+test('should reset form by clicking the button', async ({ page }) => {
   await login(page, 'johndoe@mail.com', '1qazXSW@');
     
   await page.getByText('Projects', { exact: true }).click();
@@ -48,16 +46,11 @@ test('check if reset form button is working', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Description' }).fill('x');
   await page.getByRole('textbox', { name: 'Description' }).press('Tab');
   await expect(page.locator('app-form-textarea-input-control')).toContainText('Project description must be at least 5 characters long.');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill('2025-03-01');
-  await expect(page.locator('form')).toContainText('Start date must be at least today.');
-  await page.getByRole('textbox', { name: 'End Date' }).fill('2025-03-26');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill(globalToday);
-  await expect(page.locator('form')).toContainText('End date cannot be earlier than the start date.');
+  await page.getByRole('textbox', { name: 'Deadline' }).fill('2025-03-26');
 
   // sprawdź działanie przycisku do resetowania danych
   await page.getByRole('button', { name: 'Reset' }).click();
   await expect(page.getByRole('textbox', { name: 'Project name' })).toBeEmpty();
   await expect(page.getByRole('textbox', { name: 'Description' })).toBeEmpty();
-  await expect(page.getByRole('textbox', { name: 'Start Date' })).toHaveValue(globalToday);
-  await expect(page.getByRole('textbox', { name: 'End Date' })).toHaveValue(globalToday);
+  await expect(page.getByRole('textbox', { name: 'Deadline' })).toBeEmpty();
 });

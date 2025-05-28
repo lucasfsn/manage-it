@@ -5,15 +5,12 @@ import { delete_notifications } from './helpers/delete_notifications';
 test('should handle task chat and allow assigned member to rename or delete the task', async ({ page }) => {
   // Dynamiczne daty
   const today = new Date();
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() + 4);
-  const endDate = new Date(startDate);
-  endDate.setDate(startDate.getDate() + 10);
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + 14);
   const taskDueDate = new Date(today);
   taskDueDate.setDate(today.getDate() + 8);
 
   const formatDate = (date: Date): string => date.toISOString().split('T')[0];
-  const startDateStr = formatDate(startDate);
   const endDateStr = formatDate(endDate);
   const taskDueDateStr = formatDate(taskDueDate);
 
@@ -26,8 +23,8 @@ test('should handle task chat and allow assigned member to rename or delete the 
   await page.getByRole('textbox', { name: 'Project name' }).fill('Projekt z chatem dla taska');
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Projekt do testowania czatu');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);
-  await page.getByRole('textbox', { name: 'End Date' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Deadline' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Project name' }).click();
   await page.getByRole('button', { name: 'Create Project' }).click();
 
   // sprawdzenie danych projektu
@@ -35,7 +32,7 @@ test('should handle task chat and allow assigned member to rename or delete the 
   await expect(page.locator('app-project-details')).toContainText('Projekt do testowania czatu');
 
   // utworzenie taska
-  await page.locator('app-drag-drop-list div').filter({ hasText: 'In Progress add Add another' }).getByRole('button').click();
+  await page.getByRole('button', { name: 'Add another task' }).nth(1).click();
   await page.getByRole('textbox', { name: 'Description' }).click();
   await page.getByRole('textbox', { name: 'Description' }).fill('Task z chatem');
   await page.getByRole('textbox', { name: 'Description' }).press('Tab');
@@ -64,14 +61,14 @@ test('should handle task chat and allow assigned member to rename or delete the 
 
   // sprawdzenie chatu jako zalogowany użytkownik (John Doe)
   await page.getByRole('button').filter({ hasText: 'chat' }).click();
-  await page.getByRole('textbox', { name: 'Message...' }).click();
-  await page.getByRole('textbox', { name: 'Message...' }).fill('witam w tasku');
-  await page.getByRole('button').filter({ hasText: 'north' }).click();
+  await page.getByRole('textbox', { name: 'Send message' }).click();
+  await page.getByRole('textbox', { name: 'Send message' }).fill('witam w tasku');
+  await page.getByRole('textbox', { name: 'Send message' }).press('Enter');
   await expect(page.locator('app-chat')).toContainText('witam w tasku');
-  await page.getByRole('textbox', { name: 'Message...' }).click();
-  await page.getByRole('textbox', { name: 'Message...' }).fill('wysyłam wiadomość enterem');
-  await page.getByRole('textbox', { name: 'Message...' }).press('Enter');
-  await expect(page.locator('app-chat')).toContainText('wysyłam wiadomość enterem');
+  await page.getByRole('textbox', { name: 'Send message' }).click();
+  await page.getByRole('textbox', { name: 'Send message' }).fill('nowa wiadomość');
+  await page.getByRole('textbox', { name: 'Send message' }).press('Enter');
+  await expect(page.locator('app-chat')).toContainText('nowa wiadomość');
   await page.getByRole('button').filter({ hasText: 'keyboard_arrow_up' }).click();
 
   // wylogowanie się i zalogowanie jako Michael Johnson
@@ -90,10 +87,10 @@ test('should handle task chat and allow assigned member to rename or delete the 
   // sprawdzenie czatu jako członek przydzielony do taska (Michael Johnson)
   await page.getByRole('button').filter({ hasText: 'chat' }).click();
   await expect(page.locator('app-chat')).toContainText('witam w tasku');
-  await expect(page.locator('app-chat')).toContainText('wysyłam wiadomość enterem');
-  await page.getByRole('textbox', { name: 'Message...' }).click();
-  await page.getByRole('textbox', { name: 'Message...' }).fill('witam john doe');
-  await page.getByRole('button').filter({ hasText: 'north' }).click();
+  await expect(page.locator('app-chat')).toContainText('nowa wiadomość');
+  await page.getByRole('textbox', { name: 'Send message' }).click();
+  await page.getByRole('textbox', { name: 'Send message' }).fill('witam john doe');
+  await page.getByRole('textbox', { name: 'Send message' }).press('Enter');
   await expect(page.locator('app-chat')).toContainText('witam john doe');
   await page.getByRole('button').filter({ hasText: 'keyboard_arrow_up' }).click();
 

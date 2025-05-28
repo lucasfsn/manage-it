@@ -2,16 +2,13 @@ import { test, expect } from '@playwright/test';
 import { login } from './helpers/login';
 import { delete_notifications } from './helpers/delete_notifications';
 
-test('create project, add new member to project and check notifications', async ({ page }) => {
+test('should create project, add new member to project and check notifications', async ({ page }) => {
   // Dynamiczne daty
   const today = new Date();
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() + 4);
-  const endDate = new Date(startDate);
-  endDate.setDate(startDate.getDate() + 31);
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + 31);
 
   const formatDate = (date: Date): string => date.toISOString().split('T')[0];
-  const startDateStr = formatDate(startDate);
   const endDateStr = formatDate(endDate);
 
   await login(page, 'johndoe@mail.com', '1qazXSW@');
@@ -25,8 +22,8 @@ test('create project, add new member to project and check notifications', async 
   // dodaj nowy projekt
   await page.getByRole('textbox', { name: 'Project name' }).fill('Fancy projekt');
   await page.getByRole('textbox', { name: 'Description' }).fill('Tajne description testowego projektu');
-  await page.getByRole('textbox', { name: 'Start Date' }).fill(startDateStr);
-  await page.getByRole('textbox', { name: 'End Date' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Deadline' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Project name' }).click();
   await page.getByRole('button', { name: 'Create Project' }).click();
 
   // sprawdź poprawność wyświetlania danych utworzonego projektu
@@ -65,7 +62,8 @@ test('create project, add new member to project and check notifications', async 
 
   // usunięcie osoby z projektu
   await page.getByText('folder_open Projects').click();
-  await page.locator('div').filter({ hasText: 'Fancy projekt zedytowany' }).nth(2).click();
+  await expect(page.getByRole('button', { name: 'Fancy projekt zedytowany' })).toBeVisible();
+  await page.getByRole('button', { name: 'Fancy projekt zedytowany' }).click();
   await page.getByRole('list').getByRole('button').filter({ hasText: 'edit' }).click();
   await page.getByRole('button', { name: 'MM Mia Martinez' }).getByRole('button').click();
   await expect(page.getByRole('alert', { name: 'Mia Martinez has been removed' })).toBeVisible();

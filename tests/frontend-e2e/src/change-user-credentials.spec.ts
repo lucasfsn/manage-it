@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login } from './helpers/login';
 import { delete_notifications } from './helpers/delete_notifications';
 
-test('change user last name and password', async ({ page }) => {
+test('should change user last name and password', async ({ page }) => {
   await login(page, 'isabella.garcia@example.com', '1qazXSW@');
   await expect(page).toHaveURL('/dashboard');
 
@@ -24,8 +24,8 @@ test('change user last name and password', async ({ page }) => {
   await page.getByRole('checkbox', { name: 'Edit password' }).check();
   await page.getByRole('textbox', { name: 'Enter new password' }).click();
   await page.getByRole('textbox', { name: 'Enter new password' }).fill('1qazXSW@');
-  await page.getByRole('textbox', { name: 'Confirm password' }).click();
-  await page.getByRole('textbox', { name: 'Confirm password' }).fill('1qazXSW@');
+  await page.getByRole('textbox', { name: 'Repeat new password' }).click();
+  await page.getByRole('textbox', { name: 'Repeat new password' }).fill('1qazXSW@');
   await page.getByRole('textbox', { name: 'First name' }).click();
   await page.getByRole('button', { name: 'Save' }).click();
 
@@ -41,7 +41,7 @@ test('change user last name and password', async ({ page }) => {
   await page.getByRole('button', { name: 'Save' }).click();
 });
 
-test('check reset button in change user credentials form', async ({ page }) => {
+test('should reset change user credentials form by clicking the button', async ({ page }) => {
   await login(page, 'isabella.garcia@example.com', '1qazXSW@');
 
   await page.getByText('IG Profile').click();
@@ -75,7 +75,7 @@ test('check reset button in change user credentials form', async ({ page }) => {
   await page.getByRole('button').filter({ hasText: 'close' }).click();
 });
 
-test('check password and email change', async ({ page }) => {
+test('should change email and password', async ({ page }) => {
   await login(page, 'isabella.garcia@example.com', '1qazXSW@');
   
   await page.getByText('IG Profile').click();
@@ -90,8 +90,8 @@ test('check password and email change', async ({ page }) => {
   await page.getByRole('checkbox', { name: 'Edit password' }).check();
   await page.getByRole('textbox', { name: 'Enter new password' }).click();
   await page.getByRole('textbox', { name: 'Enter new password' }).fill('Zm!enione9');
-  await page.getByRole('textbox', { name: 'Confirm password' }).click();
-  await page.getByRole('textbox', { name: 'Confirm password' }).fill('Zm!enione9');
+  await page.getByRole('textbox', { name: 'Repeat new password' }).click();
+  await page.getByRole('textbox', { name: 'Repeat new password' }).fill('Zm!enione9');
   await page.getByRole('textbox', { name: 'First name' }).click();
   await page.getByRole('button', { name: 'Save' }).click();
 
@@ -107,8 +107,8 @@ test('check password and email change', async ({ page }) => {
   await page.fill('input#password', '1qazXSW@');
   await page.locator('input#email').click();
   await page.getByRole('button', { name: 'Log in' }).click();
-  await expect(page.getByRole('alert', { name: 'Email and password do not' })).toBeVisible();
-
+  await expect(page.getByRole('alert', { name: 'Login failed. Please check' })).toBeVisible();
+                                                
   // udane logowanie korzystając ze zmienionych danych
   await login(page, 'zmienionymail@mail.com', 'Zm!enione9');
   await expect(page.getByRole('alert', { name: 'Logged in successfully' })).toBeVisible();
@@ -121,8 +121,8 @@ test('check password and email change', async ({ page }) => {
   await page.getByRole('checkbox', { name: 'Edit password' }).check();
   await page.getByRole('textbox', { name: 'Enter new password' }).click();
   await page.getByRole('textbox', { name: 'Enter new password' }).fill('1qazXSW@');
-  await page.getByRole('textbox', { name: 'Confirm password' }).click();
-  await page.getByRole('textbox', { name: 'Confirm password' }).fill('1qazXSW@');
+  await page.getByRole('textbox', { name: 'Repeat new password' }).click();
+  await page.getByRole('textbox', { name: 'Repeat new password' }).fill('1qazXSW@');
   await page.getByRole('textbox', { name: 'First name' }).click();
   await page.getByRole('button', { name: 'Save' }).click();
 

@@ -1,15 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-test('check theme change, polish language, filters and search options', async ({ page }) => {
+test('should change theme, should use polish language in application and should check filter and search operations', async ({ page }) => {
   // Dynamiczne daty
   const today = new Date();
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() + 4);
-  const endDate = new Date(startDate);
-  endDate.setDate(startDate.getDate() + 11);
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + 11);
 
   const formatDate = (date: Date): string => date.toISOString().split('T')[0];
-  const startDateStr = formatDate(startDate);
   const endDateStr = formatDate(endDate);
 
   await page.goto('/');
@@ -31,11 +28,11 @@ test('check theme change, polish language, filters and search options', async ({
   // logowanie do systemu jako Sophia Jones
   await page.getByRole('link', { name: 'Zaloguj' }).click();
   await expect(page.locator('form')).toContainText('Utwórz konto');
-  await page.getByRole('textbox', { name: 'Wprowadź swój email' }).click();
-  await page.getByRole('textbox', { name: 'Wprowadź swój email' }).fill('sophia.jones@example.com');
-  await page.getByRole('textbox', { name: 'Wprowadź swoje hasło' }).click();
-  await page.getByRole('textbox', { name: 'Wprowadź swoje hasło' }).fill('1qazXSW@');
-  await page.getByRole('textbox', { name: 'Wprowadź swoje hasło' }).press('Tab');
+  await page.getByRole('textbox', { name: 'Podaj email' }).click();
+  await page.getByRole('textbox', { name: 'Podaj email' }).fill('sophia.jones@example.com');
+  await page.getByRole('textbox', { name: 'Podaj hasło' }).click();
+  await page.getByRole('textbox', { name: 'Podaj hasło' }).fill('1qazXSW@');
+  await page.getByRole('textbox', { name: 'Podaj email' }).click();
   await page.getByRole('button', { name: 'Zaloguj się' }).click();
 
   // sprawdzenie widoku pulpitu
@@ -46,14 +43,14 @@ test('check theme change, polish language, filters and search options', async ({
   // utworzenie nowego projektu
   await page.getByRole('button', { name: 'Projekty' }).click();
   await page.getByRole('button').filter({ hasText: 'add' }).click();
-  await expect(page.locator('form')).toContainText('Nazwa projektuOpis0/1000Data rozpoczęciaData zakończeniaResetuj Utwórz projekt');
+  await expect(page.locator('form')).toContainText('Nazwa projektuOpis0/1000Termin realizacjiResetuj Utwórz projekt');
   await page.getByRole('textbox', { name: 'Nazwa projektu' }).click();
   await page.getByRole('textbox', { name: 'Nazwa projektu' }).fill('Polski projekt');
   await page.getByRole('textbox', { name: 'Nazwa projektu' }).press('Tab');
   await page.getByRole('textbox', { name: 'Opis' }).fill('Opis polskiego projektu');
   await page.getByRole('textbox', { name: 'Opis' }).press('Tab');
-  await page.getByRole('textbox', { name: 'Data rozpoczęcia' }).fill(startDateStr);
-  await page.getByRole('textbox', { name: 'Data zakończenia' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Termin realizacji' }).fill(endDateStr);
+  await page.getByRole('textbox', { name: 'Nazwa projektu' }).click();
   await page.getByRole('button', { name: 'Utwórz projekt' }).click();
 
   // sprawdzenie widoku projektu
@@ -63,8 +60,8 @@ test('check theme change, polish language, filters and search options', async ({
   await expect(page.locator('app-project-details')).toContainText('Członkowie');
   await expect(page.locator('app-project-details')).toContainText('Status');
   await expect(page.locator('app-project-details')).toContainText('W trakcie');
-  await expect(page.locator('app-project-details')).toContainText('Data rozpoczęcia');
-  await expect(page.locator('app-project-details')).toContainText('Data zakończenia');
+  await expect(page.locator('app-project-details')).toContainText('Data utworzenia');
+  await expect(page.locator('app-project-details')).toContainText('Termin realizacji');
 
   // sprawdzenie widoku pulpitu (czy projekt jest widoczny)
   await page.getByRole('button', { name: 'Pulpit' }).click();
