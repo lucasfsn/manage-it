@@ -17,7 +17,6 @@ import {
 } from '@angular/animations';
 import {
   AfterViewChecked,
-  AfterViewInit,
   Component,
   DestroyRef,
   ElementRef,
@@ -31,6 +30,7 @@ import {
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiEvent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
@@ -46,6 +46,7 @@ import { ToastrService } from 'ngx-toastr';
     TranslateModule,
     ProfileIconComponent,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
@@ -63,12 +64,8 @@ import { ToastrService } from 'ngx-toastr';
     ]),
   ],
 })
-export class ChatComponent
-  implements OnInit, AfterViewChecked, OnDestroy, AfterViewInit
-{
+export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('scroll') private scroll!: ElementRef;
-  @ViewChild('input') private input!: ElementRef;
-
   @Output() public handleClose = new EventEmitter<void>();
 
   private destroyRef = inject(DestroyRef);
@@ -130,6 +127,7 @@ export class ChatComponent
     if (!this.projectId) return;
 
     this.loading = true;
+    this.form.disable();
     this.chatService.getChatHistory(this.projectId, this.taskId).subscribe({
       error: (error: ErrorResponse) => {
         const localeMessage = this.mapperService.errorToastMapper(error.code);
@@ -138,6 +136,7 @@ export class ChatComponent
       },
       complete: () => {
         this.loading = false;
+        this.form.enable();
       },
     });
   }
@@ -173,10 +172,6 @@ export class ChatComponent
       this.watchTopic();
     });
     this.checkWindowSizeAndToggleLock();
-  }
-
-  public ngAfterViewInit(): void {
-    this.input.nativeElement.focus();
   }
 
   public ngAfterViewChecked(): void {
