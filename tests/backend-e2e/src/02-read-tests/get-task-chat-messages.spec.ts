@@ -27,6 +27,8 @@ test('should get chat messages for a task', async ({ projectId, taskId }) => {
   expect(response.status()).toBe(200);
   const responseBody = await response.json();
   expect(Array.isArray(responseBody.data)).toBe(true);
+  expect(responseBody.data.length).toBe(1);
+  expect(responseBody.data[0]).toHaveProperty('content');
 });
 
 test('should return an error if the project does not exist', async ({ taskId }) => {

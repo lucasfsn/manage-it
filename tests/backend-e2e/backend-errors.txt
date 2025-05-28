@@ -1,3 +1,0 @@
-BŁĘDY
-- Gdy dodajemy ponownie tego samego użytkownika do tego samego projektu - to mamy błąd 500. DO POPRAWY
-- Można dodać taska do projektu dłuuugo po zakończeniu tego projektu (przy edycji chyba też)
