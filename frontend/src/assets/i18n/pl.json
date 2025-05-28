@@ -17,6 +17,9 @@
     "buttons": {
       "LOG_IN": "Zaloguj się",
       "SIGN_UP": "Utwórz konto"
+    },
+    "errors": {
+      "INVALID_CREDENTIALS": "Nie udało się zalogować. Sprawdź dane i spróbuj ponownie"
     }
   },
   "signupForm": {
@@ -113,7 +116,8 @@
       "DEADLINE": "Termin realizacji",
       "DAY_LEFT": "Jutro",
       "DAYS_LEFT": "Pozostało {{daysLeft}} dni",
-      "TODAY": "Dzisiaj"
+      "TODAY": "Dzisiaj",
+      "OVERDUE": "Po terminie"
     },
     "projectsSummary": {
       "TITLE": "Podsumowanie projektów",
@@ -294,7 +298,8 @@
       "endDate": {
         "LABEL": "Termin realizacji",
         "errors": {
-          "REQUIRED": "Termin realizacji jest wymagany."
+          "REQUIRED": "Termin realizacji jest wymagany.",
+          "MIN": "Termin realizacji projektu musi być w przyszłości."
         }
       },
       "buttons": {
@@ -413,10 +418,13 @@
     },
     "error": {
       "400": "Ups! Coś poszło nie tak z Twoim żądaniem",
-      "401": "Nie udało się zalogować. Sprawdź dane i spróbuj ponownie",
+      "401": "Wystąpił problem z autoryzacją",
       "403": "Niestety, nie posiadasz wymaganych uprawnień, aby uzyskać dostęp do tego {{resource}}",
       "404": "Przepraszamy, ale nie mogliśmy znaleźć tego {{resource}}",
-      "409": "Wygląda na to, że {{field}} jest już zajęty",
+      "409": {
+        "FIELD_CONFLICT": "Wygląda na to, że {{field}} jest już w użyciu",
+        "DEFAULT": "Nie można wykonać operacji z powodu konfliktu danych"
+      },
       "500": "Wystąpił błąd serwera",
       "503": "Serwer jest obecnie niedostępny",
       "DEFAULT": "Wystąpił nieoczekiwany błąd"

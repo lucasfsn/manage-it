@@ -12,6 +12,7 @@ import { getTodayDate } from '@/app/shared/utils/get-today-date.util';
 import { getTomorrowDate } from '@/app/shared/utils/get-tomorrow-date.util';
 import {
   maxLengthValidator,
+  minDateValidator,
   minLengthValidator,
   profanityValidator,
   requiredValidator,
@@ -220,6 +221,13 @@ export class ProjectFormComponent implements OnInit {
   public ngOnInit(): void {
     const { isEditing } = this.route.snapshot.data as RouteData;
     this.isEditing = isEditing;
+
+    if (!this.isEditing) {
+      this.form.controls.endDate.addValidators(
+        minDateValidator(getTodayDate(), 'project.form.endDate.errors.MIN'),
+      );
+      this.form.controls.endDate.updateValueAndValidity();
+    }
 
     this.fillFormWithDefaultValues();
   }

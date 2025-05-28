@@ -9,6 +9,10 @@
     .close-button {
       display: flex;
     }
+
+    .send-message-button {
+      display: none;
+    }
   }
 }
 
@@ -22,6 +26,10 @@
 
     .close-button {
       display: flex;
+    }
+
+    .send-message-button {
+      display: none;
     }
   }
 }
@@ -40,6 +48,10 @@
 
     .close-button {
       display: none;
+    }
+
+    .send-message-button {
+      display: flex;
     }
   }
 }

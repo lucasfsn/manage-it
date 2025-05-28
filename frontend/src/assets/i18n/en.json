@@ -17,6 +17,9 @@
     "buttons": {
       "LOG_IN": "Log in",
       "SIGN_UP": "Create an account"
+    },
+    "errors": {
+      "INVALID_CREDENTIALS": "Login failed. Please check your data, then try again"
     }
   },
   "signupForm": {
@@ -113,7 +116,8 @@
       "DEADLINE": "Deadline",
       "DAY_LEFT": "Tomorrow",
       "DAYS_LEFT": "{{daysLeft}} days left",
-      "TODAY": "Today"
+      "TODAY": "Today",
+      "OVERDUE": "Overdue"
     },
     "projectsSummary": {
       "TITLE": "Projects summary",
@@ -294,7 +298,8 @@
       "endDate": {
         "LABEL": "Deadline",
         "errors": {
-          "REQUIRED": "Deadline is required."
+          "REQUIRED": "Deadline is required.",
+          "MIN": "The project deadline must be in the future."
         }
       },
       "buttons": {
@@ -413,10 +418,13 @@
     },
     "error": {
       "400": "Oops! Something went wrong with your request",
-      "401": "Login failed. Please check your data, then try again",
+      "401": "You are not authorized to perform this action",
       "403": "You do not have permission to access this {{resource}}",
       "404": "The requested {{resource}}  was not found",
-      "409": "It looks like this {{field}} is already taken",
+      "409": {
+        "FIELD_CONFLICT": "It looks like this {{field}} is already taken",
+        "DEFAULT": "The operation could not be performed due to a data conflict"
+      },
       "500": "A server error occurred",
       "503": "The service is temporarily unavailable",
       "DEFAULT": "An unexpected error has occurred"
