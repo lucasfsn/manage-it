@@ -21,7 +21,7 @@ test('should display errors while creating project with invalid inputs', async (
   await page.getByRole('textbox', { name: 'Description' }).press('Tab');
   await expect(page.locator('app-form-textarea-input-control')).toContainText('Project description must be at least 5 characters long.');
   await page.getByRole('textbox', { name: 'Deadline' }).fill('2025-03-26');
-  await page.getByRole('textbox', { name: 'Deadline' }).press('Tab');
+  await page.getByRole('textbox', { name: 'Project name' }).click();
   await expect(page.locator('form')).toContainText('The project deadline must be in the future.');
 
   await page.getByRole('button', { name: 'Create Project' }).waitFor();
