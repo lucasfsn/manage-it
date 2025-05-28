@@ -298,7 +298,8 @@
       "endDate": {
         "LABEL": "Termin realizacji",
         "errors": {
-          "REQUIRED": "Termin realizacji jest wymagany."
+          "REQUIRED": "Termin realizacji jest wymagany.",
+          "MIN": "Termin realizacji projektu musi być w przyszłości."
         }
       },
       "buttons": {

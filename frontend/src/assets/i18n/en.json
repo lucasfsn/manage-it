@@ -298,7 +298,8 @@
       "endDate": {
         "LABEL": "Deadline",
         "errors": {
-          "REQUIRED": "Deadline is required."
+          "REQUIRED": "Deadline is required.",
+          "MIN": "The project deadline must be in the future."
         }
       },
       "buttons": {

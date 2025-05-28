@@ -8,6 +8,7 @@ export const authGuard: CanActivateFn & CanActivateChildFn = () => {
 
   if (authService.isAuthenticated()) return true;
 
+  authService.clearTokens();
   router.navigate(['/auth/login']);
 
   return false;

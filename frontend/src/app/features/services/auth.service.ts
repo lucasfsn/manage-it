@@ -15,14 +15,9 @@ import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
-
-interface UpdateLoggedInUser {
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly email: string;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -74,8 +69,8 @@ export class AuthService {
   }
 
   public logout(): void {
-    this.cookieService.delete(ACCESS_TOKEN_KEY, '/');
-    this.cookieService.delete(REFRESH_TOKEN_KEY, '/');
+    this.clearTokens();
+    this.currentUser.set(null);
 
     this.router.navigate(['/']);
   }
@@ -83,6 +78,7 @@ export class AuthService {
   public isAuthenticated(): boolean {
     const accessToken = this.cookieService.get(ACCESS_TOKEN_KEY);
     const refreshToken = this.cookieService.get(REFRESH_TOKEN_KEY);
+
     if (!accessToken || !refreshToken) return false;
 
     return (
@@ -104,7 +100,7 @@ export class AuthService {
       );
   }
 
-  public setUser(updatedData: UpdateLoggedInUser): void {
+  public setUser(updatedData: Partial<UserDto>): void {
     const user = this.currentUser();
     if (!user) return;
 
@@ -116,9 +112,9 @@ export class AuthService {
   }
 
   public refreshToken(): Observable<RefreshTokenDto> {
-    const refreshTokenValue = this.cookieService.check(REFRESH_TOKEN_KEY);
+    const hasRefreshToken = this.cookieService.check(REFRESH_TOKEN_KEY);
 
-    if (!refreshTokenValue) {
+    if (!hasRefreshToken) {
       this.logout();
 
       return EMPTY;
@@ -143,6 +139,24 @@ export class AuthService {
       );
   }
 
+  public isTokenExpired(token: string): boolean {
+    try {
+      const decodedToken = jwtDecode(token);
+      if (!decodedToken.exp) return true;
+
+      const currentTime = Date.now() / 1000;
+
+      return decodedToken.exp < currentTime;
+    } catch {
+      return true;
+    }
+  }
+
+  public clearTokens(): void {
+    this.cookieService.delete(ACCESS_TOKEN_KEY, '/');
+    this.cookieService.delete(REFRESH_TOKEN_KEY, '/');
+  }
+
   private storeTokens(accessToken: string, refreshToken: string): void {
     const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day
 
@@ -164,16 +178,5 @@ export class AuthService {
       true,
       'Strict',
     );
-  }
-
-  public isTokenExpired(token: string): boolean {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      if (!payload.exp) return false;
-
-      return Date.now() > payload.exp * 1000;
-    } catch {
-      return true;
-    }
   }
 }
