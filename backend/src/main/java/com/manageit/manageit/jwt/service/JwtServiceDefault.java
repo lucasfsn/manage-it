@@ -68,12 +68,6 @@ public class JwtServiceDefault implements JwtService {
     }
 
     @Override
-    public boolean isTokenValid(String token, User user) {
-        final UUID userId = UUID.fromString(extractUserId(token));
-        return (userId.equals(user.getId())) && !isTokenExpired(token);
-    }
-
-    @Override
     public boolean isTokenValid(JwtToken jwtToken, User user) {
         UUID userId = UUID.fromString(jwtToken.getSubject());
         return (userId.equals(user.getId())) && !isTokenExpired(jwtToken);
