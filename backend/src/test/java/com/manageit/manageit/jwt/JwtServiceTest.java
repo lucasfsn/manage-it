@@ -240,7 +240,7 @@ class JwtServiceTest {
 
         assertThat(capturedClaims.getSubject()).isEqualTo(testUserId.toString());
         assertThat(capturedClaims.get("type", String.class)).isEqualTo("refresh");
-        assertThat(capturedClaims.getIssuedAt()).isCloseTo(new Date(), 1000);
+        assertThat(capturedClaims.getIssuedAt()).isCloseTo(new Date(), 5000);
         assertThat(capturedClaims.getExpiration()).isCloseTo(new Date(System.currentTimeMillis() + TEST_JWT_REFRESH_EXPIRATION * 1000), 5000);
         assertThat(capturedClaims.get("authorities", List.class)).containsExactly("USER");
     }

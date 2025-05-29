@@ -341,7 +341,6 @@ class ProjectServiceTest {
 
     @Test
     void shouldRemoveUserFromProject_Successfully() {
-        // Given
         User userToRemove = createTestUser("usertoremove", UUID.randomUUID());
         testProject.getMembers().add(userToRemove);
 
@@ -415,6 +414,123 @@ class ProjectServiceTest {
         ProjectModificationNotAllowedException exception = assertThrows(
                 ProjectModificationNotAllowedException.class,
                 () -> projectService.isProjectCompleted(testProject)
+        );
+
+        assertEquals("Cannot modify a completed project.", exception.getMessage());
+    }
+
+
+    @Test
+    void shouldUpdateProjectDescription_Successfully() {
+        UpdateProjectRequestDto request = new UpdateProjectRequestDto();
+        request.setDescription("Updated Description");
+
+        ProjectResponseDto responseDto = new ProjectResponseDto();
+
+        when(entityManager.merge(testOwner)).thenReturn(testOwner);
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+        when(projectRepository.save(testProject)).thenReturn(testProject);
+        when(projectMapper.toProjectResponseDto(testProject)).thenReturn(responseDto);
+
+        ProjectResponseDto result = projectService.updateProject(testOwner, testProjectId, request);
+
+        assertEquals(responseDto, result);
+        assertEquals("Updated Description", testProject.getDescription());
+        verify(notificationService).createAndSendNotification(
+                eq(testProject.getMembers()),
+                eq(testOwner),
+                eq("project;update;" + testProject.getName()),
+                eq(testProject.getId()),
+                isNull()
+        );
+    }
+
+    @Test
+    void shouldUpdateProjectEndDate_Successfully() {
+        LocalDate newEndDate = LocalDate.now().plusDays(60);
+        UpdateProjectRequestDto request = new UpdateProjectRequestDto();
+        request.setEndDate(newEndDate);
+
+        ProjectResponseDto responseDto = new ProjectResponseDto();
+
+        when(entityManager.merge(testOwner)).thenReturn(testOwner);
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+        when(projectRepository.save(testProject)).thenReturn(testProject);
+        when(projectMapper.toProjectResponseDto(testProject)).thenReturn(responseDto);
+
+        ProjectResponseDto result = projectService.updateProject(testOwner, testProjectId, request);
+
+        assertEquals(responseDto, result);
+        assertEquals(newEndDate, testProject.getEndDate());
+        verify(notificationService).createAndSendNotification(
+                eq(testProject.getMembers()),
+                eq(testOwner),
+                eq("project;update;" + testProject.getName()),
+                eq(testProject.getId()),
+                isNull()
+        );
+    }
+
+    @Test
+    void shouldUpdateProject_WithEmptyRequest() {
+        UpdateProjectRequestDto request = new UpdateProjectRequestDto();
+
+        ProjectResponseDto responseDto = new ProjectResponseDto();
+        String originalName = testProject.getName();
+        String originalDescription = testProject.getDescription();
+        LocalDate originalEndDate = testProject.getEndDate();
+
+        when(entityManager.merge(testOwner)).thenReturn(testOwner);
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+        when(projectRepository.save(testProject)).thenReturn(testProject);
+        when(projectMapper.toProjectResponseDto(testProject)).thenReturn(responseDto);
+
+        ProjectResponseDto result = projectService.updateProject(testOwner, testProjectId, request);
+
+        assertEquals(responseDto, result);
+        assertEquals(originalName, testProject.getName());
+        assertEquals(originalDescription, testProject.getDescription());
+        assertEquals(originalEndDate, testProject.getEndDate());
+        verify(notificationService).createAndSendNotification(
+                eq(testProject.getMembers()),
+                eq(testOwner),
+                eq("project;update;" + testProject.getName()),
+                eq(testProject.getId()),
+                isNull()
+        );
+    }
+
+    @Test
+    void shouldThrowException_WhenAddingUserToCompletedProject() {
+        testProject.setStatus(ProjectStatus.COMPLETED);
+        User newUser = createTestUser("newuser", UUID.randomUUID());
+        UserResponseDto request = new UserResponseDto();
+        request.setName("newuser");
+
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> projectService.addUserToProject(testOwner, testProjectId, request)
+        );
+
+        assertEquals("Cannot modify a completed project.", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowException_WhenRemovingUserFromCompletedProject() {
+        testProject.setStatus(ProjectStatus.COMPLETED);
+        User userToRemove = createTestUser("usertoremove", UUID.randomUUID());
+        testProject.getMembers().add(userToRemove);
+
+        UserResponseDto request = new UserResponseDto();
+        request.setName("usertoremove");
+
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> projectService.removeUserFromProject(testOwner, testProjectId, request)
         );
 
         assertEquals("Cannot modify a completed project.", exception.getMessage());

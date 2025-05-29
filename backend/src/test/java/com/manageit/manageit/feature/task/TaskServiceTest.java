@@ -13,6 +13,8 @@ import com.manageit.manageit.feature.task.dto.TaskResponseDto;
 import com.manageit.manageit.feature.task.dto.UpdateTaskRequestDto;
 import com.manageit.manageit.feature.task.mapper.TaskMapper;
 import com.manageit.manageit.feature.task.model.Task;
+import com.manageit.manageit.feature.task.model.TaskPriority;
+import com.manageit.manageit.feature.task.model.TaskStatus;
 import com.manageit.manageit.feature.task.repository.TaskRepository;
 import com.manageit.manageit.feature.task.service.TaskServiceDefault;
 import com.manageit.manageit.feature.user.dto.UserResponseDto;
@@ -27,6 +29,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -197,8 +200,27 @@ class TaskServiceTest {
         assertEquals(expectedDto, result);
         verify(projectService).getProjectById(projectId);
         verify(taskRepository).save(any(Task.class));
-
         verify(chatService).saveChat(testProject, savedTask);
+    }
+
+    @Test
+    void createAndAddTaskToProject_WhenUserNotInProject_ShouldThrowException() {
+        User unauthorizedUser = User.builder()
+                .id(UUID.randomUUID())
+                .username("unauthorized")
+                .build();
+        CreateTaskRequestDto createRequest = CreateTaskRequestDto.builder()
+                .description("New task")
+                .build();
+
+        when(entityManager.merge(unauthorizedUser)).thenReturn(unauthorizedUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+
+        UserNotInProjectException exception = assertThrows(
+                UserNotInProjectException.class,
+                () -> taskService.createAndAddTaskToProject(unauthorizedUser, projectId, createRequest)
+        );
+        assertEquals("User unauthorized is not member of project", exception.getMessage());
     }
 
     @Test
@@ -218,6 +240,25 @@ class TaskServiceTest {
                 eq(projectId),
                 eq(taskId)
         );
+    }
+
+    @Test
+    void deleteTask_WhenTaskNotInProject_ShouldThrowTaskNotInProjectException() {
+        Project anotherProject = Project.builder().id(UUID.randomUUID()).build();
+        Task taskFromAnotherProject = Task.builder()
+                .id(taskId)
+                .project(anotherProject)
+                .build();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromAnotherProject));
+
+        TaskNotInProjectException exception = assertThrows(
+                TaskNotInProjectException.class,
+                () -> taskService.deleteTask(testUser, taskId, projectId)
+        );
+        assertNotNull(exception);
     }
 
     @Test
@@ -248,6 +289,147 @@ class TaskServiceTest {
                 eq(projectId),
                 eq(taskId)
         );
+    }
+
+    @Test
+    void updateTask_WhenAllFieldsProvided_ShouldUpdateAllFields() {
+        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
+                .description("Updated description")
+                .status(TaskStatus.IN_PROGRESS)
+                .priority(TaskPriority.HIGH)
+                .dueDate(LocalDate.now())
+                .build();
+
+        TaskResponseDto expectedDto = new TaskResponseDto();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(testTask));
+        when(taskRepository.save(testTask)).thenReturn(testTask);
+        when(taskMapper.toTaskResponseDto(testTask)).thenReturn(expectedDto);
+
+        TaskResponseDto result = taskService.updateTask(testUser, taskId, projectId, updateRequest);
+
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
+        assertEquals("Updated description", testTask.getDescription());
+        assertEquals(TaskStatus.IN_PROGRESS, testTask.getStatus());
+        assertEquals(TaskPriority.HIGH, testTask.getPriority());
+        assertEquals(updateRequest.getDueDate(), testTask.getDueDate());
+        assertNotNull(testTask.getUpdatedAt());
+    }
+
+    @Test
+    void updateTask_WhenOnlyStatusProvided_ShouldUpdateOnlyStatus() {
+        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
+                .status(TaskStatus.COMPLETED)
+                .build();
+
+        String originalDescription = testTask.getDescription();
+        TaskResponseDto expectedDto = new TaskResponseDto();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(testTask));
+        when(taskRepository.save(testTask)).thenReturn(testTask);
+        when(taskMapper.toTaskResponseDto(testTask)).thenReturn(expectedDto);
+
+        TaskResponseDto result = taskService.updateTask(testUser, taskId, projectId, updateRequest);
+
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
+        assertEquals(originalDescription, testTask.getDescription());
+        assertEquals(TaskStatus.COMPLETED, testTask.getStatus());
+        assertNotNull(testTask.getUpdatedAt());
+    }
+
+    @Test
+    void updateTask_WhenOnlyPriorityProvided_ShouldUpdateOnlyPriority() {
+        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
+                .priority(TaskPriority.LOW)
+                .build();
+
+        String originalDescription = testTask.getDescription();
+        TaskResponseDto expectedDto = new TaskResponseDto();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(testTask));
+        when(taskRepository.save(testTask)).thenReturn(testTask);
+        when(taskMapper.toTaskResponseDto(testTask)).thenReturn(expectedDto);
+
+        TaskResponseDto result = taskService.updateTask(testUser, taskId, projectId, updateRequest);
+
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
+        assertEquals(originalDescription, testTask.getDescription());
+        assertEquals(TaskPriority.LOW, testTask.getPriority());
+        assertNotNull(testTask.getUpdatedAt());
+    }
+
+    @Test
+    void updateTask_WhenOnlyDueDateProvided_ShouldUpdateOnlyDueDate() {
+        LocalDate newDueDate = LocalDate.now().plusDays(1);
+        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
+                .dueDate(newDueDate)
+                .build();
+
+        String originalDescription = testTask.getDescription();
+        TaskResponseDto expectedDto = new TaskResponseDto();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(testTask));
+        when(taskRepository.save(testTask)).thenReturn(testTask);
+        when(taskMapper.toTaskResponseDto(testTask)).thenReturn(expectedDto);
+
+        TaskResponseDto result = taskService.updateTask(testUser, taskId, projectId, updateRequest);
+
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
+        assertEquals(originalDescription, testTask.getDescription());
+        assertEquals(newDueDate, testTask.getDueDate());
+        assertNotNull(testTask.getUpdatedAt());
+    }
+
+    @Test
+    void updateTask_WhenTaskNotFound_ShouldThrowEntityNotFoundException() {
+        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
+                .description("Updated description")
+                .build();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> taskService.updateTask(testUser, taskId, projectId, updateRequest)
+        );
+        assertEquals("No task found with id: " + taskId, exception.getMessage());
+    }
+
+    @Test
+    void updateTask_WhenTaskNotInProject_ShouldThrowTaskNotInProjectException() {
+        Project anotherProject = Project.builder().id(UUID.randomUUID()).build();
+        Task taskFromAnotherProject = Task.builder()
+                .id(taskId)
+                .project(anotherProject)
+                .build();
+
+        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
+                .description("Updated description")
+                .build();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromAnotherProject));
+
+        TaskNotInProjectException exception = assertThrows(
+                TaskNotInProjectException.class,
+                () -> taskService.updateTask(testUser, taskId, projectId, updateRequest)
+        );
+        assertNotNull(exception);
     }
 
     @Test
@@ -300,6 +482,35 @@ class TaskServiceTest {
                 () -> taskService.addUserToTask(testUser, taskId, projectId, userRequest)
         );
         assertEquals("User outsider is not member of project", exception.getMessage());
+    }
+
+    @Test
+    void addUserToTask_WhenTaskNotInProject_ShouldThrowTaskNotInProjectException() {
+        User userToAdd = User.builder()
+                .id(UUID.randomUUID())
+                .username("userToAdd")
+                .build();
+        testProject.getMembers().add(userToAdd);
+
+        Project anotherProject = Project.builder().id(UUID.randomUUID()).build();
+        Task taskFromAnotherProject = Task.builder()
+                .id(taskId)
+                .project(anotherProject)
+                .users(new ArrayList<>())
+                .build();
+
+        UserResponseDto userRequest = new UserResponseDto();
+        userRequest.setName("userToAdd");
+
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(userService.getUserByUsername("userToAdd")).thenReturn(userToAdd);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromAnotherProject));
+
+        TaskNotInProjectException exception = assertThrows(
+                TaskNotInProjectException.class,
+                () -> taskService.addUserToTask(testUser, taskId, projectId, userRequest)
+        );
+        assertNotNull(exception);
     }
 
     @Test
@@ -360,6 +571,28 @@ class TaskServiceTest {
     }
 
     @Test
+    void removeUserFromTask_WhenTaskNotInProject_ShouldThrowTaskNotInProjectException() {
+        Project anotherProject = Project.builder().id(UUID.randomUUID()).build();
+        Task taskFromAnotherProject = Task.builder()
+                .id(taskId)
+                .project(anotherProject)
+                .users(new ArrayList<>())
+                .build();
+
+        UserResponseDto userRequest = new UserResponseDto();
+        userRequest.setName("userToRemove");
+
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromAnotherProject));
+
+        TaskNotInProjectException exception = assertThrows(
+                TaskNotInProjectException.class,
+                () -> taskService.removeUserFromTask(testUser, taskId, projectId, userRequest)
+        );
+        assertNotNull(exception);
+    }
+
+    @Test
     void removeUserFromTask_WhenUserNotInTask_ShouldThrowException() {
         User userNotInTask = User.builder()
                 .id(UUID.randomUUID())
@@ -377,65 +610,5 @@ class TaskServiceTest {
                 () -> taskService.removeUserFromTask(testUser, taskId, projectId, userRequest)
         );
         assertEquals("User is not a member of the task", exception.getMessage());
-    }
-
-    @Test
-    void createAndAddTaskToProject_WhenUserNotInProject_ShouldThrowException() {
-        User unauthorizedUser = User.builder()
-                .id(UUID.randomUUID())
-                .username("unauthorized")
-                .build();
-        CreateTaskRequestDto createRequest = CreateTaskRequestDto.builder()
-                .description("New task")
-                .build();
-
-        when(entityManager.merge(unauthorizedUser)).thenReturn(unauthorizedUser);
-        when(projectService.getProjectById(projectId)).thenReturn(testProject);
-
-        UserNotInProjectException exception = assertThrows(
-                UserNotInProjectException.class,
-                () -> taskService.createAndAddTaskToProject(unauthorizedUser, projectId, createRequest)
-        );
-        assertEquals("User unauthorized is not member of project", exception.getMessage());
-    }
-
-    @Test
-    void updateTask_WhenTaskNotFound_ShouldThrowEntityNotFoundException() {
-        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
-                .description("Updated description")
-                .build();
-
-        when(entityManager.merge(testUser)).thenReturn(testUser);
-        when(projectService.getProjectById(projectId)).thenReturn(testProject);
-        when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
-
-        EntityNotFoundException exception = assertThrows(
-                EntityNotFoundException.class,
-                () -> taskService.updateTask(testUser, taskId, projectId, updateRequest)
-        );
-        assertEquals("No task found with id: " + taskId, exception.getMessage());
-    }
-
-    @Test
-    void updateTask_WhenTaskNotInProject_ShouldThrowTaskNotInProjectException() {
-        Project anotherProject = Project.builder().id(UUID.randomUUID()).build();
-        Task taskFromAnotherProject = Task.builder()
-                .id(taskId)
-                .project(anotherProject)
-                .build();
-
-        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
-                .description("Updated description")
-                .build();
-
-        when(entityManager.merge(testUser)).thenReturn(testUser);
-        when(projectService.getProjectById(projectId)).thenReturn(testProject);
-        when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromAnotherProject));
-
-        TaskNotInProjectException exception = assertThrows(
-                TaskNotInProjectException.class,
-                () -> taskService.updateTask(testUser, taskId, projectId, updateRequest)
-        );
-        assertNotNull(exception);
     }
 }
