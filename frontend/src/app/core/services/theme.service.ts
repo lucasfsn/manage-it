@@ -17,6 +17,8 @@ export class ThemeService {
     const storedTheme = localStorage.getItem(THEME_KEY) as Theme;
 
     if (this.isValidTheme(storedTheme)) this.theme.set(storedTheme);
+
+    this.applyTheme(this.theme());
   }
 
   public changeTheme(): void {
