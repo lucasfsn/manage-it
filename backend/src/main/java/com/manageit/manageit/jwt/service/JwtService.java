@@ -19,8 +19,5 @@ public interface JwtService {
 
     JwtToken generateRefreshToken(UserDetails userDetails);
 
-    boolean isTokenValid(String token, User user);
-
     boolean isTokenValid(JwtToken jwtToken, User user);
-
 }
