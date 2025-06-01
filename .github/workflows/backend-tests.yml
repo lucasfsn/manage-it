@@ -1,4 +1,4 @@
-name: ManageIt Tests
+name: ManageIt Backend Tests
 
 on:
   push:
@@ -20,6 +20,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Run Unit Tests for Backend
+      - name: Run Unit Tests
         working-directory: backend
         run: mvn clean verify
