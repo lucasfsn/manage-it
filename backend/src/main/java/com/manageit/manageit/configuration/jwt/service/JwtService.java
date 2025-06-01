@@ -1,7 +1,7 @@
-package com.manageit.manageit.jwt.service;
+package com.manageit.manageit.configuration.jwt.service;
 
+import com.manageit.manageit.configuration.jwt.model.JwtToken;
 import com.manageit.manageit.feature.user.model.User;
-import com.manageit.manageit.jwt.model.JwtToken;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 

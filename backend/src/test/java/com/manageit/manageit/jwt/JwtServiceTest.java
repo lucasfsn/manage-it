@@ -1,9 +1,9 @@
 package com.manageit.manageit.jwt;
 
+import com.manageit.manageit.configuration.jwt.builder.JwtTokenParser;
+import com.manageit.manageit.configuration.jwt.model.JwtToken;
+import com.manageit.manageit.configuration.jwt.service.JwtServiceDefault;
 import com.manageit.manageit.feature.user.model.User;
-import com.manageit.manageit.jwt.builder.JwtTokenParser;
-import com.manageit.manageit.jwt.model.JwtToken;
-import com.manageit.manageit.jwt.service.JwtServiceDefault;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
@@ -24,12 +24,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.Field;
 import java.security.Key;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class JwtServiceTest {
