@@ -4,6 +4,7 @@ import com.manageit.manageit.core.dto.ErrorResponseDto;
 import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.TokenUserMismatchException;
+import com.manageit.manageit.core.exception.UserAlreadyInProjectException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInTaskException;
 import com.manageit.manageit.shared.dto.FieldValidationErrorsDto;
@@ -59,6 +60,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(TaskNotInProjectException.class)
     public ResponseEntity<ErrorResponseDto> handleException(TaskNotInProjectException exp) {
+        if (log.isErrorEnabled()) {
+            log.error(exp.getMessage(), exp);
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ErrorResponseDto.builder()
+                                .code(HttpStatus.BAD_REQUEST.value())
+                                .message(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(UserAlreadyInProjectException.class)
+    public ResponseEntity<ErrorResponseDto> handleException(UserAlreadyInProjectException exp) {
         if (log.isErrorEnabled()) {
             log.error(exp.getMessage(), exp);
         }
