@@ -4,15 +4,15 @@ import com.manageit.manageit.auth.dto.AuthenticationRequestDto;
 import com.manageit.manageit.auth.dto.AuthenticationResponseDto;
 import com.manageit.manageit.auth.dto.RegisterRequestDto;
 import com.manageit.manageit.auth.service.AuthenticationServiceDefault;
+import com.manageit.manageit.configuration.jwt.builder.JwtTokenParser;
+import com.manageit.manageit.configuration.jwt.dto.JwtTokenResponseDto;
+import com.manageit.manageit.configuration.jwt.model.JwtToken;
+import com.manageit.manageit.configuration.jwt.service.JwtService;
 import com.manageit.manageit.core.exception.JwtAuthenticationException;
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
 import com.manageit.manageit.feature.user.mapper.UserMapper;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.repository.UserRepository;
-import com.manageit.manageit.jwt.builder.JwtTokenParser;
-import com.manageit.manageit.jwt.dto.JwtTokenResponseDto;
-import com.manageit.manageit.jwt.model.JwtToken;
-import com.manageit.manageit.jwt.service.JwtService;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,9 +33,15 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationServiceTest {

@@ -1,6 +1,7 @@
 package com.manageit.manageit.feature.user.service;
 
 
+import com.manageit.manageit.configuration.jwt.service.JwtService;
 import com.manageit.manageit.feature.project.model.Project;
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
 import com.manageit.manageit.feature.user.dto.UpdateUserRequestDto;
@@ -9,7 +10,6 @@ import com.manageit.manageit.feature.user.dto.UserResponseDto;
 import com.manageit.manageit.feature.user.mapper.UserMapper;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.repository.UserRepository;
-import com.manageit.manageit.jwt.service.JwtService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
