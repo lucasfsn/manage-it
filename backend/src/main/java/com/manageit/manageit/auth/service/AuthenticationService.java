@@ -3,7 +3,7 @@ package com.manageit.manageit.auth.service;
 import com.manageit.manageit.auth.dto.AuthenticationRequestDto;
 import com.manageit.manageit.auth.dto.AuthenticationResponseDto;
 import com.manageit.manageit.auth.dto.RegisterRequestDto;
-import com.manageit.manageit.jwt.dto.JwtTokenResponseDto;
+import com.manageit.manageit.configuration.jwt.dto.JwtTokenResponseDto;
 
 public interface AuthenticationService {
 

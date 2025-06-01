@@ -1,7 +1,7 @@
-package com.manageit.manageit.jwt.builder;
+package com.manageit.manageit.configuration.jwt.builder;
 
+import com.manageit.manageit.configuration.jwt.model.JwtToken;
 import com.manageit.manageit.core.exception.JwtAuthenticationException;
-import com.manageit.manageit.jwt.model.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;

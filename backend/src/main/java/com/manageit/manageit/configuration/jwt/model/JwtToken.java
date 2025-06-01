@@ -1,4 +1,4 @@
-package com.manageit.manageit.jwt.model;
+package com.manageit.manageit.configuration.jwt.model;
 
 import io.jsonwebtoken.Claims;
 import lombok.Data;

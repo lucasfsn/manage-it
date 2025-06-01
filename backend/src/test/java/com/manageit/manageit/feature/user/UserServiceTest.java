@@ -1,5 +1,6 @@
 package com.manageit.manageit.feature.user;
 
+import com.manageit.manageit.configuration.jwt.service.JwtService;
 import com.manageit.manageit.feature.project.model.Project;
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
 import com.manageit.manageit.feature.user.dto.UpdateUserRequestDto;
@@ -9,7 +10,6 @@ import com.manageit.manageit.feature.user.mapper.UserMapper;
 import com.manageit.manageit.feature.user.model.User;
 import com.manageit.manageit.feature.user.repository.UserRepository;
 import com.manageit.manageit.feature.user.service.UserServiceDefault;
-import com.manageit.manageit.jwt.service.JwtService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,9 +24,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {

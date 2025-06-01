@@ -3,15 +3,15 @@ package com.manageit.manageit.auth.service;
 import com.manageit.manageit.auth.dto.AuthenticationRequestDto;
 import com.manageit.manageit.auth.dto.AuthenticationResponseDto;
 import com.manageit.manageit.auth.dto.RegisterRequestDto;
-import com.manageit.manageit.jwt.service.JwtService;
+import com.manageit.manageit.configuration.jwt.builder.JwtTokenParser;
+import com.manageit.manageit.configuration.jwt.dto.JwtTokenResponseDto;
+import com.manageit.manageit.configuration.jwt.model.JwtToken;
+import com.manageit.manageit.configuration.jwt.service.JwtService;
 import com.manageit.manageit.core.exception.JwtAuthenticationException;
-import com.manageit.manageit.feature.user.model.User;
-import com.manageit.manageit.feature.user.mapper.UserMapper;
-import com.manageit.manageit.feature.user.repository.UserRepository;
 import com.manageit.manageit.feature.user.dto.AuthenticatedUserResponseDto;
-import com.manageit.manageit.jwt.builder.JwtTokenParser;
-import com.manageit.manageit.jwt.dto.JwtTokenResponseDto;
-import com.manageit.manageit.jwt.model.JwtToken;
+import com.manageit.manageit.feature.user.mapper.UserMapper;
+import com.manageit.manageit.feature.user.model.User;
+import com.manageit.manageit.feature.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.UUID;
 
 @Service
@@ -58,7 +59,7 @@ public class AuthenticationServiceDefault implements AuthenticationService {
         );
         User user = ((User) auth.getPrincipal());
         AuthenticatedUserResponseDto authenticatedUserResponseDto = userMapper.toAuthenticatedUserResponse(user);
-        JwtToken jwtToken  = jwtService.generateToken(user);
+        JwtToken jwtToken = jwtService.generateToken(user);
         JwtToken refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponseDto.builder().accessToken(jwtToken.getToken()).refreshToken(refreshToken.getToken()).user(authenticatedUserResponseDto).build();
     }
