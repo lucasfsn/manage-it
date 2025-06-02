@@ -19,10 +19,10 @@
     />
     <div class="flex justify-center">
       <app-form-button
-        [disabled]="form.invalid || loading"
+        [disabled]="form.invalid || isLoading"
         (handleClick)="onSubmit()"
       >
-        @if (loading) {
+        @if (isLoading) {
           {{ "utils.LOADING" | translate }}
         } @else {
           {{ "loginForm.buttons.LOG_IN" | translate }}
