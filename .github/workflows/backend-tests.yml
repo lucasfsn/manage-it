@@ -1,11 +1,11 @@
-name: CI: Backend
+name: Backend Tests
 
 on:
   push:
     branches: ['**']
 
 jobs:
-  unit-tests:
+  run-backend-tests:
     runs-on: ubuntu-latest
 
     steps:
