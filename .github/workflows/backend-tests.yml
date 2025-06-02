@@ -2,9 +2,8 @@ name: Backend Tests
 
 on:
   push:
-    branches:
-      - '*'
-      - '!main'
+    branches-ignore:
+      - main
 
 jobs:
   run-backend-tests:
