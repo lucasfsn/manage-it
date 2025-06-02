@@ -4,6 +4,7 @@ on:
   push:
     branches-ignore:
       - main
+      - chore/add-github-workflow
 
 jobs:
   run-backend-tests:
