@@ -1,11 +1,11 @@
-name: ManageIt Backend Tests
+name: CI: Backend
 
 on:
   push:
     branches: ['**']
 
 jobs:
-  backend-tests:
+  unit-tests:
     runs-on: ubuntu-latest
 
     steps:
