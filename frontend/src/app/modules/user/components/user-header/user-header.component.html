@@ -25,9 +25,9 @@
         class="flex items-center justify-center gap-1 text-xs text-gray-600 sm:text-sm dark:text-gray-400"
       >
         <mat-icon class="text-md sm:text-lg">calendar_month</mat-icon>
-        <span
-          >{{ "user.profile.CREATE_DATE" | translate }}
-          {{ user.createdAt | customDate }}</span
+        <span>
+          {{ "user.profile.CREATE_DATE" | translate }}
+          {{ user.createdAt | customDate: "d MMMM y" }}</span
         >
       </p>
     </div>
