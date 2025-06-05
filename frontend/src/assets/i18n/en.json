@@ -93,7 +93,7 @@
   },
   "homepage": {
     "TITLE": "Transform the Way You Work with Intuitive Project Management.",
-    "DESCRIPTION": "Discover a new level of productivity with our project management tool. Organize tasks, collaborate with your team, and track progress in real-time. Whether it's a small project or a large team, our intuitive interface and robust features will help you achieve your goals faster.",
+    "DESCRIPTION": "Discover a new level of productivity with our project management tool. Organize tasks, collaborate with your team and track progress. Whether it's a small project or a large team, our intuitive interface and robust features will help you achieve your goals faster.",
     "SIGN_UP": "Sign up - it's free!"
   },
   "sidebar": {
@@ -483,11 +483,11 @@
     },
     "mapper": {
       "projectStatus": {
-        "IN_PROGRESS": "In progress",
+        "IN_PROGRESS": "In Progress",
         "COMPLETED": "Completed"
       },
       "taskStatus": {
-        "IN_PROGRESS": "In progress",
+        "IN_PROGRESS": "In Progress",
         "COMPLETED": "Completed",
         "NOT_STARTED": "Upcoming"
       },

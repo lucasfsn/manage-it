@@ -93,7 +93,7 @@
   },
   "homepage": {
     "TITLE": "Zmień sposób pracy dzięki intuicyjnemu zarządzaniu projektami.",
-    "DESCRIPTION": "Odkryj nowy poziom produktywności dzięki naszemu narzędziu do zarządzania projektami. Organizuj zadania, współpracuj z zespołem i śledź postępy w czasie rzeczywistym. Niezależnie od tego, czy to mały projekt, czy duży zespół, nasz intuicyjny interfejs i solidne funkcje pomogą Ci szybciej osiągnąć cele.",
+    "DESCRIPTION": "Odkryj nowy poziom produktywności dzięki naszemu narzędziu do zarządzania projektami. Organizuj zadania, współpracuj z zespołem i śledź postępy. Niezależnie od tego, czy to mały projekt, czy duży zespół, nasz intuicyjny interfejs i solidne funkcje pomogą Ci szybciej osiągnąć cele.",
     "SIGN_UP": "Dołącz - za darmo!"
   },
   "sidebar": {
@@ -484,7 +484,7 @@
     "mapper": {
       "projectStatus": {
         "IN_PROGRESS": "W trakcie",
-        "COMPLETED": "Zakończony"
+        "COMPLETED": "Ukończony"
       },
       "taskStatus": {
         "IN_PROGRESS": "W trakcie",
