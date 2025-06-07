@@ -18,7 +18,7 @@ import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 interface ProjectsParams extends Params {
-  readonly sort?: SortCriteria;
+  readonly sortBy?: SortCriteria;
   readonly order?: SortOrder;
   readonly name?: string;
   readonly status?: ProjectStatus;
@@ -124,7 +124,7 @@ export class ProjectsListComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        sort: this.sortCriteria,
+        sortBy: this.sortCriteria,
         order: this.sortOrder,
         name: this.filterName ? this.filterName : undefined,
         status: this.filterStatus ?? undefined,
@@ -139,7 +139,7 @@ export class ProjectsListComponent implements OnInit {
   public ngOnInit(): void {
     this.route.queryParams.subscribe((params: ProjectsParams) => {
       this.sortCriteria =
-        enumValueValidator(params.sort, SortCriteria) || SortCriteria.NAME;
+        enumValueValidator(params.sortBy, SortCriteria) || SortCriteria.NAME;
       this.sortOrder =
         enumValueValidator(params.order, SortOrder) || SortOrder.ASCENDING;
       this.filterName = params.name || '';

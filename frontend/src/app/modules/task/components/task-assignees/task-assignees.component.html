@@ -5,16 +5,21 @@
     >
       @if (members.length !== 0) {
         <mat-icon
-          class="cursor-pointer transition-all hover:text-sky-600"
-          [class.text-sky-600]="showAssignees"
+          class="cursor-pointer transition-all"
+          [ngClass]="{
+            '!text-sky-600 hover:!text-sky-600': showAssignees,
+          }"
           (click)="toggleShowAssignees()"
           >manage_accounts</mat-icon
         >
       }
       @if (!isProjectFinished) {
         <mat-icon
-          class="cursor-pointer transition-all hover:text-sky-600"
-          [class.text-sky-600]="!showAssignees || members.length === 0"
+          class="cursor-pointer transition-all"
+          [ngClass]="{
+            '!text-sky-600 hover:!text-sky-600':
+              !showAssignees || members.length === 0,
+          }"
           (click)="toggleShowAddAssignee()"
           >person_add</mat-icon
         >

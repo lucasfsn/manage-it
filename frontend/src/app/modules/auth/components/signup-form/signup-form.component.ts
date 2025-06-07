@@ -1,3 +1,4 @@
+import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { SignupPayload } from '@/app/features/dto/auth.dto';
@@ -63,6 +64,7 @@ export class SignupFormComponent {
     private toastrService: ToastrService,
     private mapperService: MapperService,
     private translationService: TranslationService,
+    private loadingService: LoadingService,
   ) {}
 
   protected form: FormGroup<SignupForm> = new FormGroup<SignupForm>(
@@ -178,5 +180,9 @@ export class SignupFormComponent {
 
   protected onReset(): void {
     this.form.reset();
+  }
+
+  protected get isLoading(): boolean {
+    return this.loading || this.loadingService.isLoading();
   }
 }

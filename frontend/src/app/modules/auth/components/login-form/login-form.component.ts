@@ -1,3 +1,4 @@
+import { LoadingService } from '@/app/core/services/loading.service';
 import { MapperService } from '@/app/core/services/mapper.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { AuthService } from '@/app/features/services/auth.service';
@@ -39,6 +40,7 @@ export class LoginFormComponent implements OnInit {
     private toastrService: ToastrService,
     private translationService: TranslationService,
     private mapperService: MapperService,
+    private loadingService: LoadingService,
   ) {}
 
   protected form: FormGroup<LoginForm> = new FormGroup<LoginForm>(
@@ -83,6 +85,10 @@ export class LoginFormComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  protected get isLoading(): boolean {
+    return this.loading || this.loadingService.isLoading();
   }
 
   public ngOnInit(): void {
