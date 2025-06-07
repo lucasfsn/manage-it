@@ -53,7 +53,9 @@ public class TaskServiceDefault implements TaskService {
     @Override
     public TaskResponseDto getTask(User user, UUID projectId, UUID taskId) {
         Project project = projectService.getProjectById(projectId);
-        checkIfUserIsMemberOfProject(user, project);
+        if (checkIfUserIsMemberOfProject(user, project)) {
+            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
+        }
         Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
@@ -66,10 +68,15 @@ public class TaskServiceDefault implements TaskService {
     public TaskDetailsResponseDto createAndAddTaskToProject(User owner, UUID projectId, CreateTaskRequestDto createTaskRequest) {
         User managedOwner = entityManager.merge(owner);
         Project project = projectService.getProjectById(projectId);
-        checkIfUserIsMemberOfProject(owner, project);
+
+        if (checkIfUserIsMemberOfProject(owner, project)) {
+            throw new UserNotInProjectException("User " + owner.getName() + " is not member of project");
+        }
+
         if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
+
         Task task = Task.builder()
                 .project(project)
                 .description(createTaskRequest.getDescription())
@@ -96,7 +103,11 @@ public class TaskServiceDefault implements TaskService {
     public void deleteTask(User user, UUID taskId, UUID projectId) {
         User managedUser = entityManager.merge(user);
         Project project = projectService.getProjectById(projectId);
-        checkIfUserIsMemberOfProject(user, project);
+
+        if (checkIfUserIsMemberOfProject(user, project)) {
+            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
+        }
+
         if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
@@ -104,6 +115,7 @@ public class TaskServiceDefault implements TaskService {
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
+
         notificationService.createAndSendNotification(
                 project.getMembers(),
                 managedUser,
@@ -111,6 +123,7 @@ public class TaskServiceDefault implements TaskService {
                 project.getId(),
                 task.getId()
         );
+
         taskRepository.delete(task);
     }
 
@@ -119,10 +132,15 @@ public class TaskServiceDefault implements TaskService {
     public TaskResponseDto updateTask(User updater, UUID taskId, UUID projectId, UpdateTaskRequestDto request) {
         User managedUpdater = entityManager.merge(updater);
         Project project = projectService.getProjectById(projectId);
-        checkIfUserIsMemberOfProject(updater, project);
+
+        if (checkIfUserIsMemberOfProject(updater, project)) {
+            throw new UserNotInProjectException("User " + updater.getName() + " is not member of project");
+        }
+
         if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
+
         Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
@@ -130,6 +148,7 @@ public class TaskServiceDefault implements TaskService {
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
+
         if (request.getStatus() != null) {
             task.setStatus(request.getStatus());
         }
@@ -143,6 +162,7 @@ public class TaskServiceDefault implements TaskService {
             task.setDueDate(request.getDueDate());
         }
         task.setUpdatedAt(LocalDateTime.now());
+
         Task updatedTask = taskRepository.save(task);
         notificationService.createAndSendNotification(
                 project.getMembers(),
@@ -151,6 +171,7 @@ public class TaskServiceDefault implements TaskService {
                 project.getId(),
                 task.getId()
         );
+
         return taskMapper.toTaskResponseDto(updatedTask);
     }
 
@@ -159,7 +180,10 @@ public class TaskServiceDefault implements TaskService {
     public TaskResponseDto addUserToTask(User user, UUID taskId, UUID projectId, UserResponseDto request) {
         Project project = projectService.getProjectById(projectId);
         User userToAdd = userService.getUserByUsername(request.getName());
-        checkIfUserIsMemberOfProject(user, project);
+
+        if (checkIfUserIsMemberOfProject(user, project)) {
+            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
+        }
 
         if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
@@ -194,14 +218,20 @@ public class TaskServiceDefault implements TaskService {
     @Transactional
     public TaskResponseDto removeUserFromTask(User user, UUID taskId, UUID projectId, UserResponseDto request) {
         Project project = projectService.getProjectById(projectId);
-        checkIfUserIsMemberOfProject(user, project);
+
+        if (checkIfUserIsMemberOfProject(user, project)) {
+            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
+        }
+
         if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
+
         Task task = getTaskById(taskId);
         if (!project.getId().equals(task.getProject().getId())) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
+
         User userToRemove = userService.getUserByUsername(request.getName());
         if (task.getUsers().contains(userToRemove)) {
             task.getUsers().remove(userToRemove);
@@ -214,16 +244,14 @@ public class TaskServiceDefault implements TaskService {
                     project.getId(),
                     task.getId()
             );
+
             return taskMapper.toTaskResponseDto(updatedTask);
         } else {
             throw new UserNotInTaskException("User is not a member of the task");
         }
     }
 
-    private void checkIfUserIsMemberOfProject(User user, Project project) {
-        if (project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()))) {
-            throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
-        }
+    private boolean checkIfUserIsMemberOfProject(User user, Project project) {
+        return project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()));
     }
-
 }
