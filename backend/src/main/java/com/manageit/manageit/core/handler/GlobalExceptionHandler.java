@@ -2,10 +2,12 @@ package com.manageit.manageit.core.handler;
 
 import com.manageit.manageit.core.dto.ErrorResponseDto;
 import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
+import com.manageit.manageit.core.exception.TaskDueDateExceedsProjectEndDateException;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.TokenUserMismatchException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInTaskException;
+import com.manageit.manageit.core.exception.UserNotOwnerOfProjectException;
 import com.manageit.manageit.shared.dto.FieldValidationErrorsDto;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.annotation.Nonnull;
@@ -41,133 +43,58 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({UserNotInProjectException.class, UserNotInTaskException.class, ProjectModificationNotAllowedException.class})
-    public ResponseEntity<ErrorResponseDto> handleException(RuntimeException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .body(
-                        ErrorResponseDto.builder()
-                                .code(HttpStatus.FORBIDDEN.value())
-                                .message(exp.getMessage())
-                                .build()
-                );
+    @ExceptionHandler({
+            UserNotInProjectException.class,
+            UserNotInTaskException.class,
+            ProjectModificationNotAllowedException.class,
+            UserNotOwnerOfProjectException.class
+    })
+    public ResponseEntity<ErrorResponseDto> handleForbidden(RuntimeException ex) {
+        return buildResponse(HttpStatus.FORBIDDEN, ex.getMessage(), ex);
     }
 
-    @ExceptionHandler(TaskNotInProjectException.class)
-    public ResponseEntity<ErrorResponseDto> handleException(TaskNotInProjectException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(
-                        ErrorResponseDto.builder()
-                                .code(HttpStatus.BAD_REQUEST.value())
-                                .message(exp.getMessage())
-                                .build()
-                );
+    @ExceptionHandler({
+            BadCredentialsException.class,
+            ExpiredJwtException.class,
+            TokenUserMismatchException.class})
+    public ResponseEntity<ErrorResponseDto> handleUnauthorized(RuntimeException ex) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, ex.getMessage(), ex);
     }
 
-
-    @ExceptionHandler({BadCredentialsException.class, ExpiredJwtException.class, TokenUserMismatchException.class})
-    public ResponseEntity<ErrorResponseDto> handleUnauthorizedException(RuntimeException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(
-                        ErrorResponseDto.builder()
-                                .code(HttpStatus.UNAUTHORIZED.value())
-                                .message(exp.getMessage())
-                                .build()
-                );
+    @ExceptionHandler({
+            TaskNotInProjectException.class,
+            TaskDueDateExceedsProjectEndDateException.class
+    })
+    public ResponseEntity<ErrorResponseDto> handleBadRequest(RuntimeException ex) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleException(EntityNotFoundException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-
-        final ErrorResponseDto response = ErrorResponseDto.builder()
-                .code(HttpStatus.NOT_FOUND.value())
-                .message(exp.getMessage())
-                .build();
-
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(response);
+    public ResponseEntity<ErrorResponseDto> handleEntityNotFound(EntityNotFoundException ex) {
+        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponseDto> handleException(DataIntegrityViolationException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(
-                        ErrorResponseDto.builder()
-                                .code(HttpStatus.CONFLICT.value())
-                                .message("Data integrity violation occurred.")
-                                .build()
-                );
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ErrorResponseDto> handleException(IllegalStateException exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(
-                        ErrorResponseDto.builder()
-                                .code(HttpStatus.CONFLICT.value())
-                                .message(exp.getMessage())
-                                .build()
-                );
+    @ExceptionHandler({IllegalStateException.class, DataIntegrityViolationException.class})
+    public ResponseEntity<ErrorResponseDto> handleConflict(RuntimeException ex) {
+        String msg = ex instanceof DataIntegrityViolationException
+                ? "Data integrity violation occurred."
+                : ex.getMessage();
+        return buildResponse(HttpStatus.CONFLICT, msg, ex);
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
-    public ResponseEntity<Object> handleConstraintViolationException(
+    public ResponseEntity<ErrorResponseDto> handleConstraintViolationException(
             final ConstraintViolationException exception, final ServletWebRequest request) {
-        if (log.isErrorEnabled()) {
-            log.error(exception.getMessage(), exception);
-        }
         final List<FieldValidationErrorsDto> invalidParameters =
                 processInvalidParameters(exception);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                ErrorResponseDto.builder()
-                        .code(HttpStatus.BAD_REQUEST.value())
-                        .message("Validation failed")
-                        .errors(invalidParameters)
-                        .build()
-        );
+        return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), invalidParameters, exception);
     }
 
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleException(Exception exp) {
-        if (log.isErrorEnabled()) {
-            log.error(exp.getMessage(), exp);
-        }
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(
-                        ErrorResponseDto.builder()
-                                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                                .message(exp.getMessage())
-                                .build()
-                );
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, exp.getMessage(), exp);
     }
 
 
@@ -310,6 +237,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 );
     }
 
+    @Override
+    public ResponseEntity<Object> handleNoResourceFoundException(
+            @Nonnull NoResourceFoundException exception,
+            @Nonnull HttpHeaders headers,
+            @Nonnull HttpStatusCode status,
+            @Nonnull WebRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ErrorResponseDto.builder()
+                        .code(HttpStatus.NOT_FOUND.value())
+                        .message(exception.getMessage())
+                        .build()
+        );
+    }
 
     private List<FieldValidationErrorsDto> processInvalidParameters(
             ConstraintViolationException exception) {
@@ -330,18 +270,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return invalidParameters;
     }
 
-    @Override
-    public ResponseEntity<Object> handleNoResourceFoundException(
-            @Nonnull NoResourceFoundException exception,
-            @Nonnull HttpHeaders headers,
-            @Nonnull HttpStatusCode status,
-            @Nonnull WebRequest request) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                ErrorResponseDto.builder()
-                        .code(HttpStatus.NOT_FOUND.value())
-                        .message(exception.getMessage())
-                        .build()
-        );
+    private ResponseEntity<ErrorResponseDto> buildResponse(HttpStatus status, String message, List<FieldValidationErrorsDto> errors, Throwable exp) {
+        if (log.isErrorEnabled()) {
+            log.error(message, exp);
+        }
+        return ResponseEntity.status(status)
+                .body(ErrorResponseDto.builder()
+                        .code(status.value())
+                        .message(message)
+                        .errors(errors)
+                        .build());
     }
 
+    private ResponseEntity<ErrorResponseDto> buildResponse(HttpStatus status, String message, Throwable exp) {
+        return buildResponse(status, message, null, exp);
+    }
 }

@@ -2,6 +2,7 @@ package com.manageit.manageit.feature.task.service;
 
 
 import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
+import com.manageit.manageit.core.exception.TaskDueDateExceedsProjectEndDateException;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInTaskException;
@@ -57,9 +58,11 @@ public class TaskServiceDefault implements TaskService {
             throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
         Task task = getTaskById(taskId);
-        if (!project.getId().equals(task.getProject().getId())) {
+
+        if (!isTaskInProject(task, project)) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
+
         return taskMapper.toTaskResponseDto(task);
     }
 
@@ -112,7 +115,8 @@ public class TaskServiceDefault implements TaskService {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
         Task task = getTaskById(taskId);
-        if (!project.getId().equals(task.getProject().getId())) {
+
+        if (!isTaskInProject(task, project)) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
 
@@ -145,7 +149,7 @@ public class TaskServiceDefault implements TaskService {
                 .findById(taskId)
                 .orElseThrow(() -> new EntityNotFoundException("No task found with id: " + taskId));
 
-        if (!project.getId().equals(task.getProject().getId())) {
+        if (!isTaskInProject(task, project)) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
 
@@ -159,6 +163,9 @@ public class TaskServiceDefault implements TaskService {
             task.setPriority(request.getPriority());
         }
         if (request.getDueDate() != null) {
+            if (request.getDueDate().isAfter(project.getEndDate())) {
+                throw new TaskDueDateExceedsProjectEndDateException("Due date cannot be after project end date");
+            }
             task.setDueDate(request.getDueDate());
         }
         task.setUpdatedAt(LocalDateTime.now());
@@ -194,9 +201,11 @@ public class TaskServiceDefault implements TaskService {
         }
 
         Task task = getTaskById(taskId);
-        if (!project.getId().equals(task.getProject().getId())) {
+
+        if (!isTaskInProject(task, project)) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
+
         if (!task.getUsers().contains(userToAdd)) {
             task.getUsers().add(userToAdd);
             task.setUpdatedAt(LocalDateTime.now());
@@ -228,7 +237,8 @@ public class TaskServiceDefault implements TaskService {
         }
 
         Task task = getTaskById(taskId);
-        if (!project.getId().equals(task.getProject().getId())) {
+
+        if (!isTaskInProject(task, project)) {
             throw new TaskNotInProjectException(taskId, projectId);
         }
 
@@ -253,5 +263,9 @@ public class TaskServiceDefault implements TaskService {
 
     private boolean checkIfUserIsMemberOfProject(User user, Project project) {
         return project.getMembers().stream().noneMatch(member -> member.getName().equals(user.getName()));
+    }
+
+    private boolean isTaskInProject(Task task, Project project) {
+        return task.getProject().getId().equals(project.getId());
     }
 }

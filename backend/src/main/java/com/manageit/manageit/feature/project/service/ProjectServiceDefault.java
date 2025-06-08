@@ -3,6 +3,7 @@ package com.manageit.manageit.feature.project.service;
 import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
 import com.manageit.manageit.core.exception.UserAlreadyInProjectException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
+import com.manageit.manageit.core.exception.UserNotOwnerOfProjectException;
 import com.manageit.manageit.feature.chat.service.ChatService;
 import com.manageit.manageit.feature.notification.service.NotificationService;
 import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
@@ -88,7 +89,11 @@ public class ProjectServiceDefault implements ProjectService {
     @Transactional
     public void deleteProject(User user, UUID projectId) {
         Project project = getProjectById(projectId);
-        validateUserIsProjectOwner(user, project);
+
+        if (!isProjectOwner(user, project)) {
+            throw new UserNotOwnerOfProjectException("User is not the owner of the project");
+        }
+
         taskRepository.deleteAll(project.getTasks());
         projectRepository.delete(project);
     }
@@ -99,7 +104,11 @@ public class ProjectServiceDefault implements ProjectService {
         User managedOwner = entityManager.merge(owner);
         Project project = getProjectById(projectId);
         String message;
-        validateUserIsProjectOwner(managedOwner, project);
+
+        if (!isProjectOwner(managedOwner, project)) {
+            throw new UserNotOwnerOfProjectException("User is not the owner of the project");
+        }
+
         if (isProjectCompleted(project) || isEndDatePassed(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
@@ -137,7 +146,11 @@ public class ProjectServiceDefault implements ProjectService {
         if (isProjectCompleted(project) || isEndDatePassed(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
-        validateUserIsProjectOwner(user, project);
+
+        if (!isProjectOwner(user, project)) {
+            throw new UserNotOwnerOfProjectException("User is not the owner of the project");
+        }
+
         User userToAdd = userService.getUserByUsername(request.getName());
         if (project.getMembers().contains(userToAdd)) {
             throw new UserAlreadyInProjectException("User " + userToAdd.getName() + " is already in project");
@@ -159,10 +172,15 @@ public class ProjectServiceDefault implements ProjectService {
     @Transactional
     public ProjectResponseDto removeUserFromProject(User owner, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
-        validateUserIsProjectOwner(owner, project);
+
+        if (!isProjectOwner(owner, project)) {
+            throw new UserNotOwnerOfProjectException("User is not the owner of the project");
+        }
+
         if (isProjectCompleted(project) || isEndDatePassed(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
+
         if (project.getOwner().getName().equals(request.getName())) {
             throw new IllegalArgumentException("Project owner cannot remove themselves from the project.");
         }
@@ -196,11 +214,7 @@ public class ProjectServiceDefault implements ProjectService {
         return project.getEndDate().isBefore(LocalDate.now());
     }
 
-    private void validateUserIsProjectOwner(User user, Project project) {
-        if (!project.getOwner().getId().equals(user.getId())) {
-            throw new UserNotInProjectException("User is not the owner of the project");
-        }
+    private boolean isProjectOwner(User user, Project project) {
+        return project.getOwner().getId().equals(user.getId());
     }
-
-
 }

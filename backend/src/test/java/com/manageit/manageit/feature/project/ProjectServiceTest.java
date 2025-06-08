@@ -3,6 +3,7 @@ package com.manageit.manageit.feature.project;
 import com.manageit.manageit.core.exception.ProjectModificationNotAllowedException;
 import com.manageit.manageit.core.exception.UserAlreadyInProjectException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
+import com.manageit.manageit.core.exception.UserNotOwnerOfProjectException;
 import com.manageit.manageit.feature.chat.service.ChatService;
 import com.manageit.manageit.feature.notification.service.NotificationService;
 import com.manageit.manageit.feature.project.dto.CreateProjectRequestDto;
@@ -235,11 +236,11 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowUserNotInProjectException_WhenUserNotOwnerOnDelete() {
+    void shouldThrowUserNotOwnerOfProjectException_WhenUserNotOwnerOnDelete() {
         when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
 
-        UserNotInProjectException exception = assertThrows(
-                UserNotInProjectException.class,
+        UserNotOwnerOfProjectException exception = assertThrows(
+                UserNotOwnerOfProjectException.class,
                 () -> projectService.deleteProject(testUser, testProjectId)
         );
 
