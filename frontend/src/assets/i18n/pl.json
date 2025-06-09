@@ -264,10 +264,6 @@
       "END_DATE": "Termin realizacji",
       "members": {
         "TITLE": "Zarządzaj członkami"
-      },
-      "message": {
-        "DELETE": "Czy na pewno chcesz usunąć ten projekt?",
-        "COMPLETE": "Czy na pewno chcesz oznaczyć ten projekt jako zakończony?"
       }
     },
     "form": {
@@ -306,6 +302,15 @@
         "RESET": "Resetuj",
         "CREATE": "Utwórz projekt",
         "SAVE": "Zapisz zmiany"
+      }
+    },
+    "confirmModal": {
+      "delete": {
+        "MESSAGE": "Czy na pewno chcesz usunąć ten projekt?"
+      },
+      "complete": {
+        "MESSAGE": "Czy na pewno chcesz oznaczyć ten projekt jako zakończony?",
+        "CONTENT": "Operacja jest nieodwracalna. Po potwierdzeniu, edycja projektu i zadań będzie zablokowana."
       }
     }
   },
@@ -389,6 +394,11 @@
         "RESET": "Resetuj",
         "SAVE": "Zapisz zmiany"
       }
+    },
+    "confirmModal": {
+      "delete": {
+        "MESSAGE": "Czy na pewno chcesz usunąć to zadanie?"
+      }
     }
   },
   "toast": {
@@ -463,8 +473,10 @@
       "TOOLTIP": "Ilość elementów na stronę"
     },
     "confirmModal": {
-      "HEADING": "Uwaga",
-      "CONTENT": "Ta operacja jest nieodwracalna.",
+      "warning": {
+        "HEADING": "Uwaga",
+        "CONTENT": "Ta operacja jest nieodwracalna."
+      },
       "buttons": {
         "CONFIRM": "Tak",
         "CANCEL": "Nie"

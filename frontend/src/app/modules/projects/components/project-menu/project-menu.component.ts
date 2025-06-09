@@ -59,7 +59,7 @@ export class ProjectMenuComponent {
     if (!projectId) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      this.translationService.translate('project.details.message.DELETE'),
+      this.translationService.translate('project.confirmModal.delete.MESSAGE'),
     );
 
     const subscription = confirmation$.subscribe((confirmed) => {
@@ -96,7 +96,12 @@ export class ProjectMenuComponent {
     if (!project) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      this.translationService.translate('project.details.message.COMPLETE'),
+      this.translationService.translate(
+        'project.confirmModal.complete.MESSAGE',
+      ),
+      this.translationService.translate(
+        'project.confirmModal.complete.CONTENT',
+      ),
     );
 
     const subscription = confirmation$.subscribe((confirmed) => {
