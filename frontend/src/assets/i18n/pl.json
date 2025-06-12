@@ -93,7 +93,7 @@
   },
   "homepage": {
     "TITLE": "Zmień sposób pracy dzięki intuicyjnemu zarządzaniu projektami.",
-    "DESCRIPTION": "Odkryj nowy poziom produktywności dzięki naszemu narzędziu do zarządzania projektami. Organizuj zadania, współpracuj z zespołem i śledź postępy w czasie rzeczywistym. Niezależnie od tego, czy to mały projekt, czy duży zespół, nasz intuicyjny interfejs i solidne funkcje pomogą Ci szybciej osiągnąć cele.",
+    "DESCRIPTION": "Odkryj nowy poziom produktywności dzięki naszemu narzędziu do zarządzania projektami. Organizuj zadania, współpracuj z zespołem i śledź postępy. Niezależnie od tego, czy to mały projekt, czy duży zespół, nasz intuicyjny interfejs i solidne funkcje pomogą Ci szybciej osiągnąć cele.",
     "SIGN_UP": "Dołącz - za darmo!"
   },
   "sidebar": {
@@ -161,7 +161,7 @@
   },
   "user": {
     "profile": {
-      "CREATE_DATE": "Dołączył",
+      "CREATE_DATE": "Od",
       "buttons": {
         "EDIT": "Edytuj profil",
         "ADD_TO_PROJECT": "Dodaj do projektu"
@@ -264,16 +264,12 @@
       "END_DATE": "Termin realizacji",
       "members": {
         "TITLE": "Zarządzaj członkami"
-      },
-      "message": {
-        "DELETE": "Czy na pewno chcesz usunąć ten projekt?",
-        "COMPLETE": "Czy na pewno chcesz oznaczyć ten projekt jako zakończony?"
       }
     },
     "form": {
       "title": {
-        "CREATE": "Utwórz Projekt",
-        "EDIT": "Edytuj Projekt"
+        "CREATE": "Utwórz projekt",
+        "EDIT": "Edytuj projekt"
       },
       "name": {
         "LABEL": "Nazwa projektu",
@@ -307,6 +303,15 @@
         "CREATE": "Utwórz projekt",
         "SAVE": "Zapisz zmiany"
       }
+    },
+    "confirmModal": {
+      "delete": {
+        "MESSAGE": "Czy na pewno chcesz usunąć ten projekt?"
+      },
+      "complete": {
+        "MESSAGE": "Czy na pewno chcesz oznaczyć ten projekt jako zakończony?",
+        "CONTENT": "Operacja jest nieodwracalna. Po potwierdzeniu, edycja projektu i zadań będzie zablokowana."
+      }
     }
   },
   "task": {
@@ -319,7 +324,7 @@
     },
     "assignees": {
       "ASSIGNEE_INPUT_PLACEHOLDER": "Wyszukaj użytkowników",
-      "EMPTY_ASSIGNEES_LIST": "Przydziel nowych użytkowników do zadania lub zacznij pisać, aby wyszukać użytkowników",
+      "EMPTY_ASSIGNEES_LIST": "Zacznij wpisywać, aby wyszukać użytkowników",
       "CURRENT_USER_AS_SEARCH_RESULT": "Ty"
     },
     "drag-and-drop": {
@@ -361,7 +366,7 @@
       }
     },
     "editForm": {
-      "TITLE": "Edytuj Zadanie",
+      "TITLE": "Edytuj zadanie",
       "description": {
         "LABEL": "Opis",
         "PLACEHOLDER": "Wprowadź opis zadania",
@@ -388,6 +393,11 @@
       "buttons": {
         "RESET": "Resetuj",
         "SAVE": "Zapisz zmiany"
+      }
+    },
+    "confirmModal": {
+      "delete": {
+        "MESSAGE": "Czy na pewno chcesz usunąć to zadanie?"
       }
     }
   },
@@ -442,7 +452,7 @@
     }
   },
   "title": {
-    "HOME": "Zarządzaj Projektami",
+    "HOME": "Zarządzaj projektami",
     "LOGIN": "Zaloguj się",
     "SIGNUP": "Zarejestruj się",
     "NOT_FOUND": "Nie znaleziono strony",
@@ -450,8 +460,8 @@
     "NOTIFICATIONS": "Powiadomienia",
     "PROJECTS": "Projekty",
     "PROJECT": "Projekt",
-    "PROJECT_CREATE": "Utwórz Projekt",
-    "PROJECT_EDIT": "Edytuj Projekt",
+    "PROJECT_CREATE": "Utwórz projekt",
+    "PROJECT_EDIT": "Edytuj projekt",
     "TASK": "Zadanie",
     "PROFILE": "Profil",
     "DEFAULT": "Aplikacja do zarządzania projektami"
@@ -463,8 +473,10 @@
       "TOOLTIP": "Ilość elementów na stronę"
     },
     "confirmModal": {
-      "HEADING": "Uwaga",
-      "CONTENT": "Ta operacja jest nieodwracalna.",
+      "warning": {
+        "HEADING": "Uwaga",
+        "CONTENT": "Ta operacja jest nieodwracalna."
+      },
       "buttons": {
         "CONFIRM": "Tak",
         "CANCEL": "Nie"
@@ -484,7 +496,7 @@
     "mapper": {
       "projectStatus": {
         "IN_PROGRESS": "W trakcie",
-        "COMPLETED": "Zakończony"
+        "COMPLETED": "Ukończony"
       },
       "taskStatus": {
         "IN_PROGRESS": "W trakcie",

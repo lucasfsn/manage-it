@@ -10,8 +10,12 @@ export class ConfirmModalService {
   private message = signal<string | null>(null);
   public loadedMessage = this.message.asReadonly();
 
-  public confirm(message: string): Observable<boolean> {
+  private content = signal<string | null>(null);
+  public loadedContent = this.content.asReadonly();
+
+  public confirm(message: string, content?: string): Observable<boolean> {
     this.message.set(message);
+    this.content.set(content ?? null);
 
     return this.confirmation$.asObservable().pipe(take(1));
   }
@@ -19,5 +23,6 @@ export class ConfirmModalService {
   public handleClick(confirmed: boolean): void {
     this.confirmation$.next(confirmed);
     this.message.set(null);
+    this.content.set(null);
   }
 }

@@ -1,13 +1,13 @@
+import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { ConfirmModalService } from '@/app/core/services/confirm-modal.service';
 
 @Component({
   selector: 'app-confirm-modal',
   imports: [MatIconModule, TranslateModule],
   templateUrl: './confirm-modal.component.html',
-  styleUrl: './confirm-modal.component.scss'
+  styleUrl: './confirm-modal.component.scss',
 })
 export class ConfirmModalComponent {
   @ViewChild('modal') protected modal?: ElementRef;
@@ -16,6 +16,10 @@ export class ConfirmModalComponent {
 
   protected get message(): string | null {
     return this.confirmModalService.loadedMessage();
+  }
+
+  protected get content(): string | null {
+    return this.confirmModalService.loadedContent();
   }
 
   protected onConfirm(): void {

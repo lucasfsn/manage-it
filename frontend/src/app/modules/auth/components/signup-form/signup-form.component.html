@@ -58,15 +58,15 @@
       <app-form-button
         type="reset"
         (handleClick)="onReset()"
-        [disabled]="loading"
+        [disabled]="isLoading"
       >
         {{ "signupForm.buttons.RESET" | translate }}
       </app-form-button>
       <app-form-button
         (handleClick)="onSubmit()"
-        [disabled]="form.invalid || loading"
+        [disabled]="form.invalid || isLoading"
       >
-        @if (loading) {
+        @if (isLoading) {
           {{ "utils.LOADING" | translate }}
         } @else {
           {{ "signupForm.buttons.SIGN_UP" | translate }}
