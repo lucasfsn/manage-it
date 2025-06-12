@@ -417,19 +417,6 @@ class ProjectServiceTest {
         assertDoesNotThrow(() -> projectService.isProjectCompleted(testProject));
     }
 
-//    @Test
-//    void shouldThrowException_WhenProjectCompleted() {
-//        testProject.setStatus(ProjectStatus.COMPLETED);
-//
-//        ProjectModificationNotAllowedException exception = assertThrows(
-//                ProjectModificationNotAllowedException.class,
-//                () -> projectService.isProjectCompleted(testProject)
-//        );
-//
-//        assertEquals("Cannot modify a completed project.", exception.getMessage());
-//    }
-
-
     @Test
     void shouldUpdateProjectDescription_Successfully() {
         UpdateProjectRequestDto request = new UpdateProjectRequestDto();
@@ -513,7 +500,6 @@ class ProjectServiceTest {
     @Test
     void shouldThrowException_WhenAddingUserToCompletedProject() {
         testProject.setStatus(ProjectStatus.COMPLETED);
-        User newUser = createTestUser("newuser", UUID.randomUUID());
         UserResponseDto request = new UserResponseDto();
         request.setName("newuser");
 
@@ -544,5 +530,142 @@ class ProjectServiceTest {
         );
 
         assertEquals("Cannot modify project.", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowUserNotOwnerOfProjectException_WhenUserNotOwnerOnUpdate() {
+        UpdateProjectRequestDto request = new UpdateProjectRequestDto();
+        request.setName("Updated Name");
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+
+        UserNotOwnerOfProjectException exception = assertThrows(
+                UserNotOwnerOfProjectException.class,
+                () -> projectService.updateProject(testUser, testProjectId, request)
+        );
+
+        assertEquals("User is not the owner of the project", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowUserNotOwnerOfProjectException_WhenUserNotOwnerOnAddUser() {
+        UserResponseDto request = new UserResponseDto();
+        request.setName("newuser");
+
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+
+        UserNotOwnerOfProjectException exception = assertThrows(
+                UserNotOwnerOfProjectException.class,
+                () -> projectService.addUserToProject(testUser, testProjectId, request)
+        );
+
+        assertEquals("User is not the owner of the project", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowUserNotOwnerOfProjectException_WhenUserNotOwnerOnRemoveUser() {
+        User userToRemove = createTestUser("usertoremove", UUID.randomUUID());
+        testProject.getMembers().add(userToRemove);
+
+        UserResponseDto request = new UserResponseDto();
+        request.setName("usertoremove");
+
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+
+        UserNotOwnerOfProjectException exception = assertThrows(
+                UserNotOwnerOfProjectException.class,
+                () -> projectService.removeUserFromProject(testUser, testProjectId, request)
+        );
+
+        assertEquals("User is not the owner of the project", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowException_WhenUpdatingProjectWithPassedEndDate() {
+        testProject.setEndDate(LocalDate.now().minusDays(1));
+        UpdateProjectRequestDto request = new UpdateProjectRequestDto();
+        request.setName("Updated Name");
+
+        when(entityManager.merge(testOwner)).thenReturn(testOwner);
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> projectService.updateProject(testOwner, testProjectId, request)
+        );
+
+        assertEquals("Cannot modify project.", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowException_WhenAddingUserToProjectWithPassedEndDate() {
+        testProject.setEndDate(LocalDate.now().minusDays(1));
+        UserResponseDto request = new UserResponseDto();
+        request.setName("newuser");
+
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> projectService.addUserToProject(testOwner, testProjectId, request)
+        );
+
+        assertEquals("Cannot modify project.", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowException_WhenRemovingUserFromProjectWithPassedEndDate() {
+        testProject.setEndDate(LocalDate.now().minusDays(1));
+        User userToRemove = createTestUser("usertoremove", UUID.randomUUID());
+        testProject.getMembers().add(userToRemove);
+
+        UserResponseDto request = new UserResponseDto();
+        request.setName("usertoremove");
+
+        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> projectService.removeUserFromProject(testOwner, testProjectId, request)
+        );
+
+        assertEquals("Cannot modify project.", exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnTrue_WhenProjectIsCompleted() {
+        testProject.setStatus(ProjectStatus.COMPLETED);
+
+        boolean result = projectService.isProjectCompleted(testProject);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldReturnFalse_WhenProjectIsNotCompleted() {
+        testProject.setStatus(ProjectStatus.IN_PROGRESS);
+
+        boolean result = projectService.isProjectCompleted(testProject);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void shouldReturnTrue_WhenEndDateIsPassed() {
+        testProject.setEndDate(LocalDate.now().minusDays(1));
+
+        boolean result = projectService.isEndDatePassed(testProject);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldReturnFalse_WhenEndDateIsNotPassed() {
+        testProject.setEndDate(LocalDate.now().plusDays(1));
+
+        boolean result = projectService.isEndDatePassed(testProject);
+
+        assertFalse(result);
     }
 }
