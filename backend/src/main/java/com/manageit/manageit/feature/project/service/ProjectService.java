@@ -27,5 +27,7 @@ public interface ProjectService {
 
     ProjectResponseDto removeUserFromProject(User owner, UUID projectId, UserResponseDto request);
 
-    void isProjectCompleted(Project project);
+    boolean isProjectCompleted(Project project);
+
+    boolean isEndDatePassed(Project project);
 }

@@ -54,7 +54,7 @@ export class TaskMenuComponent {
     if (!this.task) return;
 
     const confirmation$ = this.confirmModalService.confirm(
-      'Are you sure you want to delete this task?',
+      this.translationService.translate('task.confirmModal.delete.MESSAGE'),
     );
 
     const subscription = confirmation$.subscribe((confirmed) => {
