@@ -5,6 +5,7 @@ import com.manageit.manageit.core.exception.ProjectModificationNotAllowedExcepti
 import com.manageit.manageit.core.exception.TaskDueDateExceedsProjectEndDateException;
 import com.manageit.manageit.core.exception.TaskNotInProjectException;
 import com.manageit.manageit.core.exception.TokenUserMismatchException;
+import com.manageit.manageit.core.exception.UserAlreadyInProjectException;
 import com.manageit.manageit.core.exception.UserNotInProjectException;
 import com.manageit.manageit.core.exception.UserNotInTaskException;
 import com.manageit.manageit.core.exception.UserNotOwnerOfProjectException;
@@ -74,7 +75,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
     }
 
-    @ExceptionHandler({IllegalStateException.class, DataIntegrityViolationException.class})
+    @ExceptionHandler({IllegalStateException.class, DataIntegrityViolationException.class, UserAlreadyInProjectException.class})
     public ResponseEntity<ErrorResponseDto> handleConflict(RuntimeException ex) {
         String msg = ex instanceof DataIntegrityViolationException
                 ? "Data integrity violation occurred."

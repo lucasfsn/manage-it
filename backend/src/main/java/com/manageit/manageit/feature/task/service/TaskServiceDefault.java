@@ -76,7 +76,7 @@ public class TaskServiceDefault implements TaskService {
             throw new UserNotInProjectException("User " + owner.getName() + " is not member of project");
         }
 
-        if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
+        if (projectService.isProjectCompleted(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
 
@@ -111,7 +111,7 @@ public class TaskServiceDefault implements TaskService {
             throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
 
-        if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
+        if (projectService.isProjectCompleted(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
         Task task = getTaskById(taskId);
@@ -141,7 +141,7 @@ public class TaskServiceDefault implements TaskService {
             throw new UserNotInProjectException("User " + updater.getName() + " is not member of project");
         }
 
-        if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
+        if (projectService.isProjectCompleted(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
 
@@ -192,7 +192,7 @@ public class TaskServiceDefault implements TaskService {
             throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
 
-        if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
+        if (projectService.isProjectCompleted(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
 
@@ -232,7 +232,7 @@ public class TaskServiceDefault implements TaskService {
             throw new UserNotInProjectException("User " + user.getName() + " is not member of project");
         }
 
-        if (projectService.isProjectCompleted(project) || projectService.isEndDatePassed(project)) {
+        if (projectService.isProjectCompleted(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
 
