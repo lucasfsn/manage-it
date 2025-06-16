@@ -29,5 +29,4 @@ public interface ProjectService {
 
     boolean isProjectCompleted(Project project);
 
-    boolean isEndDatePassed(Project project);
 }
