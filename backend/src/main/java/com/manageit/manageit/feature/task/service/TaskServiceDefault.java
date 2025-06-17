@@ -80,6 +80,12 @@ public class TaskServiceDefault implements TaskService {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
 
+        if (createTaskRequest.getDueDate() != null) {
+            if (createTaskRequest.getDueDate().isAfter(project.getEndDate())) {
+                throw new TaskDueDateExceedsProjectEndDateException("Due date cannot be after project end date");
+            }
+        }
+
         Task task = Task.builder()
                 .project(project)
                 .description(createTaskRequest.getDescription())
