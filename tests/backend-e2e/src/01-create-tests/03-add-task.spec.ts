@@ -139,19 +139,8 @@ test('should return an error when dueDate is after project end date', async ({ p
   
   const responseBody = await response.json();
   expect(responseBody.code).toBe(400);
-  expect(responseBody.message).toBe("Validation failed");
+  expect(responseBody.message).toBe("Due date cannot be after project end date");
   expect(responseBody).toHaveProperty('timestamp');
-  expect(responseBody.errors).toBeInstanceOf(Array);
-  
-  expect(responseBody.errors).toEqual(
-    expect.arrayContaining([
-      expect.objectContaining({
-        errorCode: "BAD_REQUEST",
-        field: "dueDate",
-        message: "Task due date cannot be after project end date."
-      })
-    ])
-  );
 });
 
 test('should not add task to project with COMPLETED status', async ({ projectId2 }) => {

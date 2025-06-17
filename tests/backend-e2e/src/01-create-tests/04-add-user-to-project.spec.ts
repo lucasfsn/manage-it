@@ -52,9 +52,7 @@ test('should not add the same user to a project again', async ({ projectId }) =>
     data: userData,
   });
 
-  expect(response.status()).toBe(409); // czy jakikolwiek inny kod, byle nie 500
-
-  // daje 500
+  expect(response.status()).toBe(409);
 });
 
 
