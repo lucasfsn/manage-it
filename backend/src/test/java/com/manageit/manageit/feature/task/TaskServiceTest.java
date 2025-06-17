@@ -791,4 +791,80 @@ class TaskServiceTest {
         );
         assertEquals("Cannot modify project.", exception.getMessage());
     }
+
+    @Test
+    void createAndAddTaskToProject_WhenDueDateIsNullShouldCreateTask() {
+        CreateTaskRequestDto createRequest = CreateTaskRequestDto.builder()
+                .description("New task")
+                .dueDate(null)
+                .build();
+
+        TaskDetailsResponseDto expectedDto = new TaskDetailsResponseDto();
+        Task savedTask = Task.builder().id(UUID.randomUUID()).build();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(projectService.isProjectCompleted(testProject)).thenReturn(false);
+        when(taskRepository.save(any(Task.class))).thenReturn(savedTask);
+        when(taskMapper.toTaskDetailsResponseDto(savedTask)).thenReturn(expectedDto);
+
+        TaskDetailsResponseDto result = taskService.createAndAddTaskToProject(testUser, projectId, createRequest);
+
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
+        verify(taskRepository).save(any(Task.class));
+        verify(chatService).saveChat(testProject, savedTask);
+    }
+
+    @Test
+    void createAndAddTaskToProject_WhenDueDateExceedsProjectEndDateShouldThrowException() {
+        LocalDate projectEndDate = LocalDate.of(2025, 12, 31);
+        LocalDate taskDueDate = LocalDate.of(2026, 1, 15); // Data po dacie zakończenia projektu
+
+        testProject.setEndDate(projectEndDate);
+
+        CreateTaskRequestDto createRequest = CreateTaskRequestDto.builder()
+                .description("New task")
+                .dueDate(taskDueDate)
+                .build();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(projectService.isProjectCompleted(testProject)).thenReturn(false);
+
+        TaskDueDateExceedsProjectEndDateException exception = assertThrows(
+                TaskDueDateExceedsProjectEndDateException.class,
+                () -> taskService.createAndAddTaskToProject(testUser, projectId, createRequest)
+        );
+        assertEquals("Due date cannot be after project end date", exception.getMessage());
+    }
+
+    @Test
+    void createAndAddTaskToProject_WhenDueDateValidShouldCreateTask() {
+        LocalDate projectEndDate = LocalDate.of(2025, 12, 31);
+        LocalDate taskDueDate = LocalDate.of(2025, 12, 15); // Data przed datą zakończenia projektu
+
+        testProject.setEndDate(projectEndDate);
+
+        CreateTaskRequestDto createRequest = CreateTaskRequestDto.builder()
+                .description("New task")
+                .dueDate(taskDueDate)
+                .build();
+
+        TaskDetailsResponseDto expectedDto = new TaskDetailsResponseDto();
+        Task savedTask = Task.builder().id(UUID.randomUUID()).build();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(projectService.isProjectCompleted(testProject)).thenReturn(false);
+        when(taskRepository.save(any(Task.class))).thenReturn(savedTask);
+        when(taskMapper.toTaskDetailsResponseDto(savedTask)).thenReturn(expectedDto);
+
+        TaskDetailsResponseDto result = taskService.createAndAddTaskToProject(testUser, projectId, createRequest);
+
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
+        verify(taskRepository).save(any(Task.class));
+        verify(chatService).saveChat(testProject, savedTask);
+    }
 }
