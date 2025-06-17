@@ -54,7 +54,7 @@ test('should create project, add new tasks and edit task', async ({ page }) => {
 
   // sprawdzanie stanu projektu (ile procent tasków w projekcie jest ukończonych)
   await page.getByRole('button', { name: 'Projects' }).click();
-  await expect(page.locator('app-projects-list')).toContainText(`Testowy projekt Projekt do testowania tasków Created at: ${today.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} Deadline: ${endDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 100% Completed`);
+  await expect(page.locator('app-projects-list')).toContainText(`Testowy projekt Projekt do testowania tasków Creation date: ${today.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} Deadline: ${endDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 100% Completed`);
   await page.getByRole('button', { name: 'Testowy projekt Projekt do' }).click();
 
   // dodanie nowego taska - tym razem jako nadchodzący
@@ -70,7 +70,7 @@ test('should create project, add new tasks and edit task', async ({ page }) => {
 
   // sprawdzanie stanu projektu (ile procent tasków w projekcie jest ukończonych)
   await page.getByRole('button', { name: 'Projects' }).click();
-  await expect(page.locator('app-projects-list')).toContainText(`Testowy projekt Projekt do testowania tasków Created at: ${today.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} Deadline: ${endDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 50% Completed`);
+  await expect(page.locator('app-projects-list')).toContainText(`Testowy projekt Projekt do testowania tasków Creation date: ${today.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} Deadline: ${endDate.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} 50% Completed`);
   await page.getByRole('button', { name: 'Testowy projekt Projekt do' }).click();
 
   // edycja taska 
@@ -187,7 +187,7 @@ test('should create project with tasks and assign new members to task', async ({
   await page.getByRole('textbox', { name: 'Search users' }).fill('');
   await expect(page.getByRole('listitem')).toContainText('SJ Sophia Jones (sophia_jones) person_remove');
   await page.getByText('person_add').click();
-  await expect(page.locator('app-users-list')).toContainText('Assign new users to the task or start typing to search for users');
+  await expect(page.locator('app-users-list')).toContainText('Start typing to search for users');
   await page.getByRole('textbox', { name: 'Search users' }).click();
   await page.getByRole('textbox', { name: 'Search users' }).fill('emi');
   await expect(page.getByRole('listitem')).toContainText('ED Emily Davis (emily_davis) person_add');

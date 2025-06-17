@@ -12,18 +12,17 @@ test('should change theme, should use polish language in application and should 
   await page.goto('/');
 
   // sprawdź zmianę motywu
+  expect(await page.locator('html').getAttribute('class')).toBe(null);
+  await page.getByRole('button', { name: 'Change theme' }).click();
   expect(await page.locator('html').getAttribute('class')).toBe('dark');
-  await page.getByRole('button', { name: 'Change theme' }).click();
-  expect(await page.locator('html').getAttribute('class')).toBe('');
-  await page.getByRole('button', { name: 'Change theme' }).click();
 
   // sprawdzanie strony głównej po zmianie języka 
   await expect(page.getByRole('heading')).toContainText('Transform the Way You Work with Intuitive Project Management.');
-  await expect(page.getByRole('paragraph')).toContainText('Discover a new level of productivity with our project management tool. Organize tasks, collaborate with your team, and track progress in real-time. Whether it\'s a small project or a large team, our intuitive interface and robust features will help you achieve your goals faster.');
+  await expect(page.getByRole('paragraph')).toContainText(`Discover a new level of productivity with our project management tool. Organize tasks, collaborate with your team and track progress. Whether it's a small project or a large team, our intuitive interface and robust features will help you achieve your goals faster.`);
   await page.getByRole('button', { name: 'Language menu' }).click();
   await page.locator('button').filter({ hasText: 'Polish' }).click();
   await expect(page.getByRole('heading')).toContainText('Zmień sposób pracy dzięki intuicyjnemu zarządzaniu projektami.');
-  await expect(page.getByRole('paragraph')).toContainText('Odkryj nowy poziom produktywności dzięki naszemu narzędziu do zarządzania projektami. Organizuj zadania, współpracuj z zespołem i śledź postępy w czasie rzeczywistym. Niezależnie od tego, czy to mały projekt, czy duży zespół, nasz intuicyjny interfejs i solidne funkcje pomogą Ci szybciej osiągnąć cele.');
+  await expect(page.getByRole('paragraph')).toContainText('Odkryj nowy poziom produktywności dzięki naszemu narzędziu do zarządzania projektami. Organizuj zadania, współpracuj z zespołem i śledź postępy. Niezależnie od tego, czy to mały projekt, czy duży zespół, nasz intuicyjny interfejs i solidne funkcje pomogą Ci szybciej osiągnąć cele.');
 
   // logowanie do systemu jako Sophia Jones
   await page.getByRole('link', { name: 'Zaloguj' }).click();
@@ -104,7 +103,7 @@ test('should change theme, should use polish language in application and should 
   await page.getByRole('button').filter({ hasText: 'done' }).click();
   await expect(page.locator('app-confirm-modal')).toContainText('Czy na pewno chcesz oznaczyć ten projekt jako zakończony?');
   await page.getByRole('button', { name: 'Tak' }).click();
-  await expect(page.locator('app-project-details')).toContainText('Zakończony');
+  await expect(page.locator('app-project-details')).toContainText('Ukończony');
   await page.getByRole('button').filter({ hasText: 'delete' }).click();
   await expect(page.locator('app-confirm-modal')).toContainText('Czy na pewno chcesz usunąć ten projekt?');
   await page.getByRole('button', { name: 'Tak' }).click(); 

@@ -28,7 +28,7 @@ test('should create project, add new member to project and check notifications',
 
   // sprawdź poprawność wyświetlania danych utworzonego projektu
   await expect(page.locator('h2')).toContainText('Fancy projekt');
-  await expect(page.locator('app-project-details')).toContainText('In progress');
+  await expect(page.locator('app-project-details')).toContainText('In Progress');
 
   // edycja projektu
   await page.locator('app-button').filter({ hasText: 'edit' }).getByRole('button').click();
