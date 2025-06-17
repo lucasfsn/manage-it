@@ -22,10 +22,32 @@ test.afterAll(async () => {
   await apiContext.dispose();
 });
 
-test('should successfuly update a project', async ({ projectId }) => {
+test('should succesfully update project when endDate is in the past', async ({ projectId }) => {
+  const endDate = new Date(new Date().setDate(new Date().getDate() - 2)).toISOString().slice(0, 10);
+
   const updatedProjectData = {
     name: 'Updated test project',
     description: 'This is an updated test project',
+    endDate: endDate
+  };
+
+  const response = await apiContext.patch(`/api/v1/projects/${projectId}`, {
+    data: updatedProjectData,
+  });
+
+  expect(response.status()).toBe(200);
+  const responseBody = await response.json();
+  expect(responseBody.message).toBe(`Project updated successfully`);
+  expect(responseBody.data.endDate).toBe(endDate);
+});
+
+test('should successfuly update a project', async ({ projectId }) => {
+  const endDate = new Date(new Date().setDate(new Date().getDate() + 19)).toISOString().slice(0, 10);
+
+  const updatedProjectData = {
+    name: 'Updated test project',
+    description: 'This is an updated test project',
+    endDate: endDate
   };
 
   const response = await apiContext.patch(`/api/v1/projects/${projectId}`, {
@@ -68,25 +90,6 @@ test('should not update a project for empty project name and description', async
   expect(response.status()).toBe(400);
   const responseBody = await response.json();
   expect(responseBody.message).toBe(`Validation failed`);
-});
-
-test('should succesfully update project when endDate is in the past', async ({ projectId }) => {
-  const endDate = new Date(new Date().setDate(new Date().getDate() - 2)).toISOString().slice(0, 10);
-
-  const updatedProjectData = {
-    name: 'Updated test project',
-    description: 'This is an updated test project',
-    endDate: endDate
-  };
-
-  const response = await apiContext.patch(`/api/v1/projects/${projectId}`, {
-    data: updatedProjectData,
-  });
-
-  expect(response.status()).toBe(200);
-  const responseBody = await response.json();
-  expect(responseBody.message).toBe(`Project updated successfully`);
-  expect(responseBody.data.endDate).toBe(endDate);
 });
 
 test('should not update project with non-existent id', async () => {
