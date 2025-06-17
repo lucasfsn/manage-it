@@ -1,8 +1,6 @@
 package com.manageit.manageit.feature.task;
 
-import com.manageit.manageit.core.exception.TaskNotInProjectException;
-import com.manageit.manageit.core.exception.UserNotInProjectException;
-import com.manageit.manageit.core.exception.UserNotInTaskException;
+import com.manageit.manageit.core.exception.*;
 import com.manageit.manageit.feature.chat.service.ChatService;
 import com.manageit.manageit.feature.notification.service.NotificationService;
 import com.manageit.manageit.feature.project.model.Project;
@@ -617,5 +615,180 @@ class TaskServiceTest {
                 () -> taskService.removeUserFromTask(testUser, taskId, projectId, userRequest)
         );
         assertEquals("User is not a member of the task", exception.getMessage());
+    }
+
+    @Test
+    void createAndAddTaskToProject_WhenProjectCompleted_ShouldThrowProjectModificationNotAllowedException() {
+        CreateTaskRequestDto createRequest = CreateTaskRequestDto.builder()
+                .description("New task")
+                .build();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(projectService.isProjectCompleted(testProject)).thenReturn(true);
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> taskService.createAndAddTaskToProject(testUser, projectId, createRequest)
+        );
+        assertEquals("Cannot modify project.", exception.getMessage());
+    }
+
+    @Test
+    void deleteTask_WhenUserNotInProject_ShouldThrowUserNotInProjectException() {
+        User unauthorizedUser = User.builder()
+                .id(UUID.randomUUID())
+                .username("unauthorized")
+                .build();
+
+        when(entityManager.merge(unauthorizedUser)).thenReturn(unauthorizedUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+
+        UserNotInProjectException exception = assertThrows(
+                UserNotInProjectException.class,
+                () -> taskService.deleteTask(unauthorizedUser, taskId, projectId)
+        );
+        assertEquals("User unauthorized is not member of project", exception.getMessage());
+    }
+
+    @Test
+    void deleteTask_WhenProjectCompleted_ShouldThrowProjectModificationNotAllowedException() {
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(projectService.isProjectCompleted(testProject)).thenReturn(true);
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> taskService.deleteTask(testUser, taskId, projectId)
+        );
+        assertEquals("Cannot modify project.", exception.getMessage());
+    }
+
+    @Test
+    void updateTask_WhenUserNotInProject_ShouldThrowUserNotInProjectException() {
+        User unauthorizedUser = User.builder()
+                .id(UUID.randomUUID())
+                .username("unauthorized")
+                .build();
+
+        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
+                .description("Updated description")
+                .build();
+
+        when(entityManager.merge(unauthorizedUser)).thenReturn(unauthorizedUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+
+        UserNotInProjectException exception = assertThrows(
+                UserNotInProjectException.class,
+                () -> taskService.updateTask(unauthorizedUser, taskId, projectId, updateRequest)
+        );
+        assertEquals("User unauthorized is not member of project", exception.getMessage());
+    }
+
+    @Test
+    void updateTask_WhenProjectCompleted_ShouldThrowProjectModificationNotAllowedException() {
+        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
+                .description("Updated description")
+                .build();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(projectService.isProjectCompleted(testProject)).thenReturn(true);
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> taskService.updateTask(testUser, taskId, projectId, updateRequest)
+        );
+        assertEquals("Cannot modify project.", exception.getMessage());
+    }
+
+    @Test
+    void updateTask_WhenDueDateExceedsProjectEndDate_ShouldThrowTaskDueDateExceedsProjectEndDateException() {
+        LocalDate projectEndDate = LocalDate.of(2025, 12, 31);
+        LocalDate taskDueDate = LocalDate.of(2026, 1, 15);
+
+        testProject.setEndDate(projectEndDate);
+
+        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
+                .dueDate(taskDueDate)
+                .build();
+
+        when(entityManager.merge(testUser)).thenReturn(testUser);
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(testTask));
+
+        TaskDueDateExceedsProjectEndDateException exception = assertThrows(
+                TaskDueDateExceedsProjectEndDateException.class,
+                () -> taskService.updateTask(testUser, taskId, projectId, updateRequest)
+        );
+        assertEquals("Due date cannot be after project end date", exception.getMessage());
+    }
+
+    @Test
+    void addUserToTask_WhenUserNotInProject_ShouldThrowUserNotInProjectException() {
+        User unauthorizedUser = User.builder()
+                .id(UUID.randomUUID())
+                .username("unauthorized")
+                .build();
+
+        UserResponseDto userRequest = new UserResponseDto();
+        userRequest.setName("userToAdd");
+
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+
+        UserNotInProjectException exception = assertThrows(
+                UserNotInProjectException.class,
+                () -> taskService.addUserToTask(unauthorizedUser, taskId, projectId, userRequest)
+        );
+        assertEquals("User unauthorized is not member of project", exception.getMessage());
+    }
+
+    @Test
+    void addUserToTask_WhenProjectCompleted_ShouldThrowProjectModificationNotAllowedException() {
+        UserResponseDto userRequest = new UserResponseDto();
+        userRequest.setName("userToAdd");
+
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(projectService.isProjectCompleted(testProject)).thenReturn(true);
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> taskService.addUserToTask(testUser, taskId, projectId, userRequest)
+        );
+        assertEquals("Cannot modify project.", exception.getMessage());
+    }
+
+    @Test
+    void removeUserFromTask_WhenUserNotInProject_ShouldThrowUserNotInProjectException() {
+        User unauthorizedUser = User.builder()
+                .id(UUID.randomUUID())
+                .username("unauthorized")
+                .build();
+
+        UserResponseDto userRequest = new UserResponseDto();
+        userRequest.setName("userToRemove");
+
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+
+        UserNotInProjectException exception = assertThrows(
+                UserNotInProjectException.class,
+                () -> taskService.removeUserFromTask(unauthorizedUser, taskId, projectId, userRequest)
+        );
+        assertEquals("User unauthorized is not member of project", exception.getMessage());
+    }
+
+    @Test
+    void removeUserFromTask_WhenProjectCompleted_ShouldThrowProjectModificationNotAllowedException() {
+        UserResponseDto userRequest = new UserResponseDto();
+        userRequest.setName("userToRemove");
+
+        when(projectService.getProjectById(projectId)).thenReturn(testProject);
+        when(projectService.isProjectCompleted(testProject)).thenReturn(true);
+
+        ProjectModificationNotAllowedException exception = assertThrows(
+                ProjectModificationNotAllowedException.class,
+                () -> taskService.removeUserFromTask(testUser, taskId, projectId, userRequest)
+        );
+        assertEquals("Cannot modify project.", exception.getMessage());
     }
 }
