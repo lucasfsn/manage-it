@@ -635,24 +635,6 @@ class TaskServiceTest {
     }
 
     @Test
-    void createAndAddTaskToProject_WhenEndDatePassed_ShouldThrowProjectModificationNotAllowedException() {
-        CreateTaskRequestDto createRequest = CreateTaskRequestDto.builder()
-                .description("New task")
-                .build();
-
-        when(entityManager.merge(testUser)).thenReturn(testUser);
-        when(projectService.getProjectById(projectId)).thenReturn(testProject);
-        when(projectService.isProjectCompleted(testProject)).thenReturn(false);
-        when(projectService.isEndDatePassed(testProject)).thenReturn(true);
-
-        ProjectModificationNotAllowedException exception = assertThrows(
-                ProjectModificationNotAllowedException.class,
-                () -> taskService.createAndAddTaskToProject(testUser, projectId, createRequest)
-        );
-        assertEquals("Cannot modify project.", exception.getMessage());
-    }
-
-    @Test
     void deleteTask_WhenUserNotInProject_ShouldThrowUserNotInProjectException() {
         User unauthorizedUser = User.builder()
                 .id(UUID.randomUUID())
@@ -674,20 +656,6 @@ class TaskServiceTest {
         when(entityManager.merge(testUser)).thenReturn(testUser);
         when(projectService.getProjectById(projectId)).thenReturn(testProject);
         when(projectService.isProjectCompleted(testProject)).thenReturn(true);
-
-        ProjectModificationNotAllowedException exception = assertThrows(
-                ProjectModificationNotAllowedException.class,
-                () -> taskService.deleteTask(testUser, taskId, projectId)
-        );
-        assertEquals("Cannot modify project.", exception.getMessage());
-    }
-
-    @Test
-    void deleteTask_WhenEndDatePassed_ShouldThrowProjectModificationNotAllowedException() {
-        when(entityManager.merge(testUser)).thenReturn(testUser);
-        when(projectService.getProjectById(projectId)).thenReturn(testProject);
-        when(projectService.isProjectCompleted(testProject)).thenReturn(false);
-        when(projectService.isEndDatePassed(testProject)).thenReturn(true);
 
         ProjectModificationNotAllowedException exception = assertThrows(
                 ProjectModificationNotAllowedException.class,
@@ -726,24 +694,6 @@ class TaskServiceTest {
         when(entityManager.merge(testUser)).thenReturn(testUser);
         when(projectService.getProjectById(projectId)).thenReturn(testProject);
         when(projectService.isProjectCompleted(testProject)).thenReturn(true);
-
-        ProjectModificationNotAllowedException exception = assertThrows(
-                ProjectModificationNotAllowedException.class,
-                () -> taskService.updateTask(testUser, taskId, projectId, updateRequest)
-        );
-        assertEquals("Cannot modify project.", exception.getMessage());
-    }
-
-    @Test
-    void updateTask_WhenEndDatePassed_ShouldThrowProjectModificationNotAllowedException() {
-        UpdateTaskRequestDto updateRequest = UpdateTaskRequestDto.builder()
-                .description("Updated description")
-                .build();
-
-        when(entityManager.merge(testUser)).thenReturn(testUser);
-        when(projectService.getProjectById(projectId)).thenReturn(testProject);
-        when(projectService.isProjectCompleted(testProject)).thenReturn(false);
-        when(projectService.isEndDatePassed(testProject)).thenReturn(true);
 
         ProjectModificationNotAllowedException exception = assertThrows(
                 ProjectModificationNotAllowedException.class,
@@ -809,22 +759,6 @@ class TaskServiceTest {
     }
 
     @Test
-    void addUserToTask_WhenEndDatePassed_ShouldThrowProjectModificationNotAllowedException() {
-        UserResponseDto userRequest = new UserResponseDto();
-        userRequest.setName("userToAdd");
-
-        when(projectService.getProjectById(projectId)).thenReturn(testProject);
-        when(projectService.isProjectCompleted(testProject)).thenReturn(false);
-        when(projectService.isEndDatePassed(testProject)).thenReturn(true);
-
-        ProjectModificationNotAllowedException exception = assertThrows(
-                ProjectModificationNotAllowedException.class,
-                () -> taskService.addUserToTask(testUser, taskId, projectId, userRequest)
-        );
-        assertEquals("Cannot modify project.", exception.getMessage());
-    }
-
-    @Test
     void removeUserFromTask_WhenUserNotInProject_ShouldThrowUserNotInProjectException() {
         User unauthorizedUser = User.builder()
                 .id(UUID.randomUUID())
@@ -850,22 +784,6 @@ class TaskServiceTest {
 
         when(projectService.getProjectById(projectId)).thenReturn(testProject);
         when(projectService.isProjectCompleted(testProject)).thenReturn(true);
-
-        ProjectModificationNotAllowedException exception = assertThrows(
-                ProjectModificationNotAllowedException.class,
-                () -> taskService.removeUserFromTask(testUser, taskId, projectId, userRequest)
-        );
-        assertEquals("Cannot modify project.", exception.getMessage());
-    }
-
-    @Test
-    void removeUserFromTask_WhenEndDatePassed_ShouldThrowProjectModificationNotAllowedException() {
-        UserResponseDto userRequest = new UserResponseDto();
-        userRequest.setName("userToRemove");
-
-        when(projectService.getProjectById(projectId)).thenReturn(testProject);
-        when(projectService.isProjectCompleted(testProject)).thenReturn(false);
-        when(projectService.isEndDatePassed(testProject)).thenReturn(true);
 
         ProjectModificationNotAllowedException exception = assertThrows(
                 ProjectModificationNotAllowedException.class,

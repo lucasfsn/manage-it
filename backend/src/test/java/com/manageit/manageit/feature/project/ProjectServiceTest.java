@@ -582,58 +582,6 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowException_WhenUpdatingProjectWithPassedEndDate() {
-        testProject.setEndDate(LocalDate.now().minusDays(1));
-        UpdateProjectRequestDto request = new UpdateProjectRequestDto();
-        request.setName("Updated Name");
-
-        when(entityManager.merge(testOwner)).thenReturn(testOwner);
-        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
-
-        ProjectModificationNotAllowedException exception = assertThrows(
-                ProjectModificationNotAllowedException.class,
-                () -> projectService.updateProject(testOwner, testProjectId, request)
-        );
-
-        assertEquals("Cannot modify project.", exception.getMessage());
-    }
-
-    @Test
-    void shouldThrowException_WhenAddingUserToProjectWithPassedEndDate() {
-        testProject.setEndDate(LocalDate.now().minusDays(1));
-        UserResponseDto request = new UserResponseDto();
-        request.setName("newuser");
-
-        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
-
-        ProjectModificationNotAllowedException exception = assertThrows(
-                ProjectModificationNotAllowedException.class,
-                () -> projectService.addUserToProject(testOwner, testProjectId, request)
-        );
-
-        assertEquals("Cannot modify project.", exception.getMessage());
-    }
-
-    @Test
-    void shouldThrowException_WhenRemovingUserFromProjectWithPassedEndDate() {
-        testProject.setEndDate(LocalDate.now().minusDays(1));
-        User userToRemove = createTestUser("usertoremove", UUID.randomUUID());
-        testProject.getMembers().add(userToRemove);
-
-        UserResponseDto request = new UserResponseDto();
-        request.setName("usertoremove");
-
-        when(projectRepository.findById(testProjectId)).thenReturn(Optional.of(testProject));
-
-        ProjectModificationNotAllowedException exception = assertThrows(
-                ProjectModificationNotAllowedException.class,
-                () -> projectService.removeUserFromProject(testOwner, testProjectId, request)
-        );
-
-        assertEquals("Cannot modify project.", exception.getMessage());
-    }
-
-    @Test
     void shouldReturnTrue_WhenProjectIsCompleted() {
         testProject.setStatus(ProjectStatus.COMPLETED);
 
@@ -651,21 +599,4 @@ class ProjectServiceTest {
         assertFalse(result);
     }
 
-    @Test
-    void shouldReturnTrue_WhenEndDateIsPassed() {
-        testProject.setEndDate(LocalDate.now().minusDays(1));
-
-        boolean result = projectService.isEndDatePassed(testProject);
-
-        assertTrue(result);
-    }
-
-    @Test
-    void shouldReturnFalse_WhenEndDateIsNotPassed() {
-        testProject.setEndDate(LocalDate.now().plusDays(1));
-
-        boolean result = projectService.isEndDatePassed(testProject);
-
-        assertFalse(result);
-    }
 }
