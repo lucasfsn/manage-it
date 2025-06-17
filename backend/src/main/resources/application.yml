@@ -1,50 +1,8 @@
-#spring:
-#  datasource:
-#    url: ${SPRING_DATASOURCE_URL}
-#    username: ${SPRING_DATASOURCE_USERNAME}
-#    password: ${SPRING_DATASOURCE_PASSWORD}
-#    driver-class-name: org.postgresql.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: validate
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-#    database: postgresql
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#  jackson:
-#    serialization:
-#      write-dates-as-timestamps: false
-#
-#springdoc:
-#  default-produces-media-type: application/json
-#
-#logging:
-#  level:
-#    root: INFO
-#
-#application:
-#  security:
-#    jwt:
-#      secret-key: ${JWT_SECRET_KEY}
-#      expiration: 300 # 5min
-#      refresh-token:
-#        expiration: 18000 # 5hours
-#    frontend:
-#      url: ${FRONTEND_URL}
-#
-#server:
-#  servlet:
-#    context-path: /api/v1/
-#  port: 8080
-
-
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/manageit_database
-    username: my_user
-    password: my_password
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -55,6 +13,9 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
 
 springdoc:
   default-produces-media-type: application/json
@@ -66,12 +27,12 @@ logging:
 application:
   security:
     jwt:
-      secret-key: i1OoH6mKPAxzFfJ4R3eOAtYPc5jh0az4RoU9nk10HOnRFZtXpGLXdj4B1beAoTWx
-      expiration: 86400000 # 300 # 5min
+      secret-key: ${JWT_SECRET_KEY}
+      expiration: 300 # 5min
       refresh-token:
         expiration: 18000 # 5hours
     frontend:
-      url: http://localhost:4200
+      url: ${FRONTEND_URL}
 
 server:
   servlet:
