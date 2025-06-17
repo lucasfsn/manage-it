@@ -16,7 +16,11 @@ export class ThemeService {
   public constructor() {
     const storedTheme = localStorage.getItem(THEME_KEY) as Theme;
 
-    if (this.isValidTheme(storedTheme)) this.theme.set(storedTheme);
+    if (this.isValidTheme(storedTheme)) {
+      this.theme.set(storedTheme);
+    } else {
+      this.theme.set(this.detectThemePreference());
+    }
 
     this.applyTheme(this.theme());
   }
@@ -28,15 +32,26 @@ export class ThemeService {
     localStorage.setItem(THEME_KEY, this.theme());
   }
 
-  private isValidTheme(theme: Theme): boolean {
-    return Object.values(Theme).includes(theme);
-  }
-
   public applyTheme(theme: Theme): void {
     if (theme === Theme.DARK) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+  }
+
+  private isValidTheme(theme: Theme): boolean {
+    return Object.values(Theme).includes(theme);
+  }
+
+  private detectThemePreference(): Theme {
+    if (window.matchMedia('(prefers-color-scheme)').media === 'not all')
+      return Theme.DARK;
+
+    const preferredScheme = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    ).matches;
+
+    return preferredScheme ? Theme.DARK : Theme.LIGHT;
   }
 }

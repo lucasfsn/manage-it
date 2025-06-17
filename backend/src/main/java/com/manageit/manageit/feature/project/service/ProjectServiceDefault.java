@@ -24,7 +24,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -109,7 +108,7 @@ public class ProjectServiceDefault implements ProjectService {
             throw new UserNotOwnerOfProjectException("User is not the owner of the project");
         }
 
-        if (isProjectCompleted(project) || isEndDatePassed(project)) {
+        if (isProjectCompleted(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
         if (request.getStatus() != null) {
@@ -143,7 +142,7 @@ public class ProjectServiceDefault implements ProjectService {
     @Transactional
     public ProjectResponseDto addUserToProject(User user, UUID projectId, UserResponseDto request) {
         Project project = getProjectById(projectId);
-        if (isProjectCompleted(project) || isEndDatePassed(project)) {
+        if (isProjectCompleted(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
 
@@ -177,7 +176,7 @@ public class ProjectServiceDefault implements ProjectService {
             throw new UserNotOwnerOfProjectException("User is not the owner of the project");
         }
 
-        if (isProjectCompleted(project) || isEndDatePassed(project)) {
+        if (isProjectCompleted(project)) {
             throw new ProjectModificationNotAllowedException("Cannot modify project.");
         }
 
@@ -209,10 +208,6 @@ public class ProjectServiceDefault implements ProjectService {
         return project.getStatus() == ProjectStatus.COMPLETED;
     }
 
-    @Override
-    public boolean isEndDatePassed(Project project) {
-        return project.getEndDate().isBefore(LocalDate.now());
-    }
 
     private boolean isProjectOwner(User user, Project project) {
         return project.getOwner().getId().equals(user.getId());
